@@ -60,6 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                implementation(projects.identityDomain)
                 // Add KMP dependencies here
             }
         }

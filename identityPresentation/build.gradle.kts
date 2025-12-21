@@ -41,6 +41,7 @@ kotlin {
                 implementation(libs.androidx.activity.compose)
 
                 implementation(projects.designSystem)
+                implementation(projects.identityDomain)
             }
         }
 
