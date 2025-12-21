@@ -1,3 +1,3 @@
-package com.spendoo.designSystem
+package com.spendoo.designsystem
 
 actual fun platform() = "Android"

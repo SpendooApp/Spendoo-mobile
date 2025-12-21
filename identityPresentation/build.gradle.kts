@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.androidLint) apply false
 }
 
 compose {
@@ -41,11 +40,7 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.androidx.activity.compose)
 
-                api(libs.compose.material3)
-
-                implementation(libs.coil.compose)
-                implementation(libs.coil.network.ktor)
-                implementation(libs.coil.svg)
+                implementation(projects.designSystem)
             }
         }
 
@@ -70,7 +65,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.spendoo.designsystem"
+    namespace = "com.spendoo.identitypresentation"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

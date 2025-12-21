@@ -30,3 +30,6 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":designSystem")
+include(":identityData")
+include(":identityDomain")
+include(":identityPresentation")
