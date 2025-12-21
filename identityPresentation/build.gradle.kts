@@ -5,12 +5,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
 }
 
-compose {
-    resources {
-        publicResClass = true
-    }
-}
-
 kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.

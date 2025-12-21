@@ -1,6 +1,6 @@
 import UIKit
 import SwiftUI
-import ComposeApp
+import SpendooApp
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {

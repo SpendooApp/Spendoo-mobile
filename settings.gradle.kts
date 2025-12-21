@@ -28,7 +28,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+include(":spendooApp")
 include(":designSystem")
 include(":identityData")
 include(":identityDomain")

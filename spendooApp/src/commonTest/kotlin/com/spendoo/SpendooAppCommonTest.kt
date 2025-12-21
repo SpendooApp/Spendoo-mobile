@@ -3,7 +3,7 @@ package com.spendoo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ComposeAppCommonTest {
+class SpendooAppCommonTest {
 
     @Test
     fun example() {
