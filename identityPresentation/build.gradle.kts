@@ -30,6 +30,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.ui)
+                implementation(compose.material3)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.androidx.activity.compose)
@@ -73,4 +74,10 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+}
+compose {
+    resources {
+        publicResClass = true
+        packageOfResClass = "com.spendoo.identitypresentation.generated.resources"
+    }
 }
