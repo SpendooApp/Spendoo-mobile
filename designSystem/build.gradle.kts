@@ -39,7 +39,6 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-                implementation(libs.androidx.activity.compose)
 
                 api(libs.compose.material3)
 
@@ -57,7 +56,7 @@ kotlin {
 
         androidMain {
             dependencies {
-
+                implementation(libs.androidx.activity.compose)
             }
         }
 
