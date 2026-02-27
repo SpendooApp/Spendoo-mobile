@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -17,7 +18,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "DesignSystemKit"
+            baseName = "IdentityPresentationKit"
         }
     }
 
@@ -32,10 +33,16 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-                implementation(libs.androidx.activity.compose)
 
                 implementation(projects.designSystem)
                 implementation(projects.identityDomain)
+                implementation(projects.identityApi)
+                implementation(projects.homeApi)
+
+                implementation(libs.bundles.koin)
+
+                // Navigation
+                implementation(libs.androidx.navigation.compose)
             }
         }
 
@@ -47,7 +54,8 @@ kotlin {
 
         androidMain {
             dependencies {
-
+                implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
             }
         }
 
@@ -60,7 +68,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.spendoo.identitypresentation"
+    namespace = "com.spendoo.identity.presentation"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
