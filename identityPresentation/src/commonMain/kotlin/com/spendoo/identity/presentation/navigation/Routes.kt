@@ -15,3 +15,6 @@ data object LoginRoute : BaseRoute
 
 @Serializable
 data object SignUpRoute : BaseRoute
+
+@Serializable
+data object ProfileRoute : BaseRoute

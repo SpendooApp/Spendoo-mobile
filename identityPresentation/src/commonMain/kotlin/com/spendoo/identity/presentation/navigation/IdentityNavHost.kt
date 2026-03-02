@@ -1,20 +1,14 @@
 package com.spendoo.identity.presentation.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.spendoo.designsystem.components.text.Text
-import com.spendoo.home.api.HomeFeatureApi
+import com.spendoo.identity.presentation.navigation.effector.Effect
+import com.spendoo.identity.presentation.navigation.effector.EffectHandler
+import com.spendoo.identity.presentation.navigation.effector.Effector
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
@@ -22,11 +16,45 @@ import kotlin.uuid.ExperimentalUuidApi
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun IdentityNavHost(
-    homeFeatureApi: HomeFeatureApi = koinInject(),
     updateBottomNavigationVisibility: (Boolean) -> Unit = {},
+    effector: Effector = koinInject(),
     startDestination: BaseRoute = HomeRoute
 ) {
     val navController = rememberNavController()
+
+    EffectHandler(effector.effect) { effect ->
+        when (effect) {
+            is Effect.Navigate -> navController.navigate(
+                route = effect.route, navOptions = effect.navOptions
+            )
+
+            is Effect.PopBackStack -> {
+                effect.arguments.forEach { (key, value) ->
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(key, value)
+                }
+                navController.popBackStack()
+            }
+
+
+            is Effect.SetBackStackArgs -> {
+                effect.arguments.forEach { (key, value) ->
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(key, value)
+                }
+            }
+
+            is Effect.PopUpTo -> {
+                navController.popBackStack(
+                    route = effect.route,
+                    inclusive = effect.inclusive,
+                    saveState = effect.saveState
+                )
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         navController.currentBackStack.collectLatest {
@@ -42,70 +70,15 @@ fun IdentityNavHost(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        NavHost(
-            modifier = Modifier.fillMaxSize(),
+        IdentityNavGraph(
             navController = navController,
             startDestination = startDestination,
-        ) {
-            composable<OnBoardingRoute> {
-                Box(
-                    Modifier.fillMaxSize().background(Color.Red),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
-                    Column {
-                        Text("OnBoarding", LocalTextStyle.current)
-                        Text("finish", LocalTextStyle.current, modifier = Modifier.clickable {
-                            navController.navigate(LoginRoute) {
-                                popUpTo(OnBoardingRoute) {
-                                    inclusive = true
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-            composable<HomeRoute> {
-                homeFeatureApi.TabEntry(
-                    updateBottomNavigationVisibility = updateBottomNavigationVisibility
-                )
-            }
-            composable<LoginRoute> {
-                Box(
-                    Modifier.fillMaxSize().background(Color.Green),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
-                    Column {
-                        Text("Login", LocalTextStyle.current)
-                        Text(
-                            "go to sign up",
-                            LocalTextStyle.current,
-                            modifier = Modifier.clickable {
-                                navController.navigate(SignUpRoute)
-                            })
-                    }
-                }
-            }
-            composable<SignUpRoute> {
-                Box(
-                    Modifier.fillMaxSize().background(Color.Blue),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
-                    Column {
-                        Text("SignUp", LocalTextStyle.current)
-                        Text("go to home", LocalTextStyle.current, modifier = Modifier.clickable {
-                            navController.navigate(HomeRoute) {
-                                popUpTo(SignUpRoute) {
-                                    inclusive = true
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-        }
+            updateBottomNavigationVisibility = updateBottomNavigationVisibility
+        )
     }
 }
 
 private val routsWithBottomNavigation = listOf(
     HomeRoute::class.qualifiedName,
+    ProfileRoute::class.qualifiedName,
 )
