@@ -107,10 +107,10 @@ private fun FeatureContent(
     activeFeature: Feature,
     identityApi: IdentityFeatureApi = koinInject(),
     homeApi: HomeFeatureApi = koinInject(),
-    categoriesApi: IdentityFeatureApi = koinInject(),
-    statsApi: IdentityFeatureApi = koinInject(),
-    chatBotApi: IdentityFeatureApi = koinInject(),
-    paymentsApi: IdentityFeatureApi = koinInject(),
+    categoriesApi: HomeFeatureApi = koinInject(),
+    statsApi: HomeFeatureApi = koinInject(),
+    chatBotApi: HomeFeatureApi = koinInject(),
+    paymentsApi: HomeFeatureApi = koinInject(),
     modifier: Modifier = Modifier,
     updateBottomNavigationVisibility: (Boolean) -> Unit = {}
 ) {
