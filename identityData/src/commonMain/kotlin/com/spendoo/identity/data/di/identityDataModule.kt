@@ -4,9 +4,11 @@ import com.russhwolf.settings.Settings
 import com.spendoo.identity.data.repository.AuthenticationRepositoryImpl
 import com.spendoo.identity.data.repository.RegisterRepositoryImpl
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl
+import com.spendoo.identity.data.repository.SettingsRepositoryImpl
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.RegisterRepository
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
+import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.service.AuthorizationService
 import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.CoroutineScope
@@ -29,6 +31,7 @@ val identityDataModule = module {
         AuthenticationRepositoryImpl(
             client = get(named(IDENTITY_CLIENT)),
             settings = get(),
+            settingsRepository = get(),
         )
     }
 
@@ -38,6 +41,10 @@ val identityDataModule = module {
 
     single<RegisterRepository> {
         RegisterRepositoryImpl(client = get(named(IDENTITY_CLIENT)))
+    }
+
+    single<SettingsRepository> {
+        SettingsRepositoryImpl(settings = get())
     }
 
     singleOf(::AuthorizationService)

@@ -2,6 +2,7 @@ package com.spendoo.identity.data.repository
 
 import com.russhwolf.settings.Settings
 import com.spendoo.identity.data.dataSource.local.setting.accessToken
+import com.spendoo.identity.data.dataSource.local.setting.onBoardingCompleted
 import com.spendoo.identity.data.dataSource.local.setting.refreshToken
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.LoginRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.RefreshRequestDto
@@ -13,6 +14,7 @@ import com.spendoo.identity.data.utils.postJson
 import com.spendoo.identity.data.utils.safeWrapper
 import com.spendoo.identity.domain.model.AuthenticationTokens
 import com.spendoo.identity.domain.repository.AuthenticationRepository
+import com.spendoo.identity.domain.repository.SettingsRepository
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 class AuthenticationRepositoryImpl(
     private val client: HttpClient,
     private val settings: Settings,
+    private val settingsRepository: SettingsRepository
 ) : AuthenticationRepository {
 
     private val observableToken: MutableStateFlow<String> = MutableStateFlow(
@@ -88,6 +91,7 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun saveAuthTokens(authTokens: AuthenticationTokens) {
         saveTokens(authTokens)
+        settingsRepository.setFirstTimeOpen(false)
     }
 
     private suspend fun saveTokens(authTokens: AuthenticationTokens, shouldEmit: Boolean = true) {

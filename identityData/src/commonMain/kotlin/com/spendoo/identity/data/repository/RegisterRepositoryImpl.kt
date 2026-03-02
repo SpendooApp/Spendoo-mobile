@@ -73,9 +73,13 @@ class RegisterRepositoryImpl(
     }
 
     private suspend fun performRegisterRequest(request: RegisterRequest): AuthenticationResponse {
-        return client.postJson(
-            request.toDto(sessionId), REGISTER
+        return AuthenticationResponse(
+            accessToken = "accessToken",
+            refreshToken = "refreshToken"
         )
+//        return client.postJson(
+//            request.toDto(sessionId), REGISTER
+//        )
     }
 
     private fun handleUsernameCheckException(e: ClientRequestException): Nothing {
