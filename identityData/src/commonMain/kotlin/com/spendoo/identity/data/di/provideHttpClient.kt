@@ -3,7 +3,6 @@ package com.spendoo.identity.data.di
 import com.spendoo.identity.data.repository.AuthenticationRepositoryImpl.Companion.LOGIN_ENDPOINT
 import com.spendoo.identity.data.repository.AuthenticationRepositoryImpl.Companion.REFRESH_ENDPOINT
 import com.spendoo.identity.data.repository.RegisterRepositoryImpl.Companion.REGISTER
-import com.spendoo.identity.data.repository.RegisterRepositoryImpl.Companion.REGISTER_CHECK_USER_EXISTENCE
 import com.spendoo.identity.data.repository.RegisterRepositoryImpl.Companion.REGISTER_REQUEST_OTP
 import com.spendoo.identity.data.repository.RegisterRepositoryImpl.Companion.REGISTER_VERIFY_OTP
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl.Companion.RESET_PASSWORD
@@ -88,6 +87,5 @@ private val whiteListEndPoints = listOf(
     RESET_PASSWORD,
     REGISTER_REQUEST_OTP,
     REGISTER_VERIFY_OTP,
-    REGISTER_CHECK_USER_EXISTENCE,
     REGISTER
 )

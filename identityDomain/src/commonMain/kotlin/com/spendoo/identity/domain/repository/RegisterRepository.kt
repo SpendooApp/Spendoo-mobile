@@ -5,7 +5,6 @@ import com.spendoo.identity.domain.model.RegisterRequest
 
 interface RegisterRepository {
     suspend fun requestOTP(email: String)
-    suspend fun verifyOTPCode(otpCode: String)
-    suspend fun checkUserExistence(username: String): Boolean
+    suspend fun verifyOTPCode(email: String, otp: String)
     suspend fun register(request: RegisterRequest): AuthenticationTokens
 }

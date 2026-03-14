@@ -2,70 +2,58 @@ package com.spendoo.identity.data.repository
 
 import com.russhwolf.settings.Settings
 import com.spendoo.identity.data.dataSource.local.setting.accessToken
-import com.spendoo.identity.data.dataSource.local.setting.onBoardingCompleted
 import com.spendoo.identity.data.dataSource.local.setting.refreshToken
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.LoginRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.RefreshRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.auth.response.AuthenticationResponse
 import com.spendoo.identity.data.mapper.toDomain
+import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.data.utils.invalidateAuthTokens
-import com.spendoo.identity.data.utils.postEmpty
-import com.spendoo.identity.data.utils.postJson
-import com.spendoo.identity.data.utils.safeWrapper
 import com.spendoo.identity.domain.model.AuthenticationTokens
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.SettingsRepository
 import io.ktor.client.HttpClient
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class AuthenticationRepositoryImpl(
-    private val client: HttpClient,
+    client: HttpClient,
     private val settings: Settings,
     private val settingsRepository: SettingsRepository
-) : AuthenticationRepository {
+) : BaseGateway(client), AuthenticationRepository {
 
-    private val observableToken: MutableStateFlow<String> = MutableStateFlow(
-        getInitialToken()
-    )
+    private val observableToken: MutableStateFlow<String> = MutableStateFlow(getInitialToken())
 
     private fun getInitialToken(): String = settings.accessToken
 
-    override suspend fun login(email: String, password: String) = safeWrapper {
-        val response: AuthenticationResponse = client.postJson(
-            LoginRequestDto(email, password),
-            LOGIN_ENDPOINT
-        )
-        saveAuthTokens(response.toDomain())
-        try {
-            client.invalidateAuthTokens()
-        } catch (_: Exception) {
+    override suspend fun login(email: String, password: String) {
+        val response = tryToExecute<AuthenticationResponse> {
+            post(LOGIN_ENDPOINT) {
+                setBody(LoginRequestDto(email, password))
+            }
         }
+        saveAuthTokens(response.toDomain())
+        client.invalidateAuthTokens()
     }
 
     override suspend fun logout() {
-        safeWrapper {
-            client.postEmpty(LOGOUT_ENDPOINT)
+        tryToExecute<Unit> {
+            post(LOGOUT_ENDPOINT)
         }
-        try {
-            client.invalidateAuthTokens()
-        } catch (_: Exception) {
-        }
+        client.invalidateAuthTokens()
         clearAuthTokens()
     }
 
     override suspend fun refreshAccessToken(): String {
-        val response: AuthenticationResponse = safeWrapper {
-            client.postJson(
-                RefreshRequestDto(settings.refreshToken),
-                REFRESH_ENDPOINT
-            )
+        val response = tryToExecute<AuthenticationResponse> {
+            post(REFRESH_ENDPOINT) {
+                setBody(RefreshRequestDto(settings.refreshToken))
+            }
         }
         saveTokens(response.toDomain())
-        try {
-            client.invalidateAuthTokens()
-        } catch (_: Exception) {
-        }
+        client.invalidateAuthTokens()
         return settings.accessToken
     }
 
@@ -83,7 +71,7 @@ class AuthenticationRepositoryImpl(
         }
 
     override suspend fun clearAuthTokens() {
-        saveTokensToSettings(createEmptyTokens())
+        saveTokensToSettings(AuthenticationTokens(accessToken = "", refreshToken = ""))
         emitToken("")
     }
 
@@ -110,14 +98,9 @@ class AuthenticationRepositoryImpl(
         settings.refreshToken = authTokens.refreshToken
     }
 
-    private fun createEmptyTokens() = AuthenticationTokens(
-        accessToken = "",
-        refreshToken = ""
-    )
-
     companion object {
-        const val LOGIN_ENDPOINT = "identity/authentication/login"
-        const val REFRESH_ENDPOINT = "identity/authentication/refresh"
-        const val LOGOUT_ENDPOINT = "identity/authentication/logout"
+        const val LOGIN_ENDPOINT = "api/v1/identity/auth/login"
+        const val REFRESH_ENDPOINT = "api/v1/identity/auth/refresh"
+        const val LOGOUT_ENDPOINT = "api/v1/identity/auth/logout"
     }
 }

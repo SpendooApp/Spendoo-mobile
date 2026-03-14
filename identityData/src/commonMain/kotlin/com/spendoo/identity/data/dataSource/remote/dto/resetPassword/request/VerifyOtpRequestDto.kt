@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class VerifyOtpRequestDto (
+    @SerialName("email")
+    val email: String,
     @SerialName("otp")
     val otp: String,
-    @SerialName("sessionId")
-    val sessionId: String
 )

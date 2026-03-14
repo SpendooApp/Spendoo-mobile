@@ -21,7 +21,7 @@ class SignUpViewModel(
                 registerRepository.register(
                     RegisterRequest(
                         email = "",
-                        username = "",
+                        fullName = "",
                         birthDate = LocalDate(2000, 1, 1),
                         gender = Gender.MALE,
                         password = ""

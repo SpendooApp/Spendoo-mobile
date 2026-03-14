@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResetPasswordRequestDto(
+    @SerialName("email")
+    val email: String,
+    @SerialName("otp")
+    val otp: String,
     @SerialName("newPassword")
-    val newPassword: String,
-    @SerialName("confirmPassword")
-    val confirmPassword: String,
-    @SerialName("sessionId")
-    val sessionId: String
+    val newPassword: String
 )
