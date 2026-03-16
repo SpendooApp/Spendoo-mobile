@@ -10,7 +10,7 @@ interface SettingsRepository {
     fun getCurrentAppLanguage(): AppLanguage
     suspend fun applyAppTheme(appTheme: AppTheme)
     fun observeAppTheme(): StateFlow<AppTheme>
-    fun isFirstTimeOpen(): Boolean
-    fun observeIsFirstTimeOpen(): StateFlow<Boolean>
-    fun setFirstTimeOpen(isFirstTimeOpen: Boolean)
+    fun isOnboardingComplete(): Boolean
+    fun observeOnBoardingCompleted(): StateFlow<Boolean>
+    fun setOnboardingCompleted(value: Boolean)
 }

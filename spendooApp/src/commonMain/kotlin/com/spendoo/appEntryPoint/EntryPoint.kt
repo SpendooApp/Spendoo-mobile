@@ -18,10 +18,10 @@ fun EntryPoint(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val accessToken by authorizationService.observeAccessToken().collectAsStateWithLifecycle()
-    val isFirstTimeOpen by settingsRepository.observeIsFirstTimeOpen().collectAsStateWithLifecycle()
+    val isOnBoardingCompleted by settingsRepository.observeOnBoardingCompleted().collectAsStateWithLifecycle()
 
     // if first time open onboarding
-    if (isFirstTimeOpen) {
+    if (!isOnBoardingCompleted) {
         identityApi.OnBoardingFlow(updateBottomNavigationVisibility = viewModel::onBottomNavigationChanged)
         return
     }

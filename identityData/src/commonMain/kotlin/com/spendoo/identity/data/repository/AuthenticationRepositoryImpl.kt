@@ -79,7 +79,7 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun saveAuthTokens(authTokens: AuthenticationTokens) {
         saveTokens(authTokens)
-        settingsRepository.setFirstTimeOpen(false)
+        settingsRepository.setOnboardingCompleted(false)
     }
 
     private suspend fun saveTokens(authTokens: AuthenticationTokens, shouldEmit: Boolean = true) {

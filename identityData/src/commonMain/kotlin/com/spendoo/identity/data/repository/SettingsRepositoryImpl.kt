@@ -66,9 +66,9 @@ class SettingsRepositoryImpl(
         }
     }
 
-    override fun isFirstTimeOpen() = settings.onBoardingCompleted
+    override fun isOnboardingComplete() = settings.onBoardingCompleted
 
-    override fun observeIsFirstTimeOpen(): StateFlow<Boolean> {
+    override fun observeOnBoardingCompleted(): StateFlow<Boolean> {
         return observableOnBoarding.stateIn(
             scope = CoroutineScope(Dispatchers.IO),
             started = SharingStarted.Eagerly,
@@ -76,7 +76,7 @@ class SettingsRepositoryImpl(
         )
     }
 
-    override fun setFirstTimeOpen(isFirstTimeOpen: Boolean) {
-        settings.onBoardingCompleted = isFirstTimeOpen.also { observableOnBoarding.value = it }
+    override fun setOnboardingCompleted(value: Boolean) {
+        settings.onBoardingCompleted = value.also { observableOnBoarding.value = it }
     }
 }

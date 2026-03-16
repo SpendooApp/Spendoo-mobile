@@ -1,6 +1,6 @@
 package com.spendoo.identity.presentation.screen.onboarding
 
-import com.spendoo.identity.presentation.navigation.LoginRoute
+import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.presentation.shared.BaseViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dollar
@@ -19,9 +19,15 @@ import spendoo.designsystem.generated.resources.onboarding_title_set_goals
 import spendoo.designsystem.generated.resources.onboarding_title_track_spending
 import spendoo.designsystem.generated.resources.onboarding_title_welcome
 
-class OnboardingViewModel : BaseViewModel<OnboardingUiState>(OnboardingUiState()), OnboardingInteractionListener {
+class OnboardingViewModel(
+    private val settingsRepository: SettingsRepository
+) : BaseViewModel<OnboardingUiState>(OnboardingUiState()), OnboardingInteractionListener {
 
     init {
+        setPages()
+    }
+
+    private fun setPages() {
         updateState {
             copy(
                 pages = listOf(
@@ -66,7 +72,7 @@ class OnboardingViewModel : BaseViewModel<OnboardingUiState>(OnboardingUiState()
                 )
             }
         } else {
-            navigate(LoginRoute)
+            settingsRepository.setOnboardingCompleted(true)
         }
     }
 
@@ -80,7 +86,7 @@ class OnboardingViewModel : BaseViewModel<OnboardingUiState>(OnboardingUiState()
     }
 
     override fun onSkipButtonClicked() {
-        navigate(LoginRoute)
+        settingsRepository.setOnboardingCompleted(true)
     }
 
     override fun onPreviousButtonClicked() {
