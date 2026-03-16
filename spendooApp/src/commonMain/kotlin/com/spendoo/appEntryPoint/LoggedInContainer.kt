@@ -44,7 +44,7 @@ fun LoggedInContainer(
 
     Box(
         modifier = Modifier
-            .background(Theme.colorScheme.background.surfaceLow)
+            .background(Theme.colorScheme.background.secondary)
             .navigationBarsPadding()
             .fillMaxSize()
     ) {

@@ -13,7 +13,7 @@ fun App(
     isSystemDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
     SpendooTheme(
-        isSystemInDarkTheme = isSystemDarkTheme,
+        darkTheme = isSystemDarkTheme,
         content = {
             EntryPoint()
         }

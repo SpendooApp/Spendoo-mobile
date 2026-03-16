@@ -5,11 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.api.HomeFeatureApi
 
 class HomeFeatureApiImpl : HomeFeatureApi {
@@ -19,12 +19,15 @@ class HomeFeatureApiImpl : HomeFeatureApi {
         Box(
             Modifier.fillMaxSize().background(Color.Yellow),
             contentAlignment = androidx.compose.ui.Alignment.Center
-        ){
+        ) {
             Column {
-                Text("Home", LocalTextStyle.current)
-                Text("go to categories", LocalTextStyle.current, modifier = Modifier.clickable {
+                Text("Home", Theme.typography.label.medium)
+                Text(
+                    "go to categories",
+                    Theme.typography.label.medium,
+                    modifier = Modifier.clickable {
 
-                })
+                    })
             }
         }
     }

@@ -1,9 +1,17 @@
+import org.jetbrains.compose.resources.ResourcesExtension
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinx.serialization)
+}
+
+compose {
+    resources {
+        generateResClass = ResourcesExtension.ResourceClassGeneration.Never
+    }
 }
 
 kotlin {
