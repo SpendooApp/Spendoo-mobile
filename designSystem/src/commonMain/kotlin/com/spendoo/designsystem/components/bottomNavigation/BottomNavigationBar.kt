@@ -34,7 +34,7 @@ fun BottomNavigationBar(
             val index = scope.items.indexOf(item)
             scope.items[index].entry.invoke()
         },
-        modifier = modifier.background(Theme.colorScheme.background.surfaceLow)
+        modifier = modifier.background(Theme.colorScheme.background.secondary)
     )
 }
 

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -32,10 +33,9 @@ fun DotsProgressIndicator(
     progressDuration: Int = 200,
     dotShape: Shape = RoundedCornerShape(100.dp),
     colors: List<Color> = listOf(
-        Theme.colorScheme.stroke,
-        Theme.colorScheme.shadeTertiary,
-        Theme.colorScheme.error,
-        Theme.colorScheme.primary.primary
+        Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.5f),
+        Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.75f),
+        Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.9f),
     ),
     dotSize: Dp = 5.dp,
     spaceBetween: Dp = 2.dp,
@@ -77,7 +77,7 @@ fun DotsProgressIndicator(
 
 @Preview(showBackground = true,backgroundColor = 0xFFF2F4F7)
 @Composable
-private fun DotsProgressIndicatorPreview() {
+private fun DotsProgressIndicatorPreview() = SpendooTheme {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -87,9 +87,9 @@ private fun DotsProgressIndicatorPreview() {
         DotsProgressIndicator(
             numberOfDots = 3,
             colors = listOf(
-                Theme.colorScheme.stroke,
-                Theme.colorScheme.shadeTertiary,
-                Theme.colorScheme.primary.primary
+                Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.5f),
+                Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.75f),
+                Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.9f),
             ),
             modifier = Modifier.padding(10.dp)
         )

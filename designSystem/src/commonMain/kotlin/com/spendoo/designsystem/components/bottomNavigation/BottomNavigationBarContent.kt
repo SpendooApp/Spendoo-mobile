@@ -68,7 +68,7 @@ fun BottomNavigationBarContent(
                         bottomStart = 4.dp
                     )
                 )
-                .background(Theme.colorScheme.brand.brand)
+                .background(Theme.colorScheme.icon.primary)
                 .size(indicatorWidth, 4.dp)
         )
     }
