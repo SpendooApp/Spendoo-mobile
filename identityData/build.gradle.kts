@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -10,7 +11,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.spendoo.identityData"
+        namespace = "com.spendoo.identity.data"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -61,13 +62,15 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(projects.identityDomain)
-                // Add KMP dependencies here
-            }
-        }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.bundles.ktor)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.koin.core)
+                implementation(libs.multiplatform.settings)
+                implementation(libs.kotlinx.datetime)
+                // Add KMP dependencies here
             }
         }
 
@@ -76,14 +79,7 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
-            }
-        }
-
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.testExt.junit)
+                implementation(libs.koin.android)
             }
         }
 
@@ -94,6 +90,7 @@ kotlin {
                 // part of KMP’s default source set hierarchy. Note that this source set depends
                 // on common by default and will correctly pull the iOS artifacts of any
                 // KMP dependencies declared in commonMain.
+                implementation(libs.ktor.client.darwin)
             }
         }
     }

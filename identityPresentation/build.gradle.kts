@@ -1,8 +1,17 @@
+import org.jetbrains.compose.resources.ResourcesExtension
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinx.serialization)
+}
+
+compose {
+    resources {
+        generateResClass = ResourcesExtension.ResourceClassGeneration.Never
+    }
 }
 
 kotlin {
@@ -17,7 +26,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "DesignSystemKit"
+            baseName = "IdentityPresentationKit"
         }
     }
 
@@ -30,15 +39,23 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.ui)
-                implementation(compose.material3)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+
+                implementation(libs.kotlinx.datetime)
+
                 implementation(libs.androidx.activity.compose)
-                implementation("io.coil-kt.coil3:coil-compose:3.0.0-alpha10")
+                implementation(libs.coil.compose)
+
                 implementation(projects.designSystem)
                 implementation(projects.identityDomain)
-                implementation("com.google.accompanist:accompanist-placeholder:0.34.0")
-                implementation("com.google.accompanist:accompanist-placeholder-material:0.34.0")
+                implementation(projects.identityApi)
+                implementation(projects.homeApi)
+
+                implementation(libs.bundles.koin)
+
+                // Navigation
+                implementation(libs.androidx.navigation.compose)
             }
         }
 
@@ -50,7 +67,8 @@ kotlin {
 
         androidMain {
             dependencies {
-
+                implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
             }
         }
 
@@ -63,7 +81,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.spendoo.identitypresentation"
+    namespace = "com.spendoo.identity.presentation"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
@@ -76,10 +94,4 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-}
-compose {
-    resources {
-        publicResClass = true
-        packageOfResClass = "com.spendoo.identitypresentation.generated.resources"
-    }
 }

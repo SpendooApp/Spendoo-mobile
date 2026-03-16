@@ -32,6 +32,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.datetime)
 
                 // Compose
                 implementation(compose.runtime)
@@ -42,7 +43,7 @@ kotlin {
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.androidx.activity.compose)
 
-                api(libs.compose.material3)
+                implementation(libs.compose.material3)
 
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor)
@@ -58,7 +59,7 @@ kotlin {
 
         androidMain {
             dependencies {
-
+                implementation(libs.androidx.activity.compose)
             }
         }
 
