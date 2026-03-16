@@ -1,6 +1,7 @@
 package com.spendoo.identity.presentation.screen.onboarding
 
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 
 data class OnboardingUiState(
     val pages: List<OnboardingPageUiState> = emptyList(),
@@ -9,7 +10,7 @@ data class OnboardingUiState(
 )
 
 data class OnboardingPageUiState(
-    val title: String,
-    val description: String,
+    val title: StringResource,
+    val description: StringResource,
     val imageRes: DrawableResource
 )

@@ -2,4 +2,14 @@
 <resources>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
+    <string name="onboarding_title_welcome">Welcome to SPENDoo</string>
+    <string name="onboarding_desc_welcome">Your smart companion for managing finances and achieving your financial goals effortlessly.</string>
+    <string name="onboarding_title_track_spending">Track Your Spending</string>
+    <string name="onboarding_desc_track_spending">Monitor every transaction and categorize your expenses automatically. Stay on top of where your money goes.</string>
+    <string name="onboarding_title_set_goals">Set Financial Goals</string>
+    <string name="onboarding_desc_set_goals">Create savings goals for the things you love. Track your progress and celebrate milestones along the way.</string>
+    <string name="onboarding_title_insights">Get Smart Insights</string>
+    <string name="onboarding_desc_insights">Visualize your spending patterns with beautiful charts and get personalized recommendations to save more.</string>
+    <string name="onboarding_title_ready">Ready to Start?</string>
+    <string name="onboarding_desc_ready">Join thousands of users who are taking control of their finances and building better money habits.</string>
 </resources>

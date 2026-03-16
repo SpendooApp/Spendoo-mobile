@@ -36,6 +36,16 @@ import spendoo.designsystem.generated.resources.ic_done
 import spendoo.designsystem.generated.resources.ic_stats
 import spendoo.designsystem.generated.resources.ic_target
 import spendoo.designsystem.generated.resources.ic_wallet
+import spendoo.designsystem.generated.resources.onboarding_desc_insights
+import spendoo.designsystem.generated.resources.onboarding_desc_ready
+import spendoo.designsystem.generated.resources.onboarding_desc_set_goals
+import spendoo.designsystem.generated.resources.onboarding_desc_track_spending
+import spendoo.designsystem.generated.resources.onboarding_desc_welcome
+import spendoo.designsystem.generated.resources.onboarding_title_insights
+import spendoo.designsystem.generated.resources.onboarding_title_ready
+import spendoo.designsystem.generated.resources.onboarding_title_set_goals
+import spendoo.designsystem.generated.resources.onboarding_title_track_spending
+import spendoo.designsystem.generated.resources.onboarding_title_welcome
 import spendoo.designsystem.generated.resources.skip
 
 @Composable
@@ -144,28 +154,28 @@ fun OnboardingScreenPreview() = SpendooTheme {
         state = OnboardingUiState(
             pages = listOf(
                 OnboardingPageUiState(
-                    title = "Welcome to SPENDoo",
-                    description = "Your smart companion for managing finances and achieving your financial goals effortlessly.",
+                    title = Res.string.onboarding_title_welcome,
+                    description = Res.string.onboarding_desc_welcome,
                     imageRes = Res.drawable.ic_wallet
                 ),
                 OnboardingPageUiState(
-                    title = "Track Your Spending",
-                    description = "Monitor every transaction and categorize your expenses automatically. Stay on top of where your money goes.",
+                    title = Res.string.onboarding_title_track_spending,
+                    description = Res.string.onboarding_desc_track_spending,
                     imageRes = Res.drawable.ic_dollar
                 ),
                 OnboardingPageUiState(
-                    title = "Set Financial Goals",
-                    description = "Create savings goals for the things you love. Track your progress and celebrate milestones along the way.",
+                    title = Res.string.onboarding_title_set_goals,
+                    description = Res.string.onboarding_desc_set_goals,
                     imageRes = Res.drawable.ic_target
                 ),
                 OnboardingPageUiState(
-                    title = "Get Smart Insights",
-                    description = "Visualize your spending patterns with beautiful charts and get personalized recommendations to save more.",
+                    title = Res.string.onboarding_title_insights,
+                    description = Res.string.onboarding_desc_insights,
                     imageRes = Res.drawable.ic_stats
                 ),
                 OnboardingPageUiState(
-                    title = "Ready to Start?",
-                    description = "Join thousands of users who are taking control of their finances and building better money habits.",
+                    title = Res.string.onboarding_title_ready,
+                    description = Res.string.onboarding_desc_ready,
                     imageRes = Res.drawable.ic_done
                 )
             ),
