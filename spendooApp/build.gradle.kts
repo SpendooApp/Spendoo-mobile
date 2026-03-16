@@ -1,5 +1,5 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,6 +7,16 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
 }
+
+val localProperties = Properties()
+val localPropertiesFile: File = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val appVersionName =
+    project.property("VERSION_MAJOR").toString() + "." + project.property("VERSION_MINOR")
+        .toString()
 
 kotlin {
     androidTarget {
@@ -39,11 +49,15 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.bundles.koin)
 
             implementation(projects.designSystem)
             implementation(projects.identityData)
             implementation(projects.identityDomain)
             implementation(projects.identityPresentation)
+            implementation(projects.identityApi)
+            implementation(projects.homeApi)
+            implementation(projects.homePresentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -60,7 +74,10 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = appVersionName
+
+        val baseUrl = localProperties.getProperty("BASE_URL", "")
+        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
     }
     packaging {
         resources {
@@ -75,6 +92,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
