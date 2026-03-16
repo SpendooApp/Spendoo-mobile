@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.spendoo.designsystem.components.button.Button
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.TextField
+import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.identitypresentation.screen.components.PasswordField
 import org.jetbrains.compose.resources.painterResource
@@ -41,7 +42,6 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_female
 import spendoo.designsystem.generated.resources.ic_male
 
-@Preview
 @Composable
 fun SignUpScreen() {
     var email by remember { mutableStateOf("") }
@@ -312,3 +312,8 @@ private fun StaticGenderButton(
 }
 
 
+@Composable
+@Preview
+fun SignUpScreenPreview() = SpendooTheme {
+    SignUpScreen()
+}
