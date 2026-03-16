@@ -13,7 +13,7 @@ data class ColorScheme(
     val brand: Brand,
     val button: Button,
     val icon: Icon,
-    val primaryVariant: PrimaryVariant,
+    val primary: PrimaryVariant,
 ) {
     data class Text(
         val body: Color,

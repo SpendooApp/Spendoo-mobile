@@ -33,9 +33,9 @@ fun DotsProgressIndicator(
     progressDuration: Int = 200,
     dotShape: Shape = RoundedCornerShape(100.dp),
     colors: List<Color> = listOf(
-        Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.5f),
-        Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.75f),
-        Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.9f),
+        Theme.colorScheme.primary.variant300.copy(alpha = 0.5f),
+        Theme.colorScheme.primary.variant300.copy(alpha = 0.75f),
+        Theme.colorScheme.primary.variant300.copy(alpha = 0.9f),
     ),
     dotSize: Dp = 5.dp,
     spaceBetween: Dp = 2.dp,
@@ -87,9 +87,9 @@ private fun DotsProgressIndicatorPreview() = SpendooTheme {
         DotsProgressIndicator(
             numberOfDots = 3,
             colors = listOf(
-                Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.5f),
-                Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.75f),
-                Theme.colorScheme.primaryVariant.variant300.copy(alpha = 0.9f),
+                Theme.colorScheme.primary.variant300.copy(alpha = 0.5f),
+                Theme.colorScheme.primary.variant300.copy(alpha = 0.75f),
+                Theme.colorScheme.primary.variant300.copy(alpha = 0.9f),
             ),
             modifier = Modifier.padding(10.dp)
         )

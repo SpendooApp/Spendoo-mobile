@@ -68,7 +68,7 @@ internal val DarkColorScheme = ColorScheme(
         secondary = Color(0xFF064E71),
         tertiary = Color(0xFF82C7FF).copy(alpha = 0.4f)
     ),
-    primaryVariant = ColorScheme.PrimaryVariant(
+    primary = ColorScheme.PrimaryVariant(
         variant50 = Color(0xFFF0F9FF),
         variant100 = Color(0xFFE0F2FE),
         variant200 = Color(0xFFC5E8FE),
