@@ -30,8 +30,8 @@ fun SignUpScreenContent(interactionListener: SignUpInteractionListener, state: S
         contentAlignment = androidx.compose.ui.Alignment.Center
     ) {
         Column {
-            Text("SignUp", Theme.typography.label.medium)
-            Text("go to home", Theme.typography.label.medium, modifier = Modifier.clickable {
+            Text("SignUp", Theme.typography.label.medium.medium)
+            Text("go to home", Theme.typography.label.medium.medium, modifier = Modifier.clickable {
                 interactionListener.onSignUpClicked()
             })
         }

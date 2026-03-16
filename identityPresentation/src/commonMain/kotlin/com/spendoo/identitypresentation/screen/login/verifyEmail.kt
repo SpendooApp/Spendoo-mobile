@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +25,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.spendoo.designsystem.components.button.Button
+import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.theme.theme.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -55,7 +55,8 @@ fun VerifyEmail() {
                 text = "Verify your Email",
                 color = Color.White,
                 fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                style = Theme.typography.heading.large
             )
         }
 
@@ -75,8 +76,7 @@ fun VerifyEmail() {
             Text(
                 text = "Enter code sent on your email",
                 color = Color.Black,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                style = Theme.typography.title.large
             )
 
             // OTP Input Fields
@@ -122,7 +122,8 @@ fun VerifyEmail() {
                 text = "00:50",
                 color = Color.Black,
                 fontSize = 14.sp,
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                style = Theme.typography.label.medium.medium
             )
 
             // Verify Button
@@ -132,15 +133,13 @@ fun VerifyEmail() {
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF179FDD)
-                )
             ) {
                 Text(
                     text = "Verify Code",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White
+                    color = Color.White,
+                    style = Theme.typography.title.large
                 )
             }
 
@@ -154,13 +153,15 @@ fun VerifyEmail() {
                 Text(
                     text = "Didn't receive code? ",
                     color = Color.Gray,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    style = Theme.typography.label.medium.medium
                 )
                 Text(
                     text = "Resend",
                     color = Color(0xFF179FDD),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    style = Theme.typography.label.semiBold.medium
                 )
             }
 

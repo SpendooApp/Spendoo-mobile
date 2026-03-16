@@ -89,7 +89,7 @@ fun OutlinedButtonPreview2() = SpendooTheme {
     ) {
         Text(
             "Button Button Button",
-            style = Theme.typography.label.medium,
+            style = Theme.typography.label.medium.medium,
         )
     }
 }

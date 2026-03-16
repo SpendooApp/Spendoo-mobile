@@ -16,11 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,12 +30,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.spendoo.identitypresentation.generated.resources.Res
-import com.spendoo.identitypresentation.generated.resources.ic_female
-import com.spendoo.identitypresentation.generated.resources.ic_male
+import com.spendoo.designsystem.components.button.Button
+import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.components.textField.TextField
+import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.identitypresentation.screen.components.PasswordField
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.ic_female
+import spendoo.designsystem.generated.resources.ic_male
 
 @Preview
 @Composable
@@ -74,7 +73,8 @@ fun SignUpScreen() {
                 text = "Create Account",
                 color = Color.White,
                 fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                style = Theme.typography.heading.large
             )
         }
 
@@ -96,7 +96,8 @@ fun SignUpScreen() {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Black,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = Theme.typography.label.medium.medium
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -124,17 +125,11 @@ fun SignUpScreen() {
             TextField(
                 value = username,
                 onValueChange = { username = it },
-                placeholder = { Text("Enter Your Username", color = Color(0xFFB0B0B0)) },
+                placeholder = { Text("Enter Your Username", color = Color(0xFFB0B0B0), style = Theme.typography.body.small) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color(0xFFE0E4EB),
-                    focusedIndicatorColor = Color(0xFFE0E4EB)
-                ),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
@@ -147,17 +142,11 @@ fun SignUpScreen() {
             TextField(
                 value = age?.toString() ?: "",
                 onValueChange = { age = it.toIntOrNull() ?: 0 },
-                placeholder = { Text("Enter Your Age", color = Color(0xFFB0B0B0)) },
+                placeholder = { Text("Enter Your Age", color = Color(0xFFB0B0B0), style = Theme.typography.body.small) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color(0xFFE0E4EB),
-                    focusedIndicatorColor = Color(0xFFE0E4EB)
-                ),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
@@ -171,17 +160,11 @@ fun SignUpScreen() {
             TextField(
                 value = email,
                 onValueChange = { email = it },
-                placeholder = { Text("Enter Your Email", color = Color(0xFFB0B0B0)) },
+                placeholder = { Text("Enter Your Email", color = Color(0xFFB0B0B0), style = Theme.typography.body.small) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color(0xFFE0E4EB),
-                    focusedIndicatorColor = Color(0xFFE0E4EB)
-                ),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next)
@@ -204,25 +187,29 @@ fun SignUpScreen() {
                 Text(
                     text = "By continuing, you agree on our ",
                     color = Color(0xFF8B8B8B),
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    style = Theme.typography.label.medium.small
                 )
                 Row {
                     Text(
                         text = "Terms and Conditions",
                         color = Color(0xFF1E88E5),
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        style = Theme.typography.label.medium.small
                     )
                     Text(
                         text = " and ",
                         color = Color(0xFF8B8B8B),
-                        fontSize = 12.sp
+                        fontSize = 12.sp,
+                        style = Theme.typography.label.medium.small
                     )
                     Text(
                         text = "Privacy",
                         color = Color(0xFF1E88E5),
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        style = Theme.typography.label.medium.small
                     )
                 }
             }
@@ -236,15 +223,13 @@ fun SignUpScreen() {
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF179FDD)
-                )
             ) {
                 Text(
                     text = "Sign Up",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White
+                    color = Color.White,
+                    style = Theme.typography.title.large
                 )
             }
 
@@ -258,13 +243,15 @@ fun SignUpScreen() {
                 Text(
                     text = "Already have an account? ",
                     color = Color(0xFFB0B0B0),
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    style = Theme.typography.label.medium.medium
                 )
                 Text(
                     text = "Login",
                     color = Color(0xFF1E88E5),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    style = Theme.typography.label.semiBold.medium
                 )
             }
 
@@ -318,7 +305,8 @@ private fun StaticGenderButton(
             text = gender.name,
             color = if (isSelected) Color(0xFF69C7FD) else Color(0xFF2D3748),
             fontSize = 14.sp,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+            style = Theme.typography.label.medium.medium
         )
     }
 }

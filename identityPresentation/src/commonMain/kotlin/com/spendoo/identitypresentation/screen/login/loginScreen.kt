@@ -14,11 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +26,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.spendoo.designsystem.components.button.Button
+import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.components.textField.TextField
+import com.spendoo.designsystem.components.textField.customTextFieldColors
+import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.identitypresentation.screen.components.PasswordField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -70,13 +70,15 @@ fun LoginScreen() {
                     text = "Hello",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.White,
+                    style = Theme.typography.heading.large
                 )
                 Text(
                     text = "Welcome back!",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White
+                    color = Color.White,
+                    style = Theme.typography.heading.large
                 )
             }
         }
@@ -97,12 +99,18 @@ fun LoginScreen() {
             TextField(
                 value = email,
                 onValueChange = { email = it },
-                placeholder = { Text("Enter Your Email", color = Color(0xFFB0B0B0)) },
+                placeholder = {
+                    Text(
+                        "Enter Your Email",
+                        color = Color(0xFFB0B0B0),
+                        style = Theme.typography.body.medium
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
+                colors = customTextFieldColors(
                     unfocusedContainerColor = Color(0xFFF5F5F5),
                     focusedContainerColor = Color(0xFFF5F5F5),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -126,7 +134,8 @@ fun LoginScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 4.dp)
-                    .wrapContentWidth(Alignment.End)
+                    .wrapContentWidth(Alignment.End),
+                style = Theme.typography.label.medium.medium
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -138,13 +147,13 @@ fun LoginScreen() {
                     .fillMaxWidth()
                     .height(52.dp),
                 shape = RoundedCornerShape(26.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1CA6EA))
             ) {
                 Text(
                     text = "Login",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White
+                    color = Color.White,
+                    style = Theme.typography.title.large
                 )
             }
 
@@ -159,14 +168,16 @@ fun LoginScreen() {
                 Text(
                     text = "Don't have an account? ",
                     fontSize = 16.sp,
-                    color = Color(0xFFB0B0B0)
+                    color = Color(0xFFB0B0B0),
+                    style = Theme.typography.label.medium.medium
                 )
                 Text(
                     text = "SignUp",
                     fontSize = 16.sp,
                     color = Color(0xFF179FDD),
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clickable { /* TODO: navigate to sign up */ }
+                    modifier = Modifier.clickable { /* TODO: navigate to sign up */ },
+                    style = Theme.typography.label.semiBold.medium
                 )
             }
         }

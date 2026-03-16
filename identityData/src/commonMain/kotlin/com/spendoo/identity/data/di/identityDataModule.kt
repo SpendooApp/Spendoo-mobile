@@ -31,7 +31,6 @@ val identityDataModule = module {
         AuthenticationRepositoryImpl(
             client = get(named(IDENTITY_CLIENT)),
             settings = get(),
-            settingsRepository = get(),
         )
     }
 

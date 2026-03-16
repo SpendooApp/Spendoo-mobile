@@ -42,10 +42,10 @@ fun IdentityNavGraph(
                 contentAlignment = androidx.compose.ui.Alignment.Center
             ) {
                 Column {
-                    Text("Login", Theme.typography.label.medium)
+                    Text("Login", Theme.typography.label.medium.medium)
                     Text(
                         "go to sign up",
-                        Theme.typography.label.medium,
+                        Theme.typography.label.medium.medium,
                         modifier = Modifier.clickable {
                             navController.navigate(SignUpRoute)
                         })
@@ -59,7 +59,7 @@ fun IdentityNavGraph(
                 contentAlignment = androidx.compose.ui.Alignment.Center
             ) {
                 Column {
-                    Text("Profile", Theme.typography.label.medium)
+                    Text("Profile", Theme.typography.label.medium.medium)
                 }
             }
         }

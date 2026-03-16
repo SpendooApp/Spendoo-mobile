@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.spendoo.designsystem.components.button.Button
+import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.theme.theme.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
@@ -77,15 +77,11 @@ fun ScreenTemplate(
                     .padding(bottom = 16.dp)
                     .height(56.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF179FDD)
-                )
             ) {
                 Text(
                     text = buttonText,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White
+                    color = Theme.colorScheme.button.onQuinary,
+                    style = Theme.typography.title.large
                 )
             }
         }
@@ -101,16 +97,17 @@ fun ScreenTemplatePreview() {
                 text = "Upper Content",
                 color = Color.White,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                style = Theme.typography.title.large
             )
         },
         onClick = {},
         buttonText = "Action Button"
     ){
         Column(modifier = Modifier.fillMaxSize().weight(1f)) {
-            Text("Lower Content Item 1", color = Color.Black)
-            Text("Lower Content Item 2", color = Color.Black)
-            Text("Lower Content Item 3", color = Color.Black)
+            Text("Lower Content Item 1", color = Color.Black, style = Theme.typography.title.large)
+            Text("Lower Content Item 2", color = Color.Black, style = Theme.typography.title.large)
+            Text("Lower Content Item 3", color = Color.Black, style = Theme.typography.title.large)
         }
     }
 }
