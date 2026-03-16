@@ -95,7 +95,7 @@ fun LoggedInContainer(
                     selectedIcon = painterResource(Res.drawable.ic_home_selected),
                     notSelectedIcon = painterResource(Res.drawable.ic_home),
                     title = "Profile",
-                    entry = { listener.setActiveFeature(Feature.PROFILE) }
+                    entry = { listener.setActiveFeature(Feature.Profile) }
                 )
             }
         }
@@ -121,7 +121,7 @@ private fun FeatureContent(
                 Feature.Categories -> categoriesApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.Stats -> statsApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.ChatBot -> chatBotApi.TabEntry(updateBottomNavigationVisibility)
-                Feature.PROFILE -> identityApi.TabEntry(updateBottomNavigationVisibility)
+                Feature.Profile -> identityApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.Payments -> paymentsApi.TabEntry(updateBottomNavigationVisibility)
             }
         }
@@ -134,7 +134,7 @@ private fun getSelectedNavigationIndex(activeFeature: Feature): Int {
         Feature.Categories -> 1
         Feature.Stats -> 2
         Feature.ChatBot -> 3
-        Feature.PROFILE -> 4
+        Feature.Profile -> 4
         Feature.Payments -> -1 // Not in bottom nav
     }
 }

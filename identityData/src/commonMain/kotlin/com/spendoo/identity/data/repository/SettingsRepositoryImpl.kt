@@ -7,48 +7,32 @@ import com.spendoo.identity.data.dataSource.local.setting.onBoardingCompleted
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppLanguage
 import com.spendoo.identity.domain.util.AppTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
 class SettingsRepositoryImpl(
     private val settings: Settings,
 ) : SettingsRepository {
-    private val observableLanguage: MutableStateFlow<String> = MutableStateFlow(settings.appLanguage)
-    private val observableTheme: MutableStateFlow<String> = MutableStateFlow(settings.appTheme)
-    private val observableOnBoarding: MutableStateFlow<Boolean> = MutableStateFlow(settings.onBoardingCompleted)
+    private val _appLanguageFlow = MutableStateFlow(settings.appLanguage.toAppLanguage())
+    private val _appThemeFlow = MutableStateFlow(settings.appTheme.toAppTheme())
+    private val _onBoardingFlow = MutableStateFlow(settings.onBoardingCompleted)
+
 
     override suspend fun applyLanguage(appLanguage: AppLanguage) {
-        settings.appLanguage = appLanguage.iso.also { observableLanguage.emit(appLanguage.iso) }
+        settings.appLanguage = appLanguage.iso
+        _appLanguageFlow.value = appLanguage
     }
 
-    override fun observeAppLanguage(): StateFlow<AppLanguage> {
-        return observableLanguage.map { it.toAppLanguage() }
-            .stateIn(
-                scope = CoroutineScope(Dispatchers.IO),
-                started = SharingStarted.Eagerly,
-                initialValue = observableLanguage.value.toAppLanguage()
-            )
-    }
+    override fun observeAppLanguage(): StateFlow<AppLanguage> = _appLanguageFlow
 
     override fun getCurrentAppLanguage(): AppLanguage = settings.appLanguage.toAppLanguage()
+
     override suspend fun applyAppTheme(appTheme: AppTheme) {
-        settings.appTheme = appTheme.name.also { observableTheme.emit(appTheme.name) }
+        settings.appTheme = appTheme.name
+        _appThemeFlow.value = appTheme
     }
 
-    override fun observeAppTheme(): StateFlow<AppTheme> {
-        return observableTheme.map { it.toAppTheme() }
-            .stateIn(
-                scope = CoroutineScope(Dispatchers.IO),
-                started = SharingStarted.Eagerly,
-                initialValue = observableTheme.value.toAppTheme()
-            )
-    }
+    override fun observeAppTheme(): StateFlow<AppTheme> = _appThemeFlow
 
     private fun String.toAppLanguage(): AppLanguage {
         return when (this) {
@@ -68,15 +52,10 @@ class SettingsRepositoryImpl(
 
     override fun isOnboardingComplete() = settings.onBoardingCompleted
 
-    override fun observeOnBoardingCompleted(): StateFlow<Boolean> {
-        return observableOnBoarding.stateIn(
-            scope = CoroutineScope(Dispatchers.IO),
-            started = SharingStarted.Eagerly,
-            initialValue = observableOnBoarding.value
-        )
-    }
+    override fun observeOnBoardingCompleted(): StateFlow<Boolean> = _onBoardingFlow
 
     override fun setOnboardingCompleted(value: Boolean) {
-        settings.onBoardingCompleted = value.also { observableOnBoarding.value = it }
+        settings.onBoardingCompleted = value
+        _onBoardingFlow.value = value
     }
 }

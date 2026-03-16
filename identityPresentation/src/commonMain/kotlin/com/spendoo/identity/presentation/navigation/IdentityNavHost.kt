@@ -58,7 +58,7 @@ fun IdentityNavHost(
 
     LaunchedEffect(Unit) {
         navController.currentBackStack.collectLatest {
-            if (navController.currentDestination?.route in routsWithBottomNavigation) {
+            if (navController.currentDestination?.route in routesWithBottomNavigation) {
                 updateBottomNavigationVisibility(true)
             } else {
                 updateBottomNavigationVisibility(false)
@@ -78,7 +78,7 @@ fun IdentityNavHost(
     }
 }
 
-private val routsWithBottomNavigation = listOf(
+private val routesWithBottomNavigation = listOf(
     HomeRoute::class.qualifiedName,
     ProfileRoute::class.qualifiedName,
 )

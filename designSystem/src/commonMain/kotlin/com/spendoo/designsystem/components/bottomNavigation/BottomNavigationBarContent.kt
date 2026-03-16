@@ -36,6 +36,8 @@ fun BottomNavigationBarContent(
     onItemClick: (BottomNavigationItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (items.isEmpty()) return
+
     BoxWithConstraints(modifier.height(74.dp)) {
         val itemWidth = maxWidth / items.size
         val indicatorWidth = itemWidth - 40.dp

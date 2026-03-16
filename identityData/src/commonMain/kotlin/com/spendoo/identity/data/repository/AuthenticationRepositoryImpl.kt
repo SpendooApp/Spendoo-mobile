@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 class AuthenticationRepositoryImpl(
     client: HttpClient,
     private val settings: Settings,
-    private val settingsRepository: SettingsRepository
 ) : BaseGateway(client), AuthenticationRepository {
 
     private val observableToken: MutableStateFlow<String> = MutableStateFlow(getInitialToken())
@@ -79,7 +78,6 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun saveAuthTokens(authTokens: AuthenticationTokens) {
         saveTokens(authTokens)
-        settingsRepository.setOnboardingCompleted(false)
     }
 
     private suspend fun saveTokens(authTokens: AuthenticationTokens, shouldEmit: Boolean = true) {

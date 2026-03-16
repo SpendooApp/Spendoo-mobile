@@ -29,7 +29,6 @@ class SignUpViewModel(
                 )
             },
             onSuccess = { registrationResponse ->
-                println("Success: $registrationResponse")
                 authenticationRepository.saveAuthTokens(
                     AuthenticationTokens(
                         accessToken = registrationResponse.accessToken,
