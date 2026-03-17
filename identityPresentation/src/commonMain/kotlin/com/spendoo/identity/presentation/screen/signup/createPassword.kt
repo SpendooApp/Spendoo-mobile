@@ -1,10 +1,11 @@
-package com.spendoo.identitypresentation.screen.signUp
+package com.spendoo.identity.presentation.screen.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +23,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.OutlinedTextField
 import com.spendoo.designsystem.components.textField.customTextFieldColors
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identitypresentation.screen.components.ScreenTemplate
+import com.spendoo.identity.presentation.screen.components.ScreenTemplate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
@@ -55,7 +56,7 @@ fun ForgetScreen() {
                 .padding(bottom = 16.dp)
                 .height(50.dp)
                 .fillMaxWidth(),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = customTextFieldColors(
                 unfocusedContainerColor = Color(0xFFF5F5F5),
                 focusedContainerColor = Color(0xFFF5F5F5),

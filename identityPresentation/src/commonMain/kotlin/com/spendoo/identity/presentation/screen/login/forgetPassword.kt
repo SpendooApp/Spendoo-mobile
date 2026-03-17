@@ -1,4 +1,4 @@
-package com.spendoo.identitypresentation.screen.login
+package com.spendoo.identity.presentation.screen.login
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.OutlinedTextField
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identitypresentation.screen.components.ScreenTemplate
+import com.spendoo.identity.presentation.screen.components.ScreenTemplate
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview

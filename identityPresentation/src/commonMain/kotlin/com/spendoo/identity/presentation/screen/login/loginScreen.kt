@@ -1,4 +1,4 @@
-package com.spendoo.identitypresentation.screen.login
+package com.spendoo.identity.presentation.screen.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,7 +31,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.TextField
 import com.spendoo.designsystem.components.textField.customTextFieldColors
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identitypresentation.screen.components.PasswordField
+import com.spendoo.identity.presentation.screen.components.PasswordField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview

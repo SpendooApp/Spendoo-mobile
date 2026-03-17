@@ -1,4 +1,4 @@
-package com.spendoo.identitypresentation.screen.components
+package com.spendoo.identity.presentation.screen.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
