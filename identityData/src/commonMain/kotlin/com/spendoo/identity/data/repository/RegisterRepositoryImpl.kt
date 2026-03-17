@@ -1,12 +1,9 @@
 package com.spendoo.identity.data.repository
 
-import com.spendoo.identity.data.dataSource.remote.dto.auth.response.AuthenticationResponse
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.OtpRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.VerifyOtpRequestDto
-import com.spendoo.identity.data.mapper.toDomain
 import com.spendoo.identity.data.mapper.toDto
 import com.spendoo.identity.data.shared.BaseGateway
-import com.spendoo.identity.domain.model.AuthenticationTokens
 import com.spendoo.identity.domain.model.RegisterRequest
 import com.spendoo.identity.domain.repository.RegisterRepository
 import io.ktor.client.HttpClient
@@ -33,12 +30,12 @@ class RegisterRepositoryImpl(
         }
     }
 
-    override suspend fun register(request: RegisterRequest): AuthenticationTokens {
-        return tryToExecute<AuthenticationResponse> {
+    override suspend fun register(request: RegisterRequest) {
+        tryToExecute<String> {
             post(REGISTER) {
                 setBody(request.toDto())
             }
-        }.toDomain()
+        }
     }
 
     companion object {

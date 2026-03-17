@@ -32,6 +32,9 @@ class LoginViewModel(
             onError = { error ->
                 //TODO: show snack bar
                 println("Login error: ${error.message}")
+            },
+            onEnd = {
+                updateState { copy(actionButtonState = AppButtonState.Enabled) }
             }
         )
     }

@@ -20,7 +20,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import com.spendoo.identity.presentation.shared.ScreenTemplate as OtherScreenTemplate
+import com.spendoo.identity.presentation.shared.ScreenBackground
 
 
 @Composable
@@ -34,7 +34,7 @@ fun ScreenTemplate(
     lowerContent: @Composable ColumnScope. () -> Unit,
 ) {
 
-    OtherScreenTemplate {
+    ScreenBackground {
         Column(
             modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -42,7 +42,7 @@ fun ScreenTemplate(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 54.dp),
+                    .padding(top = 16.dp, bottom = 16.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
                 upperContent()

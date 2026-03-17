@@ -107,7 +107,7 @@ fun LoginScreenContent(
                     value = state.email,
                     onValueChange = interActionListener::onEmailChange,
                     hint = Res.string.enter_your_email.asString(),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp, top = 38.dp),
                     errorText = state.emailError?.asString(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)

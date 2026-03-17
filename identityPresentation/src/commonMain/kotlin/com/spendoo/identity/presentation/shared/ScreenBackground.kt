@@ -12,7 +12,7 @@ import spendoo.designsystem.generated.resources.img_screenTemplate_dark
 import spendoo.designsystem.generated.resources.img_screenTemplate_light
 
 @Composable
-fun ScreenTemplate(
+fun ScreenBackground(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {

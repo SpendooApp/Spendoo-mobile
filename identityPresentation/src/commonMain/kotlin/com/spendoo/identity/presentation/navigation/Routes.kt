@@ -24,7 +24,7 @@ data object ForgetPasswordRoute : BaseRoute
 data class VerifyEmailRoute(val email: String, val isForgetPasswordFlow: Boolean) : BaseRoute
 
 @Serializable
-data object CreateNewPasswordRoute : BaseRoute
+data class CreateNewPasswordRoute(val email: String, val otp: String) : BaseRoute
 
 @Serializable
 data object ProfileRoute : BaseRoute
