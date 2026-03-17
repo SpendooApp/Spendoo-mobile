@@ -83,7 +83,7 @@ fun CustomTextField(
 
     val borderColor by animateColorAsState(
         targetValue = when {
-            showError -> colors.additional.error
+            showError -> colors.additional.onError
             isFocused -> colors.border.active
             else -> colors.border.secondary
         },
@@ -200,7 +200,7 @@ fun CustomTextField(
 
                 val trailingIconColor = trailingIconColor ?: animateColorAsState(
                     targetValue = when {
-                        showError -> colors.additional.error
+                        showError -> colors.additional.onError
                         else -> colors.text.label
                     },
                     animationSpec = tween(durationMillis = 150)
@@ -235,7 +235,7 @@ fun CustomTextField(
         ) {
             Text(
                 text = errorText ?: "",
-                color = Theme.colorScheme.additional.error,
+                color = Theme.colorScheme.additional.onError,
                 modifier = Modifier.padding(start = 4.dp),
                 style = Theme.typography.body.small,
                 textAlign = TextAlign.Start
