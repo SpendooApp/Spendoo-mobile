@@ -1,4 +1,4 @@
-package com.spendoo.identity.presentation.screen.login
+package com.spendoo.identity.presentation.screen.forgetPassword
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.OutlinedTextField
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identity.presentation.screen.components.ScreenTemplate
+import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun ForgetScreen() {
+fun ForgetPasswordScreen() {
     var email by remember { mutableStateOf("") }
     ScreenTemplate(
         upperContent = {

@@ -1,4 +1,4 @@
-package com.spendoo.identity.presentation.screen.components
+package com.spendoo.identity.presentation.shared.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth

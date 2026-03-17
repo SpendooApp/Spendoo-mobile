@@ -1,7 +1,6 @@
 package com.spendoo.identity.presentation.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,11 @@ import androidx.navigation.compose.composable
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.api.HomeFeatureApi
+import com.spendoo.identity.presentation.screen.forgetPassword.ForgetPasswordScreen
+import com.spendoo.identity.presentation.screen.login.LoginScreen
+import com.spendoo.identity.presentation.screen.verifyEmail.VerifyEmailScreen
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingScreen
+import com.spendoo.identity.presentation.screen.signup.CreateNewPasswordScreen
 import com.spendoo.identity.presentation.screen.signup.SignUpScreen
 import org.koin.compose.koinInject
 
@@ -31,28 +34,11 @@ fun IdentityNavGraph(
         startDestination = startDestination,
     ) {
         composable<OnBoardingRoute> { OnboardingScreen() }
-        composable<HomeRoute> {
-            homeFeatureApi.TabEntry(
-                updateBottomNavigationVisibility = updateBottomNavigationVisibility
-            )
-        }
-        composable<LoginRoute> {
-            Box(
-                Modifier.fillMaxSize().background(Color.Green),
-                contentAlignment = androidx.compose.ui.Alignment.Center
-            ) {
-                Column {
-                    Text("Login", Theme.typography.label.medium.medium)
-                    Text(
-                        "go to sign up",
-                        Theme.typography.label.medium.medium,
-                        modifier = Modifier.clickable {
-                            navController.navigate(SignUpRoute)
-                        })
-                }
-            }
-        }
+        composable<LoginRoute> { LoginScreen() }
         composable<SignUpRoute> { SignUpScreen() }
+        composable<ForgetPasswordRoute> { ForgetPasswordScreen() }
+        composable<VerifyEmailRoute> { VerifyEmailScreen() }
+        composable<CreateNewPasswordRoute> { CreateNewPasswordScreen() }
         composable<ProfileRoute> {
             Box(
                 Modifier.fillMaxSize().background(Color.Blue),
@@ -62,6 +48,11 @@ fun IdentityNavGraph(
                     Text("Profile", Theme.typography.label.medium.medium)
                 }
             }
+        }
+        composable<HomeRoute> {
+            homeFeatureApi.TabEntry(
+                updateBottomNavigationVisibility = updateBottomNavigationVisibility
+            )
         }
     }
 }

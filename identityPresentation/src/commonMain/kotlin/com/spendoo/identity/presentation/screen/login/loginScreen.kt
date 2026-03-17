@@ -31,7 +31,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.TextField
 import com.spendoo.designsystem.components.textField.customTextFieldColors
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identity.presentation.screen.components.PasswordField
+import com.spendoo.identity.presentation.shared.components.PasswordField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview

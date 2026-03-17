@@ -1,4 +1,4 @@
-package com.spendoo.identity.presentation.screen.login
+package com.spendoo.identity.presentation.screen.verifyEmail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,7 +33,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun VerifyEmail() {
+fun VerifyEmailScreen() {
     val otpValues = remember { mutableStateOf(listOf("", "", "", "")) }
 
     Column(

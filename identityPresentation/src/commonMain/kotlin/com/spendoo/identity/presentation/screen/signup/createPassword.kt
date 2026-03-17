@@ -23,7 +23,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.OutlinedTextField
 import com.spendoo.designsystem.components.textField.customTextFieldColors
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identity.presentation.screen.components.ScreenTemplate
+import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
@@ -31,7 +31,7 @@ import spendoo.designsystem.generated.resources.ic_eye
 
 @Preview
 @Composable
-fun ForgetScreen() {
+fun CreateNewPasswordScreen() {
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
 
