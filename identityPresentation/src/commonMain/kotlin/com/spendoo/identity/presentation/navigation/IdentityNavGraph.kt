@@ -17,7 +17,7 @@ import com.spendoo.identity.presentation.screen.forgetPassword.ForgetPasswordScr
 import com.spendoo.identity.presentation.screen.login.LoginScreen
 import com.spendoo.identity.presentation.screen.verifyEmail.VerifyEmailScreen
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingScreen
-import com.spendoo.identity.presentation.screen.signup.CreateNewPasswordScreen
+import com.spendoo.identity.presentation.screen.createNewPassword.CreateNewPasswordScreen
 import com.spendoo.identity.presentation.screen.signup.SignUpScreen
 import org.koin.compose.koinInject
 

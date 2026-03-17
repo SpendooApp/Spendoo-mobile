@@ -1,4 +1,4 @@
-package com.spendoo.identity.presentation.screen.signup
+package com.spendoo.identity.presentation.screen.createNewPassword
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
