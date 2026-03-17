@@ -52,6 +52,9 @@ abstract class BaseViewModel<STATE>(
     protected fun popBackStack(vararg arguments: Pair<String, Any>) =
         viewModelScope.launch { effector.popBackStack(*arguments) }
 
+    protected fun updateBottomNavigationVisibility(isVisible: Boolean) =
+        viewModelScope.launch { effector.updateBottomNavigationVisibility(isVisible) }
+
     protected fun popUpTo(
         route: BaseRoute,
         inclusive: Boolean = false,

@@ -17,4 +17,5 @@ interface Effector {
     suspend fun popBackStack(vararg arguments: Pair<String, Any>)
     suspend fun popUpTo(route: BaseRoute, inclusive: Boolean = false, saveState: Boolean = false)
     suspend fun setBackStackArgs(vararg arguments: Pair<String, Any>)
+    suspend fun updateBottomNavigationVisibility(isVisible: Boolean)
 }

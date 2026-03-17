@@ -71,6 +71,10 @@ class EffectorImpl : Effector {
         _effect.emit(Effect.SetBackStackArgs(arguments.toMap()))
     }
 
+    override suspend fun updateBottomNavigationVisibility(isVisible: Boolean) {
+        _effect.emit(Effect.UpdateBottomNavigationVisibility(isVisible))
+    }
+
     companion object {
         private const val EFFECT_DEBOUNCE_MS = 300L
     }

@@ -53,6 +53,10 @@ fun IdentityNavHost(
                     saveState = effect.saveState
                 )
             }
+
+            is Effect.UpdateBottomNavigationVisibility -> {
+                updateBottomNavigationVisibility(effect.isVisible)
+            }
         }
     }
 

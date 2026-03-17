@@ -26,7 +26,9 @@ class LoginViewModel(
                     password = state.value.password
                 )
             },
-            onSuccess = {},
+            onSuccess = {
+                updateBottomNavigationVisibility(true)
+            },
             onError = { error ->
                 //TODO: show snack bar
                 println("Login error: ${error.message}")
@@ -35,16 +37,24 @@ class LoginViewModel(
     }
 
     private fun validateFields() {
+        validateEmail()
+        validatePassword()
+        if (state.value.emailError == null && state.value.passwordError == null) {
+            updateState { copy(actionButtonState = AppButtonState.Enabled) }
+        }
+    }
+
+    private fun validateEmail() {
         when (validationUseCase.validateEmail(state.value.email)) {
             true -> updateState { copy(emailError = null) }
             else -> updateState { copy(emailError = UiText.DynamicString("Invalid email")) }
         }
+    }
+
+    private fun validatePassword() {
         when (validationUseCase.validatePassword(state.value.password)) {
             true -> updateState { copy(passwordError = null) }
             else -> updateState { copy(passwordError = UiText.DynamicString("Invalid password")) }
-        }
-        if (state.value.emailError == null && state.value.passwordError == null) {
-            updateState { copy(actionButtonState = AppButtonState.Enabled) }
         }
     }
 
@@ -57,12 +67,12 @@ class LoginViewModel(
     }
 
     override fun onEmailChange(newEmail: String) {
-        validateFields()
+        validateEmail()
         updateState { copy(email = newEmail) }
     }
 
     override fun onPasswordChange(newPassword: String) {
-        validateFields()
+        validatePassword()
         updateState { copy(password = newPassword) }
     }
 

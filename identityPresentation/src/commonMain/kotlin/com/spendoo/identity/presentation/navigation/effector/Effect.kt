@@ -12,4 +12,5 @@ sealed class Effect {
         val saveState: Boolean = false
     ) : Effect()
     data class SetBackStackArgs(val arguments: Map<String, Any> = emptyMap()) : Effect()
+    data class UpdateBottomNavigationVisibility(val isVisible: Boolean) : Effect()
 }
