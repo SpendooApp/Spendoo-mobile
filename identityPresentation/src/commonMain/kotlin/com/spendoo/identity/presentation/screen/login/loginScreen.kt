@@ -1,185 +1,180 @@
 package com.spendoo.identity.presentation.screen.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.spendoo.designsystem.components.button.Button
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.text.Text
-import com.spendoo.designsystem.components.textField.TextField
-import com.spendoo.designsystem.components.textField.customTextFieldColors
+import com.spendoo.designsystem.components.textField.CustomTextField
+import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.identity.presentation.shared.components.PasswordField
+import com.spendoo.designsystem.util.extentions.asString
+import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.asString
+import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.dont_have_an_account
+import spendoo.designsystem.generated.resources.enter_your_email
+import spendoo.designsystem.generated.resources.enter_your_password
+import spendoo.designsystem.generated.resources.forget_the_password
+import spendoo.designsystem.generated.resources.hello_welcome_back
+import spendoo.designsystem.generated.resources.ic_eye_closed
+import spendoo.designsystem.generated.resources.ic_eye_opened
+import spendoo.designsystem.generated.resources.login
+import spendoo.designsystem.generated.resources.signup
 
-@Preview
 @Composable
-fun LoginScreen() {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var isPasswordVisible by remember { mutableStateOf(false) }
+fun LoginScreen(
+    viewModel: LoginViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    LoginScreenContent(
+        state = state,
+        interActionListener = viewModel
+    )
+}
 
-    Column(
+@Composable
+fun LoginScreenContent(
+    state: LoginScreenState,
+    interActionListener: LoginInteractionListener
+) {
+    ScreenTemplate(
+        upperContent = {
+            Text(
+                text = Res.string.hello_welcome_back.asString(),
+                color = Theme.colorScheme.text.headingBlue,
+                style = Theme.typography.heading.large,
+                textAlign = TextAlign.Center
+            )
+        },
+        actioButtonState = state.actionButtonState,
+        onClickActionButton = interActionListener::onLoginClicked,
+        actionButtonText = Res.string.login.asString(),
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Color(0xFF179FDD)
-            )
-    ) {
-        // Blue header with rounded bottom corners
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(160.dp)
-                .background(
-                    Color.White
-                )
-                .background(
-                    color = Color(0xFF179FDD),
-                    shape = RoundedCornerShape(bottomEnd = 56.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(24.dp)
-            ) {
-                Text(
-                    text = "Hello",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    style = Theme.typography.heading.large
-                )
-                Text(
-                    text = "Welcome back!",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    style = Theme.typography.heading.large
-                )
-            }
-        }
-
-
-        // Body / form area
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(topStart = 46.dp)
-                )
-                .padding(horizontal = 24.dp)
-                .padding(top = 28.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                placeholder = {
-                    Text(
-                        "Enter Your Email",
-                        color = Color(0xFFB0B0B0),
-                        style = Theme.typography.body.medium
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = customTextFieldColors(
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            PasswordField()
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Forget the password?",
-                fontSize = 14.sp,
-                color = Color(0xFF179FDD),
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 4.dp)
-                    .wrapContentWidth(Alignment.End),
-                style = Theme.typography.label.medium.medium
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Full-width rounded Login button
-            Button(
-                onClick = { /* TODO: handle login */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-                shape = RoundedCornerShape(26.dp),
-            ) {
-                Text(
-                    text = "Login",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    style = Theme.typography.title.large
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Centered "Don't have an account? SignUp" with clickable SignUp
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .imePadding(),
+        underActionButtonContent = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Don't have an account? ",
-                    fontSize = 16.sp,
-                    color = Color(0xFFB0B0B0),
-                    style = Theme.typography.label.medium.medium
+                    text = Res.string.dont_have_an_account.asString(),
+                    color = Theme.colorScheme.text.link,
+                    style = Theme.typography.label.medium.medium,
+                    modifier = Modifier.padding(end = 4.dp)
                 )
                 Text(
-                    text = "SignUp",
-                    fontSize = 16.sp,
-                    color = Color(0xFF179FDD),
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clickable { /* TODO: navigate to sign up */ },
-                    style = Theme.typography.label.semiBold.medium
+                    text = Res.string.signup.asString(),
+                    modifier = Modifier.clickable(onClick = interActionListener::onSignUpClicked),
+                    style = Theme.typography.label.semiBold.medium,
+                    color = Theme.colorScheme.button.primary,
                 )
+            }
+        },
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+        ) {
+            item {
+                CustomTextField(
+                    value = state.email,
+                    onValueChange = interActionListener::onEmailChange,
+                    hint = Res.string.enter_your_email.asString(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                    errorText = state.emailError?.asString(),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                )
+            }
+
+            item {
+                CustomTextField(
+                    value = state.password,
+                    onValueChange = interActionListener::onPasswordChange,
+                    hint = Res.string.enter_your_password.asString(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    singleLine = true,
+                    errorText = state.passwordError?.asString(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    visualTransformation = if (state.isPasswordVisible) {
+                        PasswordVisualTransformation()
+                    } else {
+                        VisualTransformation.None
+                    },
+                    trailingIcon = when (state.isPasswordVisible) {
+                        true -> Res.drawable.ic_eye_closed.painter()
+                        false -> Res.drawable.ic_eye_opened.painter()
+                    },
+                    trailingIconColor = Theme.colorScheme.text.label,
+                    onTrailingIconClick = interActionListener::onTogglePasswordVisibility,
+                )
+            }
+
+            item {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Text(
+                        text = Res.string.forget_the_password.asString(),
+                        color = Theme.colorScheme.button.primary,
+                        modifier = Modifier
+                            .padding(bottom = 24.dp)
+                            .clickable(onClick = interActionListener::onForgotPasswordClicked),
+                        style = Theme.typography.label.medium.medium
+                    )
+                }
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview() = SpendooTheme {
+    LoginScreenContent(
+        state = LoginScreenState(
+            email = "",
+            password = "",
+            emailError = null,
+            passwordError = null,
+            isPasswordVisible = false,
+            actionButtonState = AppButtonState.Enabled
+        ),
+        interActionListener = object : LoginInteractionListener {
+            override fun onLoginClicked() {}
+            override fun onSignUpClicked() {}
+            override fun onForgotPasswordClicked() {}
+            override fun onEmailChange(newEmail: String) {}
+            override fun onPasswordChange(newPassword: String) {}
+            override fun onTogglePasswordVisibility() {}
+        }
+    )
 }

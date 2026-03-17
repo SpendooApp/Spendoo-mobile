@@ -12,4 +12,11 @@
     <string name="onboarding_desc_insights">Visualize your spending patterns with beautiful charts and get personalized recommendations to save more.</string>
     <string name="onboarding_title_ready">Ready to Start?</string>
     <string name="onboarding_desc_ready">Join thousands of users who are taking control of their finances and building better money habits.</string>
+    <string name="hello_welcome_back">Hello\nWelcome back!</string>
+    <string name="login">Login</string>
+    <string name="dont_have_an_account">Don&apos;t have an account?</string>
+    <string name="signup">SignUp</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_password">Enter Your Password</string>
+    <string name="forget_the_password">Forget the password?</string>
 </resources>

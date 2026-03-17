@@ -32,8 +32,8 @@ fun ForgetPasswordScreen() {
                 style = Theme.typography.label.medium.medium
             )
         },
-        onClick = {},
-        buttonText = "Send Code",
+        onClickActionButton = {},
+        actionButtonText = "Send Code",
 
         )
     {

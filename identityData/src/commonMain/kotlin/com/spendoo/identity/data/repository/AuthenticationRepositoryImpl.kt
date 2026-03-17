@@ -11,7 +11,6 @@ import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.data.utils.invalidateAuthTokens
 import com.spendoo.identity.domain.model.AuthenticationTokens
 import com.spendoo.identity.domain.repository.AuthenticationRepository
-import com.spendoo.identity.domain.repository.SettingsRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody

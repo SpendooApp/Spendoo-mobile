@@ -27,7 +27,7 @@ import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.ic_eye
+import spendoo.designsystem.generated.resources.ic_eye_closed
 
 @Preview
 @Composable
@@ -43,8 +43,8 @@ fun CreateNewPasswordScreen() {
                 style = Theme.typography.heading.large
             )
         },
-        onClick = {},
-        buttonText = "Login",
+        onClickActionButton = {},
+        actionButtonText = "Login",
 
         )
     {
@@ -72,7 +72,7 @@ fun CreateNewPasswordScreen() {
                     modifier = Modifier.size(36.dp)
                 ) {
                     Image(
-                        painter = painterResource(Res.drawable.ic_eye),
+                        painter = painterResource(Res.drawable.ic_eye_closed),
                         contentDescription = "Toggle password visibility",
                         modifier = Modifier
                             .size(24.dp)

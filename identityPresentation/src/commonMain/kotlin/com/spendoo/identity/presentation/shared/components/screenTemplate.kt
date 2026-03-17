@@ -13,7 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonSize
+import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.button.AppButtonType
+import com.spendoo.designsystem.components.indicator.DotsProgressIndicator
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -24,9 +26,10 @@ import com.spendoo.identity.presentation.shared.ScreenTemplate as OtherScreenTem
 @Composable
 fun ScreenTemplate(
     upperContent: @Composable () -> Unit,
-    onClick: () -> Unit,
-    buttonText: String,
+    onClickActionButton: () -> Unit,
+    actionButtonText: String,
     modifier: Modifier = Modifier,
+    actioButtonState: AppButtonState = AppButtonState.Enabled,
     underActionButtonContent: @Composable () -> Unit = {},
     lowerContent: @Composable ColumnScope. () -> Unit,
 ) {
@@ -58,9 +61,13 @@ fun ScreenTemplate(
                 AppButton(
                     type = AppButtonType.Primary,
                     size = AppButtonSize.Large,
-                    onClick = onClick,
-                    text = buttonText,
+                    onClick = onClickActionButton,
+                    text = actionButtonText,
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    state = actioButtonState,
+                    loadingIcon = {
+                        DotsProgressIndicator()
+                    }
                 )
                 underActionButtonContent()
             }
@@ -79,8 +86,8 @@ fun ScreenTemplatePreview() = SpendooTheme {
                 style = Theme.typography.heading.large
             )
         },
-        onClick = {},
-        buttonText = "Action Button",
+        onClickActionButton = {},
+        actionButtonText = "Action Button",
         underActionButtonContent = {
             Text(
                 text = "Under Action Button Content",

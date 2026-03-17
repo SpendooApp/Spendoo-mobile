@@ -34,7 +34,7 @@ import spendoo.designsystem.generated.resources.skip
 //TODO: refactor
 
 enum class AppButtonState {
-    Enable,
+    Enabled,
     Disabled,
     Loading
 }
@@ -61,7 +61,7 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     size: AppButtonSize = AppButtonSize.Large,
-    state: AppButtonState = AppButtonState.Enable,
+    state: AppButtonState = AppButtonState.Enabled,
     text: String? = null,
     disableTertiaryBackgroundColor: Color = Color.Transparent,
     disablePrimaryBackgroundColor: Color = Theme.colorScheme.border.primary,
@@ -76,7 +76,7 @@ fun AppButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isLoading = (state == AppButtonState.Loading)
     val isLarge = (size == AppButtonSize.Large)
-    val enabled = (state == AppButtonState.Enable)
+    val enabled = (state == AppButtonState.Enabled)
 
     val backgroundColor = getBackgroundColor(
         type = type,
