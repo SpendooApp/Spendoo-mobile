@@ -37,9 +37,18 @@ class ResetPasswordRepositoryImpl(
         }
     }
 
+    override suspend fun reSendOtp(email: String) {
+        tryToExecute<Unit> {
+            post(RESET_PASSWORD_RESEND_OTP) {
+                setBody(OtpRequestDto(email))
+            }
+        }
+    }
+
     companion object {
         const val RESET_PASSWORD_REQUEST_OTP = "api/v1/identity/auth/reset-password"
         const val RESET_PASSWORD_VERIFY_OTP = "api/v1/identity/auth/verify-otp"
-        const val RESET_PASSWORD = "api/v1/identity/auth/reset-password"
+        const val RESET_PASSWORD = "api/v1/identity/auth/verify-account"
+        const val RESET_PASSWORD_RESEND_OTP = "api/v1/identity/auth/resend-otp"
     }
 }

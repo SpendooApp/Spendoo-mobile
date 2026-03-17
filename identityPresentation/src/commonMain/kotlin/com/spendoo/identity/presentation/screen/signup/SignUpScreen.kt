@@ -255,6 +255,7 @@ private fun SignUpScreenContent(
         DatePicker(
             showDialog = state.showDatePicker,
             selectedDate = state.dateOfBirth,
+            maxDate = state.maxAllowedDate,
             onDateSelected = {
                 interactionListener.onChangeDateOfBirth(it)
             },

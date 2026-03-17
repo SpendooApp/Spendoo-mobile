@@ -26,6 +26,7 @@ data class SignUpUiState(
     val isTermsAndConditionsBottomSheetVisible: Boolean = false,
     val isPrivacyPolicyBottomSheetVisible: Boolean = false,
     val showDatePicker: Boolean = false,
+    val maxAllowedDate: LocalDate? = null,
 )
 
 fun Gender.toResString() = when (this) {

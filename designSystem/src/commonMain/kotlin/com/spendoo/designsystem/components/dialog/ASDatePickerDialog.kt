@@ -27,6 +27,7 @@ import spendoo.designsystem.generated.resources.ok
 fun DatePicker(
     showDialog: Boolean,
     selectedDate: LocalDate?,
+    maxDate: LocalDate? = null,
     onDateSelected: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
     confirmText: String = stringResource(Res.string.ok),
@@ -38,8 +39,23 @@ fun DatePicker(
 ) {
     if (showDialog) {
         val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = selectedDate?.toEpochDays()?.let { it * 86400000 }
+            initialSelectedDateMillis = (selectedDate ?: maxDate)?.toEpochDays()?.let { it * 86400000 },
+            selectableDates = object : androidx.compose.material3.SelectableDates {
+                override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                    val maxDateMillis = maxDate?.toEpochDays()?.let { it * 86400000 }
+                    return if (maxDateMillis != null) {
+                        utcTimeMillis <= maxDateMillis
+                    } else {
+                        true
+                    }
+                }
+
+                override fun isSelectableYear(year: Int): Boolean {
+                    return maxDate?.year?.let { year <= it } ?: true
+                }
+            }
         )
+
         CompositionLocalProvider(
             LocalContentColor provides contentColor
         ) {

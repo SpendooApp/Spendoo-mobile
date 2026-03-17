@@ -15,6 +15,14 @@ class SignUpViewModel(
     private val validationUseCase: ValidationUseCase,
 ) : BaseViewModel<SignUpUiState>(SignUpUiState()), SignUpInteractionListener {
 
+    init {
+        updateState {
+            copy(
+                maxAllowedDate = validationUseCase.getMaximumAllowedRegistrationDate()
+            )
+        }
+    }
+
     override fun onFullNameChange(newFullName: String) {
         updateState { copy(fullName = newFullName) }
         validateFullName()

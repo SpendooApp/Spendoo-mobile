@@ -1,7 +1,9 @@
 package com.spendoo.identity.domain.useCase.validation.auth
 
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -39,6 +41,13 @@ class ValidationUseCase {
         val age = today.year - date.year - yearAdjustment
 
         return age >= MIN_AGE
+    }
+
+    @OptIn(ExperimentalTime::class)
+    fun getMaximumAllowedRegistrationDate(): LocalDate {
+        return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            .minus(MIN_AGE.toLong(), DateTimeUnit.YEAR)
+            .minus(1, DateTimeUnit.DAY)
     }
 
     private companion object {

@@ -1,172 +1,148 @@
 package com.spendoo.identity.presentation.screen.verifyEmail
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.spendoo.designsystem.components.button.Button
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.components.textField.OtpInputField
+import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.util.formatTime
+import com.spendoo.designsystem.utils.asString
+import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
-@Preview
 @Composable
-fun VerifyEmailScreen() {
-    val otpValues = remember { mutableStateOf(listOf("", "", "", "")) }
+fun VerifyEmailScreen(
+    viewModel: VerifyEmailViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF179FDD))
-    ) {
-        // Blue Header Section
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .background(
-                    color = Color(0xFF179FDD),
-                    shape = RoundedCornerShape(bottomEnd = 56.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
+    VerifyEmailScreenContent(
+        state = state,
+        interactionListener = viewModel,
+    )
+}
+
+@Composable
+private fun VerifyEmailScreenContent(
+    state: VerifyEmailUiState,
+    interactionListener: VerifyEmailInteractionListener,
+) {
+    ScreenTemplate(
+        upperContent = {
             Text(
                 text = "Verify your Email",
-                color = Color.White,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                style = Theme.typography.heading.large
+                color = Theme.colorScheme.text.headingBlue,
+                style = Theme.typography.heading.large,
             )
-        }
-
-        // Content Section
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(topStart = 46.dp)
-                )
-                .padding(horizontal = 24.dp)
-                .padding(top = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
-            Text(
-                text = "Enter code sent on your email",
-                color = Color.Black,
-                style = Theme.typography.title.large
-            )
-
-            // OTP Input Fields
+        },
+        actioButtonState = state.actionButtonState,
+        onClickActionButton = interactionListener::onVerifyClicked,
+        actionButtonText = "Verify Code",
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .imePadding(),
+        underActionButtonContent = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp, 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                repeat(5) { index ->
-                    BasicTextField(
-                        value = otpValues.value.getOrNull(index) ?: "",
-                        onValueChange = { value ->
-                            if (value.length <= 1 && value.all { it.isDigit() }) {
-                                val newValues = otpValues.value.toMutableList()
-                                newValues[index] = value
-                                otpValues.value = newValues
-                            }
-                        },
-                        modifier = Modifier
-                            .size(50.dp)
-                            .border(
-                                width = 2.dp,
-                                color = Color(0xFFE0E4EB),
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .padding(8.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        textStyle = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            textAlign = TextAlign.Center
-                        ),
-                        singleLine = true
-                    )
-                }
-            }
-
-            // Timer
-            Text(
-                text = "00:50",
-                color = Color.Black,
-                fontSize = 14.sp,
-                modifier = Modifier.align(Alignment.End),
-                style = Theme.typography.label.medium.medium
-            )
-
-            // Verify Button
-            Button(
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(
-                    text = "Verify Code",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    style = Theme.typography.title.large
-                )
-            }
-
-            // Resend Text
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(top = 4.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val animatedTextColor by animateColorAsState(
+                    targetValue = if (state.canResend && state.actionButtonState != AppButtonState.Loading) Theme.colorScheme.button.primary
+                    else Theme.colorScheme.text.label
+                )
                 Text(
-                    text = "Didn't receive code? ",
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    style = Theme.typography.label.medium.medium
+                    text = "Didn't receive code?",
+                    color = Theme.colorScheme.text.link,
+                    style = Theme.typography.label.medium.medium,
+                    modifier = Modifier.padding(end = 4.dp)
                 )
                 Text(
                     text = "Resend",
-                    color = Color(0xFF179FDD),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = Theme.typography.label.semiBold.medium
+                    color = animatedTextColor,
+                    style = Theme.typography.label.semiBold.medium,
+                    modifier = Modifier.clickable(
+                        onClick = interactionListener::onResendClicked,
+                        enabled = state.canResend && state.actionButtonState != AppButtonState.Loading
+                    )
                 )
             }
-
-            // Terms and Condition Text
+        },
+    ) {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            item {
+                Text(
+                    text = "Enter code sent on your email",
+                    color = Theme.colorScheme.text.label,
+                    style = Theme.typography.label.medium.medium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp, top = 38.dp)
+                )
+            }
+            item {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OtpInputField(
+                        otpText = state.otp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp, start = 8.dp, end = 8.dp),
+                        otpLength = 5,
+                        errorText = state.otpError?.asString(),
+                        spaceBetweenCharacters = 12.dp,
+                        onOtpModified = interactionListener::onOtpChange,
+                    )
+                    Text(
+                        text = formatTime(state.timeRemaining),
+                        style = Theme.typography.body.medium.copy(
+                            color = Theme.colorScheme.brand.primary
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(bottom = 16.dp)
+                    )
+                }
+            }
         }
     }
+}
+
+@Preview
+@Composable
+fun VerifyEmailScreenPreview() = SpendooTheme {
+    VerifyEmailScreenContent(
+        state = VerifyEmailUiState(
+            canResend = true,
+        ),
+        interactionListener = object : VerifyEmailInteractionListener {
+            override fun onOtpChange(newOtp: String) {}
+            override fun onVerifyClicked() {}
+            override fun onResendClicked() {}
+        }
+    )
 }
