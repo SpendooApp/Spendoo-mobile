@@ -1,8 +1,11 @@
 package com.spendoo.identity.presentation.shared
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import com.spendoo.designsystem.utils.UiText
 import com.spendoo.identity.presentation.navigation.BaseRoute
 import com.spendoo.identity.presentation.navigation.effector.Effector
 import kotlinx.coroutines.CoroutineDispatcher
@@ -63,10 +66,22 @@ abstract class BaseViewModel<STATE>(
         viewModelScope.launch { effector.popUpTo(route, inclusive, saveState) }
     }
 
+    protected fun showSnackBar(
+        title: UiText,
+        message: UiText? = null,
+        isSuccess: Boolean = true,
+        customLeadingIcon: Painter? = null,
+        duration: Long? = null,
+        iconTint: Color = Color.Unspecified
+    ) = viewModelScope.launch {
+        effector.showSnackBar(
+            title, message, isSuccess, customLeadingIcon, duration, iconTint
+        )
+    }
+
     fun updateState(transform: STATE.(STATE) -> STATE) {
         _state.update { it.transform(it) }
     }
-
 
     protected fun <R> tryToCall(
         block: suspend () -> R,

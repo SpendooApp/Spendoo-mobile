@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.navigation.compose.rememberNavController
+import com.spendoo.designsystem.utils.asStringSuspend
 import com.spendoo.identity.presentation.navigation.effector.Effect
 import com.spendoo.identity.presentation.navigation.effector.EffectHandler
 import com.spendoo.identity.presentation.navigation.effector.Effector
@@ -18,7 +21,8 @@ import kotlin.uuid.ExperimentalUuidApi
 fun IdentityNavHost(
     updateBottomNavigationVisibility: (Boolean) -> Unit = {},
     effector: Effector = koinInject(),
-    startDestination: BaseRoute = HomeRoute
+    startDestination: BaseRoute = HomeRoute,
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> }
 ) {
     val navController = rememberNavController()
 
@@ -57,6 +61,15 @@ fun IdentityNavHost(
             is Effect.UpdateBottomNavigationVisibility -> {
                 updateBottomNavigationVisibility(effect.isVisible)
             }
+
+            is Effect.ShowSnackBar -> showSnackBar(
+                effect.title.asStringSuspend(),
+                effect.message.asStringSuspend(),
+                effect.isSuccess,
+                effect.customLeadingIcon,
+                effect.duration,
+                effect.iconTint
+            )
         }
     }
 

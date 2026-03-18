@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.bottomNavigation.BottomNavigationBar
@@ -51,7 +53,8 @@ fun LoggedInContainer(
         FeatureContent(
             activeFeature = state.activeFeature,
             modifier = Modifier.padding(bottom = bottomPadding),
-            updateBottomNavigationVisibility = listener::onBottomNavigationChanged
+            updateBottomNavigationVisibility = listener::onBottomNavigationChanged,
+            showSnackBar = listener::showSnackBar
         )
 
         AnimatedVisibility(
@@ -112,7 +115,8 @@ private fun FeatureContent(
     chatBotApi: HomeFeatureApi = koinInject(),
     paymentsApi: HomeFeatureApi = koinInject(),
     modifier: Modifier = Modifier,
-    updateBottomNavigationVisibility: (Boolean) -> Unit = {}
+    updateBottomNavigationVisibility: (Boolean) -> Unit = {},
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit
 ) {
     Box(modifier) {
         Crossfade(targetState = activeFeature) { feature ->
@@ -121,7 +125,7 @@ private fun FeatureContent(
                 Feature.Categories -> categoriesApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.Stats -> statsApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.ChatBot -> chatBotApi.TabEntry(updateBottomNavigationVisibility)
-                Feature.Profile -> identityApi.TabEntry(updateBottomNavigationVisibility)
+                Feature.Profile -> identityApi.TabEntry(updateBottomNavigationVisibility, showSnackBar)
                 Feature.Payments -> paymentsApi.TabEntry(updateBottomNavigationVisibility)
             }
         }

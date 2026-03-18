@@ -28,8 +28,11 @@ class LoginViewModel(
             },
             onSuccess = { },
             onError = { error ->
-                //TODO: show snack bar
-                println("Login error: ${error.message}")
+                showSnackBar(
+                    title = UiText.DynamicString("An error occurred"),
+                    message = UiText.DynamicString(error.message ?: "Unknown error"),
+                    isSuccess = false,
+                )
             },
             onEnd = {
                 updateState { copy(actionButtonState = AppButtonState.Enabled) }

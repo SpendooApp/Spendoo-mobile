@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 
-val shadow = Shadow(
+val customShadow = Shadow(
     radius = 50.dp,
     spread = (-12).dp,
     offset = DpOffset(0.dp , 25.dp),
