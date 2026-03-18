@@ -11,4 +11,3 @@ data class CreateNewPasswordUiState(
     val passwordError: UiText? = null,
     val isPasswordVisible: Boolean = true,
 )
-

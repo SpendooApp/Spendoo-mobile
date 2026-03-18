@@ -124,9 +124,9 @@ fun LoginScreenContent(
                     errorText = state.passwordError?.asString(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = if (state.isPasswordVisible) {
-                        PasswordVisualTransformation()
-                    } else {
                         VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
                     },
                     trailingIcon = when (state.isPasswordVisible) {
                         true -> Res.drawable.ic_eye_closed.painter()

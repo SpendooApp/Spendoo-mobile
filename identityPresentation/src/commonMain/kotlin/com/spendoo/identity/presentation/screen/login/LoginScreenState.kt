@@ -9,5 +9,5 @@ data class LoginScreenState(
     val emailError: UiText? = null,
     val password: String = "",
     val passwordError: UiText? = null,
-    val isPasswordVisible: Boolean = true,
+    val isPasswordVisible: Boolean = false,
 )
