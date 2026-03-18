@@ -1,7 +1,11 @@
 package com.spendoo.appEntryPoint
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.identity.api.IdentityFeatureApi
 import com.spendoo.identity.domain.repository.SettingsRepository
@@ -19,6 +23,14 @@ fun EntryPoint(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val accessToken by authorizationService.observeAccessToken().collectAsStateWithLifecycle()
     val isOnBoardingCompleted by settingsRepository.observeOnBoardingCompleted().collectAsStateWithLifecycle()
+    var previousAccessTokenWasBlank by remember { mutableStateOf(accessToken.isBlank()) }
+
+    LaunchedEffect(accessToken) {
+        if (previousAccessTokenWasBlank && accessToken.isNotBlank()) {
+            viewModel.onBottomNavigationChanged(true)
+        }
+        previousAccessTokenWasBlank = accessToken.isBlank()
+    }
 
     // if first time open onboarding
     if (!isOnBoardingCompleted) {

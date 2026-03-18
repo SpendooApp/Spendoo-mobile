@@ -71,8 +71,6 @@ class VerifyEmailViewModel(
                             otp = state.value.otp,
                         )
                     )
-                } else {
-                    updateBottomNavigationVisibility(true)
                 }
             },
             onError = {

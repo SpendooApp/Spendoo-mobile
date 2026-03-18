@@ -26,9 +26,7 @@ class LoginViewModel(
                     password = state.value.password
                 )
             },
-            onSuccess = {
-                updateBottomNavigationVisibility(true)
-            },
+            onSuccess = { },
             onError = { error ->
                 //TODO: show snack bar
                 println("Login error: ${error.message}")
