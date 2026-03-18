@@ -15,6 +15,7 @@ class LoginViewModel(
 
     override fun onLoginClicked() {
         validateFields()
+        if (state.value.emailError != null || state.value.passwordError != null) return
 
         tryToCall(
             onStart = {
