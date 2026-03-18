@@ -70,13 +70,13 @@ class LoginViewModel(
     }
 
     override fun onEmailChange(newEmail: String) {
-        validateEmail()
         updateState { copy(email = newEmail) }
+        validateEmail()
     }
 
     override fun onPasswordChange(newPassword: String) {
-        validatePassword()
         updateState { copy(password = newPassword) }
+        validatePassword()
     }
 
     override fun onTogglePasswordVisibility() {

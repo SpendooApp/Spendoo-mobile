@@ -103,7 +103,7 @@ fun CustomTextField(
     val shape = RoundedCornerShape(16.dp)
 
     val currentDirection = LocalLayoutDirection.current
-    val isRtl = remember { currentDirection == LayoutDirection.Rtl }
+    val isRtl = currentDirection == LayoutDirection.Rtl
 
     Column(modifier = modifier) {
         Row(

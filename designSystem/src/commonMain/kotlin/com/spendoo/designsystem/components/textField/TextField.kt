@@ -5,7 +5,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.TextField
+import androidx.compose.material3.TextField as MaterialTextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -46,7 +46,7 @@ fun TextField(
         focusedIndicatorColor = Color(0xFFE0E4EB)
     )
 ) {
-    TextField(
+    MaterialTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
