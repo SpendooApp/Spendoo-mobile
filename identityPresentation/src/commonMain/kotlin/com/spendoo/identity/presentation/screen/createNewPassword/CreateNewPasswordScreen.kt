@@ -1,6 +1,5 @@
 package com.spendoo.identity.presentation.screen.createNewPassword
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -21,14 +20,18 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.util.extentions.asString
 import com.spendoo.designsystem.util.extentions.painter
 import com.spendoo.designsystem.utils.asString
 import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.create_new_password
+import spendoo.designsystem.generated.resources.enter_your_new_password
 import spendoo.designsystem.generated.resources.ic_eye_closed
 import spendoo.designsystem.generated.resources.ic_eye_opened
+import spendoo.designsystem.generated.resources.reset_password
 
 @Composable
 fun CreateNewPasswordScreen(
@@ -50,14 +53,14 @@ fun CreateNewPasswordScreenContent(
     ScreenTemplate(
         upperContent = {
             Text(
-                text = "Create New Password",
+                text = Res.string.create_new_password.asString(),
                 color = Theme.colorScheme.text.headingBlue,
                 style = Theme.typography.heading.large,
             )
         },
         actioButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onResetPasswordClicked,
-        actionButtonText = "Reset Password",
+        actionButtonText = Res.string.reset_password.asString(),
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
@@ -69,7 +72,7 @@ fun CreateNewPasswordScreenContent(
                 CustomTextField(
                     value = state.password,
                     onValueChange = interactionListener::onPasswordChange,
-                    hint = "Enter Your New Password",
+                    hint = Res.string.enter_your_new_password.asString(),
                     errorText = state.passwordError?.asString(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

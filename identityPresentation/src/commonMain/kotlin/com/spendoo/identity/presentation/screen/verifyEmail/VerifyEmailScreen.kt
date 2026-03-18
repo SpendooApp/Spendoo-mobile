@@ -23,11 +23,18 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.OtpInputField
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.util.extentions.asString
 import com.spendoo.designsystem.util.formatTime
 import com.spendoo.designsystem.utils.asString
 import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.didnt_receive_code
+import spendoo.designsystem.generated.resources.enter_code_sent_on_your_email
+import spendoo.designsystem.generated.resources.resend
+import spendoo.designsystem.generated.resources.verify_code
+import spendoo.designsystem.generated.resources.verify_your_email
 
 @Composable
 fun VerifyEmailScreen(
@@ -49,14 +56,14 @@ private fun VerifyEmailScreenContent(
     ScreenTemplate(
         upperContent = {
             Text(
-                text = "Verify your Email",
+                text = Res.string.verify_your_email.asString(),
                 color = Theme.colorScheme.text.headingBlue,
                 style = Theme.typography.heading.large,
             )
         },
         actioButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onVerifyClicked,
-        actionButtonText = "Verify Code",
+        actionButtonText = Res.string.verify_code.asString(),
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
@@ -75,13 +82,13 @@ private fun VerifyEmailScreenContent(
                     else Theme.colorScheme.text.label
                 )
                 Text(
-                    text = "Didn't receive code?",
+                    text = Res.string.didnt_receive_code.asString(),
                     color = Theme.colorScheme.text.link,
                     style = Theme.typography.label.medium.medium,
                     modifier = Modifier.padding(end = 4.dp)
                 )
                 Text(
-                    text = "Resend",
+                    text = Res.string.resend.asString(),
                     color = animatedTextColor,
                     style = Theme.typography.label.semiBold.medium,
                     modifier = Modifier.clickable(
@@ -95,7 +102,7 @@ private fun VerifyEmailScreenContent(
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             item {
                 Text(
-                    text = "Enter code sent on your email",
+                    text = Res.string.enter_code_sent_on_your_email.asString(),
                     color = Theme.colorScheme.text.label,
                     style = Theme.typography.label.medium.medium,
                     modifier = Modifier

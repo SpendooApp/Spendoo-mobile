@@ -25,6 +25,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.enter_your_email
+import spendoo.designsystem.generated.resources.forget_password
+import spendoo.designsystem.generated.resources.send_code
 
 @Composable
 fun ForgetPasswordScreen(viewModel: ForgetPasswordViewModel = koinViewModel()) {
@@ -43,14 +45,14 @@ fun ForgetPasswordScreenContent(
     ScreenTemplate(
         upperContent = {
             Text(
-                text = "Forget Password ?",
+                text = Res.string.forget_password.asString(),
                 color = Theme.colorScheme.text.headingBlue,
                 style = Theme.typography.heading.large,
             )
         },
         actioButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onSendCodeClicked,
-        actionButtonText = "Send Code",
+        actionButtonText = Res.string.send_code.asString(),
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()

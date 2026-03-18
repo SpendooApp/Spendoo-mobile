@@ -51,11 +51,22 @@ import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.already_have_an_account
+import spendoo.designsystem.generated.resources.and
+import spendoo.designsystem.generated.resources.by_continuing_you_agree_to_our
+import spendoo.designsystem.generated.resources.create_account
+import spendoo.designsystem.generated.resources.enter_your_birth_date
+import spendoo.designsystem.generated.resources.enter_your_email
+import spendoo.designsystem.generated.resources.enter_your_full_name
+import spendoo.designsystem.generated.resources.enter_your_password
 import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.ic_eye_closed
 import spendoo.designsystem.generated.resources.ic_eye_opened
 import spendoo.designsystem.generated.resources.login
+import spendoo.designsystem.generated.resources.privacy_policy
 import spendoo.designsystem.generated.resources.signup
+import spendoo.designsystem.generated.resources.terms_and_conditions
+import spendoo.designsystem.generated.resources.what_is_your_gender
 
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel = koinViewModel()) {
@@ -76,7 +87,7 @@ private fun SignUpScreenContent(
     ScreenTemplate(
         upperContent = {
             Text(
-                text = "Create Account",
+                text = Res.string.create_account.asString(),
                 color = Theme.colorScheme.text.headingBlue,
                 style = Theme.typography.heading.large
             )
@@ -98,7 +109,7 @@ private fun SignUpScreenContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Already have an account?",
+                    text = Res.string.already_have_an_account.asString(),
                     color = Theme.colorScheme.text.link,
                     style = Theme.typography.label.medium.medium,
                     modifier = Modifier.padding(end = 4.dp)
@@ -122,7 +133,7 @@ private fun SignUpScreenContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "What is your gender?",
+                        text = Res.string.what_is_your_gender.asString(),
                         color = Theme.colorScheme.text.title,
                         style = Theme.typography.label.medium.medium,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -161,7 +172,7 @@ private fun SignUpScreenContent(
                 CustomTextField(
                     value = state.fullName,
                     onValueChange = interactionListener::onFullNameChange,
-                    hint = "Enter Your Full Name",
+                    hint = Res.string.enter_your_full_name.asString(),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                     errorText = state.fullNameError?.asString(),
                     singleLine = true,
@@ -172,7 +183,7 @@ private fun SignUpScreenContent(
                 CustomTextField(
                     value = state.dateOfBirth.format(),
                     onValueChange = { },
-                    hint = "Enter Your Birth Date",
+                    hint = Res.string.enter_your_birth_date.asString(),
                     trailingIcon = Res.drawable.ic_date.painter(),
                     trailingIconColor = Theme.colorScheme.text.label,
                     keyboardOptions = KeyboardOptions(
@@ -194,7 +205,7 @@ private fun SignUpScreenContent(
                 CustomTextField(
                     value = state.email,
                     onValueChange = interactionListener::onEmailChange,
-                    hint = "Enter Your Email",
+                    hint = Res.string.enter_your_email.asString(),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                     errorText = state.emailError?.asString(),
                     singleLine = true,
@@ -208,7 +219,7 @@ private fun SignUpScreenContent(
                 CustomTextField(
                     value = state.password,
                     onValueChange = interactionListener::onPasswordChange,
-                    hint = "Enter Your Password",
+                    hint = Res.string.enter_your_password.asString(),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
                     errorText = state.passwordError?.asString(),
                     singleLine = true,
@@ -230,14 +241,14 @@ private fun SignUpScreenContent(
                 MultiHighlightedClickableText(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                     segments = listOf(
-                        TextSegment.Normal("By continuing, you agree to our\n"),
+                        TextSegment.Normal(Res.string.by_continuing_you_agree_to_our.asString()),
                         TextSegment.Highlighted(
-                            "Terms and Conditions",
+                            Res.string.terms_and_conditions.asString(),
                             onClick = interactionListener::onTermsAndConditionsClicked
                         ),
-                        TextSegment.Normal(" and "),
+                        TextSegment.Normal(Res.string.and.asString()),
                         TextSegment.Highlighted(
-                            "Privacy Policy",
+                            Res.string.privacy_policy.asString(),
                             onClick = interactionListener::onPrivacyPolicyClicked
                         )
                     )

@@ -12,6 +12,10 @@ import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.util.extentions.asString
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.ok
+import spendoo.designsystem.generated.resources.terms_and_conditions_for_spendoo
 
 @Composable
 fun TermsAndConditionsBottomSheet(isVisible: Boolean, onDismissRequest: () -> Unit) {
@@ -21,28 +25,12 @@ fun TermsAndConditionsBottomSheet(isVisible: Boolean, onDismissRequest: () -> Un
         content = {
             val scrollState = rememberScrollState()
             Text(
-                text = "Terms and Conditions for Spendoo\n" +
-                        "Effective Date: February 2026\n" +
-                        "\n" +
-                        "1. Acceptance of Services\n" +
-                        "By creating an account on Spendoo, you agree to these terms. Spendoo provides financial management tools, including subscription tracking, budget monitoring, and social connectivity features.\n" +
-                        "\n" +
-                        "2. Account Security & User IDs\n" +
-                        "Users are responsible for maintaining the confidentiality of their account.\n" +
-                        "The \"Regenerate ID\" feature is provided to enhance privacy; users are encouraged to reset their ID if they feel their current connection code has been compromised.\n" +
-                        "Following another user requires mutual consent via the Follow Request and Approve process.\n" +
-                        "\n" +
-                        "3. Adaptive Budgeting Disclaimer\n" +
-                        "The Adaptive Budgeting feature, which suggests moving funds from \"Donor Categories\" to \"Overspent Categories,\" is a tool for convenience.\n" +
-                        "Spendoo is not responsible for any financial decisions made by the user or for the accuracy of bank-sync delays.\n" +
-                        "\n" +
-                        "4. No Financial Advice\n" +
-                        "The insights provided, such as Brand Alternatives (e.g., switching mobile data plans), are for informational purposes only and do not constitute professional financial advice.",
+                text = Res.string.terms_and_conditions_for_spendoo.asString(),
                 style = Theme.typography.body.small,
                 modifier = Modifier.weight(1f).padding(bottom = 16.dp).verticalScroll(scrollState)
             )
             AppButton(
-                text = "OK",
+                text = Res.string.ok.asString(),
                 type = AppButtonType.Primary,
                 onClick = onDismissRequest,
                 modifier = Modifier.fillMaxWidth()
