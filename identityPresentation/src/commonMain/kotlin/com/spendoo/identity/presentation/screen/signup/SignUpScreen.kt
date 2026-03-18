@@ -112,7 +112,7 @@ private fun SignUpScreenContent(
             }
         }
     ) {
-        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f, fill = false)) {
             item {
                 Column(
                     modifier = Modifier

@@ -46,9 +46,9 @@ class ResetPasswordRepositoryImpl(
     }
 
     companion object {
-        const val RESET_PASSWORD_REQUEST_OTP = "api/v1/identity/auth/reset-password"
+        const val RESET_PASSWORD_REQUEST_OTP = "api/v1/identity/auth/forgot-password"
         const val RESET_PASSWORD_VERIFY_OTP = "api/v1/identity/auth/verify-otp"
-        const val RESET_PASSWORD = "api/v1/identity/auth/verify-account"
+        const val RESET_PASSWORD = "api/v1/identity/auth/reset-password"
         const val RESET_PASSWORD_RESEND_OTP = "api/v1/identity/auth/resend-otp"
     }
 }
