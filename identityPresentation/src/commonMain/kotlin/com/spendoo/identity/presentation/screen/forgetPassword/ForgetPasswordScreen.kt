@@ -50,7 +50,7 @@ fun ForgetPasswordScreenContent(
                 style = Theme.typography.heading.large,
             )
         },
-        actioButtonState = state.actionButtonState,
+        actionButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onSendCodeClicked,
         actionButtonText = Res.string.send_code.asString(),
         modifier = Modifier

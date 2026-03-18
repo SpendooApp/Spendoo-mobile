@@ -29,7 +29,7 @@ fun ScreenTemplate(
     onClickActionButton: () -> Unit,
     actionButtonText: String,
     modifier: Modifier = Modifier,
-    actioButtonState: AppButtonState = AppButtonState.Enabled,
+    actionButtonState: AppButtonState = AppButtonState.Enabled,
     underActionButtonContent: @Composable () -> Unit = {},
     lowerContent: @Composable ColumnScope. () -> Unit,
 ) {
@@ -64,7 +64,7 @@ fun ScreenTemplate(
                     onClick = onClickActionButton,
                     text = actionButtonText,
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    state = actioButtonState,
+                    state = actionButtonState,
                     loadingIcon = {
                         DotsProgressIndicator()
                     }

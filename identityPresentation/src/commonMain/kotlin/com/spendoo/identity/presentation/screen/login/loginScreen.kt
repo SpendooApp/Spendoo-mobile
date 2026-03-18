@@ -69,7 +69,7 @@ fun LoginScreenContent(
                 textAlign = TextAlign.Center
             )
         },
-        actioButtonState = state.actionButtonState,
+        actionButtonState = state.actionButtonState,
         onClickActionButton = interActionListener::onLoginClicked,
         actionButtonText = Res.string.login.asString(),
         modifier = Modifier

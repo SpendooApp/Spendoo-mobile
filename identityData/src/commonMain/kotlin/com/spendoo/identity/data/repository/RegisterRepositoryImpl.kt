@@ -38,7 +38,7 @@ class RegisterRepositoryImpl(
     }
 
     override suspend fun register(request: RegisterRequest) {
-        tryToExecute<String> {
+        tryToExecute<Unit> {
             post(REGISTER) {
                 setBody(request.toDto())
             }

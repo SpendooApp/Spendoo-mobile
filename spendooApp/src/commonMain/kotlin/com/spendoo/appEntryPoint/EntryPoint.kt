@@ -54,7 +54,7 @@ fun EntryPoint(
                 .statusBarsPadding()
                 .padding(top = 16.dp, start = 12.dp, end = 16.dp),
             onDismiss = viewModel::hideSnackBar,
-            data = state.snackBarDate
+            data = state.snackBarData
         )
 
         // if first time open onboarding

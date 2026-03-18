@@ -61,7 +61,7 @@ private fun VerifyEmailScreenContent(
                 style = Theme.typography.heading.large,
             )
         },
-        actioButtonState = state.actionButtonState,
+        actionButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onVerifyClicked,
         actionButtonText = Res.string.verify_code.asString(),
         modifier = Modifier

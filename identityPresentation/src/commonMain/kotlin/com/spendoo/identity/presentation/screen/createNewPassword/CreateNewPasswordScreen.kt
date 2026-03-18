@@ -58,7 +58,7 @@ fun CreateNewPasswordScreenContent(
                 style = Theme.typography.heading.large,
             )
         },
-        actioButtonState = state.actionButtonState,
+        actionButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onResetPasswordClicked,
         actionButtonText = Res.string.reset_password.asString(),
         modifier = Modifier

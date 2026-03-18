@@ -92,7 +92,7 @@ private fun SignUpScreenContent(
                 style = Theme.typography.heading.large
             )
         },
-        actioButtonState = state.actionButtonState,
+        actionButtonState = state.actionButtonState,
         onClickActionButton = interactionListener::onSignUpClicked,
         actionButtonText = Res.string.signup.asString(),
         modifier = Modifier

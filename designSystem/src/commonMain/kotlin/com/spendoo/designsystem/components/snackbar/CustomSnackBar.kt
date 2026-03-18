@@ -40,7 +40,7 @@ import spendoo.designsystem.generated.resources.ic_success
 @Composable
 fun CustomSnackBar(
     modifier: Modifier = Modifier,
-    data: SnackBarDate,
+    data: SnackBarData,
     shape: RoundedCornerShape = RoundedCornerShape(16.dp),
     onDismiss: () -> Unit = {},
 ) {
@@ -97,7 +97,7 @@ fun CustomSnackBar(
 @Composable
 fun AnimatedSnackBar(
     isVisible: Boolean,
-    data: SnackBarDate,
+    data: SnackBarData,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -119,7 +119,7 @@ fun AnimatedSnackBar(
     }
 }
 
-data class SnackBarDate(
+data class SnackBarData(
     val title: String,
     val message: String? = null,
     val isSuccess: Boolean = true,
@@ -139,14 +139,14 @@ fun CustomSnackBarPreview() = SpendooPreview {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomSnackBar(
-            data = SnackBarDate(
+            data = SnackBarData(
                 title = "Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title",
                 message = "Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message Message",
                 ////        leadingIcon = painterResource(Res.drawable.ic_home),
             )
         )
         CustomSnackBar(
-            data = SnackBarDate(
+            data = SnackBarData(
                 title = "Title Title Title Title ",
                 message = "Message Message Message Message ",
                 isSuccess = false,

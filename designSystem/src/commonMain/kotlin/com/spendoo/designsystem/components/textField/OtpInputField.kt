@@ -58,7 +58,7 @@ fun OtpInputField(
 ) {
     LaunchedEffect(Unit) {
         if (otpText.length > otpLength) {
-            throw IllegalArgumentException("OTP should be $otpLength digits")
+            onOtpModified(otpText.take(otpLength))
         }
     }
 
