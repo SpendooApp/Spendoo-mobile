@@ -1,0 +1,94 @@
+name: Build Release APK
+
+inputs:
+  android-keystore-base64:
+    required: true
+    description: Base64 encoded content of the Android keystore file
+  keystore-password:
+    required: true
+    description: Password for the Android keystore
+  android-key-alias:
+    required: true
+    description: Alias for the key in the Android keystore
+  android-key-alias-password:
+    required: true
+    description: Password for the key alias in the Android keystore
+  base-url:
+    required: true
+    description: Base URL to be used in local.properties
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: gradle
+
+    - name: Cache Gradle
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-
+
+    - name: Prepare signing and local.properties
+      shell: bash
+      run: |
+        KEYSTORE_PATH="$RUNNER_TEMP/spendoo-keystore.jks"
+        echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > "$KEYSTORE_PATH"
+
+        cat > local.properties <<EOF
+        BASE_URL=${{ inputs.base-url }}
+        KEYSTORE_STORE_FILE=${KEYSTORE_PATH}
+        KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}
+        KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}
+        KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}
+        EOF
+
+    - name: Make gradlew executable
+      shell: bash
+      run: chmod +x ./gradlew
+
+    - name: Get Version Name
+      shell: bash
+      run: |
+        VERSION_MAJOR=$(grep VERSION_MAJOR gradle.properties | cut -d'=' -f2 | xargs)
+        VERSION_MINOR=$(grep VERSION_MINOR gradle.properties | cut -d'=' -f2 | xargs)
+        RUN_NUMBER=${{ github.run_number }}
+        
+        APK_VERSION=${VERSION_MAJOR}.${VERSION_MINOR}.${RUN_NUMBER}
+        
+        echo "APK_VERSION=$APK_VERSION" >> $GITHUB_ENV
+
+    - name: Version Bump
+      uses: chkfung/android-version-actions@v1.2.3
+      with:
+        gradlePath: spendooApp/build.gradle.kts
+        versionCode: ${{ github.run_number }}
+        versionName: ${{ env.APK_VERSION }}
+
+    - name: Build release APK
+      shell: bash
+      run: ./gradlew :spendooApp:assembleRelease --build-cache --no-daemon -x test -x lint
+
+    - name: Set signed APK path to env
+      shell: bash
+      run: |
+        RELEASE_DIRECTORY="spendooApp/build/outputs/apk/release"
+        SOURCE_APK_PATH="$RELEASE_DIRECTORY/spendooApp-release.apk"
+        APK_NAME="Spendoo-v${APK_VERSION}"
+
+        if [ ! -f "$SOURCE_APK_PATH" ]; then
+          SOURCE_APK_PATH=$(find "$RELEASE_DIRECTORY" -maxdepth 1 -name "*.apk" | head -n 1)
+        fi
+
+        mv "$SOURCE_APK_PATH" "$RELEASE_DIRECTORY/$APK_NAME.apk"
+
+        echo "APK_NAME=$APK_NAME" >> $GITHUB_ENV
+        echo "SIGNED_APK_PATH=$RELEASE_DIRECTORY/$APK_NAME.apk" >> $GITHUB_ENV

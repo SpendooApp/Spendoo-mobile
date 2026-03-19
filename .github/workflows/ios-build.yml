@@ -1,0 +1,47 @@
+name: iOS
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  push:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  detect:
+    name: Detect Changes
+    uses: ./.github/workflows/detect-changed-modules.yml
+    secrets: inherit
+
+  build:
+    name: Build
+    needs: detect
+    if: needs.detect.outputs.has_changes == 'true'
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: gradle
+
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
+      - name: Build KMP modules
+        if: needs.detect.outputs.has_ios_changes == 'true'
+        run: ./gradlew $(for m in $(echo '${{ needs.detect.outputs.ios_modules }}' | jq -r '.[]'); do echo ":$m:linkDebugFrameworkIosSimulatorArm64"; done) --parallel --build-cache
+
+      - name: Build iOS app
+        if: needs.detect.outputs.has_ios_changes == 'true'
+        run: |
+          xcodebuild \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme "iosApp" \
+            -configuration Debug \
+            -destination "generic/platform=iOS Simulator" \
+            build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
