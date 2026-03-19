@@ -56,7 +56,7 @@ runs:
 
     - name: Create google-services.json
       shell: bash
-      run: echo "${{ inputs.credential-file-content }}" > spendooApp/google-services.json
+      run: echo "${{ inputs.credential-file-content-base64 }}" | base64 --decode > spendooApp/google-services.json
 
     - name: Make gradlew executable
       shell: bash
