@@ -44,7 +44,7 @@ runs:
       shell: bash
       run: |
         echo "BASE_URL=${{ inputs.base-url }}" >> local.properties
-        echo "KEYSTORE_STORE_FILE=spendooApp/spendoo-keystore.jks" >> local.properties
+        echo "KEYSTORE_STORE_FILE=spendoo-keystore.jks" >> local.properties
         echo "KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}" >> local.properties
         echo "KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}" >> local.properties
         echo "KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}" >> local.properties
