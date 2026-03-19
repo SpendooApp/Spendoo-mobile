@@ -16,7 +16,7 @@ inputs:
   base-url:
     required: true
     description: Base URL to be used in local.properties
-  credential-file-content:
+  credential-file-content-base64:
     required: true
     description: Content of the google-services.json file
 
