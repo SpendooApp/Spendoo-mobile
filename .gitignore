@@ -2,7 +2,10 @@
 .kotlin
 .gradle
 **/build/
+build
+*/build
 xcuserdata
+xcuserdata/
 !src/**/build/
 local.properties
 .idea
@@ -17,3 +20,16 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+*spendoo-keystore.jks
+*keystore_base64.txt
+*Secrets.plist
+Pods/
+*.jks
+*.gpg
+*yarn.lock
+dealer/dealer.podspec
+debug.log
+*/google-services.json
+*/GoogleService-Info.plist
+*GoogleService-Info.plist
+/spendooApp/release
