@@ -79,14 +79,34 @@ android {
         val baseUrl = localProperties.getProperty("BASE_URL", "")
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
     }
+     signingConfigs {
+        create("release") {
+            val keystorePath = project.loadProperty(
+                path = "local.properties",
+                propertyName = "KEYSTORE_STORE_FILE",
+            )
+
+            storeFile = file(keystorePath)
+            storePassword = project.loadProperty("local.properties", "KEYSTORE_STORE_PASSWORD")
+            keyAlias = project.loadProperty("local.properties", "KEYSTORE_KEY_ALIAS")
+            keyPassword = project.loadProperty("local.properties", "KEYSTORE_KEY_PASSWORD")
+        }
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -103,3 +123,21 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+fun Project.loadProperty(
+    path: String,
+    propertyName: String,
+): String {
+    val properties = Properties()
+    val propertiesFile = project.rootProject.file(path)
+
+    if (propertiesFile.exists()) {
+        properties.load(propertiesFile.inputStream())
+        return properties.getProperty(propertyName)
+            ?: System.getenv(propertyName)
+            ?: throw GradleException("Property '$propertyName' not found in $path or environment")
+    } else {
+        // Fallback to environment variable for CI/CD
+        return System.getenv(propertyName)
+            ?: throw GradleException("Property file '$path' not found and '$propertyName' not in environment")
+    }
+}
