@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Install CocoaPods
-        run: pod install --project-directory=iosApp
+        run: pod install --repo-update --project-directory=iosApp
 
       - name: Build KMP modules
         if: needs.detect.outputs.has_ios_changes == 'true'
