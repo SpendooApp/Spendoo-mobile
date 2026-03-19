@@ -23,85 +23,92 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-        cache: gradle
-
-    - name: Cache Gradle
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          gradle-${{ runner.os }}-
-
-    - name: Create local.properties with base URLs
+#    - name: Set up JDK
+#      uses: actions/setup-java@v4
+#      with:
+#        distribution: 'temurin'
+#        java-version: '17'
+#        cache: gradle
+#
+#    - name: Cache Gradle
+#      uses: actions/cache@v4
+#      with:
+#        path: |
+#          ~/.gradle/caches
+#          ~/.gradle/wrapper
+#        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#        restore-keys: |
+#          gradle-${{ runner.os }}-
+#
+#    - name: Create local.properties with base URLs
+#      shell: bash
+#      run: |
+#        echo "BASE_URL=${{ inputs.base-url }}" >> local.properties
+#        echo "KEYSTORE_STORE_FILE=spendoo-keystore.jks" >> local.properties
+#        echo "KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}" >> local.properties
+#        echo "KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}" >> local.properties
+#        echo "KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}" >> local.properties
+#
+#    - name: Create google-services.json
+#      shell: bash
+#      run: echo "${{ inputs.credential-file-content-base64 }}" | base64 --decode > spendooApp/google-services.json
+#
+#    - name: Create keystore file
+#      shell: bash
+#      run: echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > spendooApp/spendoo-keystore.jks
+#
+#    - name: Make gradlew executable
+#      shell: bash
+#      run: chmod +x ./gradlew
+#
+#    - name: Get Version Name
+#      shell: bash
+#      run: |
+#        VERSION_MAJOR=$(grep VERSION_MAJOR gradle.properties | cut -d'=' -f2 | xargs)
+#        VERSION_MINOR=$(grep VERSION_MINOR gradle.properties | cut -d'=' -f2 | xargs)
+#        RUN_NUMBER=${{ github.run_number }}
+#
+#        APK_VERSION=${VERSION_MAJOR}.${VERSION_MINOR}.${RUN_NUMBER}
+#
+#        echo "APK_VERSION=$APK_VERSION" >> $GITHUB_ENV
+#
+#    - name: Version Bump
+#      uses: chkfung/android-version-actions@v1.2.3
+#      with:
+#        gradlePath: spendooApp/build.gradle.kts
+#        versionCode: ${{ github.run_number }}
+#        versionName: ${{ env.APK_VERSION }}
+#
+#    - name: Generate unsigned APK
+#      shell: bash
+#      run: ./gradlew :spendooApp:assembleRelease --build-cache -x test -x lint
+#
+#    - name: Sign APK
+#      uses: r0adkll/sign-android-release@v1
+#      with:
+#        releaseDirectory: spendooApp/build/outputs/apk/release
+#        signingKeyBase64: ${{ inputs.android-keystore-base64 }}
+#        keyStorePassword: ${{ inputs.keystore-password }}
+#        alias: ${{ inputs.android-key-alias }}
+#        keyPassword: ${{ inputs.android-key-alias-password }}
+#      env:
+#        BUILD_TOOLS_VERSION: "35.0.0"
+#
+#    - name: Set signed APK path to env
+#      shell: bash
+#      run: |
+#        RELEASE_DIRECTORY="spendooApp/build/outputs/apk/release"
+#        APK_NAME="Spendoo-v${APK_VERSION}"
+#
+#        mv "$RELEASE_DIRECTORY/spendooApp-release-unsigned-signed.apk" \
+#        "$RELEASE_DIRECTORY/$APK_NAME.apk"
+#
+#        echo "APK_NAME=$APK_NAME" >> $GITHUB_ENV
+#        echo "SIGNED_APK_PATH=$RELEASE_DIRECTORY/$APK_NAME.apk" >> $GITHUB_ENV
+    - name: Debug keystore password shape
       shell: bash
       run: |
-        echo "BASE_URL=${{ inputs.base-url }}" >> local.properties
-        echo "KEYSTORE_STORE_FILE=spendoo-keystore.jks" >> local.properties
-        echo "KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}" >> local.properties
-        echo "KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}" >> local.properties
-        echo "KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}" >> local.properties
-
-    - name: Create google-services.json
-      shell: bash
-      run: echo "${{ inputs.credential-file-content-base64 }}" | base64 --decode > spendooApp/google-services.json
-
-    - name: Create keystore file
-      shell: bash
-      run: echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > spendooApp/spendoo-keystore.jks
-
-    - name: Make gradlew executable
-      shell: bash
-      run: chmod +x ./gradlew
-
-    - name: Get Version Name
-      shell: bash
-      run: |
-        VERSION_MAJOR=$(grep VERSION_MAJOR gradle.properties | cut -d'=' -f2 | xargs)
-        VERSION_MINOR=$(grep VERSION_MINOR gradle.properties | cut -d'=' -f2 | xargs)
-        RUN_NUMBER=${{ github.run_number }}
-        
-        APK_VERSION=${VERSION_MAJOR}.${VERSION_MINOR}.${RUN_NUMBER}
-        
-        echo "APK_VERSION=$APK_VERSION" >> $GITHUB_ENV
-
-    - name: Version Bump
-      uses: chkfung/android-version-actions@v1.2.3
-      with:
-        gradlePath: spendooApp/build.gradle.kts
-        versionCode: ${{ github.run_number }}
-        versionName: ${{ env.APK_VERSION }}
-
-    - name: Generate unsigned APK
-      shell: bash
-      run: ./gradlew :spendooApp:assembleRelease --build-cache -x test -x lint
-
-    - name: Sign APK
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: spendooApp/build/outputs/apk/release
-        signingKeyBase64: ${{ inputs.android-keystore-base64 }}
-        keyStorePassword: ${{ inputs.keystore-password }}
-        alias: ${{ inputs.android-key-alias }}
-        keyPassword: ${{ inputs.android-key-alias-password }}
-      env:
-        BUILD_TOOLS_VERSION: "35.0.0"
-
-    - name: Set signed APK path to env
-      shell: bash
-      run: |
-        RELEASE_DIRECTORY="spendooApp/build/outputs/apk/release"
-        APK_NAME="Spendoo-v${APK_VERSION}"
- 
-        mv "$RELEASE_DIRECTORY/spendooApp-release-unsigned-signed.apk" \
-        "$RELEASE_DIRECTORY/$APK_NAME.apk"        
- 
-        echo "APK_NAME=$APK_NAME" >> $GITHUB_ENV
-        echo "SIGNED_APK_PATH=$RELEASE_DIRECTORY/$APK_NAME.apk" >> $GITHUB_ENV
+        PW="${{ inputs.keystore-password }}"
+        FIRST_TWO=${PW:0:2}
+        LAST_CHAR=${PW: -1}
+        echo "keystore-password first2='${FIRST_TWO}' last='${LAST_CHAR}'"
