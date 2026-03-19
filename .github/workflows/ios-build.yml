@@ -47,6 +47,9 @@ jobs:
       - name: Create GoogleService-Info.plist
         run: echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_CONTENT }}" > iosApp/iosApp/GoogleService-Info.plist
 
+      - name: Generate dummy framework
+        run: ./gradlew :spendooApp:generateDummyFramework
+
       - name: Cache CocoaPods
         uses: actions/cache@v4
         with:

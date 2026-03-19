@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.cocoapods)
     id("com.google.gms.google-services")
 }
 
@@ -25,7 +26,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -35,7 +36,20 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    cocoapods {
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        version = "1.0"
+        ios.deploymentTarget = "16.2"
+        podfile = project.file("iosApp/Podfile")
+
+        framework {
+            baseName = "SpendooApp"
+            isStatic = true
+        }
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -80,7 +94,7 @@ android {
         val baseUrl = localProperties.getProperty("BASE_URL", "")
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
     }
-     signingConfigs {
+    signingConfigs {
         create("release") {
             val keystorePath = project.loadProperty(
                 path = "local.properties",
