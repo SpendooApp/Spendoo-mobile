@@ -43,12 +43,11 @@ runs:
     - name: Prepare signing and local.properties
       shell: bash
       run: |
-        KEYSTORE_PATH="$RUNNER_TEMP/spendoo-keystore.jks"
-        echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > "$KEYSTORE_PATH"
+        echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > spendooApp/spendoo-keystore.jks
 
         cat > local.properties <<EOF
         BASE_URL=${{ inputs.base-url }}
-        KEYSTORE_STORE_FILE=${KEYSTORE_PATH}
+        KEYSTORE_STORE_FILE=spendooApp/spendoo-keystore.jks
         KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}
         KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}
         KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}
