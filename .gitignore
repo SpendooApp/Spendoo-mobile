@@ -20,7 +20,8 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
-spendooApp/spendoo-keystore.jks
+*spendoo-keystore.jks
+*keystore_base64.txt
 *Secrets.plist
 Pods/
 *.jks
@@ -30,4 +31,5 @@ dealer/dealer.podspec
 debug.log
 */google-services.json
 */GoogleService-Info.plist
+*GoogleService-Info.plist
 /spendooApp/release
