@@ -44,6 +44,9 @@ jobs:
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > spendooApp/spendoo-keystore.jks
 
+      - name: Create GoogleService-Info.plist
+        run: echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_CONTENT }}" > iosApp/iosApp/GoogleService-Info.plist
+
       - name: Build KMP modules
         if: needs.detect.outputs.has_ios_changes == 'true'
         run: ./gradlew $(for m in $(echo '${{ needs.detect.outputs.ios_modules }}' | jq -r '.[]'); do echo ":$m:linkDebugFrameworkIosSimulatorArm64"; done) --parallel --build-cache

@@ -16,6 +16,9 @@ inputs:
   base-url:
     required: true
     description: Base URL to be used in local.properties
+  credential-file-content:
+    required: true
+    description: Content of the google-services.json file
 
 runs:
   using: "composite"
@@ -50,6 +53,10 @@ runs:
         KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}
         KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}
         EOF
+
+    - name: Create google-services.json
+      shell: bash
+      run: echo "${{ inputs.credential-file-content }}" > spendooApp/google-services.json
 
     - name: Make gradlew executable
       shell: bash
