@@ -1,7 +1,7 @@
 name: Deploy develop release APK
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
 
