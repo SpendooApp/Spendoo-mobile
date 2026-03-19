@@ -43,15 +43,7 @@ runs:
     - name: Create local.properties with base URLs
       shell: bash
       run: |
-        printf "KEYSTORE_STORE_FILE=spendoo-keystore.jks\n" >> local.properties
-        printf "KEYSTORE_STORE_PASSWORD=%s\n" "${{ inputs.keystore-password }}" >> local.properties
-        printf "KEYSTORE_KEY_ALIAS=%s\n" "${{ inputs.android-key-alias }}" >> local.properties
-        printf "KEYSTORE_KEY_PASSWORD=%s\n" "${{ inputs.android-key-alias-password }}" >> local.properties
-
-    - name: Debug local.properties
-      shell: bash
-      run: |
-        cat -A local.properties
+        echo "baseUrl=${{ inputs.base-url }}" >> local.properties
 
     - name: Create google-services.json
       shell: bash
