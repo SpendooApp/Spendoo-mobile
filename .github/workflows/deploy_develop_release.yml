@@ -22,13 +22,16 @@ jobs:
           android-key-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
           android-key-alias-password: ${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}
           base-url: ${{ secrets.BASE_URL }}
-          credential-file-content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          credential-file-content-base64: ${{ secrets.GOOGLE_SERVICES_BASE64 }}
+
+      - name: Create google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > google-services.json
 
       - name: Deploy to Firebase
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          serviceCredentialsFile: ./google-services.json
           file: ${{ env.SIGNED_APK_PATH }}
           debug: true
           groups: testers-develop
