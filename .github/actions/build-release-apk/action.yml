@@ -48,6 +48,11 @@ runs:
         printf "KEYSTORE_KEY_ALIAS=%s\n" "${{ inputs.android-key-alias }}" >> local.properties
         printf "KEYSTORE_KEY_PASSWORD=%s\n" "${{ inputs.android-key-alias-password }}" >> local.properties
 
+    - name: Debug local.properties
+      shell: bash
+      run: |
+        cat -A local.properties
+
     - name: Create google-services.json
       shell: bash
       run: echo "${{ inputs.credential-file-content-base64 }}" | base64 --decode > spendooApp/google-services.json
