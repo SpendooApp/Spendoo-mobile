@@ -26,7 +26,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.util.extentions.asString
 import com.spendoo.identity.presentation.screen.onboarding.components.BottomArrows
 import com.spendoo.identity.presentation.screen.onboarding.components.OnboardingPager
-import com.spendoo.identity.presentation.shared.ScreenTemplate
+import com.spendoo.identity.presentation.shared.ScreenBackground
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -74,7 +74,7 @@ fun OnboardingScreenContent(
         interactionListener.onPageSelected(position = pagerState.currentPage)
     }
 
-    ScreenTemplate(
+    ScreenBackground(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()

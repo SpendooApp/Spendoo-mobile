@@ -20,6 +20,9 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.accept
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
@@ -30,9 +33,25 @@ internal fun provideHttpClient(
     authorizationService: suspend () -> AuthorizationService,
 ): HttpClient {
     return HttpClient(engine) {
-        defaultRequest { url(baseUrl) }
+        expectSuccess = true
 
-        install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
+        defaultRequest {
+            url(baseUrl)
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+        }
+
+        install(languageInterceptor())
+
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                    prettyPrint = true
+                    isLenient = true
+                }
+            )
+        }
 
         install(Logging) {
             level = LogLevel.ALL
@@ -42,6 +61,7 @@ internal fun provideHttpClient(
                 }
             }
         }
+
         install(Auth) {
             bearer {
                 loadTokens {

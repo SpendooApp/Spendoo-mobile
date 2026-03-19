@@ -6,18 +6,20 @@ import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.Ver
 import com.spendoo.identity.data.mapper.toDomain
 import com.spendoo.identity.data.mapper.toDto
 import com.spendoo.identity.data.shared.BaseGateway
-import com.spendoo.identity.domain.model.AuthenticationTokens
+import com.spendoo.identity.data.utils.invalidateAuthTokens
 import com.spendoo.identity.domain.model.RegisterRequest
+import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.RegisterRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 
 class RegisterRepositoryImpl(
-    client: HttpClient
+    client: HttpClient,
+    private val authenticationRepository: AuthenticationRepository
 ) : BaseGateway(client), RegisterRepository {
 
-    override suspend fun requestOTP(email: String) {
+    override suspend fun reSendOTP(email: String) {
         tryToExecute<Unit> {
             post(REGISTER_REQUEST_OTP) {
                 setBody(OtpRequestDto(email))
@@ -26,24 +28,26 @@ class RegisterRepositoryImpl(
     }
 
     override suspend fun verifyOTPCode(email: String, otp: String) {
-        tryToExecute<Unit> {
+        val response = tryToExecute<AuthenticationResponse> {
             post(REGISTER_VERIFY_OTP) {
                 setBody(VerifyOtpRequestDto(email = email, otp = otp))
             }
         }
+        authenticationRepository.saveAuthTokens(response.toDomain())
+        client.invalidateAuthTokens()
     }
 
-    override suspend fun register(request: RegisterRequest): AuthenticationTokens {
-        return tryToExecute<AuthenticationResponse> {
+    override suspend fun register(request: RegisterRequest) {
+        tryToExecute<Unit> {
             post(REGISTER) {
                 setBody(request.toDto())
             }
-        }.toDomain()
+        }
     }
 
     companion object {
         const val REGISTER = "api/v1/identity/auth/signup"
         const val REGISTER_REQUEST_OTP = "api/v1/identity/auth/resend-otp"
-        const val REGISTER_VERIFY_OTP = "api/v1/identity/auth/verify-otp"
+        const val REGISTER_VERIFY_OTP = "api/v1/identity/auth/verify-account"
     }
 }

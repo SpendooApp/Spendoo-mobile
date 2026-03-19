@@ -35,21 +35,33 @@ fun createThemeTypography(): Typography {
             ),
             small = TextStyle(
                 fontFamily = poppinsFontFamily,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp,
+                lineHeight = 30.sp
+            ),
+            extraSmall = TextStyle(
+                fontFamily = poppinsFontFamily,
+                fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
-                lineHeight = 24.sp
+                lineHeight = 20.sp
+            ),
+            tiny = TextStyle(
+                fontFamily = poppinsFontFamily,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 14.sp,
+                lineHeight = 20.sp
             )
         ),
         title = Typography.Title(
             large = TextStyle(
                 fontFamily = poppinsFontFamily,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Medium,
                 fontSize = 20.sp,
                 lineHeight = 30.sp
             ),
             medium = TextStyle(
                 fontFamily = poppinsFontFamily,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Medium,
                 fontSize = 18.sp,
                 lineHeight = 28.sp
             ),
@@ -78,32 +90,90 @@ fun createThemeTypography(): Typography {
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
                 lineHeight = 22.sp
-            )
-        ),
-        label = Typography.Label(
-            large = TextStyle(
-                fontFamily = poppinsFontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
-                lineHeight = 24.sp
-            ),
-            medium = TextStyle(
-                fontFamily = poppinsFontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
-                lineHeight = 22.sp
-            ),
-            small = TextStyle(
-                fontFamily = poppinsFontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 10.sp,
-                lineHeight = 16.sp
             ),
             extraSmall = TextStyle(
                 fontFamily = poppinsFontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 10.sp,
-                lineHeight = 16.sp
+                fontSize = 12.sp,
+                lineHeight = 12.sp
+            )
+        ),
+        label = Typography.Label(
+            medium = Typography.LabelScale(
+                large = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp
+                ),
+                medium = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    lineHeight = 22.sp
+                ),
+                small = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp
+                ),
+                extraSmall = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 10.sp,
+                    lineHeight = 14.sp
+                ),
+                tiny = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 8.sp,
+                    lineHeight = 12.sp
+                ),
+                micro = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 6.sp,
+                    lineHeight = 10.sp
+                )
+            ),
+            semiBold = Typography.LabelScale(
+                large = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp
+                ),
+                medium = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    lineHeight = 22.sp
+                ),
+                small = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp
+                ),
+                extraSmall = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 10.sp,
+                    lineHeight = 14.sp
+                ),
+                tiny = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 8.sp,
+                    lineHeight = 12.sp
+                ),
+                micro = TextStyle(
+                    fontFamily = poppinsFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 6.sp,
+                    lineHeight = 10.sp
+                )
             )
         )
     )

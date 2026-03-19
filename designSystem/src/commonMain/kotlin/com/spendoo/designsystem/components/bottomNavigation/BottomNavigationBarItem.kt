@@ -69,7 +69,7 @@ fun BottomNavigationBarItem(
             if (isSelected) {
                 Text(
                     text = title,
-                    style = Theme.typography.label.medium,
+                    style = Theme.typography.label.medium.medium,
                     color = Theme.colorScheme.brand.primary,
                     modifier = Modifier.padding(top = 4.dp)
                 )

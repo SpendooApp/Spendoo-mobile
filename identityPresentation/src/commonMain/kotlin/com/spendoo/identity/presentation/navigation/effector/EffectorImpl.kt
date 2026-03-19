@@ -1,6 +1,9 @@
 package com.spendoo.identity.presentation.navigation.effector
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.navigation.NavOptions
+import com.spendoo.designsystem.utils.UiText
 import com.spendoo.identity.presentation.navigation.BaseRoute
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -69,6 +72,30 @@ class EffectorImpl : Effector {
 
     override suspend fun setBackStackArgs(vararg arguments: Pair<String, Any>) {
         _effect.emit(Effect.SetBackStackArgs(arguments.toMap()))
+    }
+
+    override suspend fun updateBottomNavigationVisibility(isVisible: Boolean) {
+        _effect.emit(Effect.UpdateBottomNavigationVisibility(isVisible))
+    }
+
+    override suspend fun showSnackBar(
+        title: UiText,
+        message: UiText?,
+        isSuccess: Boolean,
+        customLeadingIcon: Painter?,
+        duration: Long?,
+        iconTint: Color
+    ) {
+        _effect.emit(
+            Effect.ShowSnackBar(
+                title = title,
+                message = message,
+                isSuccess = isSuccess,
+                customLeadingIcon = customLeadingIcon,
+                duration = duration,
+                iconTint = iconTint
+            )
+        )
     }
 
     companion object {

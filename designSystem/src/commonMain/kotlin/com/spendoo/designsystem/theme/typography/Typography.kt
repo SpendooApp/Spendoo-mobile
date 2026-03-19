@@ -15,7 +15,9 @@ data class Typography(
     data class Heading(
         val large: TextStyle,
         val medium: TextStyle,
-        val small: TextStyle
+        val small: TextStyle,
+        val extraSmall: TextStyle,
+        val tiny: TextStyle
     )
 
     data class Title(
@@ -27,14 +29,22 @@ data class Typography(
     data class Body(
         val large: TextStyle,
         val medium: TextStyle,
-        val small: TextStyle
+        val small: TextStyle,
+        val extraSmall: TextStyle,
     )
 
     data class Label(
+        val medium: LabelScale,
+        val semiBold: LabelScale
+    )
+
+    data class LabelScale(
         val large: TextStyle,
         val medium: TextStyle,
         val small: TextStyle,
-        val extraSmall: TextStyle
+        val extraSmall: TextStyle,
+        val tiny: TextStyle,
+        val micro: TextStyle
     )
 }
 

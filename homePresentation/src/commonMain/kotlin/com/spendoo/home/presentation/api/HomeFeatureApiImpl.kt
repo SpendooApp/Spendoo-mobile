@@ -21,10 +21,10 @@ class HomeFeatureApiImpl : HomeFeatureApi {
             contentAlignment = androidx.compose.ui.Alignment.Center
         ) {
             Column {
-                Text("Home", Theme.typography.label.medium)
+                Text("Home", Theme.typography.label.medium.medium)
                 Text(
                     "go to categories",
-                    Theme.typography.label.medium,
+                    Theme.typography.label.medium.medium,
                     modifier = Modifier.clickable {
 
                     })
