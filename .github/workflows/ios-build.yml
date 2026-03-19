@@ -30,6 +30,20 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
+      - name: Create local.properties file
+        run: |
+          cat > local.properties << EOF
+          BASE_URL=${{ secrets.BASE_URL }}
+          KEYSTORE_STORE_FILE=spendooApp/spendoo-keystore.jks
+          KEYSTORE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD=${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}
+          EOF
+
+      - name: Decode and create keystore file
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > spendooApp/spendoo-keystore.jks
+
       - name: Build KMP modules
         if: needs.detect.outputs.has_ios_changes == 'true'
         run: ./gradlew $(for m in $(echo '${{ needs.detect.outputs.ios_modules }}' | jq -r '.[]'); do echo ":$m:linkDebugFrameworkIosSimulatorArm64"; done) --parallel --build-cache
