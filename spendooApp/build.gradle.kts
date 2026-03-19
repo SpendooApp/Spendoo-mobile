@@ -95,16 +95,18 @@ android {
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
     }
     signingConfigs {
-        create("release") {
-            val keystorePath = project.loadProperty(
-                path = "local.properties",
-                propertyName = "KEYSTORE_STORE_FILE",
-            )
+        if (project.hasProperty("KEYSTORE_STORE_FILE") || System.getenv("KEYSTORE_STORE_FILE") != null) {
+            create("release") {
+                val keystorePath = project.loadProperty(
+                    path = "local.properties",
+                    propertyName = "KEYSTORE_STORE_FILE",
+                )
 
-            storeFile = file(keystorePath)
-            storePassword = project.loadProperty("local.properties", "KEYSTORE_STORE_PASSWORD")
-            keyAlias = project.loadProperty("local.properties", "KEYSTORE_KEY_ALIAS")
-            keyPassword = project.loadProperty("local.properties", "KEYSTORE_KEY_PASSWORD")
+                storeFile = file(keystorePath)
+                storePassword = project.loadProperty("local.properties", "KEYSTORE_STORE_PASSWORD")
+                keyAlias = project.loadProperty("local.properties", "KEYSTORE_KEY_ALIAS")
+                keyPassword = project.loadProperty("local.properties", "KEYSTORE_KEY_PASSWORD")
+            }
         }
     }
     packaging {
@@ -116,7 +118,9 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+            if (signingConfigs.findByName("release") != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
