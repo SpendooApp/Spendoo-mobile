@@ -98,10 +98,7 @@ fun LoginScreenContent(
             }
         },
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
+        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f, fill = false)) {
             item {
                 CustomTextField(
                     value = state.email,

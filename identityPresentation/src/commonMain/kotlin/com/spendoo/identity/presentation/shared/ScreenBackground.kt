@@ -21,7 +21,7 @@ fun ScreenBackground(
             painter = if (Theme.isDarkTheme) Res.drawable.img_screenTemplate_dark.painter() else Res.drawable.img_screenTemplate_light.painter(),
             contentDescription = null,
             modifier = Modifier.matchParentSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillBounds
         )
         Box(modifier = modifier) {
             content()
