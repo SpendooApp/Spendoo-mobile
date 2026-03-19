@@ -58,8 +58,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
-      - name: Initialize CocoaPods
-        run: pod init --project-directory=iosApp || true
+      - name: Ensure Podfile exists
+        run: |
+          if [ ! -f iosApp/Podfile ]; then
+            pod init --project-directory=iosApp
+          fi
 
       - name: Install CocoaPods
         run: pod install --project-directory=iosApp
