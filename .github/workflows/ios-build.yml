@@ -61,7 +61,7 @@ jobs:
       - name: Ensure Podfile exists
         run: |
           if [ ! -f iosApp/Podfile ]; then
-            pod init --project-directory=iosApp
+            cd iosApp && pod init
           fi
 
       - name: Install CocoaPods
