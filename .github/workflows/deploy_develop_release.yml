@@ -31,10 +31,10 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
-          serviceCredentialsFile: ./google-services.json
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
           file: ${{ env.SIGNED_APK_PATH }}
           debug: true
-          groups: testers-develop
+          groups: spendoo-team
 
       - name: Publish APK to GitHub Releases
         uses: softprops/action-gh-release@v2
