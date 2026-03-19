@@ -40,18 +40,14 @@ runs:
         restore-keys: |
           gradle-${{ runner.os }}-
 
-    - name: Prepare signing and local.properties
+    - name: Create local.properties with base URLs
       shell: bash
       run: |
-        echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > spendooApp/spendoo-keystore.jks
-
-        cat > local.properties <<EOF
-        BASE_URL=${{ inputs.base-url }}
-        KEYSTORE_STORE_FILE=spendoo-keystore.jks
-        KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}
-        KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}
-        KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}
-        EOF
+        echo "BASE_URL=${{ inputs.base-url }}" >> local.properties
+        echo "KEYSTORE_STORE_FILE"=spendoo-keystore.jks >> local.properties
+        echo "KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}" >> local.properties
+        echo "KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}" >> local.properties
+        echo "KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}" >> local.properties
 
     - name: Create google-services.json
       shell: bash
@@ -79,22 +75,29 @@ runs:
         versionCode: ${{ github.run_number }}
         versionName: ${{ env.APK_VERSION }}
 
-    - name: Build release APK
+    - name: Generate unsigned APK
       shell: bash
-      run: ./gradlew :spendooApp:assembleRelease --build-cache --no-daemon -x test -x lint
+      run: ./gradlew :spendooApp:assembleRelease --build-cache -x test -x lint
+
+    - name: Sign APK
+      uses: r0adkll/sign-android-release@v1
+      with:
+        releaseDirectory: spendooApp/build/outputs/apk/release
+        signingKeyBase64: ${{ inputs.android-keystore-base64 }}
+        keyStorePassword: ${{ inputs.keystore-password }}
+        alias: ${{ inputs.android-key-alias }}
+        keyPassword: ${{ inputs.android-key-alias-password }}
+      env:
+        BUILD_TOOLS_VERSION: "35.0.0"
 
     - name: Set signed APK path to env
       shell: bash
       run: |
         RELEASE_DIRECTORY="spendooApp/build/outputs/apk/release"
-        SOURCE_APK_PATH="$RELEASE_DIRECTORY/spendooApp-release.apk"
         APK_NAME="Spendoo-v${APK_VERSION}"
-
-        if [ ! -f "$SOURCE_APK_PATH" ]; then
-          SOURCE_APK_PATH=$(find "$RELEASE_DIRECTORY" -maxdepth 1 -name "*.apk" | head -n 1)
-        fi
-
-        mv "$SOURCE_APK_PATH" "$RELEASE_DIRECTORY/$APK_NAME.apk"
-
+ 
+        mv "$RELEASE_DIRECTORY/spendooApp-release-unsigned-signed.apk" \
+        "$RELEASE_DIRECTORY/$APK_NAME.apk"        
+ 
         echo "APK_NAME=$APK_NAME" >> $GITHUB_ENV
         echo "SIGNED_APK_PATH=$RELEASE_DIRECTORY/$APK_NAME.apk" >> $GITHUB_ENV
