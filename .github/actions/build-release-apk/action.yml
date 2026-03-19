@@ -47,7 +47,7 @@ runs:
 
         cat > local.properties <<EOF
         BASE_URL=${{ inputs.base-url }}
-        KEYSTORE_STORE_FILE=spendooApp/spendoo-keystore.jks
+        KEYSTORE_STORE_FILE=spendoo-keystore.jks
         KEYSTORE_STORE_PASSWORD=${{ inputs.keystore-password }}
         KEYSTORE_KEY_ALIAS=${{ inputs.android-key-alias }}
         KEYSTORE_KEY_PASSWORD=${{ inputs.android-key-alias-password }}
