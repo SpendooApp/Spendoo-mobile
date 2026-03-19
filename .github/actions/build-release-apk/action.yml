@@ -43,7 +43,7 @@ runs:
     - name: Create local.properties with base URLs
       shell: bash
       run: |
-        echo "baseUrl=${{ inputs.base-url }}" >> local.properties
+        echo "BASE_URL=${{ inputs.base-url }}" >> local.properties
 
     - name: Create google-services.json
       shell: bash
