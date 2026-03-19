@@ -41,7 +41,6 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-                implementation(libs.androidx.activity.compose)
 
                 implementation(libs.compose.material3)
 

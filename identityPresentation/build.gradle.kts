@@ -44,7 +44,6 @@ kotlin {
 
                 implementation(libs.kotlinx.datetime)
 
-                implementation(libs.androidx.activity.compose)
                 implementation(libs.coil.compose)
 
                 implementation(projects.designSystem)
