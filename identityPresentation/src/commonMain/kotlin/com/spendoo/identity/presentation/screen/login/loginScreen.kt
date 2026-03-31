@@ -158,7 +158,7 @@ fun LoginScreenContent(
 fun LoginScreenPreview() = SpendooTheme {
     LoginScreenContent(
         state = LoginScreenState(
-            email = "",
+            email = "test@test.com",
             password = "",
             emailError = null,
             passwordError = null,
