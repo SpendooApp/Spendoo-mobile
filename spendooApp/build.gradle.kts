@@ -73,6 +73,8 @@ kotlin {
             implementation(projects.identityApi)
             implementation(projects.homeApi)
             implementation(projects.homePresentation)
+            implementation(projects.categoriesApi)
+            implementation(projects.categoriesPresentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
