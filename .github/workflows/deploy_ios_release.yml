@@ -1,0 +1,111 @@
+name: Deploy develop release IPA
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+
+jobs:
+  deploy-develop-ios:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Create GoogleService-Info.plist
+        run: echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}" | base64 -d > iosApp/iosApp/GoogleService-Info.plist
+
+      - name: Inject BASE_URL into Info.plist
+        run: /usr/libexec/PlistBuddy -c "Set :BASE_URL ${{ secrets.BASE_URL }}" iosApp/iosApp/Info.plist
+
+      - name: Install CocoaPods
+        run: pod install --repo-update --project-directory=iosApp
+
+      - name: Import signing certificate and profile
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.IOS_CERT_P12_BASE64 }}
+          p12-password: ${{ secrets.IOS_CERT_PASSWORD }}
+          profile-file-base64: ${{ secrets.IOS_PROVISION_PROFILE_BASE64 }}
+
+      - name: Compute version
+        run: |
+          VERSION_MAJOR=$(grep VERSION_MAJOR gradle.properties | cut -d'=' -f2 | xargs)
+          VERSION_MINOR=$(grep VERSION_MINOR gradle.properties | cut -d'=' -f2 | xargs)
+          RUN_NUMBER=${{ github.run_number }}
+          IPA_VERSION=${VERSION_MAJOR}.${VERSION_MINOR}.${RUN_NUMBER}
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $IPA_VERSION" iosApp/iosApp/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $RUN_NUMBER" iosApp/iosApp/Info.plist
+          echo "IPA_VERSION=$IPA_VERSION" >> $GITHUB_ENV
+
+      - name: Build KMP iOS framework
+        run: ./gradlew :spendooApp:linkReleaseFrameworkIosArm64 --build-cache
+
+      - name: Archive app
+        run: |
+          xcodebuild \
+            -workspace iosApp/iosApp.xcworkspace \
+            -scheme iosApp \
+            -configuration Release \
+            -archivePath $RUNNER_TEMP/Spendoo.xcarchive \
+            -allowProvisioningUpdates \
+            DEVELOPMENT_TEAM=${{ secrets.IOS_TEAM_ID }} \
+            PRODUCT_BUNDLE_IDENTIFIER=${{ secrets.IOS_BUNDLE_ID }} \
+            CODE_SIGN_STYLE=Manual \
+            PROVISIONING_PROFILE_SPECIFIER="${{ secrets.IOS_PROFILE_NAME }}" \
+            CODE_SIGN_IDENTITY="Apple Distribution"
+
+      - name: Export IPA
+        run: |
+          cat > $RUNNER_TEMP/ExportOptions.plist <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>ad-hoc</string>
+            <key>teamID</key><string>${{ secrets.IOS_TEAM_ID }}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>stripSwiftSymbols</key><true/>
+            <key>compileBitcode</key><false/>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${{ secrets.IOS_BUNDLE_ID }}</key><string>${{ secrets.IOS_PROFILE_NAME }}</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath $RUNNER_TEMP/Spendoo.xcarchive \
+            -exportPath $RUNNER_TEMP/ipa \
+            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist
+          IPA_PATH=$(find $RUNNER_TEMP/ipa -name '*.ipa' | head -n 1)
+          mv "$IPA_PATH" "$RUNNER_TEMP/ipa/Spendoo.ipa"
+          echo "IPA_PATH=$RUNNER_TEMP/ipa/Spendoo.ipa" >> $GITHUB_ENV
+
+      - name: Upload to Firebase
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_IOS_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          file: ${{ env.IPA_PATH }}
+          groups: spendoo-team
+          debug: true
+
+      - name: Publish IPA to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ios-develop-v${{ env.IPA_VERSION }}-attempt${{ github.run_attempt }}
+          name: iOS IPA v${{ env.IPA_VERSION }}
+          files: ${{ env.IPA_PATH }}
+          prerelease: true
+          generate_release_notes: true
+
