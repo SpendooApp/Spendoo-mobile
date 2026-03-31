@@ -63,6 +63,7 @@ import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.ic_eye_closed
 import spendoo.designsystem.generated.resources.ic_eye_opened
 import spendoo.designsystem.generated.resources.login
+import spendoo.designsystem.generated.resources.please_select_your_gender
 import spendoo.designsystem.generated.resources.privacy_policy
 import spendoo.designsystem.generated.resources.signup
 import spendoo.designsystem.generated.resources.terms_and_conditions
@@ -297,7 +298,7 @@ fun SignUpScreenPreview() = SpendooTheme {
             override fun onPrivacyPolicyBottomSheetDismissed() {}
         },
         state = SignUpUiState(
-            genderError = UiText.DynamicString("Please select your gender"),
+            genderError = UiText.StringRes(Res.string.please_select_your_gender),
         )
     )
 }

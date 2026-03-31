@@ -7,6 +7,11 @@ import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
 import com.spendoo.identity.presentation.navigation.ForgetPasswordRoute
 import com.spendoo.identity.presentation.navigation.SignUpRoute
 import com.spendoo.identity.presentation.shared.BaseViewModel
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.an_error_occurred
+import spendoo.designsystem.generated.resources.invalid_email
+import spendoo.designsystem.generated.resources.invalid_password
+import spendoo.designsystem.generated.resources.unknown_error
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
@@ -30,8 +35,9 @@ class LoginViewModel(
             onSuccess = { },
             onError = { error ->
                 showSnackBar(
-                    title = UiText.DynamicString("An error occurred"),
-                    message = UiText.DynamicString(error.message ?: "Unknown error"),
+                    title = UiText.StringRes(Res.string.an_error_occurred),
+                    message = error.message?.let(UiText::DynamicString)
+                        ?: UiText.StringRes(Res.string.unknown_error),
                     isSuccess = false,
                 )
             },
@@ -52,14 +58,14 @@ class LoginViewModel(
     private fun validateEmail() {
         when (validationUseCase.validateEmail(state.value.email)) {
             true -> updateState { copy(emailError = null) }
-            else -> updateState { copy(emailError = UiText.DynamicString("Invalid email")) }
+            else -> updateState { copy(emailError = UiText.StringRes(Res.string.invalid_email)) }
         }
     }
 
     private fun validatePassword() {
         when (validationUseCase.validatePassword(state.value.password)) {
             true -> updateState { copy(passwordError = null) }
-            else -> updateState { copy(passwordError = UiText.DynamicString("Invalid password")) }
+            else -> updateState { copy(passwordError = UiText.StringRes(Res.string.invalid_password)) }
         }
     }
 

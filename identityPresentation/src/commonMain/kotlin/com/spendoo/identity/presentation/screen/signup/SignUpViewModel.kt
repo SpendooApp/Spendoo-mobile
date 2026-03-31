@@ -9,6 +9,14 @@ import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
 import com.spendoo.identity.presentation.navigation.VerifyEmailRoute
 import com.spendoo.identity.presentation.shared.BaseViewModel
 import kotlinx.datetime.LocalDate
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.an_error_occurred
+import spendoo.designsystem.generated.resources.invalid_email
+import spendoo.designsystem.generated.resources.invalid_password
+import spendoo.designsystem.generated.resources.please_enter_your_full_name
+import spendoo.designsystem.generated.resources.please_select_your_gender
+import spendoo.designsystem.generated.resources.unknown_error
+import spendoo.designsystem.generated.resources.you_must_be_at_least_8_years_old
 
 class SignUpViewModel(
     private val registerRepository: RegisterRepository,
@@ -80,7 +88,7 @@ class SignUpViewModel(
         validateFields()
 
         val selectedGender = state.value.selectedGender ?: let {
-            updateState { copy(genderError = UiText.DynamicString("Please select your gender")) }
+            updateState { copy(genderError = UiText.StringRes(Res.string.please_select_your_gender)) }
             return
         }
 
@@ -110,7 +118,12 @@ class SignUpViewModel(
                 navigate(VerifyEmailRoute(email = state.value.email, isForgetPasswordFlow = false))
             },
             onError = {
-                println("Error: $it")
+                showSnackBar(
+                    title = UiText.StringRes(Res.string.an_error_occurred),
+                    message = it.message?.let(UiText::DynamicString)
+                        ?: UiText.StringRes(Res.string.unknown_error),
+                    isSuccess = false,
+                )
             },
             onEnd = {
                 updateState { copy(actionButtonState = AppButtonState.Enabled) }
@@ -136,7 +149,7 @@ class SignUpViewModel(
                 fullNameError = if (isValid) {
                     null
                 } else {
-                    UiText.DynamicString("Please enter your full name")
+                    UiText.StringRes(Res.string.please_enter_your_full_name)
                 }
             )
         }
@@ -151,7 +164,7 @@ class SignUpViewModel(
                 dateOfBirthError = if (isValid) {
                     null
                 } else {
-                    UiText.DynamicString("You must be at least 8 years old")
+                    UiText.StringRes(Res.string.you_must_be_at_least_8_years_old)
                 }
             )
         }
@@ -164,7 +177,7 @@ class SignUpViewModel(
                 emailError = if (isValid) {
                     null
                 } else {
-                    UiText.DynamicString("Invalid email")
+                    UiText.StringRes(Res.string.invalid_email)
                 }
             )
         }
@@ -177,7 +190,7 @@ class SignUpViewModel(
                 passwordError = if (isValid) {
                     null
                 } else {
-                    UiText.DynamicString("Invalid password")
+                    UiText.StringRes(Res.string.invalid_password)
                 }
             )
         }

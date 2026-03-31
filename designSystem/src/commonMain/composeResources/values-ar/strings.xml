@@ -44,4 +44,13 @@
         <string name="female">أنثى</string>
         <string name="ok">حسنًا</string>
         <string name="cancel">إلغاء</string>
+        <string name="invalid_email">بريد إلكتروني غير صالح</string>
+        <string name="invalid_password">كلمة مرور غير صالحة</string>
+        <string name="please_select_your_gender">يرجى اختيار جنسك</string>
+        <string name="please_enter_your_full_name">يرجى إدخال اسمك الكامل</string>
+        <string name="you_must_be_at_least_8_years_old">يجب أن يكون عمرك 8 سنوات على الأقل</string>
+        <string name="invalid_otp_please_try_again">رمز التحقق غير صحيح. حاول مرة أخرى.</string>
+        <string name="otp_must_be_5_digits">يجب أن يتكون رمز التحقق من 5 أرقام</string>
+        <string name="an_error_occurred">حدث خطأ</string>
+        <string name="unknown_error">خطأ غير معروف</string>
     </resources>
