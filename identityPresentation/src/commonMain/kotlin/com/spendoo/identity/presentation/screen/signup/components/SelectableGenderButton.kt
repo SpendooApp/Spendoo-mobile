@@ -3,7 +3,6 @@ package com.spendoo.identity.presentation.screen.signup.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -21,8 +20,8 @@ import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.modifier.thenIf
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.asString
+import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.identity.domain.entity.Gender
 import com.spendoo.identity.presentation.screen.signup.toResIcon
 import com.spendoo.identity.presentation.screen.signup.toResString

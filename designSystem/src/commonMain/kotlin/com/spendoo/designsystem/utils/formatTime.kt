@@ -1,4 +1,4 @@
-package com.spendoo.designsystem.util
+package com.spendoo.designsystem.utils
 
 fun formatTime(seconds: Int): String {
     val minutes = seconds / 60

@@ -37,9 +37,9 @@ import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
-import com.spendoo.designsystem.util.extentions.format
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.asString
+import com.spendoo.designsystem.utils.extentions.format
+import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.asString
 import com.spendoo.identity.domain.entity.Gender

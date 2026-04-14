@@ -1,4 +1,4 @@
-package com.spendoo.designsystem.util
+package com.spendoo.designsystem.utils
 
 import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.material3.ripple

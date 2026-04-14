@@ -1,4 +1,4 @@
-package com.spendoo.designsystem.util.extentions
+package com.spendoo.designsystem.utils.extentions
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number

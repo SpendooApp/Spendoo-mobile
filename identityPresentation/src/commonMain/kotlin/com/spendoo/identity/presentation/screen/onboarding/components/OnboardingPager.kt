@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
+import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingPageUiState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

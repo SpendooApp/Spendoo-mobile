@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.designsystem.components.bottomNavigation.BottomNavigationBar
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.api.HomeFeatureApi
@@ -110,7 +111,7 @@ private fun FeatureContent(
     activeFeature: Feature,
     identityApi: IdentityFeatureApi = koinInject(),
     homeApi: HomeFeatureApi = koinInject(),
-    categoriesApi: HomeFeatureApi = koinInject(),
+    categoriesApi: CategoriesFeatureApi = koinInject(),
     statsApi: HomeFeatureApi = koinInject(),
     chatBotApi: HomeFeatureApi = koinInject(),
     paymentsApi: HomeFeatureApi = koinInject(),

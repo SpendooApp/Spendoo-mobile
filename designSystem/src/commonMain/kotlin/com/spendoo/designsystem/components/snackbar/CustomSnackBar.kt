@@ -28,7 +28,7 @@ import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.designsystem.utils.PreviewMultiDevices
 import com.spendoo.designsystem.utils.SpendooPreview
 import com.spendoo.designsystem.utils.customShadow

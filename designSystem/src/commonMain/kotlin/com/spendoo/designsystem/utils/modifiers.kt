@@ -1,4 +1,4 @@
-package com.spendoo.designsystem.util
+package com.spendoo.designsystem.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

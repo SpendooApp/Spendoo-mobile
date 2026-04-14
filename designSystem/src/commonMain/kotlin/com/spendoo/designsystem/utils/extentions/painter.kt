@@ -1,4 +1,4 @@
-package com.spendoo.designsystem.util.extentions
+package com.spendoo.designsystem.utils.extentions
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
