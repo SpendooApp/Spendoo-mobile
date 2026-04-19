@@ -1,5 +1,6 @@
 package com.spendoo.designsystem.theme.color.scheme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 internal val DarkColorScheme = ColorScheme(
@@ -80,5 +81,14 @@ internal val DarkColorScheme = ColorScheme(
         variant800 = Color(0xFF0A608A),
         variant900 = Color(0xFF064E71),
         variant950 = Color(0xFF022C43)
+    ),
+    gradient = ColorScheme.Gradient(
+        brand = Brush.linearGradient(
+            colors = listOf(
+                Color(0xFF179FDD),
+                Color(0xFF004E85),
+                Color(0xFF179FDD)
+            )
+        )
     )
 )

@@ -2,6 +2,7 @@ package com.spendoo.designsystem.theme.color.scheme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 @Immutable
@@ -14,6 +15,7 @@ data class ColorScheme(
     val button: Button,
     val icon: Icon,
     val primary: PrimaryVariant,
+    val gradient: Gradient
 ) {
     data class Text(
         val body: Color,
@@ -99,6 +101,9 @@ data class ColorScheme(
         val variant800: Color,
         val variant900: Color,
         val variant950: Color
+    )
+    data class Gradient(
+        val brand : Brush
     )
 }
 
