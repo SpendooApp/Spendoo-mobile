@@ -33,6 +33,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.datetime)
 
                 // Compose
                 implementation(compose.runtime)
@@ -43,6 +44,7 @@ kotlin {
 
                 implementation(projects.designSystem)
                 implementation(projects.categoriesApi)
+                implementation(projects.categoriesDomain)
 
                 implementation(libs.bundles.koin)
 
