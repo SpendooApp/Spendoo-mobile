@@ -6,7 +6,7 @@ import com.spendoo.identity.data.dataSource.local.setting.refreshToken
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.LoginRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.RefreshRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.auth.response.AuthenticationResponse
-import com.spendoo.identity.data.mapper.toDomain
+import com.spendoo.identity.data.dataSource.remote.dto.auth.response.toDomain
 import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.data.utils.invalidateAuthTokens
 import com.spendoo.identity.domain.model.AuthenticationTokens
@@ -38,7 +38,9 @@ class AuthenticationRepositoryImpl(
 
     override suspend fun logout() {
         tryToExecute<Unit> {
-            post(LOGOUT_ENDPOINT)
+            post(LOGOUT_ENDPOINT) {
+                setBody(RefreshRequestDto(settings.refreshToken))
+            }
         }
         client.invalidateAuthTokens()
         clearAuthTokens()

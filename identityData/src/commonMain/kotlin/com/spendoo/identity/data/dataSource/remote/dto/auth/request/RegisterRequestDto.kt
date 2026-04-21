@@ -1,6 +1,7 @@
 package com.spendoo.identity.data.dataSource.remote.dto.auth.request
 
 import com.spendoo.identity.domain.entity.Gender
+import com.spendoo.identity.domain.model.RegisterRequest
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,4 +17,12 @@ data class RegisterRequestDto(
     val birthDate: String,
     @SerialName("gender")
     val gender: Gender,
+)
+
+fun RegisterRequest.toDto() = RegisterRequestDto(
+    fullName = fullName,
+    email = email,
+    password = password,
+    birthDate = birthDate.toString(),
+    gender = gender,
 )

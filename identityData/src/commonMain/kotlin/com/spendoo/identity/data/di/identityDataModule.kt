@@ -2,10 +2,12 @@ package com.spendoo.identity.data.di
 
 import com.russhwolf.settings.Settings
 import com.spendoo.identity.data.repository.AuthenticationRepositoryImpl
+import com.spendoo.identity.data.repository.ProfileRepositoryImpl
 import com.spendoo.identity.data.repository.RegisterRepositoryImpl
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl
 import com.spendoo.identity.data.repository.SettingsRepositoryImpl
 import com.spendoo.identity.domain.repository.AuthenticationRepository
+import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.identity.domain.repository.RegisterRepository
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
 import com.spendoo.identity.domain.repository.SettingsRepository
@@ -43,6 +45,10 @@ val identityDataModule = module {
             client = get(named(IDENTITY_CLIENT)),
             authenticationRepository = get()
         )
+    }
+
+    single<ProfileRepository> {
+        ProfileRepositoryImpl(client = get(named(IDENTITY_CLIENT)))
     }
 
     single<SettingsRepository> {
