@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
+import com.spendoo.designsystem.components.icon.CategoryIcon
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -32,23 +33,25 @@ import spendoo.designsystem.generated.resources.ic_food
 import spendoo.designsystem.generated.resources.ic_money
 import spendoo.designsystem.generated.resources.ic_slash
 
+data class BudgetDataUiState(
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+    val percentage: Float,
+    val total: Int,
+)
 
 @Composable
 fun CategoryCard(
     icon: DrawableResource,
     title: String,
-    startDate: LocalDate,
-    endDate: LocalDate,
-    percentage: Float,
     current: Int,
-    total: Int,
-    modifier : Modifier = Modifier,
+    budgetData: BudgetDataUiState?,
+    modifier: Modifier = Modifier,
     backgroundColor: Color = Theme.colorScheme.background.secondary,
     shape: Shape = RoundedCornerShape(24.dp),
-    progressColor : Color = if (percentage < 1 ) Theme.colorScheme.icon.primary else Theme.colorScheme.additional.onError
+    progressColor: Color = if (budgetData == null || budgetData.percentage < 1) Theme.colorScheme.icon.primary else Theme.colorScheme.additional.onError
 ) {
-    val percentValue = (percentage * 100).roundToInt()
-
+    val percentValue = budgetData?.let { (budgetData.percentage * 100).roundToInt() }
     Column(
         modifier = modifier
             .background(backgroundColor, shape)
@@ -61,19 +64,7 @@ fun CategoryCard(
             verticalAlignment = Alignment.CenterVertically
         )
         {
-            Box(
-                modifier = Modifier.size(40.dp)
-                    .background(Theme.colorScheme.button.secondary, RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center
-            )
-            {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = icon.painter(),
-                    contentDescription = null,
-                    tint = Theme.colorScheme.icon.primary,
-                )
-            }
+            CategoryIcon(icon)
             Text(
                 modifier = Modifier.padding(start = 8.dp).weight(1f),
                 text = title,
@@ -90,15 +81,66 @@ fun CategoryCard(
 
             )
         }
-        Text(
-            "From ${startDate.day} ${startDate.month.name} ${startDate.year} to ${endDate.day} ${endDate.month.name} ${endDate.year}",
-            modifier = Modifier.padding(vertical = 8.dp),
-            style = Theme.typography.label.medium.small,
-            color = Theme.colorScheme.text.titleSmall,
-            maxLines = 1
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+        budgetData?.let { budgetData ->
+            Text(
+                "From ${budgetData.startDate.day} ${budgetData.startDate.month.name} ${budgetData.startDate.year} to ${budgetData.endDate.day} ${budgetData.endDate.month.name} ${budgetData.endDate.year}",
+                modifier = Modifier.padding(vertical = 8.dp),
+                style = Theme.typography.label.medium.small,
+                color = Theme.colorScheme.text.titleSmall,
+                maxLines = 1
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    painter = Res.drawable.ic_money.painter(),
+                    contentDescription = null,
+                )
+                Text(
+                    modifier = Modifier.padding(start = 4.dp),
+                    text = "$current",
+                    color = Theme.colorScheme.text.body,
+                    style = Theme.typography.body.medium,
+                )
+                Icon(
+                    modifier = Modifier.size(8.dp, 24.dp),
+                    painter = Res.drawable.ic_slash.painter(),
+                    contentDescription = null,
+                )
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    painter = Res.drawable.ic_money.painter(),
+                    contentDescription = null,
+                )
+                Text(
+                    modifier = Modifier.padding(start = 4.dp)
+                        .weight(1f),
+                    text = "${budgetData.total}",
+                    color = Theme.colorScheme.text.body,
+                    style = Theme.typography.body.medium,
+                )
+                Text(
+                    style = Theme.typography.label.medium.medium,
+                    color = Theme.colorScheme.icon.primary,
+                    text = "$percentValue%"
+                )
+            }
+
+            LinearProgressIndicator(
+                progress = {
+                    budgetData.percentage
+                },
+                modifier = Modifier.fillMaxWidth().height(12.dp),
+                gapSize = (-10).dp,
+                drawStopIndicator = {},
+                color = progressColor,
+                trackColor = Theme.colorScheme.button.secondary
+
+            )
+        } ?: Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -108,46 +150,14 @@ fun CategoryCard(
             )
             Text(
                 modifier = Modifier.padding(start = 4.dp),
-                text = "$current",
+                text = "-$current",
                 color = Theme.colorScheme.text.body,
                 style = Theme.typography.body.medium,
-            )
-            Icon(
-                modifier = Modifier.size(8.dp, 24.dp),
-                painter = Res.drawable.ic_slash.painter(),
-                contentDescription = null,
-            )
-            Icon(
-                modifier = Modifier.size(20.dp),
-                painter = Res.drawable.ic_money.painter(),
-                contentDescription = null,
-            )
-            Text(
-                modifier = Modifier.padding(start = 4.dp)
-                    .weight(1f),
-                text = "$total",
-                color = Theme.colorScheme.text.body,
-                style = Theme.typography.body.medium,
-            )
-            Text(
-                style = Theme.typography.label.medium.medium,
-                color = Theme.colorScheme.icon.primary,
-                text = "$percentValue%"
             )
         }
-        LinearProgressIndicator(
-            progress = {
-                percentage
-            },
-            modifier = Modifier.fillMaxWidth().height(12.dp),
-            gapSize = (-10).dp,
-            drawStopIndicator = {},
-            color = progressColor,
-            trackColor = Theme.colorScheme.button.secondary
-
-        )
     }
 }
+
 
 @Preview(widthDp = 320)
 @Composable
@@ -155,11 +165,13 @@ private fun CategoryCardPreview() = SpendooTheme {
     CategoryCard(
         icon = Res.drawable.ic_food,
         title = "dooooooooooooooooooooooooooooooooooooooooooooooooooo",
-        startDate = LocalDate(2022, 2, 2),
-        endDate = LocalDate(2022, 2, 2),
         current = 3000,
-        total = 4200,
-        percentage = 3000f / 4200,
-
+//        budgetData = BudgetDataUiState(
+//            startDate = LocalDate(2022, 2, 2),
+//            endDate = LocalDate(2022, 2, 2),
+//            total = 4200,
+//            percentage = 3000f / 4200,
+//        )
+        budgetData = null
     )
 }
