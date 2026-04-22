@@ -1,0 +1,3 @@
+package com.spendoo.categories.presentation.screen.categories
+
+interface CategoriesInteractionListener
