@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.button.AppButton
+import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -39,17 +41,14 @@ data class BottomSheetOption(
 @Composable
 fun BottomSheetTemplate(
     title: String,
-    options: List<BottomSheetOption>,
-    selectedOptionId: String?,
-    onOptionSelected: (BottomSheetOption) -> Unit,
-    onSelect: (BottomSheetOption) -> Unit,
+    onSelect: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     cancelText: String = "Cancel",
     selectText: String = "Select",
+    isSelectEnabled: Boolean = true,
+    body: @Composable ColumnScope.() -> Unit,
 ) {
-    val selectedOption = options.firstOrNull { it.id == selectedOptionId }
-
     Column(
         modifier = modifier
             .background(color = Theme.colorScheme.background.tertiary)
@@ -69,15 +68,8 @@ fun BottomSheetTemplate(
                 .weight(1f, fill = false)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            options.forEach { option ->
-                SelectableOptionRow(
-                    option = option,
-                    isSelected = option.id == selectedOptionId,
-                    onClick = { onOptionSelected(option) },
-                )
-            }
-        }
+            content = body,
+        )
 
         Row(
             modifier = Modifier
@@ -94,10 +86,26 @@ fun BottomSheetTemplate(
             AppButton(
                 modifier = Modifier.weight(1f),
                 type = AppButtonType.Primary,
-                onClick = { selectedOption?.let(onSelect) },
+                state = if (isSelectEnabled) AppButtonState.Enabled else AppButtonState.Disabled,
+                onClick = onSelect,
                 text = selectText,
             )
         }
+    }
+}
+
+@Composable
+fun BottomSheetOptionsBody(
+    options: List<BottomSheetOption>,
+    selectedOptionId: String?,
+    onOptionSelected: (BottomSheetOption) -> Unit,
+) {
+    options.forEach { option ->
+        SelectableOptionRow(
+            option = option,
+            isSelected = option.id == selectedOptionId,
+            onClick = { onOptionSelected(option) },
+        )
     }
 }
 
@@ -147,7 +155,7 @@ private fun SelectableOptionRow(
     }
 }
 
-@Preview
+@Preview(widthDp = 380)
 @Composable
 fun BottomSheetTemplatePreview() = SpendooTheme {
     val options = listOf(
@@ -159,10 +167,14 @@ fun BottomSheetTemplatePreview() = SpendooTheme {
 
     BottomSheetTemplate(
         title = "Leftover Funds Action",
-        options = options,
-        selectedOptionId = selectedOptionId,
-        onOptionSelected = { selectedOptionId = it.id },
         onSelect = {},
         onDismiss = {},
-    )
+        isSelectEnabled = true,
+    ) {
+        BottomSheetOptionsBody(
+            options = options,
+            selectedOptionId = selectedOptionId,
+            onOptionSelected = { selectedOptionId = it.id },
+        )
+    }
 }
