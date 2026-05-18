@@ -2,11 +2,14 @@ package com.spendoo.designsystem.components.sheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonType
@@ -42,32 +47,43 @@ fun BottomSheetTemplate(
             .fillMaxWidth()
     ) {
         Text(
-            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
+            modifier = Modifier.padding(16.dp),
             textAlign = TextAlign.Start,
             text = title,
             style = Theme.typography.title.large,
             color = Theme.colorScheme.text.title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
 
         content()
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            AppButton(
-                modifier = Modifier.weight(1f),
-                type = AppButtonType.Secondary,
-                onClick = onDismiss,
-                text = dismissText,
-            )
-            AppButton(
-                modifier = Modifier.weight(1f),
-                type = AppButtonType.Primary,
-                onClick = onClickAction,
-                text = actionText,
-            )
+        BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+            val halfWidth = maxWidth / 2
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                AppButton(
+                    modifier = Modifier.weight(1f),
+                    type = AppButtonType.Secondary,
+                    onClick = onDismiss,
+                    text = dismissText,
+                )
+                AppButton(
+                    modifier = Modifier
+                        // 1. If text is larger, widthIn lets it expand naturally up to full width
+                        // 2. Forces the button to be AT LEAST half the screen width (minus spacing)
+                        .wrapContentWidth()
+                        .widthIn(min = halfWidth - 4.dp)
+                    ,
+                    type = AppButtonType.Primary,
+                    onClick = onClickAction,
+                    text = actionText,
+                )
+            }
         }
     }
 }
@@ -85,7 +101,7 @@ fun BottomSheetTemplatePreview() = SpendooTheme {
     BottomSheetTemplate(
         title = "Leftover Funds Action",
         dismissText = "Cancel",
-        actionText = "Select",
+        actionText = "Select anything",
         onDismiss = {},
         onClickAction = {},
     ) {

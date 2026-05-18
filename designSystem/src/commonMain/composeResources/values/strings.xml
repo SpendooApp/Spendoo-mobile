@@ -43,6 +43,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="ok">Ok</string>
+    <string name="select">Select</string>
     <string name="cancel">Cancel</string>
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_password">Invalid password</string>
@@ -53,4 +54,24 @@
     <string name="otp_must_be_5_digits">OTP must be 5 digits</string>
     <string name="an_error_occurred">An error occurred</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="edit_category">Edit Category</string>
+    <string name="add_new_category">Add New Category</string>
+    <string name="enter_category_name">Enter Category Name</string>
+    <string name="enter_budget">Enter Budget</string>
+    <string name="enter_budget_start_date">Enter Budget Start Date</string>
+    <string name="leftover_funds_action">Leftover Funds Action</string>
+    <string name="priority">Priority</string>
+    <string name="icon">Icon</string>
+    <string name="reset_budget_cycle">Reset Budget Cycle</string>
+    <string name="add_category">Add Category</string>
+    <string name="move_to_next_period">Move to next period</string>
+    <string name="reset_to_original_amount">Reset to original amount</string>
+    <string name="move_to_savings">Move to savings</string>
 </resources>

@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.utils.extentions.asString
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 data class SelectableOption(
@@ -32,9 +34,14 @@ data class SelectableOption(
     val text: String,
 )
 
+data class GenSelectableOption<T: Enum<T>>(
+    val elem: T,
+    val name: StringResource
+)
+
 @Composable
 fun SelectableOptionRow(
-    option: SelectableOption,
+    optionName: String,
     isSelected: Boolean,
     onClick: () -> Unit,
 ) {
@@ -73,7 +80,7 @@ fun SelectableOptionRow(
 
         Text(
             modifier = Modifier.weight(1f),
-            text = option.text,
+            text = optionName,
             style = Theme.typography.title.medium,
             color = Theme.colorScheme.text.titleSmall,
         )
@@ -93,9 +100,30 @@ fun SelectableOptionRowColumn(
     ) {
         options.forEach { option ->
             SelectableOptionRow(
-                option = option,
+                optionName = option.text,
                 isSelected = option.id == selectedOptionId,
                 onClick = { onOptionSelected(option.id) }
+            )
+        }
+    }
+}
+
+@Composable
+fun <T: Enum<T>> SelectableOptionRowColumn(
+    options: List<GenSelectableOption<T>>,
+    selectedOption: T?,
+    onOptionSelected: (T) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        options.forEach { option ->
+            SelectableOptionRow(
+                optionName = option.name.asString(),
+                isSelected = option.elem == selectedOption,
+                onClick = { onOptionSelected(option.elem) }
             )
         }
     }

@@ -1,7 +1,7 @@
 package com.spendoo.categories.data.dataSource.remote.dto.category
 
-import com.spendoo.categories.domain.entity.CategoryIcon
-import com.spendoo.categories.domain.entity.LeftOverOption
+import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.UpdateCategory
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

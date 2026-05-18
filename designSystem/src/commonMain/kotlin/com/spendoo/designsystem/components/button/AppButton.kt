@@ -90,7 +90,7 @@ fun AppButton(
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(16.dp),
         color = Theme.colorScheme.background.quinary,
         contentColor = buttonContentColor,
         onClick = { if (enabled) onClick() },
