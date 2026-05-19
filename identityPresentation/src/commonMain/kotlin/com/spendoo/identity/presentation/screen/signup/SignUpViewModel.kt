@@ -41,7 +41,7 @@ class SignUpViewModel(
     }
 
     override fun onChangeDateOfBirth(newDateOfBirth: LocalDate) {
-        updateState { copy(dateOfBirth = newDateOfBirth) }
+        updateState { copy(dateOfBirth = newDateOfBirth, showDatePicker = false) }
         validateAge()
     }
 

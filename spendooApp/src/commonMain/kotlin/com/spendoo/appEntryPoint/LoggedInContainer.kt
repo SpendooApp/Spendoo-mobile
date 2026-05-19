@@ -30,6 +30,7 @@ import com.spendoo.identity.api.IdentityFeatureApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.ic_categories
 import spendoo.designsystem.generated.resources.ic_home
 import spendoo.designsystem.generated.resources.ic_home_selected
 
@@ -75,8 +76,8 @@ fun LoggedInContainer(
                 )
 
                 bottomNavigationItem(
-                    selectedIcon = painterResource(Res.drawable.ic_home_selected),
-                    notSelectedIcon = painterResource(Res.drawable.ic_home),
+                    selectedIcon = painterResource(Res.drawable.ic_categories),
+                    notSelectedIcon = painterResource(Res.drawable.ic_categories),
                     title = "Categories",
                     entry = { listener.setActiveFeature(Feature.Categories) }
                 )

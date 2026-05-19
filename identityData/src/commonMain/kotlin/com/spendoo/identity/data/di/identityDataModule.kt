@@ -20,7 +20,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private const val IDENTITY_CLIENT = "IdentityClient"
 private const val COIL_CLIENT = "CoilClient"
 private const val BASE_URL = "baseUrl"
 private const val IDENTITY_SCOPE = "IdentityScope"
@@ -31,24 +30,24 @@ val identityDataModule = module {
 
     single<AuthenticationRepository> {
         AuthenticationRepositoryImpl(
-            client = get(named(IDENTITY_CLIENT)),
+            client = get(),
             settings = get(),
         )
     }
 
     single<ResetPasswordRepository> {
-        ResetPasswordRepositoryImpl(client = get(named(IDENTITY_CLIENT)))
+        ResetPasswordRepositoryImpl(client = get())
     }
 
     single<RegisterRepository> {
         RegisterRepositoryImpl(
-            client = get(named(IDENTITY_CLIENT)),
+            client = get(),
             authenticationRepository = get()
         )
     }
 
     single<ProfileRepository> {
-        ProfileRepositoryImpl(client = get(named(IDENTITY_CLIENT)))
+        ProfileRepositoryImpl(client = get())
     }
 
     single<SettingsRepository> {
@@ -56,7 +55,7 @@ val identityDataModule = module {
     }
 
     singleOf(::AuthorizationService)
-    single(named(IDENTITY_CLIENT)) {
+    single {
         provideHttpClient(
             engine = get(),
             baseUrl = get<String>(named(BASE_URL)),

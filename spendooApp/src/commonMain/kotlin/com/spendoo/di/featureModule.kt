@@ -1,6 +1,7 @@
 package com.spendoo.di
 
 import com.spendoo.categories.data.di.categoriesDataModule
+import com.spendoo.categories.presentation.di.categoriesPresentationModule
 import com.spendoo.identity.domain.di.domainModule as identityDomainModule
 import com.spendoo.identity.presentation.di.identityScreensModule
 import com.spendoo.identity.data.di.identityDataModule
@@ -12,5 +13,6 @@ val featureModule = module {
         identityDomainModule,
         identityDataModule,
         categoriesDataModule,
+        categoriesPresentationModule,
     )
 }

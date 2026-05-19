@@ -4,7 +4,7 @@ data class Category(
     val categoryId: String,
     val categoryName: String,
     val categoryIcon: CategoryIcon,
-    val priority: Int,
-    val leftOverOptions: LeftOverOption,
+    val priority: PriorityOption,
+    val leftOverOption: LeftOverOption,
     val budget: Budget,
 )

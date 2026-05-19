@@ -32,6 +32,12 @@ internal fun provideHttpClient(
     baseUrl: String,
     authorizationService: suspend () -> AuthorizationService,
 ): HttpClient {
+
+    val prettyJson = Json {
+        prettyPrint = true
+        isLenient = true
+    }
+
     return HttpClient(engine) {
         expectSuccess = true
 
@@ -57,7 +63,29 @@ internal fun provideHttpClient(
             level = LogLevel.ALL
             logger = object : Logger {
                 override fun log(message: String) {
-                    println("Identity Client: $message")
+                    // Find where the JSON structural markers actually begin and end
+                    val firstBrace = message.indexOfAny(charArrayOf('{', '['))
+                    val lastBrace = message.lastIndexOfAny(charArrayOf('}', ']'))
+
+                    val formattedMessage = if (firstBrace != -1 && lastBrace != -1 && lastBrace > firstBrace) {
+                        try {
+                            // Extract only the raw JSON payload hidden inside the message strings
+                            val rawJson = message.substring(firstBrace, lastBrace + 1)
+
+                            // Parse and format it cleanly
+                            val jsonElement = prettyJson.parseToJsonElement(rawJson)
+                            val prettyJsonString = prettyJson.encodeToString(jsonElement)
+
+                            // Re-assemble the log message, swapping out the flat line for the beautiful block
+                            message.substring(0, firstBrace) + prettyJsonString + message.substring(lastBrace + 1)
+                        } catch (e: Exception) {
+                            message // Fallback to raw text if it wasn't valid JSON after all
+                        }
+                    } else {
+                        message // Standard headers/URLs flow right through untouched
+                    }
+
+                    println("Identity Client:\n$formattedMessage")
                 }
             }
         }

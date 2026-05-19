@@ -45,6 +45,7 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlin.stdlib)
+                api(libs.kotlinx.datetime)
             }
         }
     }
