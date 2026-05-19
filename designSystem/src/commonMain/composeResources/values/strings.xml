@@ -74,4 +74,24 @@
     <string name="move_to_next_period">Move to next period</string>
     <string name="reset_to_original_amount">Reset to original amount</string>
     <string name="move_to_savings">Move to savings</string>
+    <string name="add_amount">Add Amount</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="add_amount_to">Add amount to %1$s</string>
+    <string name="add">Add</string>
+    <string name="leave_it_blank_or_0_for_no_budget_limit">Leave it blank or 0 for no budget limit</string>
+    <string name="categories">Categories</string>
+    <string name="total_budget">Total Budget</string>
+    <string name="total_spending">Total Spending</string>
+    <string name="added_income">Added Income</string>
+    <string name="no_categories_yet">No categories yet. Click the + button to add your first category!</string>
+    <string name="error_loading_summary">Error loading summary</string>
+    <string name="an_unexpected_error_occurred">An unexpected error occurred</string>
+    <string name="error_loading_categories">Error loading categories</string>
+    <string name="error_creating_category">Error creating category</string>
+    <string name="error_updating_category">Error updating category</string>
+    <string name="error_deleting_category">Error deleting category</string>
+    <string name="error_adding_amount_to_category">Error adding amount to category</string>
+    <string name="category_id_is_missing">Category ID is missing</string>
+    <string name="category_actions">Category Actions</string>
 </resources>

@@ -3,7 +3,6 @@ package com.spendoo.designsystem.components.general
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
@@ -43,6 +43,7 @@ data class GenSelectableOption<T: Enum<T>>(
 fun SelectableOptionRow(
     optionName: String,
     isSelected: Boolean,
+    customIcon: (@Composable () -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     val borderColor by animateColorAsState(
@@ -56,12 +57,12 @@ fun SelectableOptionRow(
             .clip(RoundedCornerShape(16.dp))
             .background(Theme.colorScheme.background.tertiary)
             .border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick)
+            .clickableNoRipple(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Box(
+        customIcon?.invoke() ?: Box(
             modifier = Modifier
                 .size(28.dp)
                 .clip(CircleShape)

@@ -8,3 +8,8 @@ import org.jetbrains.compose.resources.stringResource
 fun StringResource.asString(): String {
     return stringResource(this)
 }
+
+@Composable
+fun StringResource.asString(vararg formatArgs: Any): String {
+    return stringResource(this, *formatArgs)
+}

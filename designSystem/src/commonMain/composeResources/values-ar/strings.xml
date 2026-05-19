@@ -74,4 +74,24 @@
     <string name="move_to_next_period">نقل إلى الفترة التالية</string>
     <string name="reset_to_original_amount">إعادة التعيين إلى المبلغ الأصلي</string>
     <string name="move_to_savings">نقل إلى الادخار</string>
+    <string name="add_amount">إضافة مبلغ</string>
+    <string name="edit">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="add_amount_to">إضافة مبلغ إلى %1$s</string>
+    <string name="add">إضافة</string>
+    <string name="leave_it_blank_or_0_for_no_budget_limit">اتركه فارغًا أو 0 لعدم وجود حد للميزانية</string>
+    <string name="categories">الفئات</string>
+    <string name="total_budget">إجمالي الميزانية</string>
+    <string name="total_spending">إجمالي الإنفاق</string>
+    <string name="added_income">الدخل المضاف</string>
+    <string name="no_categories_yet">لا توجد فئات بعد. انقر فوق الزر + لإضافة فئتك الأولى!</string>
+    <string name="error_loading_summary">خطأ في تحميل الملخص</string>
+    <string name="an_unexpected_error_occurred">حدث خطأ غير متوقع</string>
+    <string name="error_loading_categories">خطأ في تحميل الفئات</string>
+    <string name="error_creating_category">خطأ في إنشاء الفئة</string>
+    <string name="error_updating_category">خطأ في تحديث الفئة</string>
+    <string name="error_deleting_category">خطأ في حذف الفئة</string>
+    <string name="error_adding_amount_to_category">خطأ في إضافة مبلغ للفئة</string>
+    <string name="category_id_is_missing">معرف الفئة مفقود</string>
+    <string name="category_actions">إجراءات الفئة</string>
 </resources>

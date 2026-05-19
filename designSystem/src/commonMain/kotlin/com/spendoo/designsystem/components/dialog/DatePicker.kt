@@ -65,10 +65,12 @@ fun DatePicker(
                     TextButton(
                         colors = ButtonDefaults.textButtonColors(contentColor = brandColor),
                         onClick = {
-                            datePickerState.selectedDateMillis?.let {
-                                onDateSelected(LocalDate.fromEpochDays((it / 86400000).toInt()))
+                            val selectedDateMillis = datePickerState.selectedDateMillis
+                            if (selectedDateMillis != null) {
+                                onDateSelected(LocalDate.fromEpochDays((selectedDateMillis / 86400000).toInt()))
+                            } else {
+                                onDismiss()
                             }
-                            onDismiss()
                         }
                     ) { Text(confirmText) }
                 },

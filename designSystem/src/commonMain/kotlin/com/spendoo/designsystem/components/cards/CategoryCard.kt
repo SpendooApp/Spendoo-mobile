@@ -1,7 +1,6 @@
 package com.spendoo.designsystem.components.cards
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,13 +19,13 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
 import com.spendoo.designsystem.components.icon.Icon
+import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.math.roundToInt
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dots
 import spendoo.designsystem.generated.resources.ic_food
@@ -36,7 +35,7 @@ import spendoo.designsystem.generated.resources.ic_slash
 data class BudgetDataUiState(
     val startDate: LocalDate,
     val endDate: LocalDate,
-    val percentage: Float,
+    val percentage: Int,
     val total: Int,
 )
 
@@ -49,21 +48,20 @@ fun CategoryCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Theme.colorScheme.background.secondary,
     shape: Shape = RoundedCornerShape(24.dp),
-    progressColor: Color = if (budgetData == null || budgetData.percentage < 1) Theme.colorScheme.icon.primary else Theme.colorScheme.additional.onError
+    progressColor: Color = if (budgetData == null || budgetData.percentage < 100) Theme.colorScheme.icon.primary else Theme.colorScheme.additional.onError,
+    onClickMenu: () -> Unit
 ) {
-    val percentValue = budgetData?.let { (budgetData.percentage * 100).roundToInt() }
+    val percentValue = budgetData?.percentage
+
     Column(
         modifier = modifier
             .background(backgroundColor, shape)
             .padding(20.dp, 16.dp)
-
-    )
-    {
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        )
-        {
+        ) {
             CategoryIcon(icon)
             Text(
                 modifier = Modifier.padding(start = 8.dp).weight(1f),
@@ -74,11 +72,10 @@ fun CategoryCard(
                 overflow = Ellipsis
             )
             Icon(
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(24.dp).clickableNoRipple(onClick = onClickMenu),
                 painter = Res.drawable.ic_dots.painter(),
                 contentDescription = null,
                 tint = Theme.colorScheme.brand.secondaryVariant
-
             )
         }
         budgetData?.let { budgetData ->
@@ -130,7 +127,7 @@ fun CategoryCard(
 
             LinearProgressIndicator(
                 progress = {
-                    budgetData.percentage
+                    budgetData.percentage / 100f
                 },
                 modifier = Modifier.fillMaxWidth().height(12.dp),
                 gapSize = (-10).dp,
@@ -150,7 +147,7 @@ fun CategoryCard(
             )
             Text(
                 modifier = Modifier.padding(start = 4.dp),
-                text = "-$current",
+                text = "${if (current > 0) "-" else ""}$current",
                 color = Theme.colorScheme.text.body,
                 style = Theme.typography.body.medium,
             )
@@ -172,6 +169,7 @@ private fun CategoryCardPreview() = SpendooTheme {
 //            total = 4200,
 //            percentage = 3000f / 4200,
 //        )
+        onClickMenu = {},
         budgetData = null
     )
 }

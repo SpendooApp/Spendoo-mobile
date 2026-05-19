@@ -107,4 +107,6 @@ data class ColorScheme(
     )
 }
 
+fun Color.toBrush(): Brush = Brush.linearGradient(colors = listOf(this, this))
+
 internal val LocalColorScheme = staticCompositionLocalOf { LightColorScheme }

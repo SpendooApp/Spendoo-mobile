@@ -60,6 +60,7 @@ fun CustomTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     errorText: String? = null,
+    helperText: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
@@ -199,7 +200,7 @@ fun CustomTextField(
         )
         // Animated spacer
         AnimatedVisibility(
-            visible = !errorText.isNullOrBlank(),
+            visible = !errorText.isNullOrBlank() || !helperText.isNullOrBlank(),
             enter = expandVertically(),
             exit = shrinkVertically()
         ) {
@@ -215,6 +216,21 @@ fun CustomTextField(
             Text(
                 text = errorText ?: "",
                 color = Theme.colorScheme.additional.onError,
+                modifier = Modifier.padding(start = 16.dp),
+                style = Theme.typography.body.small,
+                textAlign = TextAlign.Start
+            )
+        }
+
+        // Helper text
+        AnimatedVisibility(
+            visible = !helperText.isNullOrBlank() && errorText.isNullOrBlank(),
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            Text(
+                text = helperText ?: "",
+                color = Theme.colorScheme.text.label,
                 modifier = Modifier.padding(start = 16.dp),
                 style = Theme.typography.body.small,
                 textAlign = TextAlign.Start
