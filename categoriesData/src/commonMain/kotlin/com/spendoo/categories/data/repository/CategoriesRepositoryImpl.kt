@@ -44,7 +44,7 @@ class CategoriesRepositoryImpl(
     override suspend fun createCategory(request: CreateCategory) {
         tryToExecute<Unit> {
             post(CategoriesEndpoints.CATEGORIES) {
-                setBody(request)
+                setBody(request.toDto())
             }
         }
     }
@@ -76,14 +76,9 @@ class CategoriesRepositoryImpl(
     }
 
     override suspend fun getCategoriesSummary(): CategorySummary {
-        val response = tryToExecute<CategorySummaryDto> {
+        return tryToExecute<CategorySummaryDto> {
             get(CategoriesEndpoints.CATEGORY_SUMMARY)
-        }
-        return CategorySummary(
-            totalBudget = response.totalBudget,
-            totalSpent = response.totalSpent,
-            addedIncome = response.addedIncome,
-        )
+        }.toDomain()
     }
 }
 

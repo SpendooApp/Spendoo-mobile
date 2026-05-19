@@ -52,6 +52,7 @@ kotlin {
                 implementation(libs.bundles.ktor)
                 implementation(libs.ktor.client.cio)
                 implementation(libs.koin.core)
+                implementation(libs.kotlinx.datetime)
             }
         }
 

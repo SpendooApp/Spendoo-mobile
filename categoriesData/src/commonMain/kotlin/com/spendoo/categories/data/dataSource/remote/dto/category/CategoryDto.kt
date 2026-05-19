@@ -3,6 +3,7 @@ package com.spendoo.categories.data.dataSource.remote.dto.category
 import com.spendoo.categories.domain.entity.category.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.Category
+import com.spendoo.categories.domain.entity.category.toPriorityOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -26,7 +27,7 @@ fun CategoryDto.toDomain(): Category = Category(
     categoryId = categoryId,
     categoryName = categoryName,
     categoryIcon = categoryIcon,
-    priority = priority,
-    leftOverOptions = leftOverOptions,
+    priority = priority.toPriorityOption(),
+    leftOverOption = leftOverOptions,
     budget = budget.toDomain(),
 )

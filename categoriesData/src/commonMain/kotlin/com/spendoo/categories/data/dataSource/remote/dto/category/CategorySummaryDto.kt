@@ -1,5 +1,6 @@
 package com.spendoo.categories.data.dataSource.remote.dto.category
 
+import com.spendoo.categories.domain.entity.category.CategorySummary
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,3 +13,11 @@ data class CategorySummaryDto(
     @SerialName("addedIncome")
     val addedIncome: Double? = null,
 )
+
+fun CategorySummaryDto.toDomain(): CategorySummary {
+    return CategorySummary(
+        totalBudget = totalBudget ?: 0.0,
+        totalSpent = totalSpent ?: 0.0,
+        addedIncome = addedIncome ?: 0.0,
+    )
+}
