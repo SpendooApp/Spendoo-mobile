@@ -19,8 +19,8 @@ import spendoo.designsystem.generated.resources.select
 @Composable
 fun LiftoverFundsActionSheet(
     show: Boolean,
-    initialSelectedOption: LeftOverOption? = null,
-    onOptionSelected: (LeftOverOption?) -> Unit,
+    initialSelectedOption: LeftOverOption,
+    onOptionSelected: (LeftOverOption) -> Unit,
     onDismiss: () -> Unit
 ) {
     var selectedOption by remember { mutableStateOf(initialSelectedOption) }
@@ -32,15 +32,18 @@ fun LiftoverFundsActionSheet(
         BottomSheetTemplate(
             title = Res.string.leftover_funds_action.asString(),
             dismissText = Res.string.cancel.asString(),
+            showDividers = false,
             onDismiss = onDismiss,
             onClickAction = { onOptionSelected(selectedOption) },
             actionText = Res.string.select.asString(),
         ) {
-            SelectableOptionRowColumn(
-                options = LeftOverOption.entries.toSelectableOptions(),
-                selectedOption = selectedOption,
-                onOptionSelected = { selectedOption = it },
-            )
+            item {
+                SelectableOptionRowColumn(
+                    options = LeftOverOption.entries.toSelectableOptions(),
+                    selectedOption = selectedOption,
+                    onOptionSelected = { selectedOption = it },
+                )
+            }
         }
     }
 }

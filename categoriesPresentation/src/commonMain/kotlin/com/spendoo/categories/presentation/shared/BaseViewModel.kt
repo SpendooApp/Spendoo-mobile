@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import com.spendoo.categories.presentation.navigation.BaseRoute
 import com.spendoo.categories.presentation.navigation.effector.Effector
+import com.spendoo.categories.presentation.shared.pagination.Paginator
 import com.spendoo.designsystem.utils.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -124,6 +125,36 @@ abstract class BaseViewModel<STATE>(
                 .catch { throwable -> onError(throwable) }
                 .collect()
         }
+    }
+
+    protected fun <Key, Items> createPaginator(
+        initialKey: Key,
+        pageSize: Int,
+        loadPage: suspend (pageNumber: Key) -> List<Items>,
+        onSuccess: (items: List<Items>) -> Unit,
+        onLoadUpdated: (Boolean) -> Unit,
+        onError: (Throwable?) -> Unit = {},
+        endReached: (items: List<Items>, pageSize: Int) -> Boolean = { items, size ->
+            items.isEmpty() || items.size < size
+        }
+    ): Paginator<Key, List<Items>> {
+        return Paginator(
+            initialKey = initialKey,
+            onLoadUpdated = onLoadUpdated,
+            onRequest = { pageNumber -> loadPage(pageNumber) },
+            getNextKey = { currentKey, _ ->
+                @Suppress("UNCHECKED_CAST")
+                when (currentKey) {
+                    is Int -> (currentKey + 1) as Key
+                    else -> currentKey
+                }
+            },
+            onError = { throwable ->
+                onError(throwable)
+            },
+            onSuccess = { items, _ -> onSuccess(items) },
+            endReached = { _, result -> endReached(result, pageSize) }
+        )
     }
 
 }

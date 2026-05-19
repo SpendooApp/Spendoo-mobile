@@ -94,6 +94,6 @@ fun CategoriesNavHost(
     }
 }
 
-private val routesWithBottomNavigation = listOf<String?>(
-
+private val routesWithBottomNavigation = listOf(
+    CategoriesRoute::class.qualifiedName,
 )

@@ -1,10 +1,16 @@
 package com.spendoo.categories.presentation.screen.addCategoryBottomSheet
 
 import androidx.compose.runtime.Composable
+import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.categories.domain.entity.category.CreateBudget
+import com.spendoo.categories.domain.entity.category.CreateCategory
 import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
+import com.spendoo.categories.domain.entity.category.UpdateCategory
+import com.spendoo.categories.domain.entity.category.toInt
+import com.spendoo.categories.presentation.shared.getToday
 import com.spendoo.designsystem.components.general.GenSelectableOption
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource
@@ -37,19 +43,61 @@ import spendoo.designsystem.generated.resources.move_to_savings
 import spendoo.designsystem.generated.resources.reset_to_original_amount
 import spendoo.designsystem.generated.resources.weekly
 import spendoo.designsystem.generated.resources.yearly
+import kotlin.time.Instant
 
-data class AddCategoryUiState(
+data class AddEditCategoryUiState(
     val categoryId: String? = null,
     val categoryName: String = "",
-    val budget: Int? = null,
+    val budget: Double? = null,
     val budgetStartDate: LocalDate? = null,
-    val leftoverFundsAction: LeftOverOption? = null,
+    val leftoverFundsAction: LeftOverOption = LeftOverOption.MOVE_TO_SAVINGS,
     val priority: PriorityOption = PriorityOption.MEDIUM,
     val icon: CategoryIcon = CategoryIcon.DEFAULT,
     val resetCycle: ResetCycleOption = ResetCycleOption.MONTHLY,
     val showDatePicker: Boolean = false,
     val showLeftoverFundsActionSheet: Boolean = false,
 )
+
+fun AddEditCategoryUiState.toCreateCategory(): CreateCategory {
+    return CreateCategory(
+        categoryName = categoryName,
+        categoryIcon = icon,
+        priority = priority.ordinal,
+        leftOverOptions = leftoverFundsAction,
+        budget = CreateBudget(
+            amount = budget ?: 0.0,
+            period = resetCycle.toInt(),
+            startDate = budgetStartDate ?: getToday()
+        )
+    )
+}
+
+fun AddEditCategoryUiState.toUpdateCategory(): UpdateCategory {
+    return UpdateCategory(
+        categoryName = categoryName,
+        categoryIcon = icon,
+        priority = priority.ordinal,
+        leftOverOptions = leftoverFundsAction,
+        budget = CreateBudget(
+            amount = budget ?: 0.0,
+            period = resetCycle.toInt(),
+            startDate = budgetStartDate ?: getToday()
+        )
+    )
+}
+
+fun Category.toAddEditCategoryUiState(): AddEditCategoryUiState {
+    return AddEditCategoryUiState(
+        categoryId = categoryId,
+        categoryName = categoryName,
+        budget = budget.amount,
+        budgetStartDate = budget.startDate.date,
+        leftoverFundsAction = leftOverOption,
+        priority = priority,
+        icon = categoryIcon,
+        resetCycle = budget.period
+    )
+}
 
 fun CategoryIcon.toDrawableResource(): DrawableResource {
     return when (this) {
