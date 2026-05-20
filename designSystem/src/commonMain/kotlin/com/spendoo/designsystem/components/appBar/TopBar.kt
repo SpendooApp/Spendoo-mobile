@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
@@ -30,6 +32,7 @@ fun TopBar(
     title: String,
     modifier: Modifier = Modifier,
     onBackClicked: (() -> Unit)? = null,
+    leading: (@Composable () -> Unit)? = null,
     actions: List<@Composable RowScope.() -> Unit> = emptyList(),
 ) {
     Row(
@@ -45,6 +48,8 @@ fun TopBar(
                 onClick = onBackClicked
             )
         }
+
+        leading?.invoke()
 
         Text(
             text = title,
@@ -68,6 +73,8 @@ fun TopBarIcon(
     iconRes: DrawableResource,
     shape: Shape = RoundedCornerShape(16.dp),
     contentDescription: String?,
+    tint: Color = Theme.colorScheme.text.label,
+    iconSize: Dp = 14.dp,
     onClick: () -> Unit
 ) {
     Box(
@@ -79,10 +86,10 @@ fun TopBarIcon(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(14.dp),
+            modifier = Modifier.size(iconSize),
             painter = iconRes.painter(),
             contentDescription = contentDescription,
-            tint = Theme.colorScheme.text.label
+            tint = tint
         )
     }
 }

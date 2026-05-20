@@ -5,9 +5,11 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,8 +30,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.skip
-
-//TODO: refactor
 
 enum class AppButtonState {
     Enabled,
@@ -89,7 +89,7 @@ fun AppButton(
     val buttonContentColor = getContentColor(state, type)
 
     Surface(
-        modifier = modifier,
+        modifier = modifier.height(IntrinsicSize.Min),
         shape = RoundedCornerShape(16.dp),
         color = Theme.colorScheme.background.quinary,
         contentColor = buttonContentColor,

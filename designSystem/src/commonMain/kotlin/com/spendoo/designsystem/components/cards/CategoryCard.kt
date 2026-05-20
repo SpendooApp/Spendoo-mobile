@@ -1,6 +1,7 @@
 package com.spendoo.designsystem.components.cards
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.modifier.clickableNoRipple
+import com.spendoo.designsystem.modifier.thenIfNotNull
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
@@ -56,6 +58,7 @@ fun CategoryCard(
     Column(
         modifier = modifier
             .background(backgroundColor, shape)
+            .border(1.dp, Theme.colorScheme.border.primary, shape)
             .padding(20.dp, 16.dp)
     ) {
         Row(

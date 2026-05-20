@@ -94,4 +94,21 @@
     <string name="error_adding_amount_to_category">Error adding amount to category</string>
     <string name="category_id_is_missing">Category ID is missing</string>
     <string name="category_actions">Category Actions</string>
+    <string name="expenses">Expenses</string>
+    <string name="income">Income</string>
+    <string name="total_balance">Total Balance</string>
+    <string name="view_all">View all</string>
+    <string name="offers">Offers</string>
+    <string name="my_goals">My Goals</string>
+    <string name="top_spending">Top Spending</string>
+    <string name="offer_image">Offer image</string>
+    <string name="offer_off">off</string>
+    <string name="notifications">Notifications</string>
+    <string name="loading">Loading...</string>
+    <string name="error_loading_balance_summary">Error loading balance summary</string>
+    <string name="error_loading_user_data">Error loading user data</string>
+    <string name="error_loading_offers">Error loading offers</string>
+    <string name="error_loading_goals">Error loading goals</string>
+    <string name="error_loading_top_spending">Error loading top spending</string>
+    <string name="error_loading_notifications_count">Error loading notifications count</string>
 </resources>

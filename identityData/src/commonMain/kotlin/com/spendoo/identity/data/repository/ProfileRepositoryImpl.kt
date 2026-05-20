@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import kotlinx.coroutines.delay
 
 class ProfileRepositoryImpl(
     client: HttpClient,
@@ -57,6 +58,11 @@ class ProfileRepositoryImpl(
         tryToExecute<Unit> {
             delete(UPDATE_IMAGE_ENDPOINT)
         }
+    }
+
+    override suspend fun getNotificationsCount(): Int {
+        delay(2000)
+        return 5 //TODO: Implement this method when the endpoint is ready
     }
 
     companion object {

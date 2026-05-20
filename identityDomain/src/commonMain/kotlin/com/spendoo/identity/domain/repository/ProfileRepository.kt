@@ -6,5 +6,6 @@ interface ProfileRepository {
     suspend fun getProfile(): Profile
     suspend fun updateProfileImage(fileBytes: ByteArray, fileName: String): String
     suspend fun deleteProfileImage()
+    suspend fun getNotificationsCount(): Int
 }
 

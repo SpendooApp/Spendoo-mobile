@@ -8,15 +8,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +34,7 @@ import com.spendoo.designsystem.components.cards.CategoryCard
 import com.spendoo.designsystem.components.cards.MoneyCard
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.modifier.shimmerEffect
 import com.spendoo.designsystem.theme.color.scheme.toBrush
 import com.spendoo.designsystem.theme.theme.Theme
 import org.jetbrains.compose.resources.stringResource
@@ -133,7 +137,17 @@ private fun CategoriesScreenContent(
                 }
             }
 
-            if (!state.isCategoriesLoading && state.categories.isNotEmpty()) {
+            if (state.isCategoriesLoading) {
+                items(5) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .clip(RoundedCornerShape(24.dp))
+                            .shimmerEffect()
+                    )
+                }
+            } else if (state.categories.isNotEmpty()) {
                 items(state.categories) { category ->
                     CategoryCard(
                         modifier = Modifier.fillMaxWidth(),
@@ -165,14 +179,7 @@ private fun CategoriesScreenContent(
             remainingItemsToLoadNextPage = 5,
             loadNextItems = interactionListener::onListScrolled
         )
-        if (state.isCategoriesLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (state.categories.isEmpty()) {
+        if (!state.isCategoriesLoading && state.categories.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center

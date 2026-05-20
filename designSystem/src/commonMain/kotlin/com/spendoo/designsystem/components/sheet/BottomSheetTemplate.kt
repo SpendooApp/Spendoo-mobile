@@ -46,11 +46,11 @@ fun BottomSheetTemplate(
     actionText: String,
     modifier: Modifier = Modifier,
     showDividers: Boolean = true,
+    showActionButtons: Boolean = true,
     actionButtonState: AppButtonState = AppButtonState.Enabled,
     backgroundColor: Color = Theme.colorScheme.background.tertiary,
     content: LazyListScope.() -> Unit
 ) {
-
     Box {
         LazyColumn(
             modifier = modifier
@@ -77,42 +77,48 @@ fun BottomSheetTemplate(
 
             content()
 
-            item {
-                Spacer(modifier = Modifier.height(64.dp + 8.dp))
+            if (showActionButtons) {
+                item {
+                    Spacer(modifier = Modifier.height(64.dp + 8.dp))
+                }
             }
         }
-        Column(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
-            if (showDividers){ HorizontalDivider(Modifier.padding(horizontal = 16.dp)) }
-            BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-                val halfWidth = maxWidth / 2
+        if (showActionButtons) {
+            Column(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
+                if (showDividers) {
+                    HorizontalDivider(Modifier.padding(horizontal = 16.dp))
+                }
+                BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                    val halfWidth = maxWidth / 2
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = backgroundColor)
-                        .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AppButton(
-                        modifier = Modifier.weight(1f),
-                        type = AppButtonType.Secondary,
-                        onClick = onDismiss,
-                        text = dismissText,
-                    )
-                    AppButton(
+                    Row(
                         modifier = Modifier
-                            // 1. If text is larger, widthIn lets it expand naturally up to full width
-                            // 2. Forces the button to be AT LEAST half the screen width (minus spacing)
-                            .wrapContentWidth()
-                            .widthIn(min = halfWidth - 4.dp),
-                        state = actionButtonState,
-                        type = AppButtonType.Primary,
-                        onClick = onClickAction,
-                        text = actionText,
-                        loadingIcon = {
-                            DotsProgressIndicator()
-                        }
-                    )
+                            .fillMaxWidth()
+                            .background(color = backgroundColor)
+                            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        AppButton(
+                            modifier = Modifier.weight(1f),
+                            type = AppButtonType.Secondary,
+                            onClick = onDismiss,
+                            text = dismissText,
+                        )
+                        AppButton(
+                            modifier = Modifier
+                                // 1. If text is larger, widthIn lets it expand naturally up to full width
+                                // 2. Forces the button to be AT LEAST half the screen width (minus spacing)
+                                .wrapContentWidth()
+                                .widthIn(min = halfWidth - 4.dp),
+                            state = actionButtonState,
+                            type = AppButtonType.Primary,
+                            onClick = onClickAction,
+                            text = actionText,
+                            loadingIcon = {
+                                DotsProgressIndicator()
+                            }
+                        )
+                    }
                 }
             }
         }

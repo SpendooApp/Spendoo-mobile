@@ -24,3 +24,22 @@ fun CircularProgressIndicator(
         strokeCap = strokeCap,
     )
 }
+
+@Composable
+fun CircularProgressIndicator(
+    progress: () -> Float,
+    modifier: Modifier = Modifier,
+    color: Color = ProgressIndicatorDefaults.circularColor,
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
+    trackColor: Color = ProgressIndicatorDefaults.circularDeterminateTrackColor,
+    strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
+) {
+    androidx.compose.material3.CircularProgressIndicator(
+        progress = progress,
+        modifier = modifier,
+        color = color,
+        strokeWidth = strokeWidth,
+        trackColor = trackColor,
+        strokeCap = strokeCap,
+    )
+}

@@ -111,8 +111,8 @@ internal fun provideHttpClient(
             }
         }
         install(HttpTimeout) {
-            connectTimeoutMillis = NETWORK_TIMEOUT_MS
-            requestTimeoutMillis = NETWORK_TIMEOUT_MS
+            connectTimeoutMillis = CONNECT_TIMEOUT_MS
+            requestTimeoutMillis = REQUEST_TIMEOUT_MS
         }
     }
 }
@@ -120,13 +120,14 @@ internal fun provideHttpClient(
 internal fun provideCoilClient(engine: HttpClientEngine): HttpClient {
     return HttpClient(engine) {
         install(HttpTimeout) {
-            connectTimeoutMillis = NETWORK_TIMEOUT_MS
-            requestTimeoutMillis = NETWORK_TIMEOUT_MS
+            connectTimeoutMillis = CONNECT_TIMEOUT_MS
+            requestTimeoutMillis = REQUEST_TIMEOUT_MS
         }
     }
 }
 
-const val NETWORK_TIMEOUT_MS = 15_000L
+const val CONNECT_TIMEOUT_MS = 30_0000L
+const val REQUEST_TIMEOUT_MS = 60_0000L
 private val whiteListEndPoints = listOf(
     LOGIN_ENDPOINT,
     REFRESH_ENDPOINT,

@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -30,7 +26,6 @@ import spendoo.designsystem.generated.resources.edit
 import spendoo.designsystem.generated.resources.ic_add
 import spendoo.designsystem.generated.resources.ic_delete
 import spendoo.designsystem.generated.resources.ic_edit
-import spendoo.designsystem.generated.resources.leftover_funds_action
 import spendoo.designsystem.generated.resources.select
 
 enum class CategoryActionType(
@@ -57,8 +52,6 @@ fun CategoryActionsSheet(
     onOptionSelected: (CategoryActionType?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    var selectedOption: CategoryActionType? by remember { mutableStateOf(null) }
-
     BottomSheet(
         isVisible = show,
         onDismiss = onDismiss
@@ -67,8 +60,9 @@ fun CategoryActionsSheet(
             title = Res.string.category_actions.asString(),
             dismissText = Res.string.cancel.asString(),
             showDividers = false,
+            showActionButtons = false,
             onDismiss = onDismiss,
-            onClickAction = { onOptionSelected(selectedOption) },
+            onClickAction = { },
             actionText = Res.string.select.asString(),
         ) {
             item {
@@ -79,7 +73,7 @@ fun CategoryActionsSheet(
                     CategoryActionType.entries.forEach { option ->
                         SelectableOptionRow(
                             optionName = option.title.asString(),
-                            isSelected = option == selectedOption,
+                            isSelected = false,
                             onClick = { onOptionSelected(option) },
                             customIcon = {
                                 Icon(

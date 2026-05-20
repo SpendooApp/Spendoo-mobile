@@ -94,4 +94,21 @@
     <string name="error_adding_amount_to_category">خطأ في إضافة مبلغ للفئة</string>
     <string name="category_id_is_missing">معرف الفئة مفقود</string>
     <string name="category_actions">إجراءات الفئة</string>
+    <string name="expenses">المصروفات</string>
+    <string name="income">الدخل</string>
+    <string name="total_balance">الرصيد الإجمالي</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="offers">العروض</string>
+    <string name="my_goals">أهدافي</string>
+    <string name="top_spending">أعلى الإنفاق</string>
+    <string name="offer_image">صورة العرض</string>
+    <string name="offer_off">خصم</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="loading">جارٍ التحميل...</string>
+    <string name="error_loading_balance_summary">خطأ في تحميل ملخص الرصيد</string>
+    <string name="error_loading_user_data">خطأ في تحميل بيانات المستخدم</string>
+    <string name="error_loading_offers">خطأ في تحميل العروض</string>
+    <string name="error_loading_goals">خطأ في تحميل الأهداف</string>
+    <string name="error_loading_top_spending">خطأ في تحميل أعلى الإنفاق</string>
+    <string name="error_loading_notifications_count">خطأ في تحميل عدد الإشعارات</string>
 </resources>
