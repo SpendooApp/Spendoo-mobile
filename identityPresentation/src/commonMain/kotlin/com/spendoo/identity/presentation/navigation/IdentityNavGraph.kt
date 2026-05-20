@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +29,7 @@ fun IdentityNavGraph(
     navController: NavHostController,
     startDestination: BaseRoute,
     updateBottomNavigationVisibility: (Boolean) -> Unit,
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> },
     homeFeatureApi: HomeFeatureApi = koinInject(),
 ) {
     NavHost(
@@ -77,7 +79,8 @@ fun IdentityNavGraph(
         }
         composable<HomeRoute> {
             homeFeatureApi.TabEntry(
-                updateBottomNavigationVisibility = updateBottomNavigationVisibility
+                updateBottomNavigationVisibility = updateBottomNavigationVisibility,
+                showSnackBar = showSnackBar
             )
         }
     }

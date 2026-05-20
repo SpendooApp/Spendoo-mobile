@@ -90,7 +90,8 @@ fun IdentityNavHost(
         IdentityNavGraph(
             navController = navController,
             startDestination = startDestination,
-            updateBottomNavigationVisibility = updateBottomNavigationVisibility
+            updateBottomNavigationVisibility = updateBottomNavigationVisibility,
+            showSnackBar = showSnackBar
         )
     }
 }

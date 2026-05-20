@@ -111,4 +111,7 @@
     <string name="error_loading_goals">خطأ في تحميل الأهداف</string>
     <string name="error_loading_top_spending">خطأ في تحميل أعلى الإنفاق</string>
     <string name="error_loading_notifications_count">خطأ في تحميل عدد الإشعارات</string>
+    <string name="no_offers_yet">لا توجد عروض متاحة حاليًا</string>
+    <string name="no_goals_yet">لم تقم بتحديد أي أهداف بعد</string>
+    <string name="no_top_spending_yet">لم يتم تسجيل أي إنفاق بعد</string>
 </resources>

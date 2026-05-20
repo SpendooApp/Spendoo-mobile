@@ -111,4 +111,7 @@
     <string name="error_loading_goals">Error loading goals</string>
     <string name="error_loading_top_spending">Error loading top spending</string>
     <string name="error_loading_notifications_count">Error loading notifications count</string>
+    <string name="no_offers_yet">No offers available at the moment</string>
+    <string name="no_goals_yet">You haven't set any goals yet</string>
+    <string name="no_top_spending_yet">No spending recorded yet</string>
 </resources>

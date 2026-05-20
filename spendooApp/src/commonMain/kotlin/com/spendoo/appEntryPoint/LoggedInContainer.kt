@@ -123,7 +123,7 @@ private fun FeatureContent(
     Box(modifier) {
         Crossfade(targetState = activeFeature) { feature ->
             when (feature) {
-                Feature.Home -> homeApi.TabEntry(updateBottomNavigationVisibility)
+                Feature.Home -> homeApi.TabEntry(updateBottomNavigationVisibility, showSnackBar)
                 Feature.Categories -> categoriesApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.Stats -> statsApi.TabEntry(updateBottomNavigationVisibility)
                 Feature.ChatBot -> chatBotApi.TabEntry(updateBottomNavigationVisibility)

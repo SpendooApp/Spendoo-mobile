@@ -126,8 +126,8 @@ internal fun provideCoilClient(engine: HttpClientEngine): HttpClient {
     }
 }
 
-const val CONNECT_TIMEOUT_MS = 30_0000L
-const val REQUEST_TIMEOUT_MS = 60_0000L
+const val CONNECT_TIMEOUT_MS = 30_000L
+const val REQUEST_TIMEOUT_MS = 60_000L
 private val whiteListEndPoints = listOf(
     LOGIN_ENDPOINT,
     REFRESH_ENDPOINT,

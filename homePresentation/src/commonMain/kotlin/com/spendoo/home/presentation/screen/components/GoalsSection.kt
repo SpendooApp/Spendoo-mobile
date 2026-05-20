@@ -32,6 +32,7 @@ import com.spendoo.home.presentation.screen.toDrawableResource
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.my_goals
+import spendoo.designsystem.generated.resources.no_goals_yet
 
 @Composable
 fun GoalsSection(
@@ -60,6 +61,19 @@ fun GoalsSection(
                             .shimmerEffect()
                     )
                 }
+            }
+        } else if (goals.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(Res.string.no_goals_yet),
+                    style = Theme.typography.label.medium.medium,
+                    color = Theme.colorScheme.text.titleSmall
+                )
             }
         } else {
             LazyRow(

@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
-import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.modifier.shimmerEffect
@@ -26,6 +25,7 @@ import com.spendoo.home.presentation.screen.toDrawableResource
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.top_spending
+import spendoo.designsystem.generated.resources.no_top_spending_yet
 
 @Composable
 fun TopSpendingSection(
@@ -50,6 +50,19 @@ fun TopSpendingSection(
                         .height(64.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .shimmerEffect()
+                )
+            }
+        } else if (spending.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(Res.string.no_top_spending_yet),
+                    style = Theme.typography.label.medium.medium,
+                    color = Theme.colorScheme.text.titleSmall
                 )
             }
         } else {

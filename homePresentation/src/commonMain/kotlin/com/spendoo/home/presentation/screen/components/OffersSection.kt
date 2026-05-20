@@ -29,6 +29,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.presentation.screen.OfferUiState
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.no_offers_yet
 import spendoo.designsystem.generated.resources.offers
 import spendoo.designsystem.generated.resources.offer_image
 import spendoo.designsystem.generated.resources.offer_off
@@ -64,6 +65,19 @@ fun OffersSection(
                             .shimmerEffect()
                     )
                 }
+            }
+        } else if (offers.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(Res.string.no_offers_yet),
+                    style = Theme.typography.label.medium.medium,
+                    color = Theme.colorScheme.text.titleSmall
+                )
             }
         } else {
             LazyRow(

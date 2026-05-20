@@ -1,6 +1,8 @@
 package com.spendoo.home.presentation.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import com.spendoo.home.api.HomeFeatureApi
 import com.spendoo.home.presentation.navigation.HomeNavHost
 import com.spendoo.home.presentation.navigation.HomeRoute
@@ -8,10 +10,14 @@ import com.spendoo.home.presentation.navigation.HomeRoute
 class HomeFeatureApiImpl : HomeFeatureApi {
 
     @Composable
-    override fun TabEntry(updateBottomNavigationVisibility: (Boolean) -> Unit) {
+    override fun TabEntry(
+        updateBottomNavigationVisibility: (Boolean) -> Unit,
+        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit
+    ) {
         HomeNavHost(
             updateBottomNavigationVisibility = updateBottomNavigationVisibility,
-            startDestination = HomeRoute
+            startDestination = HomeRoute,
+            showSnackBar = showSnackBar
         )
     }
 }

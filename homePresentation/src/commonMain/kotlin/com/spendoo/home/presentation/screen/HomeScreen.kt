@@ -22,7 +22,6 @@ import com.spendoo.home.presentation.screen.components.TopSpendingSection
 import com.spendoo.home.presentation.screen.components.balanceSection
 import org.koin.compose.viewmodel.koinViewModel
 
-//TODO: localization and every data status (loading empty error)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
