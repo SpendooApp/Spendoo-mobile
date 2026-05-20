@@ -17,8 +17,8 @@ import com.spendoo.designsystem.components.icon.OutlinedButton
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.asString
+import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res

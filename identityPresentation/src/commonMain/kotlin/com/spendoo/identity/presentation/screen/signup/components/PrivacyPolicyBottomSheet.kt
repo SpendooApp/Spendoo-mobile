@@ -12,7 +12,7 @@ import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
+import com.spendoo.designsystem.utils.extentions.asString
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ok
 import spendoo.designsystem.generated.resources.privacy_policy_for_spendoo

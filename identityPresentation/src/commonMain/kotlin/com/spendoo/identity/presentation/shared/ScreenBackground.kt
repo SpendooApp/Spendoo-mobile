@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.painter
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.img_screenTemplate_dark
 import spendoo.designsystem.generated.resources.img_screenTemplate_light

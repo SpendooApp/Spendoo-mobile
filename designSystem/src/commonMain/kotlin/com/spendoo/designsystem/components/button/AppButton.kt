@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -91,17 +89,7 @@ fun AppButton(
     val buttonContentColor = getContentColor(state, type)
 
     Surface(
-        modifier = modifier.height(
-            if( type == AppButtonType.Tertiary ){
-                Dp.Unspecified
-            }
-            else if (size == AppButtonSize.Large) {
-                56.dp
-            }
-            else {
-                40.dp
-            }
-        ),
+        modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         color = Theme.colorScheme.background.quinary,
         contentColor = buttonContentColor,
@@ -132,7 +120,7 @@ fun AppButton(
             text?.let {
                 Text(
                     text = it,
-                    style = if (size == AppButtonSize.Large)
+                    style = if (isLarge)
                         Theme.typography.title.large
                     else
                         Theme.typography.label.medium.large,
@@ -145,6 +133,7 @@ fun AppButton(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 Icon(
+                    modifier = Modifier.size(20.dp),
                     imageVector = icon,
                     contentDescription = null,
                     tint = buttonContentColor

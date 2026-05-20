@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.designsystem.components.bottomNavigation.BottomNavigationBar
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.api.HomeFeatureApi
@@ -29,6 +30,7 @@ import com.spendoo.identity.api.IdentityFeatureApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.ic_categories
 import spendoo.designsystem.generated.resources.ic_home
 import spendoo.designsystem.generated.resources.ic_home_selected
 
@@ -74,8 +76,8 @@ fun LoggedInContainer(
                 )
 
                 bottomNavigationItem(
-                    selectedIcon = painterResource(Res.drawable.ic_home_selected),
-                    notSelectedIcon = painterResource(Res.drawable.ic_home),
+                    selectedIcon = painterResource(Res.drawable.ic_categories),
+                    notSelectedIcon = painterResource(Res.drawable.ic_categories),
                     title = "Categories",
                     entry = { listener.setActiveFeature(Feature.Categories) }
                 )
@@ -110,7 +112,7 @@ private fun FeatureContent(
     activeFeature: Feature,
     identityApi: IdentityFeatureApi = koinInject(),
     homeApi: HomeFeatureApi = koinInject(),
-    categoriesApi: HomeFeatureApi = koinInject(),
+    categoriesApi: CategoriesFeatureApi = koinInject(),
     statsApi: HomeFeatureApi = koinInject(),
     chatBotApi: HomeFeatureApi = koinInject(),
     paymentsApi: HomeFeatureApi = koinInject(),

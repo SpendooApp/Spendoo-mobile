@@ -1,5 +1,6 @@
 package com.spendoo.identity.data.dataSource.remote.dto.auth.response
 
+import com.spendoo.identity.domain.model.AuthenticationTokens
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,4 +10,9 @@ data class AuthenticationResponse(
     val accessToken: String,
     @SerialName("refreshToken")
     val refreshToken: String,
+)
+
+fun AuthenticationResponse.toDomain() = AuthenticationTokens(
+    accessToken = accessToken,
+    refreshToken = refreshToken
 )

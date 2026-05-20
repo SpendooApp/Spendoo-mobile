@@ -14,6 +14,11 @@ import com.spendoo.identity.presentation.shared.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.an_error_occurred
+import spendoo.designsystem.generated.resources.invalid_otp_please_try_again
+import spendoo.designsystem.generated.resources.otp_must_be_5_digits
+import spendoo.designsystem.generated.resources.unknown_error
 
 class VerifyEmailViewModel(
     private val registerRepository: RegisterRepository,
@@ -74,11 +79,7 @@ class VerifyEmailViewModel(
                 }
             },
             onError = {
-                updateState {
-                    copy(
-                        otpError = UiText.DynamicString("Invalid OTP. Please try again."),
-                    )
-                }
+                updateState { copy(otpError = UiText.StringRes(Res.string.invalid_otp_please_try_again)) }
             },
             onEnd = {
                 updateState { copy(actionButtonState = AppButtonState.Enabled) }
@@ -106,7 +107,12 @@ class VerifyEmailViewModel(
                 startTimer()
             },
             onError = {
-                println("Resend OTP error: ${it.message}")
+                showSnackBar(
+                    title = UiText.StringRes(Res.string.an_error_occurred),
+                    message = it.message?.let(UiText::DynamicString)
+                        ?: UiText.StringRes(Res.string.unknown_error),
+                    isSuccess = false,
+                )
             }
         )
     }
@@ -118,7 +124,7 @@ class VerifyEmailViewModel(
                 otpError = if (isValid) {
                     null
                 } else {
-                    UiText.DynamicString("OTP must be 5 digits")
+                    UiText.StringRes(Res.string.otp_must_be_5_digits)
                 }
             )
         }

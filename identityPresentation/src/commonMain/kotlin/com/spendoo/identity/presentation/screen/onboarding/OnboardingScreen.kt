@@ -23,7 +23,7 @@ import com.spendoo.designsystem.components.indicator.InteractivePagerIndicator
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
+import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.identity.presentation.screen.onboarding.components.BottomArrows
 import com.spendoo.identity.presentation.screen.onboarding.components.OnboardingPager
 import com.spendoo.identity.presentation.shared.ScreenBackground

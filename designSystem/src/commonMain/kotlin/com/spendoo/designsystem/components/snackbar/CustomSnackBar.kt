@@ -20,15 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.designsystem.utils.PreviewMultiDevices
 import com.spendoo.designsystem.utils.SpendooPreview
 import com.spendoo.designsystem.utils.customShadow
@@ -118,15 +116,6 @@ fun AnimatedSnackBar(
         )
     }
 }
-
-data class SnackBarData(
-    val title: String,
-    val message: String? = null,
-    val isSuccess: Boolean = true,
-    val customLeadingIcon: Painter? = null,
-    val duration: Long? = null,
-    val iconTint: Color = Color.Unspecified
-)
 
 @Composable
 @PreviewMultiDevices

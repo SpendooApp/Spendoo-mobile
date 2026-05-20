@@ -37,9 +37,9 @@ import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.util.extentions.asString
-import com.spendoo.designsystem.util.extentions.format
-import com.spendoo.designsystem.util.extentions.painter
+import com.spendoo.designsystem.utils.extentions.asString
+import com.spendoo.designsystem.utils.extentions.format
+import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.asString
 import com.spendoo.identity.domain.entity.Gender
@@ -63,6 +63,7 @@ import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.ic_eye_closed
 import spendoo.designsystem.generated.resources.ic_eye_opened
 import spendoo.designsystem.generated.resources.login
+import spendoo.designsystem.generated.resources.please_select_your_gender
 import spendoo.designsystem.generated.resources.privacy_policy
 import spendoo.designsystem.generated.resources.signup
 import spendoo.designsystem.generated.resources.terms_and_conditions
@@ -297,7 +298,7 @@ fun SignUpScreenPreview() = SpendooTheme {
             override fun onPrivacyPolicyBottomSheetDismissed() {}
         },
         state = SignUpUiState(
-            genderError = UiText.DynamicString("Please select your gender"),
+            genderError = UiText.StringRes(Res.string.please_select_your_gender),
         )
     )
 }

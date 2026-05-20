@@ -39,6 +39,8 @@ fun EntryPoint(
     LaunchedEffect(accessToken) {
         if (previousAccessTokenWasBlank && accessToken.isNotBlank()) {
             viewModel.onBottomNavigationChanged(true)
+        } else if (!previousAccessTokenWasBlank && accessToken.isBlank()) {
+            viewModel.onBottomNavigationChanged(false)
         }
         previousAccessTokenWasBlank = accessToken.isBlank()
     }
