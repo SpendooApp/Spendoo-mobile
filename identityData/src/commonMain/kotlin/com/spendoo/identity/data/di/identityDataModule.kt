@@ -12,7 +12,6 @@ import com.spendoo.identity.domain.repository.RegisterRepository
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.service.AuthorizationService
-import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -25,7 +24,6 @@ private const val BASE_URL = "baseUrl"
 private const val IDENTITY_SCOPE = "IdentityScope"
 
 val identityDataModule = module {
-    single { CIO.create() }
     singleOf(::Settings)
 
     single<AuthenticationRepository> {
@@ -57,14 +55,13 @@ val identityDataModule = module {
     singleOf(::AuthorizationService)
     single {
         provideHttpClient(
-            engine = get(),
             baseUrl = get<String>(named(BASE_URL)),
             authorizationService = { get<AuthorizationService>() },
         )
     }
 
     single(named(COIL_CLIENT)) {
-        provideCoilClient(engine = get())
+        provideCoilClient()
     }
 
     single(named(IDENTITY_SCOPE)) { CoroutineScope(Dispatchers.IO) }

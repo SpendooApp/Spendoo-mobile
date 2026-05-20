@@ -155,3 +155,29 @@ fun Project.loadProperty(
             ?: throw GradleException("Property file '$path' not found and '$propertyName' not in environment")
     }
 }
+
+tasks.register("syncIosConfig") {
+    group = "ios"
+    doLast {
+        val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
+        val escapedUrl = baseUrl.replace("//", "/$()/")
+        val configFile = file("../iosApp/Configuration/Config.xcconfig")
+
+        if (configFile.exists()) {
+            val lines = configFile.readLines().toMutableList()
+            val index = lines.indexOfFirst { it.startsWith("BASE_URL") }
+            val newLine = "BASE_URL = $escapedUrl"
+
+            if (index != -1) {
+                lines[index] = newLine
+            } else {
+                lines.add(newLine)
+            }
+            configFile.writeText(lines.joinToString("\n"))
+        }
+    }
+}
+
+tasks.matching { it.name.contains("Framework") }.configureEach {
+    dependsOn("syncIosConfig")
+}

@@ -10,7 +10,6 @@ import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl.Companio
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl.Companion.RESET_PASSWORD_VERIFY_OTP
 import com.spendoo.identity.domain.service.AuthorizationService
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -28,7 +27,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 internal fun provideHttpClient(
-    engine: HttpClientEngine,
     baseUrl: String,
     authorizationService: suspend () -> AuthorizationService,
 ): HttpClient {
@@ -38,7 +36,7 @@ internal fun provideHttpClient(
         isLenient = true
     }
 
-    return HttpClient(engine) {
+    return createHttpClient {
         expectSuccess = true
 
         defaultRequest {
@@ -117,8 +115,8 @@ internal fun provideHttpClient(
     }
 }
 
-internal fun provideCoilClient(engine: HttpClientEngine): HttpClient {
-    return HttpClient(engine) {
+internal fun provideCoilClient(): HttpClient {
+    return createHttpClient {
         install(HttpTimeout) {
             connectTimeoutMillis = CONNECT_TIMEOUT_MS
             requestTimeoutMillis = REQUEST_TIMEOUT_MS
