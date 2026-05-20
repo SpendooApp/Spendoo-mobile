@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
 plugins {
@@ -6,7 +7,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.cocoapods)
     id("com.google.gms.google-services")
 }
 
@@ -27,6 +27,7 @@ kotlin {
         }
     }
 
+    val xcf = XCFramework("SpendooApp")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -34,19 +35,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "SpendooApp"
             isStatic = true
-        }
-    }
-
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "16.2"
-        podfile = project.file("iosApp/Podfile")
-
-        framework {
-            baseName = "SpendooApp"
-            isStatic = true
+            xcf.add(this)
         }
     }
 
