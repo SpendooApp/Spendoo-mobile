@@ -73,6 +73,8 @@ kotlin {
             implementation(projects.identityApi)
             implementation(projects.homeApi)
             implementation(projects.homePresentation)
+            implementation(projects.offersData)
+            implementation(projects.goalsData)
             implementation(projects.categoriesDomain)
             implementation(projects.categoriesData)
             implementation(projects.categoriesApi)
