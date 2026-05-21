@@ -27,6 +27,7 @@ import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.appendPathSegments
+import kotlinx.coroutines.delay
 
 class TransactionsRepositoryImpl(
     client: HttpClient,
@@ -88,14 +89,20 @@ class TransactionsRepositoryImpl(
     }
 
     override suspend fun getBalanceSummary(): BalanceSummary {
-        val response = tryToExecute<BalanceSummaryDto> {
-            get(TransactionsEndpoints.SUMMARY)
-        }
+        delay(2000)
         return BalanceSummary(
-            totalBalance = response.totalBalance,
-            income = response.income,
-            expenses = response.expenses,
+            totalBalance = 5000.0,
+            income = 8000.0,
+            expenses = 3000.0,
         )
+//        val response = tryToExecute<BalanceSummaryDto> {
+//            get(TransactionsEndpoints.SUMMARY)
+//        }
+//        return BalanceSummary(
+//            totalBalance = response.totalBalance,
+//            income = response.income,
+//            expenses = response.expenses,
+//        )
     }
 
     override suspend fun getTransactionsByRange(

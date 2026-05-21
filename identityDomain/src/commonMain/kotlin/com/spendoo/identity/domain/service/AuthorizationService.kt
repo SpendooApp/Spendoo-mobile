@@ -5,7 +5,7 @@ import com.spendoo.identity.domain.repository.AuthenticationRepository
 
 class AuthorizationService(private val authenticationRepository: AuthenticationRepository) {
 
-    suspend fun getAccessToken(): String {
+    fun getAccessToken(): String {
         return authenticationRepository.getAccessToken()
     }
 
@@ -13,8 +13,8 @@ class AuthorizationService(private val authenticationRepository: AuthenticationR
         return authenticationRepository.refreshAccessToken()
     }
 
-    suspend fun getRefreshToken(): String {
-        return authenticationRepository.getAuthTokens()?.refreshToken ?: ""
+    fun getRefreshToken(): String {
+        return authenticationRepository.getRefreshToken() ?: ""
     }
 
     fun observeAccessToken(): StateFlow<String> = authenticationRepository.observeTokenChange()

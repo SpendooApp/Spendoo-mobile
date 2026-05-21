@@ -2,14 +2,17 @@ package com.spendoo.designsystem.components.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -17,7 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
-import com.spendoo.designsystem.modifier.thenIf
+import com.spendoo.designsystem.modifier.shimmerEffect
 import com.spendoo.designsystem.modifier.thenIfNotNull
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -35,6 +38,7 @@ fun MoneyCard(
     title: String,
     titleColor: Color,
     titleTextStyle: TextStyle,
+    titleIcon: @Composable (() -> Unit)? = null,
     backgroundColor: Brush,
     modifier: Modifier = Modifier,
     borderColor: Color? = null,
@@ -53,26 +57,51 @@ fun MoneyCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(27.dp, 20.dp),
+                modifier = Modifier.size(27.dp),
                 painter = Res.drawable.ic_money.painter(),
                 contentDescription = null,
                 tint = amountColor,
             )
-            Text(
-                modifier = Modifier.padding(start = 4.dp),
-                text = if (isLoading) "Loading..." else amount,
-                style = amountTextStyle,
-                color = amountColor,
-                maxLines = 1
-            )
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(width = 80.dp, height = 24.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect()
+                )
+            } else {
+                Text(
+                    modifier = Modifier.padding(start = 4.dp),
+                    text = amount,
+                    style = amountTextStyle,
+                    color = amountColor,
+                    maxLines = 1
+                )
+            }
         }
-        Text(
+        Row(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = if (isLoading) "Loading..." else title,
-            style = titleTextStyle,
-            color = titleColor,
-            maxLines = 1
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .size(width = 100.dp, height = 16.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect()
+                )
+            } else {
+                titleIcon?.invoke()
+                Text(
+                    text = title,
+                    style = titleTextStyle,
+                    color = titleColor,
+                    maxLines = 1
+                )
+            }
+        }
     }
 }
 
@@ -80,12 +109,12 @@ fun MoneyCard(
 @Composable
 private fun MoneyCardPreview() = SpendooTheme {
     MoneyCard(
-        amount = "Total Budget",
+        amount = "12,000",
         amountColor = Theme.colorScheme.brand.primaryVariant,
-        amountTextStyle = Theme.typography.body.small,
-        title = "12,000",
+        amountTextStyle = Theme.typography.heading.large,
+        title = "Total Budget",
         titleColor = Theme.colorScheme.brand.onPrimary,
-        titleTextStyle = Theme.typography.heading.large,
+        titleTextStyle = Theme.typography.body.small,
         backgroundColor = Theme.colorScheme.gradient.brand,
     )
 }

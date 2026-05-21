@@ -7,7 +7,8 @@ interface AuthenticationRepository {
     suspend fun login(email: String, password: String)
     suspend fun logout()
     suspend fun refreshAccessToken(): String
-    suspend fun getAccessToken(): String
+    fun getAccessToken(): String
+    fun getRefreshToken(): String?
     suspend fun getAuthTokens(): AuthenticationTokens?
     suspend fun saveAuthTokens(authTokens: AuthenticationTokens)
     suspend fun clearAuthTokens()

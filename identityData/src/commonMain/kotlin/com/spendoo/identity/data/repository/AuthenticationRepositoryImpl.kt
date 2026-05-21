@@ -57,7 +57,9 @@ class AuthenticationRepositoryImpl(
         return settings.accessToken
     }
 
-    override suspend fun getAccessToken(): String = settings.accessToken
+    override fun getAccessToken(): String = settings.accessToken
+
+    override fun getRefreshToken(): String? = settings.refreshToken
 
     override suspend fun getAuthTokens(): AuthenticationTokens? =
         createAuthTokensIfValid(settings.accessToken, settings.refreshToken)

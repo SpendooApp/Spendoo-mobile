@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 compose {
@@ -43,8 +44,18 @@ kotlin {
 
                 implementation(projects.designSystem)
                 implementation(projects.homeApi)
+                implementation(projects.offersDomain)
 
+                implementation(libs.kotlinx.datetime)
                 implementation(libs.bundles.koin)
+
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor)
+                implementation(libs.coil.svg)
+
+                implementation(projects.categoriesDomain)
+                implementation(projects.identityDomain)
+                implementation(projects.goalsDomain)
 
                 // Navigation
                 implementation(libs.androidx.navigation.compose)

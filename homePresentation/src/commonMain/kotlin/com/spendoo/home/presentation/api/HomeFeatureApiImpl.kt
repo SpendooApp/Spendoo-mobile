@@ -1,34 +1,23 @@
 package com.spendoo.home.presentation.api
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.spendoo.designsystem.components.text.Text
-import com.spendoo.designsystem.theme.theme.Theme
+import androidx.compose.ui.graphics.painter.Painter
 import com.spendoo.home.api.HomeFeatureApi
+import com.spendoo.home.presentation.navigation.HomeNavHost
+import com.spendoo.home.presentation.navigation.HomeRoute
 
 class HomeFeatureApiImpl : HomeFeatureApi {
 
     @Composable
-    override fun TabEntry(updateBottomNavigationVisibility: (Boolean) -> Unit) {
-        Box(
-            Modifier.fillMaxSize().background(Color.Yellow),
-            contentAlignment = androidx.compose.ui.Alignment.Center
-        ) {
-            Column {
-                Text("Home", Theme.typography.label.medium.medium)
-                Text(
-                    "go to categories",
-                    Theme.typography.label.medium.medium,
-                    modifier = Modifier.clickable {
-
-                    })
-            }
-        }
+    override fun TabEntry(
+        updateBottomNavigationVisibility: (Boolean) -> Unit,
+        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit
+    ) {
+        HomeNavHost(
+            updateBottomNavigationVisibility = updateBottomNavigationVisibility,
+            startDestination = HomeRoute,
+            showSnackBar = showSnackBar
+        )
     }
 }
