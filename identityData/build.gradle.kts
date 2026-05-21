@@ -66,7 +66,6 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.bundles.ktor)
-                implementation(libs.ktor.client.cio)
                 implementation(libs.koin.core)
                 implementation(libs.multiplatform.settings)
                 implementation(libs.kotlinx.datetime)
@@ -80,6 +79,7 @@ kotlin {
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
                 implementation(libs.koin.android)
+                implementation(libs.ktor.client.okhttp)
             }
         }
 

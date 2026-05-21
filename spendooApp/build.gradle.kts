@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
 plugins {
@@ -6,7 +7,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.cocoapods)
     id("com.google.gms.google-services")
 }
 
@@ -27,6 +27,7 @@ kotlin {
         }
     }
 
+    val xcf = XCFramework("SpendooApp")
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -34,19 +35,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "SpendooApp"
             isStatic = true
-        }
-    }
-
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "16.2"
-        podfile = project.file("iosApp/Podfile")
-
-        framework {
-            baseName = "SpendooApp"
-            isStatic = true
+            xcf.add(this)
         }
     }
 
@@ -165,4 +154,30 @@ fun Project.loadProperty(
         return System.getenv(propertyName)
             ?: throw GradleException("Property file '$path' not found and '$propertyName' not in environment")
     }
+}
+
+tasks.register("syncIosConfig") {
+    group = "ios"
+    doLast {
+        val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
+        val escapedUrl = baseUrl.replace("//", "/$()/")
+        val configFile = file("../iosApp/Configuration/Config.xcconfig")
+
+        if (configFile.exists()) {
+            val lines = configFile.readLines().toMutableList()
+            val index = lines.indexOfFirst { it.startsWith("BASE_URL") }
+            val newLine = "BASE_URL = $escapedUrl"
+
+            if (index != -1) {
+                lines[index] = newLine
+            } else {
+                lines.add(newLine)
+            }
+            configFile.writeText(lines.joinToString("\n"))
+        }
+    }
+}
+
+tasks.matching { it.name.contains("Framework") }.configureEach {
+    dependsOn("syncIosConfig")
 }

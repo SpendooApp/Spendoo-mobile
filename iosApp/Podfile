@@ -5,6 +5,6 @@ inhibit_all_warnings!
 
 target 'iosApp' do
   pod 'FirebaseCore'
-  pod 'spendooApp', :path => '../spendooApp'
+  # pod 'spendooApp', :path => '../spendooApp' # Migrated to SPM
 end
 

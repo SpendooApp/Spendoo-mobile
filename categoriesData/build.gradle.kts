@@ -50,17 +50,9 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.bundles.ktor)
-                implementation(libs.ktor.client.cio)
                 implementation(libs.koin.core)
                 implementation(libs.kotlinx.datetime)
             }
         }
-
-        iosMain {
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-        }
     }
 }
-
