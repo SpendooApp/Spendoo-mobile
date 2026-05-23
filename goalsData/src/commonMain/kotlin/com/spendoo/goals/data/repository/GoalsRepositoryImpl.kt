@@ -1,13 +1,20 @@
 package com.spendoo.goals.data.repository
 
 import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.goals.data.endpoint.GoalsEndpoints
+import com.spendoo.goals.data.shared.BaseGateway
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.goals.domain.utils.PageQuery
 import com.spendoo.goals.domain.utils.PagedData
+import io.ktor.client.HttpClient
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import kotlinx.coroutines.delay
 
-class GoalsRepositoryImpl : GoalsRepository {
+class GoalsRepositoryImpl(
+    client: HttpClient,
+) : BaseGateway(client), GoalsRepository {
     private val mockGoals = listOf(
         Goal(
             id = "1",
@@ -36,5 +43,15 @@ class GoalsRepositoryImpl : GoalsRepository {
             totalItems = mockGoals.size.toLong(),
             isLastPage = true
         )
+    }
+
+    override suspend fun addToSaving(amount: Double) {
+//        tryToExecute<Unit> {
+//            post(GoalsEndpoints.ADD_TO_SAVING) {
+//                setBody(mapOf("amount" to amount))
+//            }
+//        }
+        //TODO: Implement addToSaving endpoint and remove mock implementation
+         delay(1000)
     }
 }

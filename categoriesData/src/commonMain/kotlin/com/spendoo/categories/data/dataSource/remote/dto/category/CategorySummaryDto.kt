@@ -17,7 +17,7 @@ data class CategorySummaryDto(
 fun CategorySummaryDto.toDomain(): CategorySummary {
     return CategorySummary(
         totalBudget = totalBudget ?: 0.0,
-        totalSpent = totalSpent ?: 0.0,
+        totalSpent = totalSpent?.let { -it } ?: 0.0,
         addedIncome = addedIncome ?: 0.0,
     )
 }

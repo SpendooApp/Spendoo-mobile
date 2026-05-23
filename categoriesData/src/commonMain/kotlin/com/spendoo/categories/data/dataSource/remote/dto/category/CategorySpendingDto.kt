@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CategorySpendingDto(
     @SerialName("id")
-    val categoryId: String?,
+    val categoryId: String? = null,
     @SerialName("categoryName")
     val categoryName: String,
     @SerialName("categoryIcon")
@@ -21,5 +21,5 @@ fun CategorySpendingDto.toDomain(): CategorySpending = CategorySpending(
     categoryId = categoryId ?: "",
     categoryName = categoryName,
     categoryIcon = categoryIcon,
-    totalAmount = totalAmount,
+    totalAmount = -totalAmount,
 )

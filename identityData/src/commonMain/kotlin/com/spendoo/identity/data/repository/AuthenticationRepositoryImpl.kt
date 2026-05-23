@@ -9,6 +9,8 @@ import com.spendoo.identity.data.dataSource.remote.dto.auth.response.Authenticat
 import com.spendoo.identity.data.dataSource.remote.dto.auth.response.toDomain
 import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.data.utils.invalidateAuthTokens
+import com.spendoo.identity.domain.exception.UnAuthorizedException
+import com.spendoo.identity.domain.exception.UserIsBlockedException
 import com.spendoo.identity.domain.model.AuthenticationTokens
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import io.ktor.client.HttpClient
@@ -47,19 +49,27 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun refreshAccessToken(): String {
-        val response = tryToExecute<AuthenticationResponse> {
-            post(REFRESH_ENDPOINT) {
-                setBody(RefreshRequestDto(settings.refreshToken))
+        return try {
+            val response = tryToExecute<AuthenticationResponse> {
+                post(REFRESH_ENDPOINT) {
+                    setBody(RefreshRequestDto(settings.refreshToken))
+                }
             }
+            saveTokens(response.toDomain())
+            client.invalidateAuthTokens()
+            settings.accessToken
+        } catch (e: UnAuthorizedException) {
+            clearAuthStateAfterRefreshFailure()
+            throw e
+        } catch (e: UserIsBlockedException) {
+            clearAuthStateAfterRefreshFailure()
+            throw e
         }
-        saveTokens(response.toDomain())
-        client.invalidateAuthTokens()
-        return settings.accessToken
     }
 
     override fun getAccessToken(): String = settings.accessToken
 
-    override fun getRefreshToken(): String? = settings.refreshToken
+    override fun getRefreshToken(): String = settings.refreshToken
 
     override suspend fun getAuthTokens(): AuthenticationTokens? =
         createAuthTokensIfValid(settings.accessToken, settings.refreshToken)
@@ -97,6 +107,11 @@ class AuthenticationRepositoryImpl(
     private fun saveTokensToSettings(authTokens: AuthenticationTokens) {
         settings.accessToken = authTokens.accessToken
         settings.refreshToken = authTokens.refreshToken
+    }
+
+    private suspend fun clearAuthStateAfterRefreshFailure() {
+        client.invalidateAuthTokens()
+        clearAuthTokens()
     }
 
     companion object {

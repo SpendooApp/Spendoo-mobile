@@ -24,7 +24,7 @@ data class BudgetDto(
 
 fun BudgetDto.toDomain(): Budget = Budget(
     amount = amount,
-    spentAmount = spentAmount,
+    spentAmount = -spentAmount,
     spendingPercentage = spendingPercentage,
     period = period.toResetCycleOption(),
     startDate = startDate.toLocalDateTimeOrDefault(),

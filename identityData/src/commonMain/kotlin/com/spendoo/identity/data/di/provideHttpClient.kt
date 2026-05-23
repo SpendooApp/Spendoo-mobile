@@ -97,10 +97,17 @@ internal fun provideHttpClient(
                     )
                 }
                 refreshTokens {
-                    BearerTokens(
-                        accessToken = authorizationService().getNewAccessToken(),
-                        refreshToken = authorizationService().getRefreshToken(),
-                    )
+                    val currentRefreshToken = authorizationService().getRefreshToken()
+                    if (currentRefreshToken.isBlank()) {
+                        return@refreshTokens null
+                    }
+
+                    return@refreshTokens runCatching {
+                        BearerTokens(
+                            accessToken = authorizationService().getNewAccessToken(),
+                            refreshToken = currentRefreshToken,
+                        )
+                    }.getOrNull()
                 }
                 sendWithoutRequest { request ->
                     val path = request.url.encodedPath.removePrefix("/")

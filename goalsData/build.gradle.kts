@@ -35,7 +35,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":goalsDomain"))
+                implementation(projects.goalsDomain)
+                implementation(projects.identityDomain)
                 implementation(libs.koin.core)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlin.stdlib)

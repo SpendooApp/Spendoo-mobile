@@ -16,4 +16,4 @@ data class IncomeEntryDto(
     val note: String? = null,
 )
 
-fun IncomeEntry.toDto(): IncomeEntryDto = IncomeEntryDto(title, amount, transactionDate, note)
+fun IncomeEntry.toDto(): IncomeEntryDto = IncomeEntryDto(title, amount, transactionDate.toString(), note)
