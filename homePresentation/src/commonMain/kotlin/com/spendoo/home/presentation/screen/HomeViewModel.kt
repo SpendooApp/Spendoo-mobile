@@ -140,6 +140,10 @@ class HomeViewModel(
         )
     }
 
+    override fun onReload() {
+        getHomeData()
+    }
+
     override fun onOfferClicked(offerId: String) {}
     override fun onGoalClicked(goalId: String) {}
     override fun onSpendingClicked(spendingId: String) {}

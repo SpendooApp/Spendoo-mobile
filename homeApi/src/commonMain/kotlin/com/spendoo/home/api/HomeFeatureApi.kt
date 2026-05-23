@@ -10,6 +10,8 @@ interface HomeFeatureApi {
     @Composable
     fun TabEntry(
         updateBottomNavigationVisibility: (Boolean) -> Unit,
-        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> }
+        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> },
+        reloadSignal: Long = 0L,
+        shouldReload: Boolean = false
     )
 }

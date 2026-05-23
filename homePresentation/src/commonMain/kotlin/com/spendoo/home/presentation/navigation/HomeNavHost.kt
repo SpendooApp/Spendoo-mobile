@@ -22,7 +22,9 @@ fun HomeNavHost(
     updateBottomNavigationVisibility: (Boolean) -> Unit = {},
     effector: Effector = koinInject(),
     startDestination: BaseRoute = HomeRoute,
-    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> }
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> },
+    reloadSignal: Long = 0L,
+    shouldReload: Boolean = false
 ) {
     val navController = rememberNavController()
 
@@ -88,6 +90,8 @@ fun HomeNavHost(
         HomeNavGraph(
             navController = navController,
             startDestination = startDestination,
+            reloadSignal = reloadSignal,
+            shouldReload = shouldReload
         )
     }
 }

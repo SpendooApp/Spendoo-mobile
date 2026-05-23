@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.spendoo.designsystem.components.appBar.TopBar
-import com.spendoo.designsystem.components.appBar.TopBarIcon
+import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.badge.Badge
 import com.spendoo.designsystem.components.badge.BadgedBox
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
@@ -69,7 +69,7 @@ fun HomeHeader(
                             }
                         }
                     ) {
-                        TopBarIcon(
+                        SpendooIconButton(
                             iconRes = Res.drawable.ic_bell,
                             contentDescription = stringResource(Res.string.notifications),
                             onClick = onNotificationClicked,
@@ -78,7 +78,7 @@ fun HomeHeader(
                         )
                     }
                 } else {
-                    TopBarIcon(
+                    SpendooIconButton(
                         iconRes = Res.drawable.ic_bell,
                         contentDescription = stringResource(Res.string.notifications),
                         onClick = onNotificationClicked,

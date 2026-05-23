@@ -3,13 +3,16 @@ package com.spendoo.home.presentation.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,8 +26,18 @@ import com.spendoo.home.presentation.screen.components.balanceSection
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
+fun HomeScreen(
+    reloadSignal: Long,
+    shouldReload: Boolean,
+    viewModel: HomeViewModel = koinViewModel()
+) {
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(reloadSignal) {
+        if (shouldReload && reloadSignal > 0) {
+            viewModel.onReload()
+        }
+    }
 
     HomeContent(state = state, viewModel = viewModel)
 }
@@ -86,6 +99,10 @@ private fun HomeContent(
                 onViewAll = viewModel::onViewAllSpendingClicked,
                 onSpendingClicked = viewModel::onSpendingClicked
             )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(80.dp).navigationBarsPadding())
         }
     }
 }

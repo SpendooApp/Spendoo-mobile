@@ -12,12 +12,16 @@ class HomeFeatureApiImpl : HomeFeatureApi {
     @Composable
     override fun TabEntry(
         updateBottomNavigationVisibility: (Boolean) -> Unit,
-        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit
+        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
+        reloadSignal: Long,
+        shouldReload: Boolean
     ) {
         HomeNavHost(
             updateBottomNavigationVisibility = updateBottomNavigationVisibility,
             startDestination = HomeRoute,
-            showSnackBar = showSnackBar
+            showSnackBar = showSnackBar,
+            reloadSignal = reloadSignal,
+            shouldReload = shouldReload
         )
     }
 }

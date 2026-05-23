@@ -14,6 +14,8 @@ import com.spendoo.home.presentation.screen.HomeScreen
 fun HomeNavGraph(
     navController: NavHostController,
     startDestination: BaseRoute,
+    reloadSignal: Long,
+    shouldReload: Boolean
 ) {
     NavHost(
         modifier = Modifier.fillMaxSize(),
@@ -44,6 +46,11 @@ fun HomeNavGraph(
             )
         },
     ) {
-        composable<HomeRoute> { HomeScreen() }
+        composable<HomeRoute> {
+            HomeScreen(
+                reloadSignal = reloadSignal,
+                shouldReload = shouldReload
+            )
+        }
     }
 }

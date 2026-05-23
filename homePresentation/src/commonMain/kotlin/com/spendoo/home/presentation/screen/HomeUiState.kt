@@ -42,7 +42,6 @@ data class HomeUiState(
         userImageUrl = null,
         notificationsCount = 0
     )
-//    val error: String? = null
 )
 
 data class BalanceSummaryUiState(
