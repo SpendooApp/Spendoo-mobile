@@ -20,6 +20,24 @@ class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
         _state.update { it.copy(activeFeature = feature) }
     }
 
+    override fun onAddTransactionRequested() {
+        _state.update { it.copy(isAddTransactionBottomSheetVisible = true) }
+    }
+
+    override fun onAddTransactionDismissed() {
+        _state.update { it.copy(isAddTransactionBottomSheetVisible = false) }
+    }
+
+    override fun onTransactionAdded() {
+        _state.update {
+            it.copy(
+                isAddTransactionBottomSheetVisible = false,
+                reloadRequestId = it.reloadRequestId + 1,
+                reloadTarget = it.activeFeature
+            )
+        }
+    }
+
     override fun showSnackBar(
         title: String,
         message: String?,

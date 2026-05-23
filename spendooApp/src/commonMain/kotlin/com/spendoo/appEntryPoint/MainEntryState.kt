@@ -7,6 +7,9 @@ data class MainEntryState(
     val showBottomNavigation: Boolean = true,
     val isSnackBarVisible: Boolean = false,
     val snackBarData: SnackBarData = SnackBarData(""),
+    val isAddTransactionBottomSheetVisible: Boolean = false,
+    val reloadRequestId: Long = 0L,
+    val reloadTarget: Feature? = null,
 )
 
 enum class Feature {

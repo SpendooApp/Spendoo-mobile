@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.painter.Painter
 interface MainEntryInteractionListener {
     fun onBottomNavigationChanged(isShowed: Boolean)
     fun setActiveFeature(feature: Feature)
+    fun onAddTransactionRequested()
+    fun onAddTransactionDismissed()
+    fun onTransactionAdded()
     fun showSnackBar(
         title: String,
         message: String? = null,
