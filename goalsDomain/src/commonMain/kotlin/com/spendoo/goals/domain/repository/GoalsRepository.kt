@@ -6,4 +6,5 @@ import com.spendoo.goals.domain.utils.PagedData
 
 interface GoalsRepository {
     suspend fun getGoals(query: PageQuery): PagedData<Goal>
+    suspend fun addToSaving(amount: Double)
 }
