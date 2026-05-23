@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,37 +47,47 @@ fun BottomSheetTemplate(
     onClickAction: () -> Unit,
     actionText: String,
     modifier: Modifier = Modifier,
+    trailingContent: (@Composable () -> Unit)? = null,
     showDividers: Boolean = true,
     showActionButtons: Boolean = true,
     actionButtonState: AppButtonState = AppButtonState.Enabled,
     backgroundColor: Color = Theme.colorScheme.background.tertiary,
-    content: LazyListScope.() -> Unit
+    content: LazyListScope.(listState: LazyListState) -> Unit
 ) {
+    val listState = rememberLazyListState()
+
     Box {
         LazyColumn(
             modifier = modifier
                 .background(color = backgroundColor)
                 .fillMaxWidth(),
+            state = listState,
         ) {
             stickyHeader {
                 Column {
-                    Text(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = backgroundColor)
                             .padding(16.dp),
-                        textAlign = TextAlign.Start,
-                        text = title,
-                        style = Theme.typography.title.large,
-                        color = Theme.colorScheme.text.title,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            textAlign = TextAlign.Start,
+                            text = title,
+                            style = Theme.typography.title.large,
+                            color = Theme.colorScheme.text.title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        trailingContent?.invoke()
+                    }
                     if (showDividers) { HorizontalDivider(Modifier.padding(horizontal = 16.dp)) }
                 }
             }
 
-            content()
+            content(listState)
 
             if (showActionButtons) {
                 item {

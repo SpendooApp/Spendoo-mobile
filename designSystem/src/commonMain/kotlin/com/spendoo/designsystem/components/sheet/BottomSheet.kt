@@ -39,6 +39,7 @@ fun BottomSheet(
     horizontalPadding: Dp = 16.dp,
     skipPartiallyExpanded: Boolean = false,
     containerColor: Color = Theme.colorScheme.background.tertiary,
+    scrimColor: Color = Color.Black.copy(alpha = 0.33f),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -66,7 +67,7 @@ fun BottomSheet(
             },
             sheetState = sheetState,
             containerColor = containerColor,
-            scrimColor = Color.Black.copy(alpha = 0.33f),
+            scrimColor = scrimColor,
             shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             dragHandle = if (showDragHandle) {
                 { BottomSheetDragHandle() }

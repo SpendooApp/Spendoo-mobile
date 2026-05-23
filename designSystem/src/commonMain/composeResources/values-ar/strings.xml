@@ -79,6 +79,14 @@
     <string name="delete">حذف</string>
     <string name="add_amount_to">إضافة مبلغ إلى %1$s</string>
     <string name="add">إضافة</string>
+    <string name="add_transaction">إضافة معاملة</string>
+    <string name="transaction_type">نوع المعاملة</string>
+    <string name="transaction_title">عنوان المعاملة</string>
+    <string name="transaction_amount">المبلغ</string>
+    <string name="transaction_note">ملاحظة (اختياري)</string>
+    <string name="transaction_date">تاريخ المعاملة</string>
+    <string name="transaction_category">الفئة</string>
+    <string name="select_category">اختر الفئة</string>
     <string name="leave_it_blank_or_0_for_no_budget_limit">اتركه فارغًا أو 0 لعدم وجود حد للميزانية</string>
     <string name="categories">الفئات</string>
     <string name="total_budget">إجمالي الميزانية</string>
@@ -92,6 +100,7 @@
     <string name="error_updating_category">خطأ في تحديث الفئة</string>
     <string name="error_deleting_category">خطأ في حذف الفئة</string>
     <string name="error_adding_amount_to_category">خطأ في إضافة مبلغ للفئة</string>
+    <string name="error_adding_transaction">خطأ في إضافة المعاملة</string>
     <string name="category_id_is_missing">معرف الفئة مفقود</string>
     <string name="category_actions">إجراءات الفئة</string>
     <string name="expenses">المصروفات</string>
@@ -114,4 +123,8 @@
     <string name="no_offers_yet">لا توجد عروض متاحة حاليًا</string>
     <string name="no_goals_yet">لم تقم بتحديد أي أهداف بعد</string>
     <string name="no_top_spending_yet">لم يتم تسجيل أي إنفاق بعد</string>
+    <string name="app_name">Spendoo</string>
+    <string name="home">الرئيسية</string>
+    <string name="stats">الإحصائيات</string>
+    <string name="chatbot">المساعد الذكي</string>
 </resources>
