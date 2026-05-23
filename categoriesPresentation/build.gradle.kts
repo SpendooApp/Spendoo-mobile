@@ -46,11 +46,15 @@ kotlin {
                 implementation(projects.designSystem)
                 implementation(projects.categoriesApi)
                 implementation(projects.categoriesDomain)
+                implementation(projects.goalsDomain)
 
                 implementation(libs.bundles.koin)
 
                 // Navigation
                 implementation(libs.androidx.navigation.compose)
+
+                implementation(libs.filekit.compose)
+                implementation(libs.filekit.core)
             }
         }
 

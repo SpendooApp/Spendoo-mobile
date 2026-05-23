@@ -5,6 +5,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEdit
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.CategoryActionType
 
 interface CategoriesInteractionListener {
+    fun onReload()
     fun onAddEditCategory(addEditCategoryUiState: AddEditCategoryUiState)
     fun onAddCategoryClicked()
     fun onAddCategoryBottomSheetDismissed()

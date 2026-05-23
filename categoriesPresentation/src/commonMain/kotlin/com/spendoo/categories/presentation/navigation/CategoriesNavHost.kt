@@ -19,10 +19,15 @@ import kotlin.uuid.ExperimentalUuidApi
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun CategoriesNavHost(
-    updateBottomNavigationVisibility: (Boolean) -> Unit = {},
+    updateBottomNavigationVisibility: (Boolean) -> Unit,
     effector: Effector = koinInject(),
     startDestination: BaseRoute = CategoriesRoute,
-    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> }
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
+    reloadSignal: Long = 0L,
+    shouldReload: Boolean = false,
+    isAddTransactionBottomSheetVisible: Boolean = true,
+    onDismiss: () -> Unit = {},
+    onTransactionAdded: (() -> Unit)? = null
 ) {
     val navController = rememberNavController()
 
@@ -33,14 +38,27 @@ fun CategoriesNavHost(
             )
 
             is Effect.PopBackStack -> {
-                effect.arguments.forEach { (key, value) ->
-                    navController.previousBackStackEntry
-                        ?.savedStateHandle
-                        ?.set(key, value)
-                }
-                navController.popBackStack()
-            }
+                val isTransactionAdded = effect.arguments.containsKey(ARG_TRANSACTION_ADDED)
 
+                effect.arguments
+                    .filterKeys { key -> key != ARG_TRANSACTION_ADDED }
+                    .forEach { (key, value) ->
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set(key, value)
+                    }
+
+                if (onTransactionAdded != null) {
+                    if (isTransactionAdded) {
+                        onTransactionAdded()
+                    }
+                    if (!navController.popBackStack()) {
+                        onDismiss()
+                    }
+                } else if (!isTransactionAdded && navController.previousBackStackEntry != null) {
+                    navController.popBackStack()
+                }
+            }
 
             is Effect.SetBackStackArgs -> {
                 effect.arguments.forEach { (key, value) ->
@@ -73,12 +91,17 @@ fun CategoriesNavHost(
         }
     }
 
+
     LaunchedEffect(Unit) {
         navController.currentBackStack.collectLatest {
-            if (navController.currentDestination?.route in routesWithBottomNavigation) {
-                updateBottomNavigationVisibility(true)
-            } else {
-                updateBottomNavigationVisibility(false)
+            val route = navController.currentDestination?.route
+            // ignore bottom navigation visibility for AddTransactionRoute and null routes
+            if (route !in listOf(AddTransactionRoute::class.qualifiedName, null)) {
+                if (route in routesWithBottomNavigation) {
+                    updateBottomNavigationVisibility(true)
+                } else {
+                    updateBottomNavigationVisibility(false)
+                }
             }
         }
     }
@@ -86,14 +109,19 @@ fun CategoriesNavHost(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-
         CategoriesNavGraph(
             navController = navController,
             startDestination = startDestination,
+            reloadSignal = reloadSignal,
+            shouldReload = shouldReload,
+            isAddTransactionBottomSheetVisible = isAddTransactionBottomSheetVisible
         )
     }
 }
 
+
 private val routesWithBottomNavigation = listOf(
-    CategoriesRoute::class.qualifiedName,
+    CategoriesRoute::class.qualifiedName
 )
+
+const val ARG_TRANSACTION_ADDED = "transaction_added"

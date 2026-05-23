@@ -34,7 +34,7 @@ fun AddAmountToCategoryBottomSheet(
     onAddAmount: (Double) -> Unit,
     isLoading: Boolean
 ) {
-    var amountText: Double? by remember { mutableStateOf(initialAmount) }
+    var amountText: Double? by remember(initialAmount, isVisible) { mutableStateOf(initialAmount) }
 
     BottomSheet(
         isVisible = isVisible,

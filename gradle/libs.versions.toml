@@ -41,6 +41,7 @@ kotlinx-serialization = "1.6.3"
 coroutines = "1.10.2"
 multiplatformSettings = "1.3.0"
 navigationCompose = "2.9.0-rc02"
+filekit = "0.8.8"
 
 [libraries]
 
@@ -108,6 +109,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformSettings" }
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit" }
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 
 [plugins]
 

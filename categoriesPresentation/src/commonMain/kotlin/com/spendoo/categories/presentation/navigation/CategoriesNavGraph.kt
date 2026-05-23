@@ -8,12 +8,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
+import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionBottomSheet
 import com.spendoo.categories.presentation.screen.categories.CategoriesScreen
 
 @Composable
 fun CategoriesNavGraph(
     navController: NavHostController,
     startDestination: BaseRoute,
+    reloadSignal: Long,
+    shouldReload: Boolean,
+    isAddTransactionBottomSheetVisible: Boolean,
 ) {
     NavHost(
         modifier = Modifier.fillMaxSize(),
@@ -44,6 +49,17 @@ fun CategoriesNavGraph(
             )
         },
     ) {
-        composable<CategoriesRoute> { CategoriesScreen() }
+        composable<CategoriesRoute> {
+            CategoriesScreen(
+                reloadSignal = reloadSignal,
+                shouldReload = shouldReload
+            )
+        }
+
+        composable<AddTransactionRoute> {
+            AddTransactionBottomSheet(
+                isVisible = isAddTransactionBottomSheetVisible
+            )
+        }
     }
 }

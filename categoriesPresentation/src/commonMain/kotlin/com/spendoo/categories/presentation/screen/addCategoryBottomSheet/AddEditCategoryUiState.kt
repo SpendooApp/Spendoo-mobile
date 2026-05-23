@@ -43,10 +43,10 @@ import spendoo.designsystem.generated.resources.move_to_savings
 import spendoo.designsystem.generated.resources.reset_to_original_amount
 import spendoo.designsystem.generated.resources.weekly
 import spendoo.designsystem.generated.resources.yearly
-import kotlin.time.Instant
 
 data class AddEditCategoryUiState(
     val categoryId: String? = null,
+    val isLoading: Boolean = false,
     val categoryName: String = "",
     val budget: Double? = null,
     val budgetStartDate: LocalDate? = null,
@@ -169,4 +169,12 @@ fun LeftOverOption.toSelectableOptions(): GenSelectableOption<LeftOverOption> {
 @Composable
 fun List<LeftOverOption>.toSelectableOptions(): List<GenSelectableOption<LeftOverOption>> {
     return this.map { it.toSelectableOptions() }
+}
+
+fun PriorityOption.toGenSelectableOption(): GenSelectableOption<PriorityOption> {
+    return when (this) {
+        PriorityOption.LOW -> GenSelectableOption(PriorityOption.LOW, Res.string.low)
+        PriorityOption.MEDIUM -> GenSelectableOption(PriorityOption.MEDIUM, Res.string.medium)
+        PriorityOption.HIGH -> GenSelectableOption(PriorityOption.HIGH, Res.string.high)
+    }
 }

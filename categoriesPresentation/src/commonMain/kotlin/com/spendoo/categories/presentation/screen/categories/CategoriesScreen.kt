@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +32,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.compone
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.categories.presentation.shared.pagination.PaginationTrigger
 import com.spendoo.designsystem.components.appBar.TopBar
-import com.spendoo.designsystem.components.appBar.TopBarIcon
+import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.cards.CategoryCard
 import com.spendoo.designsystem.components.cards.MoneyCard
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
@@ -38,7 +41,7 @@ import com.spendoo.designsystem.modifier.shimmerEffect
 import com.spendoo.designsystem.theme.color.scheme.toBrush
 import com.spendoo.designsystem.theme.theme.Theme
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.added_income
 import spendoo.designsystem.generated.resources.categories
@@ -49,9 +52,17 @@ import spendoo.designsystem.generated.resources.total_spending
 
 @Composable
 fun CategoriesScreen(
-    categoriesViewModel: CategoriesViewModel = koinInject()
+    reloadSignal: Long,
+    shouldReload: Boolean,
+    categoriesViewModel: CategoriesViewModel = koinViewModel()
 ) {
     val state by categoriesViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(reloadSignal) {
+        if (shouldReload && reloadSignal > 0) {
+            categoriesViewModel.onReload()
+        }
+    }
     CategoriesScreenContent(state = state, interactionListener = categoriesViewModel)
 }
 
@@ -73,7 +84,7 @@ private fun CategoriesScreenContent(
             title = stringResource(Res.string.categories),
             actions = listOf(
                 {
-                    TopBarIcon(
+                    SpendooIconButton(
                         iconRes = Res.drawable.ic_plus,
                         contentDescription = stringResource(Res.string.categories),
                         onClick = { interactionListener.onAddCategoryClicked() }
@@ -172,6 +183,10 @@ private fun CategoriesScreenContent(
                     }
                 }
             }
+
+            item {
+                Spacer(modifier = Modifier.height(100.dp).navigationBarsPadding())
+            }
         }
         PaginationTrigger(
             list = state.categories,
@@ -198,7 +213,6 @@ private fun CategoriesScreenContent(
         onDismiss = interactionListener::onAddCategoryBottomSheetDismissed,
         initialAddEditCategoryUiState = state.categoryToEdit,
         onAddCategory = interactionListener::onAddEditCategory,
-        isLoading = state.isAddEditCategoryLoading
     )
     CategoryActionsSheet(
         show = state.isCategoryActionsSheetVisible,
