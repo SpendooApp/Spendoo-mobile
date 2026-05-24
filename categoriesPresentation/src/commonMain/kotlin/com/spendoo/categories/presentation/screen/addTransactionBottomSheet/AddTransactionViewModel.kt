@@ -16,7 +16,8 @@ import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.goals.domain.repository.GoalsRepository
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.readBytes
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
@@ -141,7 +142,10 @@ class AddTransactionViewModel(
 
     override fun onSelectImage(file: PlatformFile?) {
         viewModelScope.launch {
-            file?.readBytes()?.let { onImageProcessed(it) }
+            file?.let { 
+                val bytes = it.readBytes()
+                onImageProcessed(bytes)
+            }
         }
     }
 

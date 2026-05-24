@@ -76,7 +76,7 @@ internal fun provideHttpClient(
 
                             // Re-assemble the log message, swapping out the flat line for the beautiful block
                             message.substring(0, firstBrace) + prettyJsonString + message.substring(lastBrace + 1)
-                        } catch (e: Exception) {
+                        } catch (_: Exception) {
                             message // Fallback to raw text if it wasn't valid JSON after all
                         }
                     } else {

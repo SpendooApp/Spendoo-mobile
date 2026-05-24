@@ -1,6 +1,6 @@
 package com.spendoo.categories.presentation.screen.addTransactionBottomSheet
 
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.datetime.LocalDate
 
 interface AddTransactionInteractionListener {

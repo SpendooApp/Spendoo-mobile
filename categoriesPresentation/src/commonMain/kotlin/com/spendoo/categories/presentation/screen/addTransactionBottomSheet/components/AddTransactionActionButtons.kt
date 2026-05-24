@@ -18,8 +18,8 @@ import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.theme.theme.Theme
-import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
-import io.github.vinceglb.filekit.core.PickerType
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
+import io.github.vinceglb.filekit.dialogs.FileKitType
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add
@@ -34,7 +34,7 @@ fun BoxScope.AddTransactionActionButtons(
     interactionListener: AddTransactionInteractionListener,
 ) {
     val imagePicker = rememberFilePickerLauncher(
-        type = PickerType.Image,
+        type = FileKitType.Image,
         onResult = interactionListener::onSelectImage
     )
 

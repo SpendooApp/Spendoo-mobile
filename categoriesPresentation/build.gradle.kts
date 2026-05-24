@@ -37,11 +37,11 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
 
                 // Compose
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.ui)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.resources)
+                implementation(libs.compose.ui.tooling.preview)
 
                 implementation(projects.designSystem)
                 implementation(projects.categoriesApi)
@@ -66,7 +66,7 @@ kotlin {
 
         androidMain {
             dependencies {
-                implementation(compose.preview)
+                implementation(libs.compose.preview)
                 implementation(libs.androidx.activity.compose)
             }
         }
@@ -92,5 +92,5 @@ android {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    debugImplementation(libs.compose.ui.tooling)
 }
