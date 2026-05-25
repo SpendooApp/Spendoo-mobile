@@ -40,6 +40,7 @@ kotlinx-serialization = "1.11.0"
 coroutines = "1.11.0"
 multiplatformSettings = "1.3.0"
 navigationCompose = "2.9.2"
+poolingcontainer = "1.0.0"
 filekit = "0.14.1"
 
 [libraries]
@@ -114,6 +115,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformSettings" }
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-poolingcontainer = { module = "androidx.customview:poolingcontainer", version.ref = "poolingcontainer" }
 filekit-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 filekit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
