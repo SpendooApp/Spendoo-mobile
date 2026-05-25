@@ -22,6 +22,10 @@ class KmpComposeLibraryConventionPlugin : Plugin<Project> {
                 targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
                     compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
                     minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
+
+                    androidResources {
+                        enable = true
+                    }
                 }
 
                 sourceSets.configureEach {
