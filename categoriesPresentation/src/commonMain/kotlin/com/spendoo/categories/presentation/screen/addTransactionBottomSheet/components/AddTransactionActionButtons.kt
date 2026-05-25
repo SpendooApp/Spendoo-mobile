@@ -20,13 +20,13 @@ import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.theme.theme.Theme
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.compose.rememberCameraPickerLauncher
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add
 import spendoo.designsystem.generated.resources.ic_camera
+import spendoo.designsystem.generated.resources.ic_gallery
 import spendoo.designsystem.generated.resources.ic_mic
-import spendoo.designsystem.generated.resources.ic_mobile
-import spendoo.designsystem.generated.resources.ic_robot
 
 @Composable
 fun BoxScope.AddTransactionActionButtons(
@@ -35,6 +35,10 @@ fun BoxScope.AddTransactionActionButtons(
 ) {
     val imagePicker = rememberFilePickerLauncher(
         type = FileKitType.Image,
+        onResult = interactionListener::onSelectImage
+    )
+
+    val cameraPicker = rememberCameraPickerLauncher(
         onResult = interactionListener::onSelectImage
     )
 
@@ -48,8 +52,18 @@ fun BoxScope.AddTransactionActionButtons(
         verticalAlignment = Alignment.CenterVertically
     ) {
         SpendooIconButton(
-            onClick = { imagePicker.launch() }, //TODO: camera or gallery
+            onClick = { cameraPicker.launch() },
             iconRes = Res.drawable.ic_camera,
+            tint = Theme.colorScheme.icon.primary,
+            backgroundColor = Theme.colorScheme.button.secondary,
+            contentDescription = null,
+            showBorder = false,
+            iconSize = 24.dp,
+            size = 56.dp,
+        )
+        SpendooIconButton(
+            onClick = { imagePicker.launch() },
+            iconRes = Res.drawable.ic_gallery,
             tint = Theme.colorScheme.icon.primary,
             backgroundColor = Theme.colorScheme.button.secondary,
             contentDescription = null,

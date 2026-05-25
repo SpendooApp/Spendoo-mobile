@@ -58,7 +58,8 @@ fun AddTransactionBottomSheet(
     BottomSheet(
         isVisible = isVisible,
         onDismiss = viewModel::onDismiss,
-        horizontalPadding = 0.dp
+        horizontalPadding = 0.dp,
+        skipPartiallyExpanded = true
     ) {
         AddTransactionBottomSheetContent(
             state = state,
