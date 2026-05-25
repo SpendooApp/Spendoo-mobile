@@ -5,12 +5,6 @@ plugins {
     id("spendoo.kmp.application")
 }
 
-val localProperties = Properties()
-val localPropertiesFile: File = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(localPropertiesFile.inputStream())
-}
-
 kotlin {
     // android {} block for the new KMP library plugin
     android {
@@ -60,13 +54,24 @@ dependencies {
 
 tasks.register("syncIosConfig") {
     group = "ios"
-    doLast {
-        val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
-        val escapedUrl = baseUrl.replace("//", "/$()/")
-        val configFile = file("../iosApp/Configuration/Config.xcconfig")
+    val localPropsFile = rootProject.layout.projectDirectory.file("local.properties")
+    val configFile = layout.projectDirectory.file("../iosApp/Configuration/Config.xcconfig")
+    inputs.file(localPropsFile).optional()
+    outputs.file(configFile)
 
-        if (configFile.exists()) {
-            val lines = configFile.readLines().toMutableList()
+    doLast {
+        val properties = Properties()
+        val localProps = localPropsFile.asFile
+        if (localProps.exists()) {
+            localProps.inputStream().use { properties.load(it) }
+        }
+
+        val baseUrl = properties.getProperty("BASE_URL").orEmpty()
+        val escapedUrl = baseUrl.replace("//", "/$()/")
+        val configFileOnDisk = configFile.asFile
+
+        if (configFileOnDisk.exists()) {
+            val lines = configFileOnDisk.readLines().toMutableList()
             val index = lines.indexOfFirst { it.startsWith("BASE_URL") }
             val newLine = "BASE_URL = $escapedUrl"
 
@@ -75,7 +80,7 @@ tasks.register("syncIosConfig") {
             } else {
                 lines.add(newLine)
             }
-            configFile.writeText(lines.joinToString("\n"))
+            configFileOnDisk.writeText(lines.joinToString("\n"))
         }
     }
 }
