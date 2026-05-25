@@ -34,7 +34,7 @@ import com.spendoo.designsystem.utils.SpendooPreview
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.choose_category
 import spendoo.designsystem.generated.resources.enter_a_title
@@ -177,3 +177,4 @@ fun ExpenseEntryItemPreview() = SpendooPreview {
         }
     }
 }
+

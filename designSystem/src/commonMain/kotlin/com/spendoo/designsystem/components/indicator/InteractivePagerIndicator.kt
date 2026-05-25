@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.theme.theme.Theme
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun InteractivePagerIndicator(
@@ -72,3 +72,4 @@ fun InteractivePagerIndicatorPreview() {
         pagerState = pagerState
     )
 }
+

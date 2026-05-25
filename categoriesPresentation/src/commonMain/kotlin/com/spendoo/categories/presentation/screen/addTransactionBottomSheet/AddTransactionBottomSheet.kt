@@ -34,7 +34,7 @@ import com.spendoo.designsystem.utils.extentions.painter
 import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add
@@ -219,4 +219,6 @@ fun AddTransactionBottomSheetPreview() = SpendooPreview {
         interactionListener = previewInteractionListener
     )
 }
+
+
 

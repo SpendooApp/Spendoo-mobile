@@ -37,7 +37,7 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_home
 import spendoo.designsystem.generated.resources.ic_home_selected
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun BottomNavigationBarContent(
@@ -238,3 +238,5 @@ private fun PreviewBottomNavigationBar() {
         )
     }
 }
+
+

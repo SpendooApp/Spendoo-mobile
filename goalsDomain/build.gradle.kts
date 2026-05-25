@@ -1,36 +1,24 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidKotlinMultiplatformLibrary)
-    alias(libs.plugins.androidLint)
+    id("spendoo.kmp.feature.domain")
 }
 
 kotlin {
     androidLibrary {
         namespace = "com.spendoo.goals.domain"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
-    val xcfName = "goalsDomainKit"
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "goalsDomainKit"
         }
     }
 
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.koin.core)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlin.stdlib)
                 api(libs.kotlinx.datetime)
                 api(projects.categoriesDomain)
             }

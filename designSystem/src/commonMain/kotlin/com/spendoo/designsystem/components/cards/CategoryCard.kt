@@ -27,7 +27,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dots
 import spendoo.designsystem.generated.resources.ic_food
@@ -176,3 +176,4 @@ private fun CategoryCardPreview() = SpendooTheme {
         budgetData = null
     )
 }
+

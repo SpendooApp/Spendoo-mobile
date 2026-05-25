@@ -19,7 +19,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_arrow_right
 
@@ -93,3 +93,4 @@ fun OutlinedButtonPreview2() = SpendooTheme {
         )
     }
 }
+

@@ -17,7 +17,7 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.cancel
 import spendoo.designsystem.generated.resources.ok
@@ -138,3 +138,4 @@ fun ASDatePickerDialogPreview() = SpendooTheme {
         onDismiss = {}
     )
 }
+

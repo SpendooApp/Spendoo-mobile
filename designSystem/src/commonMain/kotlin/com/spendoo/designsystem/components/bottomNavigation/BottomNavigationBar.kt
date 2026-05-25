@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_home
 import spendoo.designsystem.generated.resources.ic_home_selected
@@ -65,3 +65,4 @@ private fun PreviewBottomNavigationBar() {
         }
     }
 }
+

@@ -27,7 +27,7 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 data class SelectableOption(
     val id: String,
@@ -146,3 +146,4 @@ fun SelectableOptionRowColumnPreview() = SpendooTheme {
         onOptionSelected = { selectedOptionId = it },
     )
 }
+

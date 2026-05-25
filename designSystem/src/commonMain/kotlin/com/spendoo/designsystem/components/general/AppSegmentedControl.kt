@@ -32,7 +32,7 @@ import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.SpendooPreview
 import com.spendoo.designsystem.utils.extentions.asString
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.expenses
 import spendoo.designsystem.generated.resources.income
@@ -149,3 +149,4 @@ fun AppSegmentedControlPreview() = SpendooPreview {
         onOptionSelected = { selectedOption = it }
     )
 }
+

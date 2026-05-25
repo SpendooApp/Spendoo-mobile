@@ -40,7 +40,7 @@ import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_category
@@ -276,3 +276,5 @@ private fun AddCategoryScreenPreview() = SpendooPreview {
         isLoading = false
     )
 }
+
+

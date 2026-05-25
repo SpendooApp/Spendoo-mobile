@@ -28,7 +28,7 @@ import com.spendoo.identity.presentation.screen.onboarding.components.BottomArro
 import com.spendoo.identity.presentation.screen.onboarding.components.OnboardingPager
 import com.spendoo.identity.presentation.shared.ScreenBackground
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dollar
@@ -190,3 +190,5 @@ fun OnboardingScreenPreview() = SpendooTheme {
         }
     )
 }
+
+

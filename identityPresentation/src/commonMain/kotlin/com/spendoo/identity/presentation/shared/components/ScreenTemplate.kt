@@ -19,7 +19,7 @@ import com.spendoo.designsystem.components.indicator.DotsProgressIndicator
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.spendoo.identity.presentation.shared.ScreenBackground
 
 
@@ -103,3 +103,5 @@ fun ScreenTemplatePreview() = SpendooTheme {
         }
     }
 }
+
+

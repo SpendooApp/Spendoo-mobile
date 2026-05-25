@@ -23,7 +23,7 @@ fun Checkbox(
         modifier = modifier,
         enabled = enabled,
         colors = colors.toM3(),
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -74,7 +74,7 @@ fun CheckboxColors.toM3(): M3CheckboxColors {
         uncheckedBorderColor = uncheckedBorderColor,
         disabledBorderColor = disabledBorderColor,
         disabledUncheckedBorderColor = disabledUncheckedBorderColor,
-        disabledIndeterminateBorderColor = disabledIndeterminateBorderColor
+        disabledIndeterminateBorderColor = disabledIndeterminateBorderColor,
     )
 }
 
@@ -91,5 +91,5 @@ fun M3CheckboxColors.toCheckboxColors() = CheckboxColors(
     uncheckedBorderColor = uncheckedBorderColor,
     disabledBorderColor = disabledBorderColor,
     disabledUncheckedBorderColor = disabledUncheckedBorderColor,
-    disabledIndeterminateBorderColor = disabledIndeterminateBorderColor
+    disabledIndeterminateBorderColor = disabledIndeterminateBorderColor,
 )
