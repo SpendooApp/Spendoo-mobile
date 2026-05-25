@@ -12,6 +12,13 @@ compose {
 }
 
 kotlin {
+    android {
+        namespace = "com.spendoo.designsystem"
+        androidResources {
+            enable = true
+        }
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -35,16 +42,12 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.poolingcontainer)
             }
         }
     }
 }
 
-android {
-    namespace = "com.spendoo.designsystem"
-}
-
 dependencies {
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.poolingcontainer)
+    "androidRuntimeClasspath"(libs.compose.ui.tooling)
 }

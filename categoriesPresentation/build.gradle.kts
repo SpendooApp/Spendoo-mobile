@@ -11,6 +11,10 @@ compose {
 }
 
 kotlin {
+    android {
+        namespace = "com.spendoo.categories.presentation"
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -32,14 +36,14 @@ kotlin {
                 implementation(libs.filekit.core)
             }
         }
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.poolingcontainer)
+            }
+        }
     }
 }
 
-android {
-    namespace = "com.spendoo.categories.presentation"
-}
-
 dependencies {
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.poolingcontainer)
+    "androidRuntimeClasspath"(libs.compose.ui.tooling)
 }

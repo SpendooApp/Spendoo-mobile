@@ -11,6 +11,10 @@ compose {
 }
 
 kotlin {
+    android {
+        namespace = "com.spendoo.home.presentation"
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -35,14 +39,16 @@ kotlin {
                 implementation(projects.goalsDomain)
             }
         }
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.poolingcontainer)
+                // runtimeClasspath is used for compose tooling
+                // However, since it's a library, we might use androidRuntimeClasspath
+            }
+        }
     }
 }
 
-android {
-    namespace = "com.spendoo.home.presentation"
-}
-
 dependencies {
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.poolingcontainer)
+    "androidRuntimeClasspath"(libs.compose.ui.tooling)
 }

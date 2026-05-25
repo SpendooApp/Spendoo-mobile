@@ -1,5 +1,4 @@
-import com.android.build.api.dsl.LibraryExtension
-import com.spendoo.convention.configureAndroidLibrary
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.spendoo.convention.configureKotlinMultiplatform
 import com.spendoo.convention.libs
 import org.gradle.api.Plugin
@@ -12,7 +11,7 @@ class KmpComposeLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.findPlugin("kotlinMultiplatform").get().get().pluginId)
-                apply(libs.findPlugin("androidLibrary").get().get().pluginId)
+                apply(libs.findPlugin("androidKotlinMultiplatformLibrary").get().get().pluginId)
                 apply(libs.findPlugin("composeMultiplatform").get().get().pluginId)
                 apply(libs.findPlugin("composeCompiler").get().get().pluginId)
             }
@@ -20,7 +19,10 @@ class KmpComposeLibraryConventionPlugin : Plugin<Project> {
             configureKotlinMultiplatform()
 
             extensions.configure<KotlinMultiplatformExtension> {
-                androidTarget()
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
+                    compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
+                    minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
+                }
 
                 sourceSets.configureEach {
                     if (name == "commonMain") {
@@ -35,10 +37,6 @@ class KmpComposeLibraryConventionPlugin : Plugin<Project> {
                         }
                     }
                 }
-            }
-
-            extensions.configure<LibraryExtension> {
-                configureAndroidLibrary(this)
             }
         }
     }

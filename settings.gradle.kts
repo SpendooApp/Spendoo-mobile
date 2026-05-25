@@ -28,6 +28,7 @@ dependencyResolutionManagement {
 }
 
 include(":spendooApp")
+include(":androidApp")
 include(":designSystem")
 include(":identityData")
 include(":identityDomain")

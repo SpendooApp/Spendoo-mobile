@@ -3,7 +3,6 @@ import java.util.Properties
 
 plugins {
     id("spendoo.kmp.application")
-    id("com.google.gms.google-services")
 }
 
 val localProperties = Properties()
@@ -12,11 +11,12 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
-val appVersionName =
-    project.property("VERSION_MAJOR").toString() + "." + project.property("VERSION_MINOR")
-        .toString()
-
 kotlin {
+    // android {} block for the new KMP library plugin
+    android {
+        namespace = "com.spendoo.library" // Different from androidApp
+    }
+
     val xcf = XCFramework("SpendooApp")
     listOf(
         iosArm64(),
@@ -48,73 +48,14 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-    }
-}
-
-android {
-    namespace = "com.spendoo"
-
-    defaultConfig {
-        applicationId = "com.spendoo"
-        versionCode = 1
-        versionName = appVersionName
-
-        val baseUrl = localProperties.getProperty("BASE_URL", "")
-        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
-    }
-    signingConfigs {
-        if (project.hasProperty("KEYSTORE_STORE_FILE") || System.getenv("KEYSTORE_STORE_FILE") != null) {
-            create("release") {
-                val keystorePath = project.loadProperty(
-                    path = "local.properties",
-                    propertyName = "KEYSTORE_STORE_FILE",
-                )
-
-                storeFile = file(keystorePath)
-                storePassword = project.loadProperty("local.properties", "KEYSTORE_STORE_PASSWORD")
-                keyAlias = project.loadProperty("local.properties", "KEYSTORE_KEY_ALIAS")
-                keyPassword = project.loadProperty("local.properties", "KEYSTORE_KEY_PASSWORD")
-            }
-        }
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            if (signingConfigs.findByName("release") != null) {
-                signingConfig = signingConfigs.getByName("release")
-            }
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        androidMain.dependencies {
+            implementation(libs.androidx.poolingcontainer)
         }
     }
 }
 
 dependencies {
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.poolingcontainer)
-}
-
-fun Project.loadProperty(
-    path: String,
-    propertyName: String,
-): String {
-    val properties = Properties()
-    val propertiesFile = project.rootProject.file(path)
-
-    if (propertiesFile.exists()) {
-        properties.load(propertiesFile.inputStream())
-        return properties.getProperty(propertyName)
-            ?: System.getenv(propertyName)
-            ?: throw GradleException("Property '$propertyName' not found in $path or environment")
-    } else {
-        // Fallback to environment variable for CI/CD
-        return System.getenv(propertyName)
-            ?: throw GradleException("Property file '$path' not found and '$propertyName' not in environment")
-    }
+    "androidRuntimeClasspath"(libs.compose.ui.tooling)
 }
 
 tasks.register("syncIosConfig") {

@@ -3,6 +3,10 @@ plugins {
 }
 
 kotlin {
+    android {
+        namespace = "com.spendoo.categories.api"
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -12,8 +16,4 @@ kotlin {
             isStatic = true
         }
     }
-}
-
-android {
-    namespace = "com.spendoo.categories.api"
 }

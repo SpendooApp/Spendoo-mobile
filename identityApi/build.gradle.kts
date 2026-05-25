@@ -3,8 +3,8 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        // compilerOptions inherited if common, but namespace is specific
+    android {
+        namespace = "com.spendoo.identity.api"
     }
 
     listOf(
@@ -16,8 +16,4 @@ kotlin {
             isStatic = true
         }
     }
-}
-
-android {
-    namespace = "com.spendoo.identity.api"
 }

@@ -1,4 +1,4 @@
-import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.spendoo.convention.configureKotlinMultiplatform
 import com.spendoo.convention.libs
 import org.gradle.api.Plugin
@@ -20,7 +20,7 @@ class KmpFeatureDataConventionPlugin : Plugin<Project> {
             configureKotlinMultiplatform()
 
             extensions.configure<KotlinMultiplatformExtension> {
-                targets.withType(KotlinMultiplatformAndroidTarget::class.java).configureEach {
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
                     compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
                     minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
 

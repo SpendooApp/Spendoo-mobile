@@ -1,6 +1,4 @@
-import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
-import com.android.build.api.dsl.LibraryExtension
-import com.spendoo.convention.configureAndroidLibrary
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.spendoo.convention.configureKotlinMultiplatform
 import com.spendoo.convention.libs
 import org.gradle.api.Plugin
@@ -21,7 +19,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             configureKotlinMultiplatform()
 
             extensions.configure<KotlinMultiplatformExtension> {
-                targets.withType(KotlinMultiplatformAndroidTarget::class.java).configureEach {
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
                     compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
                     minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
 
@@ -31,10 +29,6 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                         instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     }
                 }
-            }
-
-            extensions.configure<LibraryExtension> {
-                configureAndroidLibrary(this)
             }
 
             dependencies {

@@ -1,5 +1,4 @@
-import com.android.build.api.dsl.LibraryExtension
-import com.spendoo.convention.configureAndroidLibrary
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.spendoo.convention.configureKotlinMultiplatform
 import com.spendoo.convention.libs
 import org.gradle.api.Plugin
@@ -13,7 +12,7 @@ class KmpFeaturePresentationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.findPlugin("kotlinMultiplatform").get().get().pluginId)
-                apply(libs.findPlugin("androidLibrary").get().get().pluginId)
+                apply(libs.findPlugin("androidKotlinMultiplatformLibrary").get().get().pluginId)
                 apply(libs.findPlugin("composeMultiplatform").get().get().pluginId)
                 apply(libs.findPlugin("composeCompiler").get().get().pluginId)
                 apply(libs.findPlugin("kotlinx-serialization").get().get().pluginId)
@@ -22,13 +21,9 @@ class KmpFeaturePresentationConventionPlugin : Plugin<Project> {
             configureKotlinMultiplatform()
 
             extensions.configure<KotlinMultiplatformExtension> {
-                androidTarget()
-            }
-
-            extensions.configure<LibraryExtension> {
-                configureAndroidLibrary(this)
-                testOptions {
-                    unitTests.isReturnDefaultValues = true
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
+                    compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
+                    minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
                 }
             }
 

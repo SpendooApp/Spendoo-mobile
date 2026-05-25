@@ -1,6 +1,4 @@
-import com.android.build.api.dsl.LibraryExtension
-import com.spendoo.convention.configureAndroidLibrary
-import com.spendoo.convention.configureAndroidTarget
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.spendoo.convention.configureKotlinMultiplatform
 import com.spendoo.convention.libs
 import org.gradle.api.Plugin
@@ -14,20 +12,19 @@ class KmpFeatureApiConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.findPlugin("kotlinMultiplatform").get().get().pluginId)
-                apply(libs.findPlugin("androidLibrary").get().get().pluginId)
+                apply(libs.findPlugin("androidKotlinMultiplatformLibrary").get().get().pluginId)
                 apply(libs.findPlugin("composeMultiplatform").get().get().pluginId)
                 apply(libs.findPlugin("composeCompiler").get().get().pluginId)
             }
 
             configureKotlinMultiplatform()
-            configureAndroidTarget()
 
             extensions.configure<KotlinMultiplatformExtension> {
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
+                    compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
+                    minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
+                }
                 jvm()
-            }
-
-            extensions.configure<LibraryExtension> {
-                configureAndroidLibrary(this)
             }
 
             dependencies {

@@ -8,7 +8,7 @@ dependencies {
     // We hardcode these versions here to avoid bootstrap issues with the version catalog 
     // in the build-logic's own build script. The convention plugins themselves 
     // will still use the version catalog at runtime.
-    compileOnly("com.android.tools.build:gradle:8.13.2")
+    compileOnly("com.android.tools.build:gradle:9.0.1")
     compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.21")
     compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.11.0")
 }

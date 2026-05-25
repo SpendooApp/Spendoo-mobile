@@ -11,6 +11,10 @@ compose {
 }
 
 kotlin {
+    android {
+        namespace = "com.spendoo.identity.presentation"
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -29,14 +33,14 @@ kotlin {
                 implementation(projects.homeApi)
             }
         }
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.poolingcontainer)
+            }
+        }
     }
 }
 
-android {
-    namespace = "com.spendoo.identity.presentation"
-}
-
 dependencies {
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.poolingcontainer)
+    "androidRuntimeClasspath"(libs.compose.ui.tooling)
 }
