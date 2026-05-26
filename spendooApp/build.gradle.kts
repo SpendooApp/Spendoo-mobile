@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.konan.target.Family
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
 plugins {
@@ -8,21 +5,10 @@ plugins {
 }
 
 kotlin {
-    // android {} block for the new KMP library plugin
     android {
-        namespace = "com.spendoo.library" // Different from androidApp
+        namespace = "com.spendoo.library"
     }
 
-    val xcf = XCFramework("SpendooApp")
-    targets.withType(KotlinNativeTarget::class.java)
-        .matching { it.konanTarget.family == Family.IOS }
-        .configureEach {
-            binaries.framework {
-                baseName = "SpendooApp"
-                isStatic = true
-                xcf.add(this)
-            }
-        }
 
     sourceSets {
         commonMain.dependencies {

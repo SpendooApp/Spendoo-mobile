@@ -7,8 +7,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-internal fun Project.configureKotlinMultiplatform() {
-    configureIosTargets()
+internal fun Project.configureKotlinMultiplatform(includeIosTargets: Boolean = true) {
+    if (includeIosTargets) {
+        configureIosTargets()
+    }
 
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {

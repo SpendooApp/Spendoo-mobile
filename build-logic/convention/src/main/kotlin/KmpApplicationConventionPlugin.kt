@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.spendoo.convention.configureKotlinMultiplatform
+import com.spendoo.convention.configureIosAppTargets
 import com.spendoo.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -17,7 +18,12 @@ class KmpApplicationConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("composeCompiler").get().get().pluginId)
             }
 
-            configureKotlinMultiplatform()
+            configureKotlinMultiplatform(includeIosTargets = false)
+            configureIosAppTargets(
+                xcFrameworkName = "SpendooApp",
+                frameworkBaseName = "SpendooApp",
+                isStaticFramework = true
+            )
 
             extensions.configure<KotlinMultiplatformExtension> {
                 targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
