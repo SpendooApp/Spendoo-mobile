@@ -15,15 +15,6 @@ kotlin {
         namespace = "com.spendoo.home.presentation"
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "HomePresentationKit"
-        }
-    }
-
     sourceSets {
         commonMain {
             dependencies {

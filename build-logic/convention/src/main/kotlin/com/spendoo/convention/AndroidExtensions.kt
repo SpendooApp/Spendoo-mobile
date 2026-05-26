@@ -22,8 +22,8 @@ internal fun Project.configureAndroidApplication(extension: ApplicationExtension
             targetSdk = libs.findVersion("android-targetSdk").get().requiredVersion.toInt()
         }
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
         buildFeatures {
             buildConfig = true
@@ -35,4 +35,3 @@ internal fun Project.configureAndroidApplication(extension: ApplicationExtension
         }
     }
 }
-

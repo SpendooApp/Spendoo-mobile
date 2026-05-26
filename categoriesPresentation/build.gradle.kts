@@ -15,15 +15,6 @@ kotlin {
         namespace = "com.spendoo.categories.presentation"
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "CategoriesPresentationKit"
-        }
-    }
-
     sourceSets {
         commonMain {
             dependencies {

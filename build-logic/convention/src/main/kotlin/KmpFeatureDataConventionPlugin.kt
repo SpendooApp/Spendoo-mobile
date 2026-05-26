@@ -43,9 +43,13 @@ class KmpFeatureDataConventionPlugin : Plugin<Project> {
 
                 "androidMainImplementation"(libs.findLibrary("koin-android").get())
                 "androidMainImplementation"(libs.findLibrary("ktor-client-okhttp").get())
+            }
 
-                libs.findLibrary("ktor-client-darwin").ifPresent {
-                    "iosMainImplementation"(it)
+            extensions.configure<KotlinMultiplatformExtension> {
+                sourceSets.findByName("iosMain")?.dependencies {
+                    libs.findLibrary("ktor-client-darwin").ifPresent {
+                        implementation(it)
+                    }
                 }
             }
         }

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
@@ -12,16 +14,15 @@ kotlin {
     }
 
     val xcf = XCFramework("SpendooApp")
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "SpendooApp"
-            isStatic = true
-            xcf.add(this)
+    targets.withType(KotlinNativeTarget::class.java)
+        .matching { it.konanTarget.family == Family.IOS }
+        .configureEach {
+            binaries.framework {
+                baseName = "SpendooApp"
+                isStatic = true
+                xcf.add(this)
+            }
         }
-    }
 
     sourceSets {
         commonMain.dependencies {

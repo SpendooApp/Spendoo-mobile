@@ -15,15 +15,6 @@ kotlin {
         namespace = "com.spendoo.identity.presentation"
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "IdentityPresentationKit"
-        }
-    }
-
     sourceSets {
         commonMain {
             dependencies {

@@ -1,8 +1,51 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
 package com.spendoo.convention
 
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
-internal fun KotlinMultiplatformExtension.applyHierarchyTemplate() {
-    applyDefaultHierarchyTemplate()
+private val hierarchyTemplate = KotlinHierarchyTemplate {
+    withSourceSetTree(
+        KotlinSourceSetTree.main,
+        KotlinSourceSetTree.test,
+    )
+
+    common {
+        withCompilations { true }
+
+        group("mobile") {
+            withAndroidTarget()
+            group("ios") {
+                withIos()
+            }
+        }
+
+        group("jvmCommon") {
+            withAndroidTarget()
+            withJvm()
+        }
+
+        group("native") {
+            withNative()
+
+            group("apple") {
+                withApple()
+
+                group("ios") {
+                    withIos()
+                }
+
+                group("macos") {
+                    withMacos()
+                }
+            }
+        }
+    }
 }
 
+internal fun KotlinMultiplatformExtension.applyHierarchyTemplate() {
+    applyHierarchyTemplate(hierarchyTemplate)
+}

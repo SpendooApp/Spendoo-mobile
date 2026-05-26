@@ -19,15 +19,6 @@ kotlin {
         }
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "DesignSystemKit"
-        }
-    }
-
     sourceSets {
         commonMain {
             dependencies {

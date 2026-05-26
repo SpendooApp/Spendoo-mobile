@@ -7,15 +7,6 @@ kotlin {
         namespace = "com.spendoo.categories.data"
     }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "categoriesDataKit"
-        }
-    }
-
     sourceSets {
         commonMain {
             dependencies {
