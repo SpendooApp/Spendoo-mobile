@@ -18,12 +18,12 @@ class KmpApplicationConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("composeCompiler").get().get().pluginId)
             }
 
-            configureKotlinMultiplatform(includeIosTargets = false)
             configureIosAppTargets(
                 xcFrameworkName = "SpendooApp",
                 frameworkBaseName = "SpendooApp",
                 isStaticFramework = true
             )
+            configureKotlinMultiplatform(includeIosTargets = false)
 
             extensions.configure<KotlinMultiplatformExtension> {
                 targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
