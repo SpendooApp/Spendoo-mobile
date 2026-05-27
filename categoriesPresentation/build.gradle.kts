@@ -25,11 +25,14 @@ kotlin {
 
                 implementation(libs.filekit.compose)
                 implementation(libs.filekit.core)
+                implementation(libs.kodio.core)
+                implementation(libs.kodio.compose)
             }
         }
         androidMain {
             dependencies {
                 implementation(libs.androidx.poolingcontainer)
+                implementation(libs.koin.android)
             }
         }
     }

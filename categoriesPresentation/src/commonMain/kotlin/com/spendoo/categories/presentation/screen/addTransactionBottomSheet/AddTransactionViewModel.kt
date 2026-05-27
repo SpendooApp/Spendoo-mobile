@@ -132,11 +132,11 @@ class AddTransactionViewModel(
     }
 
     // Voice/Image Actions
-    override fun onVoiceProcessed(file: ByteArray) { //TODO
+    override fun onVoiceProcessed(file: ByteArray) {
         processInput { transactionsRepository.getReadyInputFromVoice(file) }
     }
 
-    override fun onImageProcessed(file: ByteArray) { //TODO camera or gallery
+    fun onImageProcessed(file: ByteArray) {
         processInput { transactionsRepository.getReadyInputFromImage(file) }
     }
 
@@ -198,6 +198,10 @@ class AddTransactionViewModel(
             currentState.type == TransactionType.Income -> createIncome()
             else -> createExpense()
         }
+    }
+
+    override fun setAudioRecordingVisibility(bool: Boolean) {
+        updateState { it.copy(showAudioPicker = bool) }
     }
 
     private fun addToSaving() {

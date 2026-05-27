@@ -28,9 +28,9 @@ interface AddTransactionInteractionListener {
 
     // Voice/Image Actions
     fun onVoiceProcessed(file: ByteArray)
-    fun onImageProcessed(file: ByteArray)
     fun onSelectImage(file: PlatformFile?)
 
     // Submission
     fun submit()
+    fun setAudioRecordingVisibility(bool: Boolean)
 }

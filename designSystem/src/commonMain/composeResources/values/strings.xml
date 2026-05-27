@@ -149,4 +149,7 @@
     <string name="invalid_saving_amount">Invalid saving amount</string>
     <string name="please_enter_a_valid_amount">Please enter a valid amount</string>
     <string name="invalid_income_data">Invalid income data</string>
+    <string name="microphone_permission_denied">Microphone Permission Denied</string>
+    <string name="microphone_permission_is_required">Microphone permission is required to record audio. Please enable it in the app settings.</string>
+    <string name="go_to_settings">Go to Settings</string>
 </resources>

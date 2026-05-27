@@ -4,6 +4,7 @@ import com.spendoo.categories.presentation.navigation.effector.Effector
 import com.spendoo.categories.presentation.navigation.effector.EffectorImpl
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddCategoryViewModel
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionViewModel
+import com.spendoo.categories.presentation.screen.inputVoiceBottomSheet.InputVoiceViewModel
 import com.spendoo.categories.presentation.screen.categorySelectionSheet.CategorySelectionViewModel
 import com.spendoo.categories.presentation.screen.categories.CategoriesViewModel
 import org.koin.core.module.dsl.singleOf
@@ -17,4 +18,5 @@ val categoriesPresentationModule = module {
     viewModelOf(::AddTransactionViewModel)
     viewModelOf(::AddCategoryViewModel)
     viewModelOf(::CategorySelectionViewModel)
+    viewModelOf(::InputVoiceViewModel)
 }

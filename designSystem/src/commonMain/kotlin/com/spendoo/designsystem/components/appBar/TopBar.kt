@@ -77,27 +77,32 @@ fun SpendooIconButton(
     shape: Shape = RoundedCornerShape(16.dp),
     contentDescription: String?,
     tint: Color = Theme.colorScheme.text.label,
+    disabledTint: Color = Theme.colorScheme.border.secondary,
     backgroundColor: Color = Color.Transparent,
+    disabledBackgroundColor: Color = Theme.colorScheme.border.primary,
     iconSize: Dp = 14.dp,
     showBorder: Boolean = true,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Box(
         modifier = modifier
             .size(size)
             .clip(shape)
-            .background(backgroundColor)
+            .background(
+                if (enabled) backgroundColor else disabledBackgroundColor
+            )
             .thenIf(showBorder){
                 border(1.dp, Theme.colorScheme.border.secondary, shape)
             }
-            .clickableNoRipple(onClick = onClick),
+            .clickableNoRipple(onClick = onClick, enabled = enabled),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier.size(iconSize),
             painter = iconRes.painter(),
             contentDescription = contentDescription,
-            tint = tint
+            tint = if (enabled) tint else disabledTint
         )
     }
 }

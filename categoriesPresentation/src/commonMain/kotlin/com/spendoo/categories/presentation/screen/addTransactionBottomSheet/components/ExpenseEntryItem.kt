@@ -40,6 +40,7 @@ import spendoo.designsystem.generated.resources.choose_category
 import spendoo.designsystem.generated.resources.enter_a_title
 import spendoo.designsystem.generated.resources.enter_your_amount
 import spendoo.designsystem.generated.resources.ic_arrow_down
+import spendoo.designsystem.generated.resources.ic_cancel
 import spendoo.designsystem.generated.resources.ic_done
 import spendoo.designsystem.generated.resources.write_a_note_optional
 
@@ -50,10 +51,11 @@ fun ExpenseEntryItem(
     onCategoryClicked: (id: String) -> Unit,
     onEntryChanged: (id: String, entry: TransactionEntryUiState) -> Unit,
     onRemoveClicked: (id: String) -> Unit,
-    showRemoveButton: Boolean
+    showRemoveButton: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .widthIn(min = 280.dp)
             .width(IntrinsicSize.Min)
             .clip(RoundedCornerShape(12.dp))
@@ -79,11 +81,11 @@ fun ExpenseEntryItem(
 
             if (showRemoveButton) {
                 Icon(
-                    painter = Res.drawable.ic_done.painter(),
+                    painter = Res.drawable.ic_cancel.painter(),
                     contentDescription = "Remove",
                     tint = Theme.colorScheme.text.label,
                     modifier = Modifier
-                        .size(24.dp)
+                        .size(12.dp)
                         .clickableNoRipple { onRemoveClicked(entry.id) }
                 )
             }

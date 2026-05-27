@@ -83,6 +83,7 @@ dependencies {
     implementation(projects.spendooApp)
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.kodio.core)
     debugImplementation(libs.compose.ui.tooling)
 
     implementation(libs.koin.android)

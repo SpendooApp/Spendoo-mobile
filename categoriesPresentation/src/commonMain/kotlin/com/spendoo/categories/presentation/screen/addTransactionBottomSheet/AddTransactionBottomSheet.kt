@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -120,25 +121,31 @@ private fun AddTransactionBottomSheetContent(
 
                     IncomeEntriesSection(state = state, interactionListener = interactionListener)
 
-                    CustomTextField(
-                        value = state.date.format(),
-                        onValueChange = { },
-                        hint = stringResource(Res.string.enter_your_date),
-                        enabled = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickableNoRipple {
-                                focusManager.clearFocus()
-                                interactionListener.onDatePickerRequested()
-                            }
-                            .padding(bottom = 8.dp)
-                            .padding(horizontal = 16.dp),
-                        trailingIcon = Res.drawable.ic_date.painter(),
-                        trailingIconColor = Theme.colorScheme.text.label
-                    )
+                    AnimatedVisibility(
+                        visible = !state.isSavingChecked,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically()
+                    ) {
+                        CustomTextField(
+                            value = state.date.format(),
+                            onValueChange = { },
+                            hint = stringResource(Res.string.enter_your_date),
+                            enabled = false,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickableNoRipple {
+                                    focusManager.clearFocus()
+                                    interactionListener.onDatePickerRequested()
+                                }
+                                .padding(bottom = 8.dp)
+                                .padding(horizontal = 16.dp),
+                            trailingIcon = Res.drawable.ic_date.painter(),
+                            trailingIconColor = Theme.colorScheme.text.label
+                        )
+                    }
 
                     AnimatedVisibility(
-                        visible = state.type == TransactionType.Income,
+                        visible = state.type == TransactionType.Income && !state.isSavingChecked,
                         enter = fadeIn() + expandVertically(),
                         exit = fadeOut() + shrinkVertically()
                     ) {
@@ -157,10 +164,15 @@ private fun AddTransactionBottomSheetContent(
                     }
                 }
             }
+
+            item {
+                Spacer(modifier = Modifier.padding(bottom = 24.dp))
+            }
         }
 
         AddTransactionActionButtons(
             state = state,
+            onDismiss = onDismiss,
             interactionListener = interactionListener,
         )
     }
@@ -175,7 +187,6 @@ val previewInteractionListener = object : AddTransactionInteractionListener {
     override fun onCategorySelected(category: CategoryItemUiState) {}
     override fun onCategorySheetDismissed() {}
     override fun onVoiceProcessed(file: ByteArray) {}
-    override fun onImageProcessed(file: ByteArray) {}
     override fun onSelectImage(file: PlatformFile?) {}
     override fun removeExpenseEntry(id: String) {}
     override fun onEntryChanged(id: String, entry: TransactionEntryUiState) {}
@@ -189,6 +200,7 @@ val previewInteractionListener = object : AddTransactionInteractionListener {
     override fun onNoteChanged(note: String) {}
     override fun onDateSelected(date: LocalDate) {}
     override fun submit() {}
+    override fun setAudioRecordingVisibility(bool: Boolean) {}
 }
 
 @Composable

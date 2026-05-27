@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionInteractionListener
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionUiState
@@ -44,15 +46,21 @@ fun IncomeEntriesSection(
         exit = fadeOut() + shrinkVertically()
     ) {
         Column {
-            CustomTextField(
-                value = state.incomeTitle,
-                onValueChange = interactionListener::onIncomeTitleChanged,
-                hint = stringResource(Res.string.enter_a_title),
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                enabled = !state.isSavingChecked,
-                singleLine = true,
-                errorText = state.incomeTitleError
-            )
+            AnimatedVisibility(
+                visible = !state.isSavingChecked,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                CustomTextField(
+                    value = state.incomeTitle,
+                    onValueChange = interactionListener::onIncomeTitleChanged,
+                    hint = stringResource(Res.string.enter_a_title),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    enabled = !state.isSavingChecked,
+                    singleLine = true,
+                    errorText = state.incomeTitleError
+                )
+            }
             CustomTextField(
                 value = if (state.isSavingChecked) state.savingAmount.toCleanString() else state.incomeAmount.toCleanString(),
                 onValueChange = {
@@ -60,8 +68,9 @@ fun IncomeEntriesSection(
                     else interactionListener.onIncomeAmountChanged(it)
                 },
                 hint = stringResource(Res.string.enter_your_amount),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                errorText = state.incomeAmountError
+                errorText = if (state.isSavingChecked) state.savingAmountError else state.incomeAmountError
             )
             Row(
                 modifier = Modifier

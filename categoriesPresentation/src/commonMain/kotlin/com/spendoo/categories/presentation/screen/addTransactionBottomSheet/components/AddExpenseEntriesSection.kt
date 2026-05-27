@@ -68,8 +68,9 @@ fun AddExpenseEntriesSection(
                 verticalAlignment = Alignment.Top,
                 contentPadding = PaddingValues(horizontal = 16.dp)
             ) {
-                itemsIndexed(state.expenseEntries) { index, entry ->
+                itemsIndexed(state.expenseEntries, key = { _, entry -> entry.id }) { index, entry ->
                     ExpenseEntryItem(
+                        modifier = Modifier.animateItem(),
                         index = index,
                         entry = entry,
                         onEntryChanged = interactionListener::onEntryChanged,
