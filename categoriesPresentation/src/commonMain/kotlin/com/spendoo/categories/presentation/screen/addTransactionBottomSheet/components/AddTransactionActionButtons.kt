@@ -75,6 +75,7 @@ fun BoxScope.AddTransactionActionButtons(
                         showBorder = false,
                         iconSize = 24.dp,
                         size = 56.dp,
+                        enabled = !state.isProcessingMedia
                     )
                     SpendooIconButton(
                         onClick = { imagePicker.launch() },
@@ -85,6 +86,7 @@ fun BoxScope.AddTransactionActionButtons(
                         showBorder = false,
                         iconSize = 24.dp,
                         size = 56.dp,
+                        enabled = !state.isProcessingMedia
                     )
                     SpendooIconButton(
                         onClick = {
@@ -97,6 +99,7 @@ fun BoxScope.AddTransactionActionButtons(
                         showBorder = false,
                         iconSize = 24.dp,
                         size = 56.dp,
+                        enabled = !state.isProcessingMedia
                     )
                 }
             }
@@ -113,7 +116,7 @@ fun BoxScope.AddTransactionActionButtons(
             type = AppButtonType.Primary,
             text = stringResource(Res.string.add),
             onClick = { interactionListener.submit() },
-            state = if (state.isSubmitting) AppButtonState.Loading else AppButtonState.Enabled,
+            state = if (state.isSubmitting || state.isProcessingMedia) AppButtonState.Loading else AppButtonState.Enabled,
             modifier = Modifier.weight(1f).height(56.dp)
         )
     }

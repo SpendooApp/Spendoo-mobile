@@ -150,8 +150,8 @@ class AddTransactionViewModel(
     }
 
     private fun processInput(call: suspend () -> List<ReadyTransactionEntry>) {
+        updateState { it.copy(isProcessingMedia = true) }
         loadCategories()
-        updateState { it.copy(isSubmitting = true) }
         tryToCall(
             block = { call() },
             onSuccess = { readyEntries ->
@@ -167,25 +167,19 @@ class AddTransactionViewModel(
                 }
                 updateState {
                     it.copy(
-                        expenseEntries = uiEntries.ifEmpty { it.expenseEntries },
-                        isSubmitting = false
+                        expenseEntries = it.expenseEntries + uiEntries,
+                        isProcessingMedia = false
                     )
                 }
             },
             onError = { throwable ->
-                updateState { it.copy(isSubmitting = false) }
+                updateState { it.copy(isProcessingMedia = false) }
                 showSnackBar(
                     Res.string.error_processing_input.toUiText(),
                     throwable.message?.let { UiText.DynamicString(it) },
                     isSuccess = false,
                 )
-            },
-            onStart = {
-                // TODO: Show loading indicator for voice/image processing
-            },
-            onEnd = {
-                // TODO: Hide loading indicator
-            },
+            }
         )
     }
 
