@@ -29,7 +29,7 @@ fun IdentityNavGraph(
     navController: NavHostController,
     startDestination: BaseRoute,
     updateBottomNavigationVisibility: (Boolean) -> Unit,
-    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> },
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
     homeFeatureApi: HomeFeatureApi = koinInject(),
 ) {
     NavHost(

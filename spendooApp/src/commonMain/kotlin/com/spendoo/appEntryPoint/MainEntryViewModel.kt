@@ -12,6 +12,8 @@ class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
     private val _state = MutableStateFlow(MainEntryState())
     val state = _state.asStateFlow()
 
+    private var snackBarId = 0L
+
     override fun onBottomNavigationChanged(isShowed: Boolean) {
         _state.update { it.copy(showBottomNavigation = isShowed) }
     }
@@ -55,13 +57,15 @@ class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
                     isSuccess = isSuccess,
                     customLeadingIcon = customLeadingIcon,
                     duration = duration,
-                    iconTint = iconTint
+                    iconTint = iconTint,
+                    id = ++snackBarId
                 )
             )
         }
     }
 
     override fun hideSnackBar() {
+        println("hideSnackBar called")
         _state.update { it.copy(isSnackBarVisible = false) }
     }
 }

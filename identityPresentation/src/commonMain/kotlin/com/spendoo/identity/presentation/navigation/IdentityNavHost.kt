@@ -22,7 +22,7 @@ fun IdentityNavHost(
     updateBottomNavigationVisibility: (Boolean) -> Unit = {},
     effector: Effector = koinInject(),
     startDestination: BaseRoute = HomeRoute,
-    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> }
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit
 ) {
     val navController = rememberNavController()
 

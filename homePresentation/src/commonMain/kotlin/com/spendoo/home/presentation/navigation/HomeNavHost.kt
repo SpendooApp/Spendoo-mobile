@@ -22,7 +22,7 @@ fun HomeNavHost(
     updateBottomNavigationVisibility: (Boolean) -> Unit = {},
     effector: Effector = koinInject(),
     startDestination: BaseRoute = HomeRoute,
-    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> },
+    showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
     reloadSignal: Long = 0L,
     shouldReload: Boolean = false
 ) {

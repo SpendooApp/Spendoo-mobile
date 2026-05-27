@@ -120,13 +120,13 @@ fun LoggedInContainer(
 @Composable
 private fun FeatureContent(
     activeFeature: Feature,
+    modifier: Modifier = Modifier,
     identityApi: IdentityFeatureApi = koinInject(),
     homeApi: HomeFeatureApi = koinInject(),
     categoriesApi: CategoriesFeatureApi = koinInject(),
     statsApi: HomeFeatureApi = koinInject(),
     chatBotApi: HomeFeatureApi = koinInject(),
     paymentsApi: HomeFeatureApi = koinInject(),
-    modifier: Modifier = Modifier,
     updateBottomNavigationVisibility: (Boolean) -> Unit = {},
     showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
     reloadRequestId: Long,
@@ -155,12 +155,14 @@ private fun FeatureContent(
                 Feature.Stats -> statsApi.TabEntry(
                     updateBottomNavigationVisibility = updateBottomNavigationVisibility,
                     reloadSignal = reloadRequestId,
+                    showSnackBar = showSnackBar,
                     shouldReload = reloadTarget == Feature.Stats
                 )
 
                 Feature.ChatBot -> chatBotApi.TabEntry(
                     updateBottomNavigationVisibility = updateBottomNavigationVisibility,
                     reloadSignal = reloadRequestId,
+                    showSnackBar = showSnackBar,
                     shouldReload = reloadTarget == Feature.ChatBot
                 )
 
@@ -172,6 +174,7 @@ private fun FeatureContent(
                 Feature.Payments -> paymentsApi.TabEntry(
                     updateBottomNavigationVisibility = updateBottomNavigationVisibility,
                     reloadSignal = reloadRequestId,
+                    showSnackBar = showSnackBar,
                     shouldReload = reloadTarget == Feature.Payments
                 )
             }
