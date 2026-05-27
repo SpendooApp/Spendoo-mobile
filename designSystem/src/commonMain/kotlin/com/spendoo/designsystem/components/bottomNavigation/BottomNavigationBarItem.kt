@@ -16,10 +16,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.utils.extentions.painter
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.ic_home
+import spendoo.designsystem.generated.resources.ic_home_selected
 
 @Composable
 fun BottomNavigationBarItem(
@@ -69,11 +75,35 @@ fun BottomNavigationBarItem(
             if (isSelected) {
                 Text(
                     text = title,
-                    style = Theme.typography.label.medium.medium,
-                    color = Theme.colorScheme.brand.primary,
+                    style = Theme.typography.label.medium.small,
+                    color = Theme.colorScheme.icon.primary,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+@PreviewLightDark
+fun BottomNavigationBarItemPreview() {
+    SpendooTheme {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            BottomNavigationBarItem(
+                isSelected = true,
+                selectedIcon = Res.drawable.ic_home_selected.painter(),
+                unselectedIcon = Res.drawable.ic_home.painter(),
+                title = "Home",
+                onClick = {}
+            )
+
+            BottomNavigationBarItem(
+                isSelected = false,
+                selectedIcon = Res.drawable.ic_home_selected.painter(),
+                unselectedIcon = Res.drawable.ic_home.painter(),
+                title = "Home",
+                onClick = {}
+            )
         }
     }
 }

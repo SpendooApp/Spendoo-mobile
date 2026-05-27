@@ -50,9 +50,6 @@ fun EntryPoint(
         AnimatedSnackBar(
             isVisible = state.isSnackBarVisible,
             modifier = Modifier
-                .fillMaxWidth()
-                .zIndex(1000f)
-                .align(Alignment.TopCenter)
                 .statusBarsPadding()
                 .padding(top = 16.dp, start = 12.dp, end = 16.dp),
             onDismiss = viewModel::hideSnackBar,

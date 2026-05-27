@@ -65,7 +65,6 @@ class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
     }
 
     override fun hideSnackBar() {
-        println("hideSnackBar called")
         _state.update { it.copy(isSnackBarVisible = false) }
     }
 }
