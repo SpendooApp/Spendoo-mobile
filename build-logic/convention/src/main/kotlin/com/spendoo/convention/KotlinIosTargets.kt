@@ -12,7 +12,6 @@ internal fun Project.configureIosTargets() {
 
     extensions.configure<KotlinMultiplatformExtension> {
         listOf(
-            iosX64(),
             iosArm64(),
             iosSimulatorArm64()
         ).forEach { iosTarget ->
@@ -35,7 +34,6 @@ internal fun Project.configureIosAppTargets(
     val xcf = XCFramework(xcFrameworkName)
     extensions.configure<KotlinMultiplatformExtension> {
         listOf(
-            iosX64(),
             iosArm64(),
             iosSimulatorArm64()
         ).forEach { iosTarget ->

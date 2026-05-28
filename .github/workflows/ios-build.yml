@@ -17,7 +17,7 @@ jobs:
     name: Build
     needs: detect
     if: needs.detect.outputs.has_changes == 'true'
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
       - uses: actions/checkout@v4
