@@ -5,7 +5,6 @@ import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.offers.domain.entity.Offer
-import com.spendoo.offers.domain.entity.Spending
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_car

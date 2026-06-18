@@ -21,7 +21,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEdit
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.CategoryItemUiState
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.CategoryItem
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.CategoryItemShimmer
-import com.spendoo.categories.presentation.shared.pagination.PaginationTrigger
+import com.spendoo.designsystem.utils.pagination.PaginationTrigger
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator

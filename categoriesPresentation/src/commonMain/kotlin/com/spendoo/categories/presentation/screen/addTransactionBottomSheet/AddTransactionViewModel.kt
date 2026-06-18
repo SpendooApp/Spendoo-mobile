@@ -10,9 +10,8 @@ import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.categories.domain.utils.PageQuery
 import com.spendoo.categories.domain.utils.toLocalDateTime
-import com.spendoo.categories.presentation.navigation.ARG_TRANSACTION_ADDED
-import com.spendoo.categories.presentation.shared.BaseViewModel
 import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.goals.domain.repository.GoalsRepository
@@ -37,6 +36,7 @@ class AddTransactionViewModel(
     private val categoriesRepository: CategoriesRepository
 ) : BaseViewModel<AddTransactionUiState>(AddTransactionUiState()),
     AddTransactionInteractionListener {
+
 
     override fun onSheetHidden() {
         resetForm()
@@ -315,7 +315,7 @@ class AddTransactionViewModel(
 
     fun onSuccess() {
         resetForm()
-        popBackStack(ARG_TRANSACTION_ADDED to true)
+        popBackStack("reset" to true)
     }
 
     private fun loadCategories() {

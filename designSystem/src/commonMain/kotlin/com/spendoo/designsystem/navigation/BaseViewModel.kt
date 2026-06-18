@@ -1,19 +1,17 @@
-package com.spendoo.categories.presentation.shared
+package com.spendoo.designsystem.navigation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
-import com.spendoo.categories.presentation.navigation.BaseRoute
-import com.spendoo.categories.presentation.navigation.effector.Effector
-import com.spendoo.categories.presentation.shared.pagination.Paginator
+import androidx.navigation3.runtime.NavKey
+import com.spendoo.designsystem.navigation.effector.Effector
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.designsystem.utils.pagination.Paginator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,33 +36,34 @@ abstract class BaseViewModel<STATE>(
     val state: StateFlow<STATE> = _state.asStateFlow()
 
     private val effector: Effector by inject()
-
-    protected val backStackArgsFlow = effector.backStackArgsFlow
+    protected val snackBarManager: SnackBarManager by inject()
+    private val resultStore: ResultStore by inject()
 
     protected fun navigate(
-        route: BaseRoute,
-        forceNavigate: Boolean = false,
-        navOptions: NavOptions? = null,
+        route: NavKey,
+        forceNavigate: Boolean = false
     ) =
         viewModelScope.launch {
-            effector.navigate(route = route, navOptions = navOptions, forceNavigate = forceNavigate)
+            effector.navigate(
+                route = route,
+                forceNavigate = forceNavigate
+            )
         }
 
-    protected fun setNavigationArgs(vararg arguments: Pair<String, Any>) =
-        viewModelScope.launch { effector.setBackStackArgs(*arguments) }
-
     protected fun popBackStack(vararg arguments: Pair<String, Any>) =
-        viewModelScope.launch { effector.popBackStack(*arguments) }
+        viewModelScope.launch {
+            resultStore.setResults(arguments.toMap())
+            effector.popBackStack()
+        }
 
-    protected fun updateBottomNavigationVisibility(isVisible: Boolean) =
-        viewModelScope.launch { effector.updateBottomNavigationVisibility(isVisible) }
+    protected fun <T> getResult(key: String, consume: Boolean): Flow<T?> =
+        resultStore.getResult(key, consume)
 
-    protected fun popUpTo(
-        route: BaseRoute,
-        inclusive: Boolean = false,
-        saveState: Boolean = false
+    protected fun resetTo(
+        route: NavKey,
+        forceNavigate: Boolean = false
     ) {
-        viewModelScope.launch { effector.popUpTo(route, inclusive, saveState) }
+        viewModelScope.launch { effector.resetTo(route, forceNavigate) }
     }
 
     protected fun showSnackBar(
@@ -74,9 +73,14 @@ abstract class BaseViewModel<STATE>(
         customLeadingIcon: Painter? = null,
         duration: Long? = null,
         iconTint: Color = Color.Unspecified
-    ) = viewModelScope.launch {
-        effector.showSnackBar(
-            title, message, isSuccess, customLeadingIcon, duration, iconTint
+    ) {
+        snackBarManager.showSnackBar(
+            title = title,
+            message = message,
+            isSuccess = isSuccess,
+            customLeadingIcon = customLeadingIcon,
+            duration = duration,
+            iconTint = iconTint
         )
     }
 
@@ -156,5 +160,4 @@ abstract class BaseViewModel<STATE>(
             endReached = { _, result -> endReached(result, pageSize) }
         )
     }
-
 }

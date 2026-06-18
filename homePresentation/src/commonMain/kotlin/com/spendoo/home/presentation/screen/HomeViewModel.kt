@@ -1,20 +1,21 @@
 package com.spendoo.home.presentation.screen
 
 import com.spendoo.categories.domain.repository.TransactionsRepository
-import com.spendoo.categories.domain.utils.PageQuery as CategoriesPageQuery
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
+import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
-import com.spendoo.goals.domain.utils.PageQuery as GoalsPageQuery
-import com.spendoo.offers.domain.repository.OffersRepository
-import com.spendoo.offers.domain.utils.PageQuery as OffersPageQuery
-import com.spendoo.home.presentation.shared.BaseViewModel
 import com.spendoo.identity.domain.repository.ProfileRepository
+import com.spendoo.offers.domain.repository.OffersRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.error_loading_offers
 import spendoo.designsystem.generated.resources.error_loading_user_data
+import com.spendoo.categories.domain.utils.PageQuery as CategoriesPageQuery
+import com.spendoo.goals.domain.utils.PageQuery as GoalsPageQuery // TODO: add comon domain classes in shared domain module
+import com.spendoo.offers.domain.utils.PageQuery as OffersPageQuery
 
 class HomeViewModel(
     private val offersRepository: OffersRepository,
@@ -24,7 +25,21 @@ class HomeViewModel(
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeInteractionListener {
 
     init {
-        getHomeData()
+        listenToResetSignal()
+    }
+
+    private fun listenToResetSignal() {
+        tryToCollect(
+            block = {
+                getResult<Boolean?>("reset", consume = true)
+            },
+            onEach = { shouldReset ->
+                if (shouldReset == true) {
+                    getHomeData()
+                }
+            },
+            onError = {}
+        )
     }
 
     private fun getHomeData() {
@@ -39,7 +54,11 @@ class HomeViewModel(
                     val balanceDeferred = async { transactionsRepository.getBalanceSummary() }
                     val profileDeferred = async { profileRepository.getProfile() }
                     val notificationsDeferred = async { profileRepository.getNotificationsCount() }
-                    Triple(balanceDeferred.await(), profileDeferred.await(), notificationsDeferred.await())
+                    Triple(
+                        balanceDeferred.await(),
+                        profileDeferred.await(),
+                        notificationsDeferred.await()
+                    )
                 }
             },
             onStart = {
@@ -88,7 +107,8 @@ class HomeViewModel(
         tryToCall(
             block = {
                 coroutineScope {
-                    val offersDeferred = async { offersRepository.getOffers(OffersPageQuery(0, 20)) }
+                    val offersDeferred =
+                        async { offersRepository.getOffers(OffersPageQuery(0, 20)) }
                     val goalsDeferred = async { goalsRepository.getGoals(GoalsPageQuery(0, 20)) }
                     val spendingDeferred = async {
                         transactionsRepository.getTopSpending(
@@ -148,7 +168,10 @@ class HomeViewModel(
     override fun onGoalClicked(goalId: String) {}
     override fun onSpendingClicked(spendingId: String) {}
     override fun onViewAllOffersClicked() {}
-    override fun onViewAllGoalsClicked() {}
+    override fun onViewAllGoalsClicked() {
+        navigate(GoalsRoute)
+    }
+
     override fun onViewAllSpendingClicked() {}
     override fun onNotificationClicked() {}
     override fun onProfileClicked() {}

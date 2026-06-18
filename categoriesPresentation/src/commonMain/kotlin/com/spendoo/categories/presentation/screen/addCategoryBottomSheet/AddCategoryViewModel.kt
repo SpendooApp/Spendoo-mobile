@@ -5,7 +5,7 @@ import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.domain.repository.CategoriesRepository
-import com.spendoo.categories.presentation.shared.BaseViewModel
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res

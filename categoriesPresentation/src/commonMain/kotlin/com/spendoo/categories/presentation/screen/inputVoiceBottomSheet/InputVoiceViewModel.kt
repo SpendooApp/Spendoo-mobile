@@ -1,7 +1,7 @@
 package com.spendoo.categories.presentation.screen.inputVoiceBottomSheet
 
 import androidx.lifecycle.viewModelScope
-import com.spendoo.categories.presentation.shared.BaseViewModel
+import com.spendoo.designsystem.navigation.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive

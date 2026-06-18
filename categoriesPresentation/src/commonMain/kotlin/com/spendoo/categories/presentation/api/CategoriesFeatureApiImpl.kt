@@ -1,50 +1,30 @@
 package com.spendoo.categories.presentation.api
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.scene.DialogSceneStrategy
+import com.spendoo.categories.api.AddTransactionRoute
 import com.spendoo.categories.api.CategoriesFeatureApi
-import com.spendoo.categories.presentation.navigation.AddTransactionRoute
-import com.spendoo.categories.presentation.navigation.CategoriesNavHost
-import com.spendoo.categories.presentation.navigation.CategoriesRoute
+import com.spendoo.categories.api.CategoriesRoute
+import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
+import com.spendoo.categories.api.ScheduledPaymentsRoute
+import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionBottomSheet
+import com.spendoo.categories.presentation.screen.categories.CategoriesScreen
+import com.spendoo.categories.presentation.screen.scheduledPaymentDetails.ScheduledPaymentDetailsScreen
+import com.spendoo.categories.presentation.screen.scheduledPayments.ScheduledPaymentsScreen
+
 
 class CategoriesFeatureApiImpl : CategoriesFeatureApi {
 
-    @Composable
-    override fun TabEntry(
-        updateBottomNavigationVisibility: (Boolean) -> Unit,
-        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
-        reloadSignal: Long,
-        shouldReload: Boolean,
-    ) {
-        CategoriesNavHost(
-            updateBottomNavigationVisibility = updateBottomNavigationVisibility,
-            startDestination = CategoriesRoute,
-            reloadSignal = reloadSignal,
-            shouldReload = shouldReload,
-            showSnackBar = showSnackBar
-        )
-    }
-
-    @Composable
-    override fun AddTransactionBottomSheet(
-        isVisible: Boolean,
-        onDismiss: () -> Unit,
-        onTransactionAdded: () -> Unit,
-        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit,
-        updateBottomNavigationVisibility: (Boolean) -> Unit,
-        reloadSignal: Long,
-        shouldReload: Boolean,
-    ) {
-        CategoriesNavHost(
-            updateBottomNavigationVisibility = updateBottomNavigationVisibility,
-            startDestination = AddTransactionRoute,
-            reloadSignal = reloadSignal,
-            shouldReload = shouldReload,
-            showSnackBar = showSnackBar,
-            isAddTransactionBottomSheetVisible = isVisible,
-            onDismiss = onDismiss,
-            onTransactionAdded = onTransactionAdded
-        )
+    override fun invoke(): (NavKey) -> NavEntry<NavKey> {
+        return entryProvider {
+            entry<CategoriesRoute> { CategoriesScreen() }
+            entry<AddTransactionRoute>(
+                metadata = DialogSceneStrategy.dialog()
+            ) { AddTransactionBottomSheet() }
+            entry<ScheduledPaymentsRoute> { ScheduledPaymentsScreen() }
+            entry<ScheduledPaymentDetailsRoute> { ScheduledPaymentDetailsScreen() }
+        }
     }
 }

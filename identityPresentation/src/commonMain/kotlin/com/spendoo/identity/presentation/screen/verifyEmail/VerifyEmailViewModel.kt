@@ -4,13 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.spendoo.designsystem.components.button.AppButtonState
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.identity.api.CreateNewPasswordRoute
+import com.spendoo.identity.api.VerifyEmailRoute
 import com.spendoo.identity.domain.repository.RegisterRepository
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
 import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
-import com.spendoo.identity.presentation.navigation.CreateNewPasswordRoute
-import com.spendoo.identity.presentation.navigation.VerifyEmailRoute
-import com.spendoo.identity.presentation.shared.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

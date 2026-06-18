@@ -23,21 +23,14 @@ import com.spendoo.home.presentation.screen.components.HomeHeader
 import com.spendoo.home.presentation.screen.components.OffersSection
 import com.spendoo.home.presentation.screen.components.TopSpendingSection
 import com.spendoo.home.presentation.screen.components.balanceSection
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
-    reloadSignal: Long,
-    shouldReload: Boolean,
     viewModel: HomeViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-
-    LaunchedEffect(reloadSignal) {
-        if (shouldReload && reloadSignal > 0) {
-            viewModel.onReload()
-        }
-    }
 
     HomeContent(state = state, viewModel = viewModel)
 }
@@ -45,7 +38,7 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     state: HomeUiState,
-    viewModel: HomeInteractionListener
+    viewModel: HomeInteractionListener,
 ) {
     LazyColumn(
         modifier = Modifier

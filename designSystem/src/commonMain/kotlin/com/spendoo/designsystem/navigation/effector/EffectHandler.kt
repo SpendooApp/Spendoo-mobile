@@ -1,4 +1,4 @@
-package com.spendoo.categories.presentation.navigation.effector
+package com.spendoo.designsystem.navigation.effector
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

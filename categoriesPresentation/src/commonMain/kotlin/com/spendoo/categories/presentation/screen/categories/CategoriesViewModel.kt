@@ -8,7 +8,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEdit
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.CategoryActionType
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toAddEditCategoryUiState
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toUpdateCategory
-import com.spendoo.categories.presentation.shared.BaseViewModel
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import kotlinx.coroutines.launch
 import spendoo.designsystem.generated.resources.Res
@@ -59,7 +59,21 @@ class CategoriesViewModel(
     }
 
     init {
-        getData()
+        listenToResetSignal()
+    }
+
+    private fun listenToResetSignal() {
+        tryToCollect(
+            block = {
+                getResult<Boolean?>("reset", consume = true)
+            },
+            onEach = { shouldReset ->
+                if (shouldReset == true) {
+                    getData()
+                }
+            },
+            onError = {}
+        )
     }
 
     private fun getData() {

@@ -47,17 +47,12 @@ import spendoo.designsystem.generated.resources.write_a_note_optional
 
 @Composable
 fun AddTransactionBottomSheet(
-    isVisible: Boolean,
     viewModel: AddTransactionViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(isVisible) {
-        if (!isVisible) viewModel.onSheetHidden()
-    }
-
     BottomSheet(
-        isVisible = isVisible,
+        isVisible = true,
         onDismiss = viewModel::onDismiss,
         horizontalPadding = 0.dp,
         skipPartiallyExpanded = true
@@ -205,7 +200,7 @@ val previewInteractionListener = object : AddTransactionInteractionListener {
 
 @Composable
 @Preview
-fun AddTransactionBottomSheetPreview() = SpendooPreview {
+private fun AddTransactionBottomSheetPreview() = SpendooPreview {
     AddTransactionBottomSheetContent(
         state = AddTransactionUiState(
             type = TransactionType.Expense,

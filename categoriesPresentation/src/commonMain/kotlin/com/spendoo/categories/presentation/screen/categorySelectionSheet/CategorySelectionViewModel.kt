@@ -7,7 +7,7 @@ import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.Cate
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.toCategoryItemUiState
 import com.spendoo.categories.presentation.screen.categories.CategoriesViewModel.Companion.INITIAL_PAGE
 import com.spendoo.categories.presentation.screen.categories.CategoriesViewModel.Companion.PAGE_SIZE
-import com.spendoo.categories.presentation.shared.BaseViewModel
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import kotlinx.coroutines.launch
 import spendoo.designsystem.generated.resources.Res

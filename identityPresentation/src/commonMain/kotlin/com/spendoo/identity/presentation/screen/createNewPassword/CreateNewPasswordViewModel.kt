@@ -3,12 +3,12 @@ package com.spendoo.identity.presentation.screen.createNewPassword
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.spendoo.designsystem.components.button.AppButtonState
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.identity.api.CreateNewPasswordRoute
+import com.spendoo.identity.api.LoginRoute
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
 import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
-import com.spendoo.identity.presentation.navigation.CreateNewPasswordRoute
-import com.spendoo.identity.presentation.navigation.LoginRoute
-import com.spendoo.identity.presentation.shared.BaseViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.invalid_password

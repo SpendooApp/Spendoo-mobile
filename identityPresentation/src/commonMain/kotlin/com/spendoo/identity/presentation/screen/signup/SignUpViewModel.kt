@@ -1,13 +1,13 @@
 package com.spendoo.identity.presentation.screen.signup
 
 import com.spendoo.designsystem.components.button.AppButtonState
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.identity.api.VerifyEmailRoute
 import com.spendoo.identity.domain.entity.Gender
 import com.spendoo.identity.domain.model.RegisterRequest
 import com.spendoo.identity.domain.repository.RegisterRepository
 import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
-import com.spendoo.identity.presentation.navigation.VerifyEmailRoute
-import com.spendoo.identity.presentation.shared.BaseViewModel
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred

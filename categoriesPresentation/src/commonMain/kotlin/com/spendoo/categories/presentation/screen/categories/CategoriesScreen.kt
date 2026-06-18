@@ -30,7 +30,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddAmou
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEditCategoryBottomSheet
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.CategoryActionsSheet
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
-import com.spendoo.categories.presentation.shared.pagination.PaginationTrigger
+import com.spendoo.designsystem.utils.pagination.PaginationTrigger
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.cards.CategoryCard
@@ -52,17 +52,10 @@ import spendoo.designsystem.generated.resources.total_spending
 
 @Composable
 fun CategoriesScreen(
-    reloadSignal: Long,
-    shouldReload: Boolean,
     categoriesViewModel: CategoriesViewModel = koinViewModel()
 ) {
     val state by categoriesViewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(reloadSignal) {
-        if (shouldReload && reloadSignal > 0) {
-            categoriesViewModel.onReload()
-        }
-    }
     CategoriesScreenContent(state = state, interactionListener = categoriesViewModel)
 }
 
