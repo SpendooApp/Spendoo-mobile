@@ -13,6 +13,7 @@ interface AddScheduledPaymentInteractionListener {
     fun onStartDateChanged(date: LocalDate)
     fun onShowDatePicker(show: Boolean)
     fun onFrequencyChanged(frequency: PaymentFrequency)
+    fun onCustomFrequencyDaysChanged(days: String)
     fun onReminderPeriodValueChanged(value: String)
     fun onReminderPeriodUnitChanged(unit: ReminderUnit)
     fun onShowReminderUnitDropdown(show: Boolean)

@@ -1,5 +1,6 @@
 package com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +22,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableRow
 import com.spendoo.categories.presentation.screen.categorySelectionSheet.CategorySelectionSheet
-import com.spendoo.categories.presentation.shared.getToday
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.runtime.remember
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import org.jetbrains.compose.resources.stringResource
+import spendoo.designsystem.generated.resources.enter_custom_days
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
 import com.spendoo.designsystem.components.icon.Icon
@@ -94,7 +101,11 @@ private fun AddScheduledPaymentContent(
     val focusManager = LocalFocusManager.current
 
     val canSubmit =
-        state.title.isNotBlank() && state.amount.isNotBlank() && state.categoryId.isNotBlank()
+        state.title.isNotBlank() && 
+        state.amount.isNotBlank() && 
+        state.categoryId.isNotBlank() &&
+        (state.frequency != PaymentFrequency.CUSTOM || (state.customFrequencyDays.isNotBlank() && state.customFrequencyDaysError == null)) &&
+        state.reminderPeriodValueError == null
 
     BottomSheetTemplate(
         title = (if (state.isEditing) Res.string.edit_payment else Res.string.add_payment).asString(),
@@ -156,7 +167,7 @@ private fun AddScheduledPaymentContent(
                 )
 
                 CustomTextField(
-                    value = (state.startDate ?: getToday()).format(),
+                    value = state.startDate.format(),
                     onValueChange = { },
                     hint = Res.string.enter_start_date.asString(),
                     enabled = false,
@@ -196,6 +207,29 @@ private fun AddScheduledPaymentContent(
             )
         }
 
+        if (state.frequency == PaymentFrequency.CUSTOM) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp)
+                ) {
+                    CustomTextField(
+                        value = state.customFrequencyDays,
+                        onValueChange = interactionListener::onCustomFrequencyDaysChanged,
+                        hint = stringResource(Res.string.enter_custom_days),
+                        modifier = Modifier.fillMaxWidth(),
+                        errorText = state.customFrequencyDaysError?.asString(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        )
+                    )
+                }
+            }
+        }
+
         item {
             Column(
                 modifier = Modifier
@@ -220,39 +254,68 @@ private fun AddScheduledPaymentContent(
                         onValueChange = interactionListener::onReminderPeriodValueChanged,
                         hint = Res.string.enter_period.asString(),
                         modifier = Modifier.weight(1f),
+                        errorText = state.reminderPeriodValueError?.asString(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Done
                         )
                     )
 
-                    // Dropdown simulation for Unit
-                    Surface(
-                        onClick = {
-                            focusManager.clearFocus()
-                            interactionListener.onShowReminderUnitDropdown(true)
-                        },
-                        shape = RoundedCornerShape(12.dp),
-                        color = Theme.colorScheme.button.secondary,
-                        modifier = Modifier.height(56.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    Box(modifier = Modifier.wrapContentSize()) {
+                        Surface(
+                            onClick = {
+                                focusManager.clearFocus()
+                                interactionListener.onShowReminderUnitDropdown(true)
+                            },
+                            shape = RoundedCornerShape(12.dp),
+                            color = Theme.colorScheme.button.secondary,
+                            modifier = Modifier.height(56.dp)
                         ) {
-                            val unitText = state.reminderPeriodUnit.toText().asString()
+                            Row(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                val unitText = state.reminderPeriodUnit.toText().asString()
 
-                            Text(
-                                text = unitText,
-                                style = Theme.typography.label.medium.medium,
-                                color = Theme.colorScheme.text.title
-                            )
-                            Icon(
-                                painter = Res.drawable.ic_arrow_down.painter(),
-                                contentDescription = null,
-                                tint = Theme.colorScheme.text.link
-                            )
+                                Text(
+                                    text = unitText,
+                                    style = Theme.typography.label.medium.medium,
+                                    color = Theme.colorScheme.text.title
+                                )
+                                Icon(
+                                    painter = Res.drawable.ic_arrow_down.painter(),
+                                    contentDescription = null,
+                                    tint = Theme.colorScheme.text.link
+                                )
+                            }
+                        }
+
+                        val customDays = state.customFrequencyDays.toIntOrNull()
+                        val availableUnits = remember(state.frequency, customDays) {
+                            getAvailableReminderUnits(state.frequency, customDays)
+                        }
+
+                        DropdownMenu(
+                            expanded = state.showReminderUnitDropdown,
+                            onDismissRequest = { interactionListener.onShowReminderUnitDropdown(false) },
+                            modifier = Modifier.background(Theme.colorScheme.background.secondary)
+                        ) {
+                            availableUnits.forEach { unit ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            text = unit.toText().asString(),
+                                            style = Theme.typography.body.medium,
+                                            color = Theme.colorScheme.text.title
+                                        )
+                                    },
+                                    onClick = {
+                                        interactionListener.onReminderPeriodUnitChanged(unit)
+                                        interactionListener.onShowReminderUnitDropdown(false)
+                                    }
+                                )
+                            }
                         }
                     }
                 }

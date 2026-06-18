@@ -76,7 +76,10 @@ private fun ScheduledPaymentsContent(
         isVisible = state.isAddScheduledPaymentBottomSheetVisible,
         initialState = state.paymentToEdit?.toAddScheduledPaymentUiState(),
         onDismiss = interactionListener::onAddScheduledPaymentBottomSheetDismissed,
-        onSuccess = interactionListener::onAddScheduledPaymentBottomSheetDismissed
+        onSuccess = {
+            interactionListener.onAddScheduledPaymentBottomSheetDismissed()
+            interactionListener.onReload()
+        }
     )
 }
 

@@ -6,4 +6,6 @@ interface ScheduledPaymentDetailsInteractionListener {
     fun onDeleteClicked()
     fun onSkipClicked()
     fun onPayClicked()
+    fun onEditBottomSheetDismissed()
+    fun onReloadDetails()
 }

@@ -39,7 +39,13 @@ class ScheduledPaymentsViewModel(
                             amount = payment.amount.toString(),
                             categoryIcon = payment.categoryIcon,
                             timeLeft = daysDiff.toTimeLeftText(),
-                            isDueSoon = daysDiff <= 1L
+                            isDueSoon = daysDiff <= 1L,
+                            startDate = payment.startDate,
+                            categoryId = payment.categoryId,
+                            frequency = payment.frequency,
+                            customFrequencyDays = payment.customFrequencyDays?.toString() ?: "",
+                            reminderPeriodValue = payment.reminderPeriod.toString(),
+                            reminderPeriodUnit = payment.reminderUnit
                         )
                     },
                     isScheduledPaymentsLoading = false,
@@ -67,11 +73,27 @@ class ScheduledPaymentsViewModel(
     )
 
     init {
+        listenToResetSignal()
         onReload()
+    }
+
+    private fun listenToResetSignal() {
+        tryToCollect(
+            block = {
+                getResult<Boolean?>("resetScheduledPayments", consume = true)
+            },
+            onEach = { shouldReset ->
+                if (shouldReset == true) {
+                    onReload()
+                }
+            },
+            onError = {}
+        )
     }
 
     override fun onReload() {
         paginator.reset()
+        updateState { copy(scheduledPayments = emptyList()) }
         viewModelScope.launch {
             paginator.loadNextItems()
         }

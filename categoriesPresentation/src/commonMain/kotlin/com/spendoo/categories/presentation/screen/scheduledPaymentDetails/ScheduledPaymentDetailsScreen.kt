@@ -21,9 +21,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
+import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
+import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentBottomSheet
+import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.toText
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.button.AppButton
@@ -35,31 +41,45 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.asString
-import org.jetbrains.compose.resources.painterResource
+import com.spendoo.designsystem.utils.extentions.painter
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.delete
 import spendoo.designsystem.generated.resources.due_date
 import spendoo.designsystem.generated.resources.edit
 import spendoo.designsystem.generated.resources.frequency
+import spendoo.designsystem.generated.resources.ic_categories
+import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.ic_delete
-import spendoo.designsystem.generated.resources.ic_drink
 import spendoo.designsystem.generated.resources.ic_edit
+import spendoo.designsystem.generated.resources.ic_money
 import spendoo.designsystem.generated.resources.money_amount
 import spendoo.designsystem.generated.resources.pay
-import spendoo.designsystem.generated.resources.scheduled_payment_details
 import spendoo.designsystem.generated.resources.skip
 import spendoo.designsystem.generated.resources.time_left
 
 @Composable
 fun ScheduledPaymentDetailsScreen(
-    viewModel: ScheduledPaymentDetailsViewModel = koinViewModel()
+    paymentId: String,
+    viewModel: ScheduledPaymentDetailsViewModel = koinViewModel(parameters = { parametersOf(paymentId) })
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     ScheduledPaymentDetailsContent(
         state = state,
         interactionListener = viewModel
+    )
+
+    AddScheduledPaymentBottomSheet(
+        isVisible = state.isEditBottomSheetVisible,
+        initialState = state.toAddScheduledPaymentUiState(),
+        onDismiss = viewModel::onEditBottomSheetDismissed,
+        onSuccess = {
+            viewModel.onEditBottomSheetDismissed()
+            viewModel.onReloadDetails()
+        }
     )
 }
 
@@ -76,20 +96,24 @@ private fun ScheduledPaymentDetailsContent(
     ) {
         TopBar(
             modifier = Modifier.fillMaxWidth(),
-            title = stringResource(Res.string.scheduled_payment_details),
+            title = state.title,
             onBackClicked = interactionListener::onBackClicked,
             actions = listOf(
                 {
                     SpendooIconButton(
-                        iconRes = Res.drawable.ic_edit, // TODO Placeholder, update later if requested
+                        iconRes = Res.drawable.ic_edit,
                         contentDescription = stringResource(Res.string.edit),
+                        backgroundColor = Theme.colorScheme.button.secondary,
+                        tint = Theme.colorScheme.brand.primary,
                         onClick = interactionListener::onEditClicked
                     )
                 },
                 {
                     SpendooIconButton(
-                        iconRes = Res.drawable.ic_delete, // TODO Placeholder, update later if requested
+                        iconRes = Res.drawable.ic_delete,
                         contentDescription = stringResource(Res.string.delete),
+                        backgroundColor = Theme.colorScheme.button.secondary,
+                        tint = Theme.colorScheme.brand.primary,
                         onClick = interactionListener::onDeleteClicked
                     )
                 }
@@ -110,39 +134,56 @@ private fun ScheduledPaymentDetailsContent(
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Header Icon
-                Box(
+                Column(
                     modifier = Modifier
-                        .size(80.dp)
-                        .background(Theme.colorScheme.button.secondary, RoundedCornerShape(24.dp)),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .background(Theme.colorScheme.background.secondary, RoundedCornerShape(16.dp))
+                        .padding(16.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_drink),
-                        contentDescription = null,
-                        modifier = Modifier.size(40.dp),
-                        tint = Theme.colorScheme.icon.primary
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .background(Theme.colorScheme.button.secondary, RoundedCornerShape(16.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = state.categoryIcon.toDrawableResource().painter(),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                                tint = Theme.colorScheme.brand.primary
+                            )
+                        }
+                        Text(
+                            text = state.title,
+                            style = Theme.typography.title.small.copy(fontSize = 16.sp),
+                            color = Theme.colorScheme.text.title,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    val frequencyText = if (state.frequency == PaymentFrequency.CUSTOM) {
+                        "${state.customFrequencyDays} days" //TODO: Localize
+                    } else {
+                        stringResource(state.frequency.toText())
+                    }
+
+                    ScheduledPaymentDetailGrid(
+                        amount = state.amount,
+                        timeLeft = state.timeLeft.asString(),
+                        frequencyText = frequencyText,
+                        dueDate = state.dueDate,
+                        isDueSoon = state.isDueSoon,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = state.title,
-                    style = Theme.typography.heading.large,
-                    color = Theme.colorScheme.text.title
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                ScheduledPaymentDetailGrid(
-                    amount = state.amount,
-                    timeLeft = state.timeLeft.asString(),
-                    frequency = state.frequency.name,
-                    dueDate = state.dueDate,
-                    isDueSoon = state.isDueSoon,
-                    modifier = Modifier.fillMaxWidth()
-                )
 
                 Spacer(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.height(24.dp))
@@ -176,47 +217,92 @@ private fun ScheduledPaymentDetailsContent(
 private fun ScheduledPaymentDetailGrid(
     amount: String,
     timeLeft: String,
-    frequency: String,
+    frequencyText: String,
     dueDate: String,
     isDueSoon: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .background(Theme.colorScheme.background.secondary, RoundedCornerShape(24.dp))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            DetailItem(stringResource(Res.string.money_amount), amount, Modifier.weight(1f))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             DetailItem(
-                stringResource(Res.string.time_left),
-                timeLeft,
-                Modifier.weight(1f),
-                if (isDueSoon) Theme.colorScheme.additional.error else Theme.colorScheme.text.title
+                icon = Res.drawable.ic_money,
+                value = amount,
+                label = stringResource(Res.string.money_amount),
+                modifier = Modifier.weight(1f)
+            )
+            DetailItem(
+                icon = Res.drawable.ic_date,
+                value = timeLeft,
+                label = stringResource(Res.string.time_left),
+                valueColor = if (isDueSoon) Theme.colorScheme.additional.error else Theme.colorScheme.text.title,
+                modifier = Modifier.weight(1f)
             )
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            DetailItem(stringResource(Res.string.frequency), frequency, Modifier.weight(1f))
-            DetailItem(stringResource(Res.string.due_date), dueDate, Modifier.weight(1f))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            DetailItem(
+                icon = Res.drawable.ic_categories,
+                value = frequencyText,
+                label = stringResource(Res.string.frequency),
+                modifier = Modifier.weight(1f)
+            )
+            DetailItem(
+                icon = Res.drawable.ic_date,
+                value = dueDate,
+                label = stringResource(Res.string.due_date),
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
 
 @Composable
 private fun DetailItem(
-    title: String,
+    icon: DrawableResource,
     value: String,
+    label: String,
     modifier: Modifier = Modifier,
     valueColor: Color = Theme.colorScheme.text.title
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(
+        modifier = modifier
+            .background(Theme.colorScheme.button.secondary, RoundedCornerShape(8.dp))
+            .padding(vertical = 8.dp, horizontal = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                painter = icon.painter(),
+                contentDescription = null,
+                modifier = Modifier.size(14.dp),
+                tint = Theme.colorScheme.brand.primary
+            )
+            Text(
+                text = value,
+                style = Theme.typography.label.medium.medium.copy(fontSize = 14.sp),
+                color = valueColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
         Text(
-            text = title,
-            style = Theme.typography.label.medium.medium,
-            color = Theme.colorScheme.text.body
+            text = label,
+            style = Theme.typography.label.medium.medium.copy(fontSize = 10.sp),
+            color = Theme.colorScheme.text.body,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
-        Text(text = value, style = Theme.typography.heading.small, color = valueColor)
     }
 }
 
@@ -238,6 +324,8 @@ fun ScheduledPaymentDetailsScreenPreview() = SpendooTheme {
             override fun onDeleteClicked() {}
             override fun onSkipClicked() {}
             override fun onPayClicked() {}
+            override fun onEditBottomSheetDismissed() {}
+            override fun onReloadDetails() {}
         }
     )
 }

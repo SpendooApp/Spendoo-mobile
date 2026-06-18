@@ -1,7 +1,5 @@
 package com.spendoo.categories.presentation.screen.scheduledPaymentDetails
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.toRoute
 import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.presentation.shared.getToday
@@ -12,17 +10,16 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 
 class ScheduledPaymentDetailsViewModel(
+    private val paymentId: String,
     private val scheduledPaymentsRepository: ScheduledPaymentsRepository,
-    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ScheduledPaymentDetailsUiState>(ScheduledPaymentDetailsUiState()),
     ScheduledPaymentDetailsInteractionListener {
-
-    private val paymentId: String =
-        savedStateHandle.toRoute<ScheduledPaymentDetailsRoute>().paymentId
 
     init {
         loadPaymentDetails()
     }
+
+    private var hasChanges = false
 
     private fun loadPaymentDetails() {
         tryToCall(
@@ -39,10 +36,16 @@ class ScheduledPaymentDetailsViewModel(
                         paymentId = payment.id,
                         title = payment.title,
                         amount = payment.amount.toString(),
+                        categoryId = payment.categoryId,
                         categoryIcon = payment.categoryIcon,
+                        startDate = payment.startDate,
                         frequency = payment.frequency,
+                        customFrequencyDays = payment.customFrequencyDays,
+                        reminderPeriod = payment.reminderPeriod,
+                        reminderUnit = payment.reminderUnit,
                         dueDate = payment.nextDueDate.format(),
-                        timeLeft = daysDiff.toTimeLeftText()
+                        timeLeft = daysDiff.toTimeLeftText(),
+                        isDueSoon = daysDiff <= 1
                     )
                 }
             },
@@ -57,11 +60,24 @@ class ScheduledPaymentDetailsViewModel(
     }
 
     override fun onBackClicked() {
-        popBackStack()
+        if (hasChanges) {
+            popBackStack("resetScheduledPayments" to true)
+        } else {
+            popBackStack()
+        }
     }
 
     override fun onEditClicked() {
-        navigate(ScheduledPaymentDetailsRoute(paymentId)) // Update when edit route exists
+        updateState { copy(isEditBottomSheetVisible = true) }
+    }
+
+    override fun onEditBottomSheetDismissed() {
+        updateState { copy(isEditBottomSheetVisible = false) }
+    }
+
+    override fun onReloadDetails() {
+        hasChanges = true
+        loadPaymentDetails()
     }
 
     override fun onDeleteClicked() {
@@ -70,7 +86,7 @@ class ScheduledPaymentDetailsViewModel(
                 scheduledPaymentsRepository.deleteScheduledPayment(paymentId)
             },
             onSuccess = {
-                popBackStack()
+                popBackStack("resetScheduledPayments" to true)
             },
             onError = {
                 showSnackBar(
@@ -84,7 +100,7 @@ class ScheduledPaymentDetailsViewModel(
     override fun onSkipClicked() {
         tryToCall(
             block = { scheduledPaymentsRepository.skipScheduledPayment(paymentId) },
-            onSuccess = { popBackStack() },
+            onSuccess = { popBackStack("resetScheduledPayments" to true) },
             onError = {
                 showSnackBar(
                     title = UiText.StringRes(Res.string.an_error_occurred),
@@ -97,7 +113,7 @@ class ScheduledPaymentDetailsViewModel(
     override fun onPayClicked() {
         tryToCall(
             block = { scheduledPaymentsRepository.payScheduledPayment(paymentId) },
-            onSuccess = { popBackStack() },
+            onSuccess = { popBackStack("resetScheduledPayments" to true) },
             onError = {
                 showSnackBar(
                     title = UiText.StringRes(Res.string.an_error_occurred),

@@ -3,6 +3,7 @@ package com.spendoo.categories.presentation.screen.addScheduledPaymentBottomShee
 import com.spendoo.categories.domain.entity.category.CategoryIcon
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
+import com.spendoo.categories.presentation.shared.getToday
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.daily
@@ -15,6 +16,10 @@ import spendoo.designsystem.generated.resources.day
 import spendoo.designsystem.generated.resources.week
 
 import org.jetbrains.compose.resources.StringResource
+import spendoo.designsystem.generated.resources.reminder_days_limit
+import spendoo.designsystem.generated.resources.reminder_hours_limit
+import spendoo.designsystem.generated.resources.reminder_months_limit
+import spendoo.designsystem.generated.resources.reminder_weeks_limit
 
 data class AddScheduledPaymentUiState(
     val isLoading: Boolean = false,
@@ -26,11 +31,14 @@ data class AddScheduledPaymentUiState(
     val categoryIcon: CategoryIcon = CategoryIcon.DEFAULT,
     val categoryName: String = "",
     val isCategorySelectionSheetVisible: Boolean = false,
-    val startDate: LocalDate? = null,
+    val startDate: LocalDate = getToday(),
     val showDatePicker: Boolean = false,
-    val frequency: PaymentFrequency = PaymentFrequency.DAILY,
+    val frequency: PaymentFrequency = PaymentFrequency.MONTHLY,
+    val customFrequencyDays: String = "",
+    val customFrequencyDaysError: StringResource? = null,
     val reminderPeriodValue: String = "",
     val reminderPeriodUnit: ReminderUnit = ReminderUnit.DAY,
+    val reminderPeriodValueError: StringResource? = null,
     val showReminderUnitDropdown: Boolean = false,
 )
 
@@ -50,5 +58,35 @@ fun ReminderUnit.toText(): StringResource {
         ReminderUnit.DAY -> Res.string.day
         ReminderUnit.WEEK -> Res.string.week
         ReminderUnit.MONTH -> Res.string.monthly
+    }
+}
+
+fun getAvailableReminderUnits(frequency: PaymentFrequency, customDays: Int?): List<ReminderUnit> {
+    val frequencyInDays = when (frequency) {
+        PaymentFrequency.DAILY -> 1
+        PaymentFrequency.WEEKLY -> 7
+        PaymentFrequency.MONTHLY -> 30
+        PaymentFrequency.YEARLY -> 365
+        PaymentFrequency.CUSTOM -> customDays ?: 0
+    }
+    
+    return ReminderUnit.entries.filter { unit ->
+        val unitDays = when (unit) {
+            ReminderUnit.HOUR -> 0.04
+            ReminderUnit.DAY -> 1.0
+            ReminderUnit.WEEK -> 7.0
+            ReminderUnit.MONTH -> 30.0
+        }
+        frequencyInDays <= 0 || unitDays < frequencyInDays
+    }.sortedByDescending { it.ordinal }
+}
+
+fun validateReminderPeriod(value: String, unit: ReminderUnit): StringResource? {
+    val reminderValue = value.toIntOrNull() ?: return null
+    return when (unit) {
+        ReminderUnit.HOUR -> if (reminderValue >= 24) Res.string.reminder_hours_limit else null
+        ReminderUnit.DAY -> if (reminderValue >= 30) Res.string.reminder_days_limit else null
+        ReminderUnit.WEEK -> if (reminderValue >= 4) Res.string.reminder_weeks_limit else null
+        ReminderUnit.MONTH -> if (reminderValue >= 12) Res.string.reminder_months_limit else null
     }
 }

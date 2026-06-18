@@ -4,6 +4,10 @@ import com.spendoo.categories.domain.entity.category.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentUiState
+import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
+import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
+import com.spendoo.categories.presentation.shared.getToday
+import kotlinx.datetime.LocalDate
 import com.spendoo.designsystem.utils.UiText
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.overdue
@@ -32,6 +36,12 @@ data class ScheduledPaymentUiState(
     val leftOverOption: LeftOverOption = LeftOverOption.MOVE_TO_SAVINGS,
     val timeLeft: UiText = UiText.DynamicString(""),
     val isDueSoon: Boolean = false,
+    val startDate: LocalDate = getToday(),
+    val categoryId: String = "",
+    val frequency: PaymentFrequency = PaymentFrequency.DAILY,
+    val customFrequencyDays: String = "",
+    val reminderPeriodValue: String = "",
+    val reminderPeriodUnit: ReminderUnit = ReminderUnit.DAY,
 )
 
 data class ScheduledPaymentSummaryUiState(
@@ -45,7 +55,13 @@ fun ScheduledPaymentUiState.toAddScheduledPaymentUiState(): AddScheduledPaymentU
         paymentId = id,
         title = name,
         amount = amount,
-        categoryIcon = categoryIcon
+        categoryIcon = categoryIcon,
+        categoryId = categoryId,
+        startDate = startDate,
+        frequency = frequency,
+        customFrequencyDays = customFrequencyDays,
+        reminderPeriodValue = reminderPeriodValue,
+        reminderPeriodUnit = reminderPeriodUnit
     )
 }
 
