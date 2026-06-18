@@ -30,7 +30,7 @@ class KmpFeatureApiConventionPlugin : Plugin<Project> {
                 sourceSets.configureEach {
                     if (name == "commonMain") {
                         dependencies {
-                            implementation(libs.findLibrary("androidx-navigation3-runtime").get())
+                            implementation(libs.findLibrary("androidx-navigation3-ui").get())
                         }
                     }
                 }

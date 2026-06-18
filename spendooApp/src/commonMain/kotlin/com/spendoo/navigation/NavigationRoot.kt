@@ -38,12 +38,12 @@ fun NavigationRoot(
     goalsFeatureApi: GoalsFeatureApi = koinInject(),
     chatbotFeatureApi: ChatbotFeatureApi = koinInject(),
 ) {
-    NavDisplay(
+    NavDisplay<NavKey>(
         modifier = Modifier
             .fillMaxSize(),
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
-        sceneStrategies = listOf(DialogSceneStrategy()),
+        sceneStrategy = DialogSceneStrategy(),
         entryDecorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
