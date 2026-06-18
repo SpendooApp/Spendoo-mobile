@@ -70,6 +70,7 @@ Each feature is split into specific layers, each with its own responsibilities a
 10. **No Non-null Assertion Operator (`!!`)**: Never use the non-null assertion operator `!!`. Write smart code that handles nullability safely using smart casts, early returns, safe calls (`?.let`), or meaningful exceptions if absolutely critical.
 11. **Placeholder Comments**: Any temporary placeholders or incomplete implementations (e.g. placeholder icons, click listeners) must be documented with a comment starting explicitly with `// TODO`.
 12. **Build Validation**: Always run a compilation check or build (e.g., using `.\gradlew.bat compileKotlinMetadata` or equivalent build task) to verify that all code compiles successfully without errors before finishing a task.
+13. **Data Transfer Objects (DTOs)**: When defining DTOs for network requests, you can use domain Enums directly instead of mapping them to Strings, as `kotlinx.serialization` handles Enums automatically.
 
 ## 🤖 Dynamic Learning Rule
 **IMPORTANT FOR ALL AGENTS**:

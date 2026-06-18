@@ -67,7 +67,7 @@ class ScheduledPaymentsRepositoryImpl(
 
     override suspend fun updateScheduledPayment(id: String, payment: CreateScheduledPayment) {
         tryToExecute<Unit> {
-            put(ScheduledPaymentsEndpoints.SCHEDULED_PAYMENTS) {
+            patch(ScheduledPaymentsEndpoints.SCHEDULED_PAYMENTS) {
                 url { appendPathSegments(id) }
                 setBody(payment.toDto())
             }
@@ -84,7 +84,7 @@ class ScheduledPaymentsRepositoryImpl(
 
     override suspend fun skipScheduledPayment(id: String) {
         tryToExecute<Unit> {
-            patch(ScheduledPaymentsEndpoints.SCHEDULED_PAYMENTS) {
+            post(ScheduledPaymentsEndpoints.SCHEDULED_PAYMENTS) {
                 url {
                     appendPathSegments(id)
                     appendPathSegments("skip")
@@ -95,7 +95,7 @@ class ScheduledPaymentsRepositoryImpl(
 
     override suspend fun payScheduledPayment(id: String) {
         tryToExecute<Unit> {
-            patch(ScheduledPaymentsEndpoints.SCHEDULED_PAYMENTS) {
+            post(ScheduledPaymentsEndpoints.SCHEDULED_PAYMENTS) {
                 url {
                     appendPathSegments(id)
                     appendPathSegments("pay")

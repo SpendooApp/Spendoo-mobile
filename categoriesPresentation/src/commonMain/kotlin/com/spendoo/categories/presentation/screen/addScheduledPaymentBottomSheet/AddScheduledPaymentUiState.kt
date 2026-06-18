@@ -49,5 +49,6 @@ fun ReminderUnit.toText(): StringResource {
         ReminderUnit.HOUR -> Res.string.hour
         ReminderUnit.DAY -> Res.string.day
         ReminderUnit.WEEK -> Res.string.week
+        ReminderUnit.MONTH -> Res.string.monthly
     }
 }

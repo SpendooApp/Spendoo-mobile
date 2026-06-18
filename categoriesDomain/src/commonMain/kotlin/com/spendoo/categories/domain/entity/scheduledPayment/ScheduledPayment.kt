@@ -10,7 +10,9 @@ data class ScheduledPayment(
     val categoryId: String,
     val categoryIcon: CategoryIcon,
     val startDate: LocalDate,
+    val nextDueDate: LocalDate,
+    val nextReminderDate: LocalDate,
     val frequency: PaymentFrequency,
-    val reminderPeriodValue: Int,
-    val reminderPeriodUnit: ReminderUnit
+    val reminderPeriod: Int,
+    val reminderUnit: ReminderUnit
 )

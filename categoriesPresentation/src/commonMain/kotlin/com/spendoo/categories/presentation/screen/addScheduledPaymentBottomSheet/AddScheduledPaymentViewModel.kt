@@ -90,8 +90,8 @@ class AddScheduledPaymentViewModel(
                     categoryId = state.value.categoryId,
                     startDate = startDate,
                     frequency = state.value.frequency,
-                    reminderPeriodValue = state.value.reminderPeriodValue.toIntOrNull() ?: 0,
-                    reminderPeriodUnit = state.value.reminderPeriodUnit
+                    reminderPeriod = state.value.reminderPeriodValue.toIntOrNull() ?: 0,
+                    reminderUnit = state.value.reminderPeriodUnit
                 )
                 val paymentId = state.value.paymentId
                 if (state.value.isEditing) {

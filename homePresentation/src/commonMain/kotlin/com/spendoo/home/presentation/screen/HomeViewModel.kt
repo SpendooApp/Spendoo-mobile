@@ -1,5 +1,6 @@
 package com.spendoo.home.presentation.screen
 
+import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
@@ -20,6 +21,7 @@ import com.spendoo.offers.domain.utils.PageQuery as OffersPageQuery
 class HomeViewModel(
     private val offersRepository: OffersRepository,
     private val transactionsRepository: TransactionsRepository,
+    private val categoriesRepository: CategoriesRepository,
     private val profileRepository: ProfileRepository,
     private val goalsRepository: GoalsRepository
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeInteractionListener {
@@ -111,7 +113,7 @@ class HomeViewModel(
                         async { offersRepository.getOffers(OffersPageQuery(0, 20)) }
                     val goalsDeferred = async { goalsRepository.getGoals(GoalsPageQuery(0, 20)) }
                     val spendingDeferred = async {
-                        transactionsRepository.getTopSpending(
+                        categoriesRepository.getTopSpending(
                             CategoriesPageQuery(
                                 page = 0,
                                 size = 5

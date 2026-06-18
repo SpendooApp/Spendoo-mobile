@@ -2,6 +2,8 @@ package com.spendoo.categories.data.dataSource.remote.dto.scheduledPayment
 
 import com.spendoo.categories.domain.entity.scheduledPayment.CreateScheduledPayment
 import kotlinx.serialization.Serializable
+import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
+import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
 
 @Serializable
 data class CreateScheduledPaymentDto(
@@ -9,9 +11,9 @@ data class CreateScheduledPaymentDto(
     val amount: Double,
     val categoryId: String,
     val startDate: String,
-    val frequency: String,
-    val reminderPeriodValue: Int,
-    val reminderPeriodUnit: String
+    val frequency: Int,
+    val reminderPeriod: Int,
+    val reminderUnit: ReminderUnit
 )
 
 fun CreateScheduledPayment.toDto(): CreateScheduledPaymentDto {
@@ -20,8 +22,8 @@ fun CreateScheduledPayment.toDto(): CreateScheduledPaymentDto {
         amount = this.amount,
         categoryId = this.categoryId,
         startDate = this.startDate.toString(),
-        frequency = this.frequency.name,
-        reminderPeriodValue = this.reminderPeriodValue,
-        reminderPeriodUnit = this.reminderPeriodUnit.name
+        frequency = this.frequency.toDays(),
+        reminderPeriod = this.reminderPeriod,
+        reminderUnit = this.reminderUnit
     )
 }

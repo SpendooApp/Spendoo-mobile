@@ -130,18 +130,6 @@ class TransactionsRepositoryImpl(
         return response.toPagedData { it.toDomain() }.orEmpty()
     }
 
-    override suspend fun getTopSpending(pageQuery: PageQuery): PagedData<CategorySpending> {
-        val response = tryToExecute<BasePagedData<CategorySpendingDto>> {
-            get(TransactionsEndpoints.TOP_SPENDING) {
-                url {
-                    parameters.append("page", pageQuery.page.toString())
-                    parameters.append("size", pageQuery.size.toString())
-                    pageQuery.sort?.forEach { sort -> parameters.append("sort", sort) }
-                }
-            }
-        }
-        return response.toPagedData { it.toDomain() }.orEmpty()
-    }
 
     override suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry> {
 //        val response = tryToExecute<List<ReadyTransactionEntryDto>> {

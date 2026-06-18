@@ -32,7 +32,7 @@ class ScheduledPaymentsViewModel(
             updateState {
                 copy(
                     scheduledPayments = scheduledPayments + items.map { payment ->
-                        val daysDiff = payment.startDate.toEpochDays() - today.toEpochDays()
+                        val daysDiff = payment.nextDueDate.toEpochDays() - today.toEpochDays()
                         ScheduledPaymentUiState(
                             id = payment.id,
                             name = payment.title,
@@ -82,9 +82,7 @@ class ScheduledPaymentsViewModel(
                 updateState {
                     copy(
                         summary = ScheduledPaymentSummaryUiState(
-                            totalBudget = summary.totalBudget,
-                            totalSpent = summary.totalSpent,
-                            addedIncome = summary.addedIncome,
+                            totalScheduledAmount = summary.totalScheduledAmount,
                             upcomingCount = summary.upcomingCount
                         ),
                         isSummaryLoading = false

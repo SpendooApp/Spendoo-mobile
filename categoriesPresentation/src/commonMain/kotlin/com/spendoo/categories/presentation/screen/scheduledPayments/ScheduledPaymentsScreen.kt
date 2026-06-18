@@ -118,7 +118,7 @@ private fun ScheduledPaymentsMainContent(
                 MoneyCard(
                     modifier = Modifier.fillMaxWidth(),
                     isLoading = state.isSummaryLoading,
-                    amount = state.summary.totalBudget.toInt().toString(),
+                    amount = state.summary.totalScheduledAmount.toInt().toString(),
                     amountColor = Theme.colorScheme.brand.onPrimary,
                     amountTextStyle = Theme.typography.heading.large,
                     title = stringResource(Res.string.total_budget),
@@ -200,9 +200,7 @@ fun ScheduledPaymentsScreenPreview() = SpendooTheme {
     ScheduledPaymentsMainContent(
         state = ScheduledPaymentsUiState(
             summary = ScheduledPaymentSummaryUiState(
-                totalBudget = 1000.0,
-                totalSpent = 500.0,
-                addedIncome = 200.0
+                totalScheduledAmount = 1000.0,
             ),
             scheduledPayments = listOf(
                 ScheduledPaymentUiState(

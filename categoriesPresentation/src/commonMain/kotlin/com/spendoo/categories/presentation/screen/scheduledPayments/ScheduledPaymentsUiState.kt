@@ -36,9 +36,7 @@ data class ScheduledPaymentUiState(
 
 data class ScheduledPaymentSummaryUiState(
     val upcomingCount: Int = 0,
-    val totalBudget: Double = 0.0,
-    val totalSpent: Double = 0.0,
-    val addedIncome: Double = 0.0,
+    val totalScheduledAmount: Double = 0.0,
 )
 
 fun ScheduledPaymentUiState.toAddScheduledPaymentUiState(): AddScheduledPaymentUiState {

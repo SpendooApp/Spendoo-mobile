@@ -31,7 +31,7 @@ class ScheduledPaymentDetailsViewModel(
             },
             onSuccess = { payment ->
                 val today = getToday()
-                val daysDiff = payment.startDate.toEpochDays() - today.toEpochDays()
+                val daysDiff = payment.nextDueDate.toEpochDays() - today.toEpochDays()
 
                 updateState {
                     copy(
@@ -41,7 +41,7 @@ class ScheduledPaymentDetailsViewModel(
                         amount = payment.amount.toString(),
                         categoryIcon = payment.categoryIcon,
                         frequency = payment.frequency,
-                        dueDate = payment.startDate.format(),
+                        dueDate = payment.nextDueDate.format(),
                         timeLeft = daysDiff.toTimeLeftText()
                     )
                 }

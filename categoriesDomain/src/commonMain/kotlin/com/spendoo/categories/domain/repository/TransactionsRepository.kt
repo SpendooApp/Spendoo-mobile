@@ -24,7 +24,6 @@ interface TransactionsRepository {
         pageQuery: PageQuery
     ): PagedData<Transaction>
 
-    suspend fun getTopSpending(pageQuery: PageQuery): PagedData<CategorySpending>
 
     suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry>
     suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry>
