@@ -1,4 +1,4 @@
-package com.spendoo.categories.presentation.shared.pagination
+package com.spendoo.designsystem.utils.pagination
 
 class Paginator<Key, Items>(
     private val initialKey: Key,

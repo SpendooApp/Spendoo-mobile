@@ -1,4 +1,4 @@
-package com.spendoo.categories.presentation.shared.pagination
+package com.spendoo.designsystem.utils.pagination
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
