@@ -60,6 +60,7 @@ class CategoriesViewModel(
 
     init {
         listenToResetSignal()
+        getData()
     }
 
     private fun listenToResetSignal() {

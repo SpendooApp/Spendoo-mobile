@@ -42,6 +42,7 @@ class KmpFeaturePresentationConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(libs.findLibrary("kotlinx-datetime").get())
                 "commonMainImplementation"(libs.findLibrary("coil-compose").get())
                 "commonMainImplementation"(libs.findBundle("koin").get())
+                "commonMainImplementation"(libs.findLibrary("koin-compose-navigation3").get())
                 "commonMainImplementation"(libs.findLibrary("androidx-navigation-compose").get())
                 "commonMainImplementation"(libs.findLibrary("androidx-navigation3-ui").get())
                 "commonMainImplementation"(libs.findLibrary("androidx-navigation3-runtime").get())

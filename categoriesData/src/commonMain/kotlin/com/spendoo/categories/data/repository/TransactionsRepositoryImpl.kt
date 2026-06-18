@@ -1,17 +1,14 @@
 package com.spendoo.categories.data.repository
 
 import com.spendoo.categories.data.dataSource.remote.dto.BasePagedData
-import com.spendoo.categories.data.dataSource.remote.dto.category.CategorySpendingDto
-import com.spendoo.categories.data.dataSource.remote.dto.category.toDomain
+import com.spendoo.categories.data.dataSource.remote.dto.category.BalanceSummaryDto
 import com.spendoo.categories.data.dataSource.remote.dto.toPagedData
-import com.spendoo.categories.data.dataSource.remote.dto.transaction.ReadyTransactionEntryDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.TransactionDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDomain
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDto
 import com.spendoo.categories.data.dataSource.remote.endpoint.TransactionsEndpoints
 import com.spendoo.categories.data.shared.BaseGateway
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
-import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import com.spendoo.categories.domain.entity.transaction.CreateExpense
 import com.spendoo.categories.domain.entity.transaction.CreateIncome
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
@@ -23,17 +20,12 @@ import com.spendoo.categories.domain.utils.PagedData
 import com.spendoo.categories.domain.utils.orEmpty
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.http.Headers
-import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
 import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.milliseconds
 
 class TransactionsRepositoryImpl(
     client: HttpClient,
@@ -95,20 +87,14 @@ class TransactionsRepositoryImpl(
     }
 
     override suspend fun getBalanceSummary(): BalanceSummary {
-        delay(2000.milliseconds)
+        val response = tryToExecute<BalanceSummaryDto> {
+            get(TransactionsEndpoints.SUMMARY)
+        }
         return BalanceSummary(
-            totalBalance = 5000.0,
-            income = 8000.0,
-            expenses = 3000.0,
+            totalBalance = response.totalBalance,
+            income = response.income,
+            expenses = response.expenses,
         )
-//        val response = tryToExecute<BalanceSummaryDto> {
-//            get(TransactionsEndpoints.SUMMARY)
-//        }
-//        return BalanceSummary(
-//            totalBalance = response.totalBalance,
-//            income = response.income,
-//            expenses = response.expenses,
-//        )
     }
 
     override suspend fun getTransactionsByRange(

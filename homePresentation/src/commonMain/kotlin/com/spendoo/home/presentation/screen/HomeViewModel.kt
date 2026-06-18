@@ -9,10 +9,11 @@ import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.offers.domain.repository.OffersRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.error_loading_balance_summary
+import spendoo.designsystem.generated.resources.error_loading_goals
 import spendoo.designsystem.generated.resources.error_loading_offers
+import spendoo.designsystem.generated.resources.error_loading_top_spending
 import spendoo.designsystem.generated.resources.error_loading_user_data
 import com.spendoo.categories.domain.utils.PageQuery as CategoriesPageQuery
 import com.spendoo.goals.domain.utils.PageQuery as GoalsPageQuery // TODO: add comon domain classes in shared domain module
@@ -28,6 +29,7 @@ class HomeViewModel(
 
     init {
         listenToResetSignal()
+        getHomeData()
     }
 
     private fun listenToResetSignal() {
@@ -45,41 +47,44 @@ class HomeViewModel(
     }
 
     private fun getHomeData() {
-        loadHeaderData()
-        loadContentData()
+        loadBalanceSummary()
+        loadUserProfile()
+        loadNotificationsCount()
+        loadOffers()
+        loadGoals()
+        loadTopSpending()
     }
 
-    private fun loadHeaderData() {
+    private fun loadBalanceSummary() {
         tryToCall(
-            block = {
-                coroutineScope {
-                    val balanceDeferred = async { transactionsRepository.getBalanceSummary() }
-                    val profileDeferred = async { profileRepository.getProfile() }
-                    val notificationsDeferred = async { profileRepository.getNotificationsCount() }
-                    Triple(
-                        balanceDeferred.await(),
-                        profileDeferred.await(),
-                        notificationsDeferred.await()
+            block = { transactionsRepository.getBalanceSummary() },
+            onStart = { updateState { copy(isBalanceLoading = true) } },
+            onSuccess = { summary ->
+                updateState { copy(balanceSummary = summary.toUiState()) }
+            },
+            onError = { error ->
+                error.message?.let {
+                    showSnackBar(
+                        title = Res.string.error_loading_balance_summary.toUiText(),
+                        message = UiText.DynamicString(it),
+                        isSuccess = false,
                     )
                 }
             },
-            onStart = {
+            onEnd = { updateState { copy(isBalanceLoading = false) } }
+        )
+    }
+
+    private fun loadUserProfile() {
+        tryToCall(
+            block = { profileRepository.getProfile() },
+            onStart = { updateState { copy(isUserLoading = true) } },
+            onSuccess = { profile ->
                 updateState {
                     copy(
-                        isBalanceLoading = true,
-                        isUserLoading = true,
-                        isNotificationsLoading = true
-                    )
-                }
-            },
-            onSuccess = { (summary, profile, notificationsCount) ->
-                updateState {
-                    copy(
-                        balanceSummary = summary.toUiState(),
                         userData = it.userData.copy(
                             userName = profile.fullName,
-                            userImageUrl = profile.imageUrl,
-                            notificationsCount = notificationsCount
+                            userImageUrl = profile.imageUrl
                         )
                     )
                 }
@@ -93,53 +98,34 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = {
-                updateState {
-                    copy(
-                        isBalanceLoading = false,
-                        isUserLoading = false,
-                        isNotificationsLoading = false
-                    )
-                }
-            }
+            onEnd = { updateState { copy(isUserLoading = false) } }
         )
     }
 
-    private fun loadContentData() {
+    private fun loadNotificationsCount() {
         tryToCall(
-            block = {
-                coroutineScope {
-                    val offersDeferred =
-                        async { offersRepository.getOffers(OffersPageQuery(0, 20)) }
-                    val goalsDeferred = async { goalsRepository.getGoals(GoalsPageQuery(0, 20)) }
-                    val spendingDeferred = async {
-                        categoriesRepository.getTopSpending(
-                            CategoriesPageQuery(
-                                page = 0,
-                                size = 5
-                            )
+            block = { profileRepository.getNotificationsCount() },
+            onStart = { updateState { copy(isNotificationsLoading = true) } },
+            onSuccess = { count ->
+                updateState {
+                    copy(
+                        userData = it.userData.copy(
+                            notificationsCount = count
                         )
-                    }
-                    Triple(offersDeferred.await(), goalsDeferred.await(), spendingDeferred.await())
-                }
-            },
-            onStart = {
-                updateState {
-                    copy(
-                        isOffersLoading = true,
-                        isGoalsLoading = true,
-                        isTopSpendingLoading = true
                     )
                 }
             },
-            onSuccess = { (offers, goals, spending) ->
-                updateState {
-                    copy(
-                        offers = offers.data.map { it.toUiState() },
-                        goals = goals.data.map { it.toUiState() },
-                        topSpending = spending.data.map { it.toUiState() }
-                    )
-                }
+            onError = { },
+            onEnd = { updateState { copy(isNotificationsLoading = false) } }
+        )
+    }
+
+    private fun loadOffers() {
+        tryToCall(
+            block = { offersRepository.getOffers(OffersPageQuery(0, 20)) },
+            onStart = { updateState { copy(isOffersLoading = true) } },
+            onSuccess = { offers ->
+                updateState { copy(offers = offers.data.map { it.toUiState() }) }
             },
             onError = { error ->
                 error.message?.let {
@@ -150,15 +136,51 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = {
-                updateState {
-                    copy(
-                        isOffersLoading = false,
-                        isGoalsLoading = false,
-                        isTopSpendingLoading = false
+            onEnd = { updateState { copy(isOffersLoading = false) } }
+        )
+    }
+
+    private fun loadGoals() {
+        tryToCall(
+            block = { goalsRepository.getGoals(GoalsPageQuery(0, 20)) },
+            onStart = { updateState { copy(isGoalsLoading = true) } },
+            onSuccess = { goals ->
+                updateState { copy(goals = goals.data.map { it.toUiState() }) }
+            },
+            onError = { error ->
+                error.message?.let {
+                    showSnackBar(
+                        title = Res.string.error_loading_goals.toUiText(),
+                        message = UiText.DynamicString(it),
+                        isSuccess = false,
                     )
                 }
-            }
+            },
+            onEnd = { updateState { copy(isGoalsLoading = false) } }
+        )
+    }
+
+    private fun loadTopSpending() {
+        tryToCall(
+            block = {
+                categoriesRepository.getTopSpending(
+                    CategoriesPageQuery(page = 0, size = 5)
+                )
+            },
+            onStart = { updateState { copy(isTopSpendingLoading = true) } },
+            onSuccess = { spending ->
+                updateState { copy(topSpending = spending.data.map { it.toUiState() }) }
+            },
+            onError = { error ->
+                error.message?.let {
+                    showSnackBar(
+                        title = Res.string.error_loading_top_spending.toUiText(),
+                        message = UiText.DynamicString(it),
+                        isSuccess = false,
+                    )
+                }
+            },
+            onEnd = { updateState { copy(isTopSpendingLoading = false) } }
         )
     }
 

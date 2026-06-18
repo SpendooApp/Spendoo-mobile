@@ -7,6 +7,7 @@ class StatisticsViewModel : BaseViewModel<StatisticsUiState>(StatisticsUiState()
 
     init {
         listenToResetSignal()
+        onReload()
     }
 
     private fun listenToResetSignal() {
