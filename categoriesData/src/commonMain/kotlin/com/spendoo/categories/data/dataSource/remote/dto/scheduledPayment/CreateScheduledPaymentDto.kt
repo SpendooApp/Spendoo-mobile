@@ -4,6 +4,8 @@ import com.spendoo.categories.domain.entity.scheduledPayment.CreateScheduledPaym
 import kotlinx.serialization.Serializable
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
+import com.spendoo.categories.domain.utils.toLocalDateTime
+import kotlinx.datetime.atTime
 
 @Serializable
 data class CreateScheduledPaymentDto(
@@ -21,8 +23,8 @@ fun CreateScheduledPayment.toDto(): CreateScheduledPaymentDto {
         title = this.title,
         amount = this.amount,
         categoryId = this.categoryId,
-        startDate = this.startDate.toString(),
-        frequency = this.frequency.toDays(),
+        startDate = this.startDate.toLocalDateTime().toString(),
+        frequency = if (this.frequency == PaymentFrequency.CUSTOM) this.customFrequencyDays ?: 0 else this.frequency.toDays(),
         reminderPeriod = this.reminderPeriod,
         reminderUnit = this.reminderUnit
     )

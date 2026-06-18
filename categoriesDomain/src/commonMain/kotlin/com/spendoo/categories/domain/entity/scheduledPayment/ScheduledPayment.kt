@@ -13,6 +13,7 @@ data class ScheduledPayment(
     val nextDueDate: LocalDate,
     val nextReminderDate: LocalDate,
     val frequency: PaymentFrequency,
+    val customFrequencyDays: Int? = null,
     val reminderPeriod: Int,
     val reminderUnit: ReminderUnit
 )

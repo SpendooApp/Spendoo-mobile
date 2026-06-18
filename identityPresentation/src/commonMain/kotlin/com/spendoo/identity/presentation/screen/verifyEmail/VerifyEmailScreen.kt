@@ -29,6 +29,7 @@ import com.spendoo.designsystem.utils.asString
 import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.didnt_receive_code
 import spendoo.designsystem.generated.resources.enter_code_sent_on_your_email
@@ -38,7 +39,9 @@ import spendoo.designsystem.generated.resources.verify_your_email
 
 @Composable
 fun VerifyEmailScreen(
-    viewModel: VerifyEmailViewModel = koinViewModel(),
+    email: String,
+    isForgetPasswordFlow: Boolean,
+    viewModel: VerifyEmailViewModel = koinViewModel(parameters = { parametersOf(email, isForgetPasswordFlow) }),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

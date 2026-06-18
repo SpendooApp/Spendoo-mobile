@@ -81,7 +81,10 @@ private fun CategorySelectionSheetMainContent(
     ) {
         CategorySelectionContent(
             state = state,
-            onCategorySelected = interactionListener::onCategorySelected,
+            onCategorySelected = { category ->
+                interactionListener.onCategorySelected(category)
+                onCategorySelected(category)
+            },
             onDismiss = onDismiss,
             onConfirm = { state.selectedCategory?.let { onCategorySelected(it) } },
             onAddCategoryClicked = { interactionListener.showAddCategorySheet(true) },
@@ -128,8 +131,7 @@ private fun CategorySelectionContent(
         onDismiss = onDismiss,
         onClickAction = onConfirm,
         actionText = Res.string.select.asString(),
-        actionButtonState = if (state.selectedCategory != null) AppButtonState.Enabled
-        else AppButtonState.Disabled,
+        showActionButtons = false,
         modifier = modifier
     ) { listState ->
 

@@ -24,7 +24,9 @@ class CategoriesFeatureApiImpl : CategoriesFeatureApi {
                 metadata = DialogSceneStrategy.dialog()
             ) { AddTransactionBottomSheet() }
             entry<ScheduledPaymentsRoute> { ScheduledPaymentsScreen() }
-            entry<ScheduledPaymentDetailsRoute> { ScheduledPaymentDetailsScreen() }
+            entry<ScheduledPaymentDetailsRoute> { route ->
+                ScheduledPaymentDetailsScreen(paymentId = route.paymentId)
+            }
         }
     }
 }

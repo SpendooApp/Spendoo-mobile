@@ -39,8 +39,18 @@ class IdentityFeatureApiImpl : IdentityFeatureApi {
             entry<LoginRoute> { LoginScreen() }
             entry<SignUpRoute> { SignUpScreen() }
             entry<ForgetPasswordRoute> { ForgetPasswordScreen() }
-            entry<VerifyEmailRoute> { VerifyEmailScreen() }
-            entry<CreateNewPasswordRoute> { CreateNewPasswordScreen() }
+            entry<VerifyEmailRoute> { route ->
+                VerifyEmailScreen(
+                    email = route.email,
+                    isForgetPasswordFlow = route.isForgetPasswordFlow
+                )
+            }
+            entry<CreateNewPasswordRoute> { route ->
+                CreateNewPasswordScreen(
+                    email = route.email,
+                    otp = route.otp
+                )
+            }
             entry<ProfileRoute> {
                 Box(
                     Modifier.fillMaxSize().background(Color.Blue),
