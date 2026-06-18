@@ -25,7 +25,7 @@ fun ProgressSection(
     percentage: Int,
     total: Int,
     current: Int,
-    progressColor: Color = if (percentage < 100) Theme.colorScheme.icon.primary else Theme.colorScheme.additional.onError,
+    progressColor: Color,
 ) {
     Column {
         Row(

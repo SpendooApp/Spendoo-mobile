@@ -55,13 +55,13 @@ fun CategoryCard(
             null -> NoBudgetContent(current)
             else -> {
                 Text(
-                    "From ${budgetData.startDate.day} ${budgetData.startDate.month.name} ${budgetData.startDate.year} to ${budgetData.endDate.day} ${budgetData.endDate.month.name} ${budgetData.endDate.year}",
+                    "From ${budgetData.startDate.day} ${budgetData.startDate.month.name} ${budgetData.startDate.year} to ${budgetData.endDate.day} ${budgetData.endDate.month.name} ${budgetData.endDate.year}", //TODO: translate
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = Theme.typography.label.medium.small,
                     color = Theme.colorScheme.text.titleSmall,
                     maxLines = 1
                 )
-                ProgressSection(budgetData.percentage, budgetData.total, current)
+                ProgressSection(budgetData.percentage, budgetData.total, current, progressColor = if (budgetData.percentage < 100) Theme.colorScheme.icon.primary else Theme.colorScheme.additional.onError)
             }
         }
     }
@@ -112,6 +112,23 @@ private fun CategoryCardPreview2() = SpendooTheme {
             endDate = LocalDate(2022, 2, 2),
             total = 4200,
             percentage = 50,
+        ),
+        onClickMenu = {},
+    )
+}
+
+@Preview(widthDp = 320)
+@Composable
+private fun CategoryCardPreview3() = SpendooTheme {
+    CategoryCard(
+        icon = Res.drawable.ic_food,
+        title = "dooooooooooooooooooooooooooooooooooooooooooooooooooo",
+        current = 3000,
+        budgetData = BudgetDataUiState(
+            startDate = LocalDate(2022, 2, 2),
+            endDate = LocalDate(2022, 2, 2),
+            total = 4200,
+            percentage = 100,
         ),
         onClickMenu = {},
     )

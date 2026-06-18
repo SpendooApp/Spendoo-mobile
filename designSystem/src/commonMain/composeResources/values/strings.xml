@@ -183,4 +183,11 @@
     <string name="low_priority">Low Priority</string>
     <string name="medium_priority">Medium Priority</string>
     <string name="high_priority">High Priority</string>
+    <string name="done">Done</string>
+    <string name="enter_custom_days">Enter custom days</string>
+    <string name="custom_frequency_must_be_greater_than_zero">Custom frequency must be greater than 0</string>
+    <string name="reminder_hours_limit">Reminder period must be less than 24 hours</string>
+    <string name="reminder_days_limit">Reminder period must be less than 30 days</string>
+    <string name="reminder_weeks_limit">Reminder period must be less than 4 weeks</string>
+    <string name="reminder_months_limit">Reminder period must be less than 12 months</string>
 </resources>

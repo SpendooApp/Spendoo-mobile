@@ -19,15 +19,17 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.high_priority
 import spendoo.designsystem.generated.resources.low_priority
 import spendoo.designsystem.generated.resources.medium_priority
+import spendoo.designsystem.generated.resources.done
 
 enum class Priority {
-    LOW, MEDIUM, HIGH
+    LOW, MEDIUM, HIGH, Done
 }
 
 fun Priority.toText() = when (this) {
     Priority.LOW -> Res.string.low_priority
     Priority.MEDIUM -> Res.string.medium_priority
     Priority.HIGH -> Res.string.high_priority
+    Priority.Done -> Res.string.done
 }
 
 @Composable
@@ -35,6 +37,7 @@ fun Priority.toBackGroundColor() = when (this) {
     Priority.LOW -> Theme.colorScheme.additional.success
     Priority.MEDIUM -> Theme.colorScheme.additional.warning
     Priority.HIGH -> Theme.colorScheme.additional.error
+    Priority.Done -> Theme.colorScheme.additional.done
 }
 
 @Composable
@@ -42,6 +45,7 @@ fun Priority.toTextColor() = when (this) {
     Priority.LOW -> Theme.colorScheme.additional.onSuccess
     Priority.MEDIUM -> Theme.colorScheme.additional.onWarning
     Priority.HIGH -> Theme.colorScheme.additional.onError
+    Priority.Done -> Theme.colorScheme.additional.onDone
 }
 
 @Composable
@@ -72,5 +76,6 @@ fun PriorityCardPreview() = SpendooTheme {
         PriorityCard(Priority.LOW)
         PriorityCard(Priority.MEDIUM)
         PriorityCard(Priority.HIGH)
+        PriorityCard(Priority.Done)
     }
 }

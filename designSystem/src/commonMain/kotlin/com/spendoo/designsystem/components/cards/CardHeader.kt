@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration // Added import
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
@@ -19,15 +20,16 @@ import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dots
 
-
 @Composable
 fun CardHeader(
     icon: DrawableResource,
     title: String,
-    onClickMenu: () -> Unit
+    onClickMenu: () -> Unit,
+    modifier: Modifier = Modifier,
+    isLineThrough: Boolean = false
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryIcon(icon)
@@ -37,7 +39,8 @@ fun CardHeader(
             style = Theme.typography.title.medium,
             color = Theme.colorScheme.text.title,
             maxLines = 1,
-            overflow = Ellipsis
+            overflow = Ellipsis,
+            textDecoration = if (isLineThrough) TextDecoration.LineThrough else TextDecoration.None
         )
         Icon(
             modifier = Modifier.size(24.dp).clickableNoRipple(onClick = onClickMenu),

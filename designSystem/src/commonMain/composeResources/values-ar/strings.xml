@@ -158,4 +158,10 @@
     <string name="low_priority">أولوية منخفضة</string>
     <string name="medium_priority">أولوية متوسطة</string>
     <string name="high_priority">أولوية عالية</string>
+    <string name="enter_custom_days">أدخل عدد الأيام</string>
+    <string name="custom_frequency_must_be_greater_than_zero">يجب أن يكون التكرار المخصص أكبر من 0</string>
+    <string name="reminder_hours_limit">يجب أن تكون فترة التذكير أقل من 24 ساعة</string>
+    <string name="reminder_days_limit">يجب أن تكون فترة التذكير أقل من 30 يومًا</string>
+    <string name="reminder_weeks_limit">يجب أن تكون فترة التذكير أقل من 4 أسابيع</string>
+    <string name="reminder_months_limit">يجب أن تكون فترة التذكير أقل من 12 شهرًا</string>
 </resources>

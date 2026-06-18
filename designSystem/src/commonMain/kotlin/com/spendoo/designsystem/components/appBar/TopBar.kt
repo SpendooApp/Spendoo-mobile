@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
@@ -57,7 +58,8 @@ fun TopBar(
         Text(
             text = title,
             style = Theme.typography.title.large,
-            color = Theme.colorScheme.text.title
+            color = Theme.colorScheme.text.title,
+            overflow = TextOverflow.Ellipsis,
         )
         if (actions.isNotEmpty()) {
             Spacer(modifier = Modifier.weight(1f))
