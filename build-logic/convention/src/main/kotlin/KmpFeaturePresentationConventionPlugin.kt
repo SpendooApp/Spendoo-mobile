@@ -43,6 +43,9 @@ class KmpFeaturePresentationConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(libs.findLibrary("coil-compose").get())
                 "commonMainImplementation"(libs.findBundle("koin").get())
                 "commonMainImplementation"(libs.findLibrary("androidx-navigation-compose").get())
+                "commonMainImplementation"(libs.findLibrary("androidx-navigation3-ui").get())
+                "commonMainImplementation"(libs.findLibrary("androidx-navigation3-runtime").get())
+                "commonMainImplementation"(libs.findLibrary("androidx-lifecycle-viewmodel-navigation3").get())
 
                 "androidMainImplementation"(libs.findLibrary("compose-preview").get())
                 "androidMainImplementation"(libs.findLibrary("androidx-activity-compose").get())

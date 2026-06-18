@@ -2,6 +2,10 @@ package com.spendoo.di
 
 import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.categories.presentation.api.CategoriesFeatureApiImpl
+import com.spendoo.goals.api.GoalsFeatureApi
+import com.spendoo.goals.presentation.api.GoalsFeatureApiImpl
+import com.spendoo.statistics.api.StatisticsFeatureApi
+import com.spendoo.statistics.presentation.api.StatisticsFeatureApiImpl
 import com.spendoo.identity.api.IdentityFeatureApi
 import com.spendoo.identity.presentation.api.IdentityFeatureApiImpl
 import com.spendoo.home.api.HomeFeatureApi
@@ -14,4 +18,6 @@ val apiModule = module {
     singleOf(::IdentityFeatureApiImpl) bind IdentityFeatureApi::class
     singleOf(::HomeFeatureApiImpl) bind HomeFeatureApi::class
     singleOf(::CategoriesFeatureApiImpl) bind CategoriesFeatureApi::class
+    singleOf(::StatisticsFeatureApiImpl) bind StatisticsFeatureApi::class
+    singleOf(::GoalsFeatureApiImpl) bind GoalsFeatureApi::class
 }

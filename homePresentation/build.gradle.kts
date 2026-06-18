@@ -28,6 +28,7 @@ kotlin {
                 implementation(projects.categoriesDomain)
                 implementation(projects.identityDomain)
                 implementation(projects.goalsDomain)
+                implementation(projects.goalsApi)
             }
         }
         androidMain {

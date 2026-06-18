@@ -3,6 +3,8 @@ package com.spendoo.di
 import com.spendoo.categories.data.di.categoriesDataModule
 import com.spendoo.categories.presentation.di.categoriesPresentationModule
 import com.spendoo.goals.data.di.goalsDataModule
+import com.spendoo.goals.presentation.di.goalsPresentationModule
+import com.spendoo.statistics.presentation.di.statisticsPresentationModule
 import com.spendoo.offers.data.di.offersDataModule
 import com.spendoo.home.presentation.di.homePresentationModule
 import com.spendoo.identity.domain.di.domainModule as identityDomainModule
@@ -19,6 +21,8 @@ val featureModule = module {
         categoriesPresentationModule,
         offersDataModule,
         homePresentationModule,
-        goalsDataModule
+        goalsDataModule,
+        goalsPresentationModule,
+        statisticsPresentationModule
     )
 }

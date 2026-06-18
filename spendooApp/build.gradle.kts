@@ -12,6 +12,9 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.androidx.navigation3.ui)
+            implementation(libs.androidx.navigation3.runtime)
+            implementation(libs.androidx.lifecycle.viewmodel.navigation3)
             implementation(projects.designSystem)
             implementation(projects.identityData)
             implementation(projects.identityDomain)
@@ -25,6 +28,10 @@ kotlin {
             implementation(projects.categoriesData)
             implementation(projects.categoriesApi)
             implementation(projects.categoriesPresentation)
+            implementation(projects.statisticsApi)
+            implementation(projects.statisticsPresentation)
+            implementation(projects.goalsApi)
+            implementation(projects.goalsPresentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

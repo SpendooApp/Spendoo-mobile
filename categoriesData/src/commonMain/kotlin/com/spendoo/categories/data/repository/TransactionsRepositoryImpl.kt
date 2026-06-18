@@ -33,6 +33,7 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 class TransactionsRepositoryImpl(
     client: HttpClient,
@@ -94,7 +95,7 @@ class TransactionsRepositoryImpl(
     }
 
     override suspend fun getBalanceSummary(): BalanceSummary {
-        delay(2000)
+        delay(2000.milliseconds)
         return BalanceSummary(
             totalBalance = 5000.0,
             income = 8000.0,

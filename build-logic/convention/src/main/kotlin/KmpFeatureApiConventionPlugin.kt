@@ -15,6 +15,7 @@ class KmpFeatureApiConventionPlugin : Plugin<Project> {
                 apply(libs.findPlugin("androidKotlinMultiplatformLibrary").get().get().pluginId)
                 apply(libs.findPlugin("composeMultiplatform").get().get().pluginId)
                 apply(libs.findPlugin("composeCompiler").get().get().pluginId)
+                apply(libs.findPlugin("kotlinx-serialization").get().get().pluginId)
             }
 
             configureKotlinMultiplatform()
@@ -25,6 +26,14 @@ class KmpFeatureApiConventionPlugin : Plugin<Project> {
                     minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
                 }
                 jvm()
+
+                sourceSets.configureEach {
+                    if (name == "commonMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("androidx-navigation3-runtime").get())
+                        }
+                    }
+                }
             }
 
             dependencies {
