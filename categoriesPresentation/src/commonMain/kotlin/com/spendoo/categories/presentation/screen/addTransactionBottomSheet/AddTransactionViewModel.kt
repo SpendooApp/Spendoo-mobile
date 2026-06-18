@@ -6,9 +6,7 @@ import com.spendoo.categories.domain.entity.transaction.CreateIncome
 import com.spendoo.categories.domain.entity.transaction.ExpenseEntry
 import com.spendoo.categories.domain.entity.transaction.IncomeEntry
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
-import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
-import com.spendoo.categories.domain.utils.PageQuery
 import com.spendoo.categories.domain.utils.toLocalDateTime
 import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
 import com.spendoo.designsystem.navigation.BaseViewModel
@@ -33,7 +31,6 @@ import spendoo.designsystem.generated.resources.invalid_income_data
 class AddTransactionViewModel(
     private val transactionsRepository: TransactionsRepository,
     private val goalsRepository: GoalsRepository,
-    private val categoriesRepository: CategoriesRepository
 ) : BaseViewModel<AddTransactionUiState>(AddTransactionUiState()),
     AddTransactionInteractionListener {
 
