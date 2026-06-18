@@ -92,7 +92,7 @@ private fun ScheduledPaymentsMainContent(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(Theme.colorScheme.background.primary)
             .statusBarsPadding()
     ) {
@@ -111,68 +111,92 @@ private fun ScheduledPaymentsMainContent(
             )
         )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-            state = listState,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
         ) {
-            item {
-                MoneyCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    isLoading = state.isSummaryLoading,
-                    amount = state.summary.totalScheduledAmount.toInt().toString(),
-                    amountColor = Theme.colorScheme.brand.onPrimary,
-                    amountTextStyle = Theme.typography.heading.large,
-                    title = stringResource(Res.string.total_budget),
-                    titleColor = Theme.colorScheme.brand.primaryVariant,
-                    titleTextStyle = Theme.typography.body.small,
-                    backgroundColor = Theme.colorScheme.gradient.brand,
-                    moneyDataAlignment = Alignment.Start,
-                    trailingContent = {
-                        UpcomingBadge(count = state.summary.upcomingCount)
-                    },
-                )
-            }
+            MoneyCard(
+                modifier = Modifier.fillMaxWidth(),
+                isLoading = state.isSummaryLoading,
+                amount = state.summary.totalScheduledAmount.toInt().toString(),
+                amountColor = Theme.colorScheme.brand.onPrimary,
+                amountTextStyle = Theme.typography.heading.large,
+                title = stringResource(Res.string.total_budget),
+                titleColor = Theme.colorScheme.brand.primaryVariant,
+                titleTextStyle = Theme.typography.body.small,
+                backgroundColor = Theme.colorScheme.gradient.brand,
+                moneyDataAlignment = Alignment.Start,
+                trailingContent = {
+                    UpcomingBadge(count = state.summary.upcomingCount)
+                },
+            )
 
             if (state.isScheduledPaymentsLoading) {
-                items(5) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .clip(RoundedCornerShape(24.dp))
-                            .shimmerEffect()
-                    )
-                }
-            } else if (state.scheduledPayments.isNotEmpty()) {
-                items(state.scheduledPayments) { payment ->
-                    SubscriptionCard(
-                        icon = payment.categoryIcon.toDrawableResource(),
-                        title = payment.name,
-                        amount = payment.amount,
-                        timeLeft = payment.timeLeft.asString(),
-                        isDueSoon = payment.isDueSoon,
-                        onSkipClick = { interactionListener.onSkipPayment(payment.id) },
-                        onPayClick = { interactionListener.onPayPayment(payment.id) },
-                        onClick = { interactionListener.navigateToDetails(payment.id) }
-                    )
-                }
-            }
-
-            if (state.isScheduledPaymentsLoadingMore) {
-                item {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(5) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp)
+                                .clip(RoundedCornerShape(24.dp))
+                                .shimmerEffect()
+                        )
                     }
                 }
-            }
+            } else if (state.scheduledPayments.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(Res.string.no_scheduled_payments_yet),
+                        style = Theme.typography.body.medium,
+                        color = Theme.colorScheme.text.body,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    state = listState,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(state.scheduledPayments) { payment ->
+                        SubscriptionCard(
+                            icon = payment.categoryIcon.toDrawableResource(),
+                            title = payment.name,
+                            amount = payment.amount,
+                            timeLeft = payment.timeLeft.asString(),
+                            isDueSoon = payment.isDueSoon,
+                            onSkipClick = { interactionListener.onSkipPayment(payment.id) },
+                            onPayClick = { interactionListener.onPayPayment(payment.id) },
+                            onClick = { interactionListener.navigateToDetails(payment.id) }
+                        )
+                    }
 
-            item {
-                Spacer(modifier = Modifier.height(100.dp).navigationBarsPadding())
+                    if (state.isScheduledPaymentsLoadingMore) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp).navigationBarsPadding())
+                    }
+                }
             }
         }
         PaginationTrigger(
@@ -181,19 +205,6 @@ private fun ScheduledPaymentsMainContent(
             remainingItemsToLoadNextPage = 5,
             loadNextItems = interactionListener::onListScrolled
         )
-        if (!state.isScheduledPaymentsLoading && state.scheduledPayments.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(Res.string.no_scheduled_payments_yet),
-                    style = Theme.typography.body.medium,
-                    color = Theme.colorScheme.text.body,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
     }
 }
 
