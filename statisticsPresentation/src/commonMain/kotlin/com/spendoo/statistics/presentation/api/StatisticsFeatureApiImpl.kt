@@ -1,0 +1,16 @@
+package com.spendoo.statistics.presentation.api
+
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import com.spendoo.statistics.api.StatisticsFeatureApi
+import com.spendoo.statistics.api.StatisticsRoute
+import com.spendoo.statistics.presentation.screen.statistics.StatisticsScreen
+
+class StatisticsFeatureApiImpl : StatisticsFeatureApi {
+    override fun invoke(): (NavKey) -> NavEntry<NavKey> {
+        return entryProvider {
+            entry<StatisticsRoute> { StatisticsScreen() }
+        }
+    }
+}
