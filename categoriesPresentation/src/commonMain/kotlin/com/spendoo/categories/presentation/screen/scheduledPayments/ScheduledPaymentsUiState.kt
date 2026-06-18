@@ -1,0 +1,61 @@
+package com.spendoo.categories.presentation.screen.scheduledPayments
+
+import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.categories.domain.entity.category.LeftOverOption
+import com.spendoo.categories.domain.entity.category.PriorityOption
+import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentUiState
+import com.spendoo.designsystem.utils.UiText
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.overdue
+import spendoo.designsystem.generated.resources.today
+import spendoo.designsystem.generated.resources.tomorrow
+import spendoo.designsystem.generated.resources.days_left
+
+data class ScheduledPaymentsUiState(
+    val summary: ScheduledPaymentSummaryUiState = ScheduledPaymentSummaryUiState(),
+    val isSummaryLoading: Boolean = false,
+    val scheduledPayments: List<ScheduledPaymentUiState> = emptyList(),
+    val scheduledPaymentsEndReached: Boolean = false,
+    val isScheduledPaymentsLoading: Boolean = false,
+    val isScheduledPaymentsLoadingMore: Boolean = false,
+    val isAddScheduledPaymentBottomSheetVisible: Boolean = false,
+    val isScheduledPaymentActionsSheetVisible: Boolean = false,
+    val paymentToEdit: ScheduledPaymentUiState? = null
+)
+
+data class ScheduledPaymentUiState(
+    val id: String = "",
+    val name: String = "",
+    val amount: String = "",
+    val categoryIcon: CategoryIcon = CategoryIcon.DEFAULT,
+    val priority: PriorityOption = PriorityOption.MEDIUM,
+    val leftOverOption: LeftOverOption = LeftOverOption.MOVE_TO_SAVINGS,
+    val timeLeft: UiText = UiText.DynamicString(""),
+    val isDueSoon: Boolean = false,
+)
+
+data class ScheduledPaymentSummaryUiState(
+    val upcomingCount: Int = 0,
+    val totalBudget: Double = 0.0,
+    val totalSpent: Double = 0.0,
+    val addedIncome: Double = 0.0,
+)
+
+fun ScheduledPaymentUiState.toAddScheduledPaymentUiState(): AddScheduledPaymentUiState {
+    return AddScheduledPaymentUiState(
+        isEditing = true,
+        paymentId = id,
+        title = name,
+        amount = amount,
+        categoryIcon = categoryIcon
+    )
+}
+
+fun Long.toTimeLeftText(): UiText {
+    return when {
+        this < 0L -> UiText.StringRes(Res.string.overdue)
+        this == 0L -> UiText.StringRes(Res.string.today)
+        this == 1L -> UiText.StringRes(Res.string.tomorrow)
+        else -> UiText.StringRes(Res.string.days_left, this.toString())
+    }
+}
