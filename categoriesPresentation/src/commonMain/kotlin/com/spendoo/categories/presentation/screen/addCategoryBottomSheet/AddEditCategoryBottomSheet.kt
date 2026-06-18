@@ -22,7 +22,7 @@ import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.LiftoverFundsActionSheet
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableIconRow
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableResetCycleRow
+import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableRow
 import com.spendoo.categories.presentation.shared.getToday
 import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
 import com.spendoo.categories.presentation.shared.toCleanString
@@ -240,8 +240,10 @@ private fun AddEditCategoryContent(
         }
 
         item {
-            SelectableResetCycleRow(
+            SelectableRow(
                 selectedCycle = addEditCategoryUiState.resetCycle,
+                entries = ResetCycleOption.entries,
+                getName = { it.toStringResource().asString() },
                 onCycleSelected = interactionListener::onResetCycleChanged
             )
         }

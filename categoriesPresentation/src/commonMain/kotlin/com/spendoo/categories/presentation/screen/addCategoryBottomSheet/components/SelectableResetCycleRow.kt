@@ -14,17 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.spendoo.categories.domain.entity.category.ResetCycleOption
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toStringResource
 import com.spendoo.designsystem.components.surface.Surface
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.utils.extentions.asString
+import kotlin.enums.EnumEntries
 
 @Composable
-fun SelectableResetCycleRow(
-    selectedCycle: ResetCycleOption,
-    onCycleSelected: (ResetCycleOption) -> Unit
+fun <T: Enum<T>>SelectableRow(
+    selectedCycle: T,
+    entries: EnumEntries<T>,
+    getName: @Composable (T) -> String,
+    onCycleSelected: (T) -> Unit
 ) {
     LazyRow(
         modifier = Modifier
@@ -32,9 +32,9 @@ fun SelectableResetCycleRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
-        items(ResetCycleOption.entries) { title ->
+        items(entries) { title ->
             CycleChip(
-                text = title.toStringResource().asString(),
+                text = getName(title),
                 selected = selectedCycle == title,
                 onClick = { onCycleSelected(title) }
             )

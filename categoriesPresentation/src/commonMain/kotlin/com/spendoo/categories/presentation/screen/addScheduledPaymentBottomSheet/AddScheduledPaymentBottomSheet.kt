@@ -1,17 +1,11 @@
 package com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -25,13 +19,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
-import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
-import com.spendoo.categories.presentation.shared.getToday
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.categories.presentation.shared.toCleanString
+import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableRow
 import com.spendoo.categories.presentation.screen.categorySelectionSheet.CategorySelectionSheet
+import com.spendoo.categories.presentation.shared.getToday
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
+import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
 import com.spendoo.designsystem.components.surface.Surface
@@ -42,30 +35,21 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
-import com.spendoo.designsystem.components.icon.Icon
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_payment
 import spendoo.designsystem.generated.resources.cancel
 import spendoo.designsystem.generated.resources.choose_category
-import spendoo.designsystem.generated.resources.custom
-import spendoo.designsystem.generated.resources.daily
-import spendoo.designsystem.generated.resources.day
 import spendoo.designsystem.generated.resources.edit_payment
 import spendoo.designsystem.generated.resources.enter_amount
 import spendoo.designsystem.generated.resources.enter_period
 import spendoo.designsystem.generated.resources.enter_start_date
 import spendoo.designsystem.generated.resources.enter_title
 import spendoo.designsystem.generated.resources.frequency
-import spendoo.designsystem.generated.resources.hour
 import spendoo.designsystem.generated.resources.ic_arrow_down
 import spendoo.designsystem.generated.resources.ic_date
-import spendoo.designsystem.generated.resources.monthly
 import spendoo.designsystem.generated.resources.reminder_period
 import spendoo.designsystem.generated.resources.save_payment
-import spendoo.designsystem.generated.resources.week
-import spendoo.designsystem.generated.resources.weekly
-import spendoo.designsystem.generated.resources.yearly
 
 @Composable
 fun AddScheduledPaymentBottomSheet(
@@ -86,6 +70,7 @@ fun AddScheduledPaymentBottomSheet(
     BottomSheet(
         isVisible = isVisible,
         onDismiss = onDismiss,
+        skipPartiallyExpanded = true,
         horizontalPadding = 0.dp
     ) {
         AddScheduledPaymentContent(
@@ -108,7 +93,8 @@ private fun AddScheduledPaymentContent(
 ) {
     val focusManager = LocalFocusManager.current
 
-    val canSubmit = state.title.isNotBlank() && state.amount.isNotBlank() && state.categoryId.isNotBlank()
+    val canSubmit =
+        state.title.isNotBlank() && state.amount.isNotBlank() && state.categoryId.isNotBlank()
 
     BottomSheetTemplate(
         title = (if (state.isEditing) Res.string.edit_payment else Res.string.add_payment).asString(),
@@ -121,7 +107,6 @@ private fun AddScheduledPaymentContent(
             canSubmit -> AppButtonState.Enabled
             else -> AppButtonState.Disabled
         },
-        modifier = Modifier.padding(bottom = 32.dp)
     ) {
         item {
             CategorySelectionSheet(
@@ -139,7 +124,7 @@ private fun AddScheduledPaymentContent(
                     value = state.title,
                     onValueChange = interactionListener::onTitleChanged,
                     hint = Res.string.enter_title.asString(),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp, top = 4.dp),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
@@ -148,7 +133,10 @@ private fun AddScheduledPaymentContent(
                     onValueChange = interactionListener::onAmountChanged,
                     hint = Res.string.enter_amount.asString(),
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next)
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    )
                 )
 
                 CustomTextField(
@@ -200,21 +188,12 @@ private fun AddScheduledPaymentContent(
         }
 
         item {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp)
-            ) {
-                items(PaymentFrequency.entries) { frequency ->
-                    val text = frequency.toText().asString()
-
-                    SelectableChip(
-                        text = text,
-                        selected = state.frequency == frequency,
-                        onClick = { interactionListener.onFrequencyChanged(frequency) }
-                    )
-                }
-            }
+            SelectableRow(
+                selectedCycle = state.frequency,
+                entries = PaymentFrequency.entries,
+                getName = { it.toText().asString() },
+                onCycleSelected = interactionListener::onFrequencyChanged
+            )
         }
 
         item {
@@ -241,7 +220,10 @@ private fun AddScheduledPaymentContent(
                         onValueChange = interactionListener::onReminderPeriodValueChanged,
                         hint = Res.string.enter_period.asString(),
                         modifier = Modifier.weight(1f),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done)
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        )
                     )
 
                     // Dropdown simulation for Unit
@@ -275,38 +257,6 @@ private fun AddScheduledPaymentContent(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun SelectableChip(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    val animatedColor = animateColorAsState(
-        targetValue = if (selected) Theme.colorScheme.border.active else Theme.colorScheme.button.onSecondary,
-    ).value
-
-    Surface(
-        onClick = onClick,
-        shape = RoundedCornerShape(12.dp),
-        color = Theme.colorScheme.button.secondary,
-        border = BorderStroke(
-            width = 1.dp,
-            color = Theme.colorScheme.button.primary
-        ).takeIf { selected }
-    ) {
-        Box(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = text,
-                style = Theme.typography.label.medium.medium,
-                color = animatedColor
-            )
         }
     }
 }
