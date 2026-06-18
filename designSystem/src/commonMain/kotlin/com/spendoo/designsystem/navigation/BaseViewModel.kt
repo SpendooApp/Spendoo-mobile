@@ -38,6 +38,7 @@ abstract class BaseViewModel<STATE>(
     private val effector: Effector by inject()
     protected val snackBarManager: SnackBarManager by inject()
     private val resultStore: ResultStore by inject()
+    protected val dispatchers: DispatcherProvider by inject()
 
     protected fun navigate(
         route: NavKey,
@@ -94,7 +95,7 @@ abstract class BaseViewModel<STATE>(
         onError: (Throwable) -> Unit,
         onStart: suspend () -> Unit = {},
         onEnd: suspend () -> Unit = {},
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
+        dispatcher: CoroutineDispatcher = dispatchers.io
     ): Job {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable -> onError(throwable) }
         return viewModelScope.launch(dispatcher + exceptionHandler) {
@@ -112,7 +113,7 @@ abstract class BaseViewModel<STATE>(
         onEach: (R) -> Unit,
         onError: (Throwable) -> Unit,
         onEnd: () -> Unit = {},
-        dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        dispatcher: CoroutineDispatcher = dispatchers.io,
         scope: CoroutineScope = viewModelScope
     ): Job {
         val exceptionHandler = CoroutineExceptionHandler { _, exception -> onError(exception) }
