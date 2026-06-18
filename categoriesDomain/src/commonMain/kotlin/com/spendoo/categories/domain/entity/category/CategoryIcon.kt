@@ -17,5 +17,13 @@ enum class CategoryIcon {
     PETS,
     FITNESS,
     UTILITIES,
-    WIFI,
+    WIFI;
+
+    companion object {
+        fun fromStringOrDefault(iconName: String?): CategoryIcon {
+            return iconName?.let {
+                entries.find { it.name == iconName }
+            } ?: DEFAULT
+        }
+    }
 }

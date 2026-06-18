@@ -47,7 +47,8 @@ fun TopBar(
             SpendooIconButton(
                 iconRes = Res.drawable.ic_arrow_left,
                 contentDescription = "Back",
-                onClick = onBackClicked
+                onClick = onBackClicked,
+                modifier = Modifier.padding(end = 8.dp)
             )
         }
 

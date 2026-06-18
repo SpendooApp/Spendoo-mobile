@@ -10,7 +10,12 @@ import org.jetbrains.compose.resources.stringResource
 
 sealed class UiText {
     data class DynamicString(val value: String = "") : UiText()
-    data class StringRes(val resId: StringResource) : UiText()
+    data class StringRes(
+        val resId: StringResource,
+        val formatArgs: List<Any> = emptyList()
+    ) : UiText() {
+        constructor(resId: StringResource, vararg args: Any) : this(resId, args.toList())
+    }
     data class PluralRes(
         val resId: PluralStringResource,
         val quantity: Int,
@@ -28,7 +33,13 @@ sealed class UiText {
 fun UiText?.asString(): String {
     return when (this) {
         is UiText.DynamicString -> value
-        is UiText.StringRes -> stringResource(resId)
+        is UiText.StringRes -> {
+            if (formatArgs.isEmpty()) {
+                stringResource(resId)
+            } else {
+                stringResource(resId, *formatArgs.toTypedArray())
+            }
+        }
         is UiText.PluralRes -> {
             if (formatArgs.isEmpty()) {
                 pluralStringResource(resId, quantity)
@@ -43,7 +54,13 @@ fun UiText?.asString(): String {
 suspend fun UiText?.asStringSuspend(): String {
     return when (this) {
         is UiText.DynamicString -> value
-        is UiText.StringRes -> getString(resId)
+        is UiText.StringRes -> {
+            if (formatArgs.isEmpty()) {
+                getString(resId)
+            } else {
+                getString(resId, *formatArgs.toTypedArray())
+            }
+        }
         is UiText.PluralRes -> {
             if (formatArgs.isEmpty()) {
                 getPluralString(resId, quantity)
