@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -34,6 +33,7 @@ import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonType
+import com.spendoo.designsystem.components.cards.DetailItem
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.text.Text
@@ -42,7 +42,6 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.asString
 import com.spendoo.designsystem.utils.extentions.painter
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -51,11 +50,12 @@ import spendoo.designsystem.generated.resources.delete
 import spendoo.designsystem.generated.resources.due_date
 import spendoo.designsystem.generated.resources.edit
 import spendoo.designsystem.generated.resources.frequency
-import spendoo.designsystem.generated.resources.ic_categories
+import spendoo.designsystem.generated.resources.ic_clock_red
 import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.ic_delete
 import spendoo.designsystem.generated.resources.ic_edit
 import spendoo.designsystem.generated.resources.ic_money
+import spendoo.designsystem.generated.resources.ic_repeat
 import spendoo.designsystem.generated.resources.money_amount
 import spendoo.designsystem.generated.resources.pay
 import spendoo.designsystem.generated.resources.skip
@@ -104,6 +104,7 @@ private fun ScheduledPaymentDetailsContent(
                         iconRes = Res.drawable.ic_edit,
                         contentDescription = stringResource(Res.string.edit),
                         backgroundColor = Theme.colorScheme.button.secondary,
+                        iconSize = 20.dp,
                         tint = Theme.colorScheme.brand.primary,
                         onClick = interactionListener::onEditClicked
                     )
@@ -113,6 +114,7 @@ private fun ScheduledPaymentDetailsContent(
                         iconRes = Res.drawable.ic_delete,
                         contentDescription = stringResource(Res.string.delete),
                         backgroundColor = Theme.colorScheme.button.secondary,
+                        iconSize = 20.dp,
                         tint = Theme.colorScheme.brand.primary,
                         onClick = interactionListener::onDeleteClicked
                     )
@@ -237,10 +239,10 @@ private fun ScheduledPaymentDetailGrid(
                 modifier = Modifier.weight(1f)
             )
             DetailItem(
-                icon = Res.drawable.ic_date,
+                icon = Res.drawable.ic_clock_red,
                 value = timeLeft,
                 label = stringResource(Res.string.time_left),
-                valueColor = if (isDueSoon) Theme.colorScheme.additional.error else Theme.colorScheme.text.title,
+                valueColor = if (isDueSoon) Theme.colorScheme.additional.onError else Theme.colorScheme.text.title,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -249,7 +251,7 @@ private fun ScheduledPaymentDetailGrid(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             DetailItem(
-                icon = Res.drawable.ic_categories,
+                icon = Res.drawable.ic_repeat,
                 value = frequencyText,
                 label = stringResource(Res.string.frequency),
                 modifier = Modifier.weight(1f)
@@ -261,48 +263,6 @@ private fun ScheduledPaymentDetailGrid(
                 modifier = Modifier.weight(1f)
             )
         }
-    }
-}
-
-@Composable
-private fun DetailItem(
-    icon: DrawableResource,
-    value: String,
-    label: String,
-    modifier: Modifier = Modifier,
-    valueColor: Color = Theme.colorScheme.text.title
-) {
-    Column(
-        modifier = modifier
-            .background(Theme.colorScheme.button.secondary, RoundedCornerShape(8.dp))
-            .padding(vertical = 8.dp, horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Icon(
-                painter = icon.painter(),
-                contentDescription = null,
-                modifier = Modifier.size(14.dp),
-                tint = Theme.colorScheme.brand.primary
-            )
-            Text(
-                text = value,
-                style = Theme.typography.label.medium.medium.copy(fontSize = 14.sp),
-                color = valueColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Text(
-            text = label,
-            style = Theme.typography.label.medium.medium.copy(fontSize = 10.sp),
-            color = Theme.colorScheme.text.body,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }
 

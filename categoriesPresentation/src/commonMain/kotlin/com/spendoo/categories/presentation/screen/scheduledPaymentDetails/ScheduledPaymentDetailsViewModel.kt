@@ -1,6 +1,5 @@
 package com.spendoo.categories.presentation.screen.scheduledPaymentDetails
 
-import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.presentation.shared.getToday
 import com.spendoo.designsystem.navigation.BaseViewModel

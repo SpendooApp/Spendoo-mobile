@@ -47,7 +47,7 @@ fun ScheduledPaymentDetailsUiState.toAddScheduledPaymentUiState(): AddScheduledP
     )
 }
 
-fun Long.toTimeLeftText(): UiText {
+fun Long.toTimeLeftText(): UiText { //TODO: make real time lift even if hour
     return when {
         this < 0L -> UiText.StringRes(Res.string.overdue)
         this == 0L -> UiText.StringRes(Res.string.today)
