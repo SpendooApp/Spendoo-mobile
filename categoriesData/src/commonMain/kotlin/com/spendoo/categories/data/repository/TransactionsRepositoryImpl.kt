@@ -24,8 +24,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
+import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
-import kotlinx.coroutines.delay
+import com.spendoo.categories.data.dataSource.remote.dto.transaction.EnrichedAiExtractionResponseDto
 
 class TransactionsRepositoryImpl(
     client: HttpClient,
@@ -118,99 +123,52 @@ class TransactionsRepositoryImpl(
 
 
     override suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry> {
-//        val response = tryToExecute<List<ReadyTransactionEntryDto>> {
-//            submitFormWithBinaryData(
-//                url = TransactionsEndpoints.VOICE_TO_TRANSACTION,
-//                formData = formData {
-//                    append("file", file, Headers.build {
-//                        append(HttpHeaders.ContentDisposition, "filename=\"voice.m4a\"")
-//                    })
-//                }
-//            )
-//        }
-//        return response.map { it.toDomain() }
-
-        //TODO: Implement voice to transaction endpoint and remove mock implementation
-        delay(2000)
-        return listOf(
-            ReadyTransactionEntry(
-                title = "Grocery Shopping",
-                amount = 150.0,
-                categoryId = "1",
-                note = "Bought fruits and vegetables"
-            ),
-            ReadyTransactionEntry(
-                title = "Dinner at Restaurant",
-                amount = 75.0,
-                categoryId = "2",
-                note = "Had dinner with friends"
-            ),
-            ReadyTransactionEntry(
-                title = "Monthly Subscription",
-                amount = 20.0,
-                categoryId = "3",
-                note = "Subscribed to a streaming service"
-            ),
-            ReadyTransactionEntry(
-                title = "Gym Membership",
-                amount = 50.0,
-                categoryId = "4",
-                note = "Monthly gym membership fee"
-            ),
-             ReadyTransactionEntry(
-                title = "Online Course",
-                amount = 100.0,
-                categoryId = "5",
-                note = "Purchased an online course for learning"
-            )
-        )
+        val response = tryToExecute<EnrichedAiExtractionResponseDto> {
+            post(TransactionsEndpoints.VOICE_TO_TRANSACTION) {
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            append(
+                                key = "file",
+                                value = file,
+                                headers = Headers.build {
+                                    append(HttpHeaders.ContentType, ContentType.Application.OctetStream.toString())
+                                    append(
+                                        HttpHeaders.ContentDisposition,
+                                        "filename=\"voice.m4a\""
+                                    )
+                                }
+                            )
+                        }
+                    )
+                )
+            }
+        }
+        return response.items.map { it.toDomain() }
     }
 
     override suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry> {
-//        val response = tryToExecute<List<ReadyTransactionEntryDto>> {
-//            submitFormWithBinaryData(
-//                url = TransactionsEndpoints.IMAGE_TO_TRANSACTION,
-//                formData = formData {
-//                    append("file", file, Headers.build {
-//                        append(HttpHeaders.ContentDisposition, "filename=\"image.jpg\"")
-//                    })
-//                }
-//            )
-//        }
-//        return response.map { it.toDomain() }
-        //TODO: Implement image to transaction endpoint and remove mock implementation
-        delay(2000)
-        return listOf(
-            ReadyTransactionEntry(
-                title = "Grocery Shopping",
-                amount = 150.0,
-                categoryId = "1",
-                note = "Bought fruits and vegetables"
-            ),
-            ReadyTransactionEntry(
-                title = "Dinner at Restaurant",
-                amount = 75.0,
-                categoryId = "2",
-                note = "Had dinner with friends"
-            ),
-            ReadyTransactionEntry(
-                title = "Monthly Subscription",
-                amount = 20.0,
-                categoryId = "3",
-                note = "Subscribed to a streaming service"
-            ),
-            ReadyTransactionEntry(
-                title = "Gym Membership",
-                amount = 50.0,
-                categoryId = "4",
-                note = "Monthly gym membership fee"
-            ),
-            ReadyTransactionEntry(
-                title = "Online Course",
-                amount = 100.0,
-                categoryId = "5",
-                note = "Purchased an online course for learning"
-            )
-        )
+        val response = tryToExecute<EnrichedAiExtractionResponseDto> {
+            post(TransactionsEndpoints.IMAGE_TO_TRANSACTION) {
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            append(
+                                key = "file",
+                                value = file,
+                                headers = Headers.build {
+                                    append(HttpHeaders.ContentType, ContentType.Application.OctetStream.toString())
+                                    append(
+                                        HttpHeaders.ContentDisposition,
+                                        "filename=\"image.jpg\""
+                                    )
+                                }
+                            )
+                        }
+                    )
+                )
+            }
+        }
+        return response.items.map { it.toDomain() }
     }
 }

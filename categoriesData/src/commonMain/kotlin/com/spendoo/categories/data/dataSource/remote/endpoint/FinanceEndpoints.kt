@@ -12,8 +12,7 @@ object TransactionsEndpoints {
     const val EXPENSE = "api/v1/transactions/expense"
     const val SUMMARY = "api/v1/transactions/summary"
     const val RANGE = "api/v1/transactions/range"
-    const val VOICE_TO_TRANSACTION = "api/v1/transactions/voice"
-    const val IMAGE_TO_TRANSACTION = "api/v1/transactions/image"
+    const val VOICE_TO_TRANSACTION = "api/v1/transactions/voice/process"
+    const val IMAGE_TO_TRANSACTION = "api/v1/transactions/ocr/scan"
 }
-
 

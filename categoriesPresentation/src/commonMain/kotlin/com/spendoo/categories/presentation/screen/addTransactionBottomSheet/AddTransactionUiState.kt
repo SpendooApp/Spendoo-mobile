@@ -89,7 +89,6 @@ data class AddTransactionUiState(
     val isSubmitting: Boolean = false,
     val isProcessingMedia: Boolean = false,
     val showCategorySheet: Boolean = false,
-    val categories: List<CategoryItemUiState> = emptyList(),
     val showAudioPicker: Boolean = false,
     val selectedEntryIdForCategory: String? = null,
     val transactionTypeOptions: List<GenSelectableOption<TransactionType>> = listOf(

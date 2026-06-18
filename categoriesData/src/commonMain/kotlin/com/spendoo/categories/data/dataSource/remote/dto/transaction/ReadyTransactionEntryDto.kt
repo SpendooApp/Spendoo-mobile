@@ -1,19 +1,32 @@
 package com.spendoo.categories.data.dataSource.remote.dto.transaction
 
+import com.spendoo.categories.domain.entity.category.CategoryIcon
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ReadyTransactionEntryDto(
-    val title: String,
-    val amount: Double,
-    val categoryId: String? = null,
-    val note: String? = null
+data class EnrichedAiExtractionResponseDto(
+    val items: List<EnrichedAiExtractionItemDto> = emptyList(),
+    val grandTotal: Double? = null,
+    val model: String? = null,
 )
 
-fun ReadyTransactionEntryDto.toDomain() = ReadyTransactionEntry(
-    title = title,
-    amount = amount,
+@Serializable
+data class EnrichedAiExtractionItemDto(
+    val id: Long? = null,
+    val itemName: String? = null,
+    val price: Double? = null,
+    val category: String? = null,
+    val categoryId: String? = null,
+    val categoryName: String? = null,
+    val categoryIcon: CategoryIcon? = null
+)
+
+fun EnrichedAiExtractionItemDto.toDomain() = ReadyTransactionEntry(
+    title = itemName.orEmpty(),
+    amount = price ?: 0.0,
     categoryId = categoryId,
-    note = note
+    note = category,
+    categoryName = categoryName,
+    categoryIcon = categoryIcon
 )

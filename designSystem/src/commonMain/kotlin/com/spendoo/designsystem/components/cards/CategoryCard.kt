@@ -20,11 +20,14 @@ import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
+import com.spendoo.designsystem.utils.extentions.format
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_food
 import spendoo.designsystem.generated.resources.ic_money
+import spendoo.designsystem.generated.resources.from_date_to_date
 
 data class BudgetDataUiState(
     val startDate: LocalDate,
@@ -55,7 +58,7 @@ fun CategoryCard(
             null -> NoBudgetContent(current)
             else -> {
                 Text(
-                    "From ${budgetData.startDate.day} ${budgetData.startDate.month.name} ${budgetData.startDate.year} to ${budgetData.endDate.day} ${budgetData.endDate.month.name} ${budgetData.endDate.year}", //TODO: translate
+                    text = stringResource(Res.string.from_date_to_date, budgetData.startDate.format(), budgetData.endDate.format()),
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = Theme.typography.label.medium.small,
                     color = Theme.colorScheme.text.titleSmall,

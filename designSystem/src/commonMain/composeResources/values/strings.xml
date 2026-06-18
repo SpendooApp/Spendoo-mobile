@@ -190,4 +190,7 @@
     <string name="reminder_days_limit">Reminder period must be less than 30 days</string>
     <string name="reminder_weeks_limit">Reminder period must be less than 4 weeks</string>
     <string name="reminder_months_limit">Reminder period must be less than 12 months</string>
+    <string name="target_with_date">Target: %1$s</string>
+    <string name="from_date_to_date">From %1$s to %2$s</string>
+    <string name="x_days">%1$s days</string>
 </resources>

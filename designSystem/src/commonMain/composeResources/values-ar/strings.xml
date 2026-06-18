@@ -164,4 +164,7 @@
     <string name="reminder_days_limit">يجب أن تكون فترة التذكير أقل من 30 يومًا</string>
     <string name="reminder_weeks_limit">يجب أن تكون فترة التذكير أقل من 4 أسابيع</string>
     <string name="reminder_months_limit">يجب أن تكون فترة التذكير أقل من 12 شهرًا</string>
+    <string name="target_with_date">الهدف: %1$s</string>
+    <string name="from_date_to_date">من %1$s إلى %2$s</string>
+    <string name="x_days">%1$s يوم</string>
 </resources>

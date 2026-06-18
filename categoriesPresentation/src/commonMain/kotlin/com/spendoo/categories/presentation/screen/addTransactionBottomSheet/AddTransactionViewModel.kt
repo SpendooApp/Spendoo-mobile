@@ -151,18 +151,17 @@ class AddTransactionViewModel(
 
     private fun processInput(call: suspend () -> List<ReadyTransactionEntry>) {
         updateState { it.copy(isProcessingMedia = true) }
-        loadCategories()
         tryToCall(
             block = { call() },
             onSuccess = { readyEntries ->
                 val uiEntries = readyEntries.map { ready ->
-                    val category = state.value.categories.find { it.id == ready.categoryId }
                     TransactionEntryUiState(
                         title = ready.title,
                         amount = ready.amount,
                         categoryId = ready.categoryId,
-                        categoryName = category?.name,
-                        categoryIcon = category?.icon
+                        categoryName = ready.categoryName,
+                        categoryIcon = ready.categoryIcon,
+                        note = ready.note.orEmpty()
                     )
                 }
                 updateState {
@@ -316,21 +315,6 @@ class AddTransactionViewModel(
     fun onSuccess() {
         resetForm()
         popBackStack("reset" to true)
-    }
-
-    private fun loadCategories() {
-        //TODO pagination or get the ReadyTransactionEntry with category details in one call
-        viewModelScope.launch {
-            runCatching {
-                categoriesRepository.getCategories(PageQuery(page = 0, size = 100)).data
-            }.onSuccess { categories ->
-                updateState {
-                    it.copy(
-                        categories = categories.map { category -> category.toCategoryItemUiState() },
-                    )
-                }
-            }
-        }
     }
 
     private fun resetForm() {

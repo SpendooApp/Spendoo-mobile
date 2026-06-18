@@ -19,8 +19,11 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.stringResource
+import com.spendoo.designsystem.utils.extentions.format
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_food
+import spendoo.designsystem.generated.resources.target_with_date
 
 data class GoalDataUiState(
     val targetDate: LocalDate,
@@ -54,7 +57,7 @@ fun GoalCard(
         ) {
             PriorityCard(budgetData.priority)
             Text(
-                "Target: ${budgetData.targetDate.day} ${budgetData.targetDate.month.name} ${budgetData.targetDate.year}", //TODO: translate
+                text = stringResource(Res.string.target_with_date, budgetData.targetDate.format()),
                 style = Theme.typography.label.medium.small,
                 color = Theme.colorScheme.brand.secondaryVariant,
             )

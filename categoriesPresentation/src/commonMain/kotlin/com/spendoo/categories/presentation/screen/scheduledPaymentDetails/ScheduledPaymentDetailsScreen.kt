@@ -60,6 +60,7 @@ import spendoo.designsystem.generated.resources.money_amount
 import spendoo.designsystem.generated.resources.pay
 import spendoo.designsystem.generated.resources.skip
 import spendoo.designsystem.generated.resources.time_left
+import spendoo.designsystem.generated.resources.x_days
 
 @Composable
 fun ScheduledPaymentDetailsScreen(
@@ -172,7 +173,7 @@ private fun ScheduledPaymentDetailsContent(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     val frequencyText = if (state.frequency == PaymentFrequency.CUSTOM) {
-                        "${state.customFrequencyDays} days" //TODO: Localize
+                        stringResource(Res.string.x_days, state.customFrequencyDays?.toString().orEmpty())
                     } else {
                         stringResource(state.frequency.toText())
                     }
