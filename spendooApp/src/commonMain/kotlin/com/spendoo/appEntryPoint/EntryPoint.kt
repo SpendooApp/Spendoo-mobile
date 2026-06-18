@@ -17,7 +17,7 @@ import com.spendoo.designsystem.components.snackbar.AnimatedSnackBar
 import com.spendoo.designsystem.navigation.effector.Effect
 import com.spendoo.designsystem.navigation.effector.EffectHandler
 import com.spendoo.designsystem.navigation.effector.Effector
-import com.spendoo.home.api.ChatBotRoute
+import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.identity.api.LoginRoute
 import com.spendoo.identity.api.OnBoardingRoute
@@ -66,7 +66,7 @@ fun EntryPoint(
     val showBottomNavigation = currentRoute is HomeRoute
             || currentRoute is CategoriesRoute
             || currentRoute is StatisticsRoute
-            || currentRoute is ChatBotRoute
+            || currentRoute is ChatbotRoute
             || currentRoute is AddTransactionRoute
 
     val activeFeature = backStack.firstOrNull()

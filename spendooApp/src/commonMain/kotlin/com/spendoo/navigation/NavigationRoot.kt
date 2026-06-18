@@ -19,7 +19,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.categories.api.CategoriesRoute
 import com.spendoo.goals.api.GoalsFeatureApi
-import com.spendoo.home.api.ChatBotRoute
+import com.spendoo.chatbot.api.ChatbotFeatureApi
+import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.home.api.HomeFeatureApi
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.identity.api.IdentityFeatureApi
@@ -35,6 +36,7 @@ fun NavigationRoot(
     categoriesApi: CategoriesFeatureApi = koinInject(),
     statisticsFeatureApi: StatisticsFeatureApi = koinInject(),
     goalsFeatureApi: GoalsFeatureApi = koinInject(),
+    chatbotFeatureApi: ChatbotFeatureApi = koinInject(),
 ) {
     NavDisplay(
         modifier = Modifier
@@ -74,7 +76,8 @@ fun NavigationRoot(
                     homeFeatureApi() +
                     categoriesApi() +
                     statisticsFeatureApi() +
-                    goalsFeatureApi()
+                    goalsFeatureApi() +
+                    chatbotFeatureApi()
         },
     )
 }
@@ -95,7 +98,7 @@ private fun getNavigationIndex(route: Any?): Int {
         routeStr.contains(HomeRoute::class.simpleName.orEmpty()) -> 0
         routeStr.contains(CategoriesRoute::class.simpleName.orEmpty()) -> 1
         routeStr.contains(StatisticsRoute::class.simpleName.orEmpty()) -> 2
-        routeStr.contains(ChatBotRoute::class.simpleName.orEmpty()) -> 3
+        routeStr.contains(ChatbotRoute::class.simpleName.orEmpty()) -> 3
         else -> -1
     }
 }

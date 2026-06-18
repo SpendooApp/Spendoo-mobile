@@ -1,7 +1,7 @@
-package com.spendoo.home.api
+package com.spendoo.chatbot.api
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object HomeRoute : NavKey
+data object ChatbotRoute : NavKey

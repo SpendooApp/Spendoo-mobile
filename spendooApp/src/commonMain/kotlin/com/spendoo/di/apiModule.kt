@@ -13,6 +13,8 @@ import com.spendoo.home.presentation.api.HomeFeatureApiImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import com.spendoo.chatbot.api.ChatbotFeatureApi
+import com.spendoo.chatbot.presentation.api.ChatbotFeatureApiImpl
 
 val apiModule = module {
     singleOf(::IdentityFeatureApiImpl) bind IdentityFeatureApi::class
@@ -20,4 +22,5 @@ val apiModule = module {
     singleOf(::CategoriesFeatureApiImpl) bind CategoriesFeatureApi::class
     singleOf(::StatisticsFeatureApiImpl) bind StatisticsFeatureApi::class
     singleOf(::GoalsFeatureApiImpl) bind GoalsFeatureApi::class
+    singleOf(::ChatbotFeatureApiImpl) bind ChatbotFeatureApi::class
 }

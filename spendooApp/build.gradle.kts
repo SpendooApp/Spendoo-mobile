@@ -32,6 +32,8 @@ kotlin {
             implementation(projects.statisticsPresentation)
             implementation(projects.goalsApi)
             implementation(projects.goalsPresentation)
+            implementation(projects.chatbotApi)
+            implementation(projects.chatbotPresentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
