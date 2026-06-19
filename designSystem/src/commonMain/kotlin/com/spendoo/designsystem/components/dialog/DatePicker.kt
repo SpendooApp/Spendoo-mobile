@@ -63,7 +63,7 @@ fun DatePicker(
                 onDismissRequest = onDismiss,
                 confirmButton = {
                     TextButton(
-                        colors = ButtonDefaults.textButtonColors(contentColor = brandColor),
+                        colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
                         onClick = {
                             val selectedDateMillis = datePickerState.selectedDateMillis
                             if (selectedDateMillis != null) {
@@ -76,7 +76,7 @@ fun DatePicker(
                 },
                 dismissButton = {
                     TextButton(
-                        colors = ButtonDefaults.textButtonColors(contentColor = brandColor),
+                        colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
                         onClick = onDismiss
                     ) { Text(dismissText) }
                 },

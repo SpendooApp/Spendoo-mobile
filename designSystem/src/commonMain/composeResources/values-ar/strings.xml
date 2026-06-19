@@ -193,4 +193,22 @@
     <string name="title_too_long">العنوان طويل جدًا</string>
     <string name="title_too_short">العنوان قصير جدًا</string>
     <string name="write_a_note_optional">اكتب ملاحظة (اختياري)</string>
+    <string name="history">السجل</string>
+    <string name="add_new_goal">إضافة هدف جديد</string>
+    <string name="edit_goal">تعديل الهدف</string>
+    <string name="enter_goal_name">أدخل اسم الهدف</string>
+    <string name="enter_your_target_amount">أدخل المبلغ المستهدف الخاص بك</string>
+    <string name="enter_your_target_date">أدخل تاريخ المستهدف الخاص بك</string>
+    <string name="goal_actions">إجراءات الهدف</string>
+    <string name="error_creating_goal">خطأ في إنشاء الهدف</string>
+    <string name="error_updating_goal">خطأ في تحديث الهدف</string>
+    <string name="error_deleting_goal">خطأ في حذف الهدف</string>
+    <string name="error_adding_amount_to_goal">خطأ في إضافة مبلغ للهدف</string>
+    <string name="unassigned_savings">المدخرات غير المخصصة</string>
+    <string name="total_saved">إجمالي المدخرات</string>
+    <string name="total_target">إجمالي المستهدف</string>
+    <string name="add_goal">إضافة هدف</string>
+    <string name="save_goal">حفظ الهدف</string>
+    <string name="confirm">تأكيد</string>
+    <string name="add_to_goal_title">إضافة إلى %1$s</string>
 </resources>

@@ -41,7 +41,7 @@ fun DetailItem(
                 painter = icon.painter(),
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = Theme.colorScheme.brand.primary
+                tint = Theme.colorScheme.icon.primary
             )
             Text(
                 text = value,

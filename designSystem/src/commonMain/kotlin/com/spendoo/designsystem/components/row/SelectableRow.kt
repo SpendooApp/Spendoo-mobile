@@ -1,4 +1,4 @@
-package com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components
+package com.spendoo.designsystem.components.row
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke

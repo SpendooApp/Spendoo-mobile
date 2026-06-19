@@ -193,4 +193,22 @@
     <string name="target_with_date">Target: %1$s</string>
     <string name="from_date_to_date">From %1$s to %2$s</string>
     <string name="x_days">%1$s days</string>
+    <string name="history">History</string>
+    <string name="add_new_goal">Add New Goal</string>
+    <string name="edit_goal">Edit Goal</string>
+    <string name="enter_goal_name">Enter Goal Name</string>
+    <string name="enter_your_target_amount">Enter Your Target Amount</string>
+    <string name="enter_your_target_date">Enter Your Target Date</string>
+    <string name="goal_actions">Goal Actions</string>
+    <string name="error_creating_goal">Error creating goal</string>
+    <string name="error_updating_goal">Error updating goal</string>
+    <string name="error_deleting_goal">Error deleting goal</string>
+    <string name="error_adding_amount_to_goal">Error adding amount to goal</string>
+    <string name="unassigned_savings">Unassigned amount</string>
+    <string name="total_saved">Total Saved</string>
+    <string name="total_target">Total Target</string>
+    <string name="add_goal">Add Goal</string>
+    <string name="save_goal">Save Goal</string>
+    <string name="confirm">Confirm</string>
+    <string name="add_to_goal_title">Add to %1$s</string>
 </resources>

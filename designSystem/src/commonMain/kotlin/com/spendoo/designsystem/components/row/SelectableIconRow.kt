@@ -1,4 +1,4 @@
-package com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components
+package com.spendoo.designsystem.components.row
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -13,25 +13,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.spendoo.categories.domain.entity.category.CategoryIcon
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.surface.Surface
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
+import kotlin.enums.EnumEntries
 
 @Composable
-fun SelectableIconRow(
-    selectedIcon: CategoryIcon,
-    onIconSelected: (CategoryIcon) -> Unit) {
+fun <T : Enum<T>> SelectableIconRow(
+    selectedIcon: T,
+    onIconSelected: (T) -> Unit,
+    entries: EnumEntries<T>,
+    toDrawableResource: T.() -> DrawableResource
+) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
-        items(CategoryIcon.entries){ icon ->
+        items(entries) { icon ->
             IconChip(
                 icon = icon.toDrawableResource(),
                 selected = selectedIcon == icon,

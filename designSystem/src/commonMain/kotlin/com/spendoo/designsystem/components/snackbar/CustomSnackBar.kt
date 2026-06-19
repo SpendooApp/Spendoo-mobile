@@ -40,6 +40,7 @@ import kotlinx.coroutines.delay
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_error
 import spendoo.designsystem.generated.resources.ic_success
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun CustomSnackBar(
@@ -115,7 +116,7 @@ fun AnimatedSnackBar(
         ) + fadeOut(animationSpec = tween(durationMillis = 120)),
     ) {
         LaunchedEffect(data) {
-            delay(data.duration ?: 1500L)
+            delay((data.duration ?: 1500L).milliseconds)
             onDismiss()
         }
         BasicAlertDialog(
