@@ -5,10 +5,11 @@ import com.spendoo.offers.domain.repository.OffersRepository
 import com.spendoo.offers.domain.utils.PageQuery
 import com.spendoo.offers.domain.utils.PagedData
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 class OffersRepositoryImpl : OffersRepository {
     override suspend fun getOffers(query: PageQuery): PagedData<Offer> {
-        delay(2000)
+        delay(2000.milliseconds)
         return PagedData(
             data = listOf(
                 Offer(
