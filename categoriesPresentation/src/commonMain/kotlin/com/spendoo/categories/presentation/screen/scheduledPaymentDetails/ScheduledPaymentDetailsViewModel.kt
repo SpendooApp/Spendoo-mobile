@@ -1,7 +1,7 @@
 package com.spendoo.categories.presentation.screen.scheduledPaymentDetails
 
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
-import com.spendoo.categories.presentation.shared.getToday
+import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.extentions.format

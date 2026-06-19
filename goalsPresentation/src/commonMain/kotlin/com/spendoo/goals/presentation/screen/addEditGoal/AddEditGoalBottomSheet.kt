@@ -13,10 +13,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.goals.domain.entity.GoalIcon
 import com.spendoo.goals.domain.entity.PriorityOption
-import com.spendoo.goals.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.goals.presentation.shared.toCleanString
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toCleanString
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
 import com.spendoo.designsystem.components.general.AppSegmentedControl
@@ -32,6 +31,7 @@ import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.goals.presentation.screen.goals.components.toDrawableResource
+import com.spendoo.shared.domain.entity.CategoryIcon
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.cancel
@@ -198,7 +198,7 @@ private fun AddEditGoalContent(
             SelectableIconRow(
                 selectedIcon = addEditGoalUiState.icon,
                 onIconSelected = interactionListener::onIconChanged,
-                entries = GoalIcon.entries,
+                entries = CategoryIcon.entries,
                 toDrawableResource = { this.toDrawableResource() }
             )
         }

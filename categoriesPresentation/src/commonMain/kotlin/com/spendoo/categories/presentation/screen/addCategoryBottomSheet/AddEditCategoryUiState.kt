@@ -2,7 +2,7 @@ package com.spendoo.categories.presentation.screen.addCategoryBottomSheet
 
 import androidx.compose.runtime.Composable
 import com.spendoo.categories.domain.entity.category.Category
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.CreateBudget
 import com.spendoo.categories.domain.entity.category.CreateCategory
 import com.spendoo.categories.domain.entity.category.LeftOverOption
@@ -10,7 +10,7 @@ import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.domain.entity.category.UpdateCategory
 import com.spendoo.categories.domain.entity.category.toInt
-import com.spendoo.categories.presentation.shared.getToday
+import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.components.general.GenSelectableOption
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource

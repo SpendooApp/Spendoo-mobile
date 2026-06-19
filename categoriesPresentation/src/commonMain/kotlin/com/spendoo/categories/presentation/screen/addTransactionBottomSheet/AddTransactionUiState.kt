@@ -2,8 +2,8 @@ package com.spendoo.categories.presentation.screen.addTransactionBottomSheet
 
 import androidx.compose.runtime.Composable
 import com.spendoo.categories.domain.entity.category.Category
-import com.spendoo.categories.domain.entity.category.CategoryIcon
-import com.spendoo.categories.presentation.shared.getToday
+import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.components.general.GenSelectableOption
 import com.spendoo.designsystem.utils.extentions.asString
 import kotlinx.datetime.LocalDate

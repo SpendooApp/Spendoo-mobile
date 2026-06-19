@@ -1,6 +1,6 @@
 package com.spendoo.goals.presentation.screen.goals.components
 
-import com.spendoo.goals.domain.entity.GoalIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_car
@@ -21,24 +21,24 @@ import spendoo.designsystem.generated.resources.ic_transportation
 import spendoo.designsystem.generated.resources.ic_travel
 import spendoo.designsystem.generated.resources.ic_wifi
 
-fun GoalIcon.toDrawableResource(): DrawableResource {
+fun CategoryIcon.toDrawableResource(): DrawableResource {
     return when (this) {
-        GoalIcon.DEFAULT -> Res.drawable.ic_categories
-        GoalIcon.FOOD -> Res.drawable.ic_food
-        GoalIcon.TRANSPORT -> Res.drawable.ic_travel
-        GoalIcon.ENTERTAINMENT -> Res.drawable.ic_cinema
-        GoalIcon.HEALTHCARE -> Res.drawable.ic_health
-        GoalIcon.EDUCATION -> Res.drawable.ic_stats
-        GoalIcon.SHOPPING -> Res.drawable.ic_shopping
-        GoalIcon.TRAVEL -> Res.drawable.ic_transportation
-        GoalIcon.CAR -> Res.drawable.ic_car
-        GoalIcon.MOBILE -> Res.drawable.ic_mobile
-        GoalIcon.FINANCE -> Res.drawable.ic_loan
-        GoalIcon.COFFEE -> Res.drawable.ic_drink
-        GoalIcon.GIFTS -> Res.drawable.ic_gift
-        GoalIcon.PETS -> Res.drawable.ic_pet
-        GoalIcon.FITNESS -> Res.drawable.ic_gym
-        GoalIcon.UTILITIES -> Res.drawable.ic_thunder
-        GoalIcon.WIFI -> Res.drawable.ic_wifi
+        CategoryIcon.DEFAULT -> Res.drawable.ic_categories
+        CategoryIcon.FOOD -> Res.drawable.ic_food
+        CategoryIcon.TRANSPORT -> Res.drawable.ic_travel
+        CategoryIcon.ENTERTAINMENT -> Res.drawable.ic_cinema
+        CategoryIcon.HEALTHCARE -> Res.drawable.ic_health
+        CategoryIcon.EDUCATION -> Res.drawable.ic_stats
+        CategoryIcon.SHOPPING -> Res.drawable.ic_shopping
+        CategoryIcon.TRAVEL -> Res.drawable.ic_transportation
+        CategoryIcon.CAR -> Res.drawable.ic_car
+        CategoryIcon.MOBILE -> Res.drawable.ic_mobile
+        CategoryIcon.FINANCE -> Res.drawable.ic_loan
+        CategoryIcon.COFFEE -> Res.drawable.ic_drink
+        CategoryIcon.GIFTS -> Res.drawable.ic_gift
+        CategoryIcon.PETS -> Res.drawable.ic_pet
+        CategoryIcon.FITNESS -> Res.drawable.ic_gym
+        CategoryIcon.UTILITIES -> Res.drawable.ic_thunder
+        CategoryIcon.WIFI -> Res.drawable.ic_wifi
     }
 }

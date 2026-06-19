@@ -21,13 +21,13 @@ import androidx.compose.ui.unit.dp
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionInteractionListener
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionUiState
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.TransactionType
-import com.spendoo.categories.presentation.shared.toCleanString
 import com.spendoo.designsystem.components.checkbox.Checkbox
 import com.spendoo.designsystem.components.checkbox.CheckboxColors
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.shared.domain.utils.toCleanString
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_to_saving

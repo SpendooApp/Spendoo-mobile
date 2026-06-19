@@ -1,4 +1,4 @@
-package com.spendoo.categories.presentation.shared
+package com.spendoo.shared.domain.utils
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault

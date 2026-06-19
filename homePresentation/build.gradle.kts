@@ -29,6 +29,7 @@ kotlin {
                 implementation(projects.identityDomain)
                 implementation(projects.goalsDomain)
                 implementation(projects.goalsApi)
+                implementation(projects.sharedDomain)
             }
         }
         androidMain {

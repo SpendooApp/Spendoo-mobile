@@ -1,6 +1,6 @@
 package com.spendoo.categories.data.dataSource.remote.dto.transaction
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import kotlinx.serialization.Serializable
 

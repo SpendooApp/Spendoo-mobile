@@ -1,4 +1,4 @@
-package com.spendoo.categories.domain.utils
+package com.spendoo.shared.domain.utils
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.atTime

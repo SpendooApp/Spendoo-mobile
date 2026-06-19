@@ -1,10 +1,10 @@
 package com.spendoo.categories.data.dataSource.remote.dto.scheduledPayment
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
-import com.spendoo.categories.data.mapper.toLocalDateTimeOrDefault
+import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.Serializable
 
 import kotlinx.datetime.TimeZone

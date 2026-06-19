@@ -16,16 +16,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.LiftoverFundsActionSheet
 import com.spendoo.designsystem.components.row.SelectableIconRow
 import com.spendoo.designsystem.components.row.SelectableRow
-import com.spendoo.categories.presentation.shared.getToday
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.categories.presentation.shared.toCleanString
+import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
 import com.spendoo.designsystem.components.general.AppSegmentedControl
@@ -41,6 +39,8 @@ import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
 import kotlinx.datetime.LocalDate
 import androidx.compose.ui.tooling.preview.Preview
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toCleanString
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_category

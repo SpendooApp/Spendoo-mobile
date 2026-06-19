@@ -1,9 +1,9 @@
 package com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
-import com.spendoo.categories.presentation.shared.getToday
+import com.spendoo.shared.domain.utils.getToday
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.daily

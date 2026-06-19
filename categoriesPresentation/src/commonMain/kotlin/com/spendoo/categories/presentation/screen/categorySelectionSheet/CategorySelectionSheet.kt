@@ -16,14 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEditCategoryBottomSheet
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.CategoryItemUiState
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.CategoryItem
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.CategoryItemShimmer
 import com.spendoo.designsystem.utils.pagination.PaginationTrigger
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
-import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate

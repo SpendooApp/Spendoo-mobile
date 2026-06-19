@@ -7,12 +7,12 @@ import com.spendoo.categories.domain.entity.transaction.ExpenseEntry
 import com.spendoo.categories.domain.entity.transaction.IncomeEntry
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import com.spendoo.categories.domain.repository.TransactionsRepository
-import com.spendoo.categories.domain.utils.toLocalDateTime
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toLocalDateTime
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.goals.domain.repository.GoalsRepository
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.readBytes
 import kotlinx.coroutines.launch

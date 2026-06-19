@@ -1,6 +1,6 @@
 package com.spendoo.categories.domain.entity.scheduledPayment
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import kotlinx.datetime.LocalDate
 
 data class ScheduledPayment(

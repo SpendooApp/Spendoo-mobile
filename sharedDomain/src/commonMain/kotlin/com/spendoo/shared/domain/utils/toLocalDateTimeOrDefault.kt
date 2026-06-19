@@ -1,8 +1,8 @@
-package com.spendoo.goals.data.mapper
+package com.spendoo.shared.domain.utils
 
 import kotlinx.datetime.LocalDateTime
 
-fun String.toLocalDateTimeOrDefault(): LocalDateTime { //TODO: move to shared domain
+fun String.toLocalDateTimeOrDefault(): LocalDateTime {
     return runCatching {
         LocalDateTime.parse(this)
     }.getOrElse {

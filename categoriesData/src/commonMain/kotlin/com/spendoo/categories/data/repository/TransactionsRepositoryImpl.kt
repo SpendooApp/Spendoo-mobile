@@ -15,9 +15,9 @@ import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.UpdateTransaction
 import com.spendoo.categories.domain.repository.TransactionsRepository
-import com.spendoo.categories.domain.utils.PageQuery
-import com.spendoo.categories.domain.utils.PagedData
-import com.spendoo.categories.domain.utils.orEmpty
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
+import com.spendoo.shared.domain.utils.orEmpty
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

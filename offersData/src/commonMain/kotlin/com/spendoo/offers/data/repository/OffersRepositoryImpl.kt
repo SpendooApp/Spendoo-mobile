@@ -2,8 +2,8 @@ package com.spendoo.offers.data.repository
 
 import com.spendoo.offers.domain.entity.Offer
 import com.spendoo.offers.domain.repository.OffersRepository
-import com.spendoo.offers.domain.utils.PageQuery
-import com.spendoo.offers.domain.utils.PagedData
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 

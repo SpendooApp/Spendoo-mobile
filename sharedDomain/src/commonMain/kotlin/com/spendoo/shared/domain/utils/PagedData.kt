@@ -1,4 +1,4 @@
-package com.spendoo.offers.domain.utils
+package com.spendoo.shared.domain.utils
 
 data class PagedData<T>(
     val data: List<T>,

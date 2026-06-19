@@ -1,6 +1,6 @@
 package com.spendoo.goals.data.dataSource.remote.dto
 
-import com.spendoo.goals.domain.utils.PagedData
+import com.spendoo.shared.domain.utils.PagedData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

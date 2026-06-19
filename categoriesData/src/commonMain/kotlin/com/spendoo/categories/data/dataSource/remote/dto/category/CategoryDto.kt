@@ -1,6 +1,6 @@
 package com.spendoo.categories.data.dataSource.remote.dto.category
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.categories.domain.entity.category.toPriorityOption

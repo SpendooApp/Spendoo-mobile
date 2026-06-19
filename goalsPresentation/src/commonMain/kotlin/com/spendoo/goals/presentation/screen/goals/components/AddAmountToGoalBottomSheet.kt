@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.spendoo.goals.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.goals.presentation.shared.toCleanString
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toCleanString
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate

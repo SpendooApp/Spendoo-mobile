@@ -1,8 +1,8 @@
 package com.spendoo.goals.data.dataSource.remote.dto
 
-import com.spendoo.goals.data.mapper.toLocalDateTimeOrDefault
 import com.spendoo.goals.domain.entity.Goal
-import com.spendoo.goals.domain.entity.GoalIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -33,7 +33,7 @@ fun GoalResponseDto.toDomain(): Goal {
         id = goalId,
         name = goalName,
         priority = priority,
-        icon = GoalIcon.fromStringOrDefault(goalIcon),
+        icon = CategoryIcon.fromStringOrDefault(goalIcon),
         deadline = deadline.toLocalDateTimeOrDefault(),
         currentAmount = currentAmount,
         targetAmount = targetAmount,

@@ -1,6 +1,6 @@
-package com.spendoo.goals.presentation.shared
+package com.spendoo.shared.domain.utils
 
-fun String.toCleanDoubleOrNull(): Double? { //TODO: move to shared domain
+fun String.toCleanDoubleOrNull(): Double? {
     val trimmed = this.trim()
     if (trimmed.isEmpty()) return null
 

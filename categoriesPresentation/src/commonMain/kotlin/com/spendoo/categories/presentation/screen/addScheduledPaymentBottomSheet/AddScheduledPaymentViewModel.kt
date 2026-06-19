@@ -6,9 +6,9 @@ import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
 import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.CategoryItemUiState
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred

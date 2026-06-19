@@ -4,8 +4,7 @@ import com.spendoo.categories.domain.entity.scheduledPayment.CreateScheduledPaym
 import kotlinx.serialization.Serializable
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
-import com.spendoo.categories.domain.utils.toLocalDateTime
-import kotlinx.datetime.atTime
+import com.spendoo.shared.domain.utils.toLocalDateTime
 
 @Serializable
 data class CreateScheduledPaymentDto(

@@ -3,8 +3,8 @@ package com.spendoo.categories.domain.repository
 import com.spendoo.categories.domain.entity.scheduledPayment.CreateScheduledPayment
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPaymentsSummary
-import com.spendoo.categories.domain.utils.PageQuery
-import com.spendoo.categories.domain.utils.PagedData
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
 
 interface ScheduledPaymentsRepository {
     suspend fun getScheduledPayments(pageQuery: PageQuery): PagedData<ScheduledPayment>

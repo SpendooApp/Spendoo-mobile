@@ -11,6 +11,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(libs.kotlinx.datetime)
+                api(projects.sharedDomain)
             }
         }
     }

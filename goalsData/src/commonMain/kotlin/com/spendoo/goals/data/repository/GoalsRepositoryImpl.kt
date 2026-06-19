@@ -5,10 +5,10 @@ import com.spendoo.goals.data.endpoint.GoalsEndpoints
 import com.spendoo.goals.data.shared.BaseGateway
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.goals.domain.entity.GoalsSummary
-import com.spendoo.goals.domain.entity.GoalIcon
 import com.spendoo.goals.domain.repository.GoalsRepository
-import com.spendoo.goals.domain.utils.PageQuery
-import com.spendoo.goals.domain.utils.PagedData
+import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
 import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.http.appendPathSegments
@@ -37,7 +37,7 @@ class GoalsRepositoryImpl(
         }.toDomain()
     }
 
-    override suspend fun createGoal(name: String, targetAmount: Double, deadline: LocalDateTime, icon: GoalIcon, priority: Int) {
+    override suspend fun createGoal(name: String, targetAmount: Double, deadline: LocalDateTime, icon: CategoryIcon, priority: Int) {
         tryToExecute<Unit> {
             post(GoalsEndpoints.GOALS) {
                 setBody(GoalCreateRequestDto(name, targetAmount, deadline.toString(), icon.name, priority))
@@ -45,7 +45,7 @@ class GoalsRepositoryImpl(
         }
     }
 
-    override suspend fun updateGoal(goalId: String, name: String, targetAmount: Double, deadline: LocalDateTime, icon: GoalIcon, priority: Int) {
+    override suspend fun updateGoal(goalId: String, name: String, targetAmount: Double, deadline: LocalDateTime, icon: CategoryIcon, priority: Int) {
         tryToExecute<Unit> {
             patch(GoalsEndpoints.GOALS) {
                 url { appendPathSegments(goalId) }

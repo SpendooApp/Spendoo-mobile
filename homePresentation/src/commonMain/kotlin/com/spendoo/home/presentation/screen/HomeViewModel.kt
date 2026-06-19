@@ -15,9 +15,7 @@ import spendoo.designsystem.generated.resources.error_loading_goals
 import spendoo.designsystem.generated.resources.error_loading_offers
 import spendoo.designsystem.generated.resources.error_loading_top_spending
 import spendoo.designsystem.generated.resources.error_loading_user_data
-import com.spendoo.categories.domain.utils.PageQuery as CategoriesPageQuery
-import com.spendoo.goals.domain.utils.PageQuery as GoalsPageQuery // TODO: add comon domain classes in shared domain module
-import com.spendoo.offers.domain.utils.PageQuery as OffersPageQuery
+import com.spendoo.shared.domain.utils.PageQuery
 
 class HomeViewModel(
     private val offersRepository: OffersRepository,
@@ -122,7 +120,7 @@ class HomeViewModel(
 
     private fun loadOffers() {
         tryToCall(
-            block = { offersRepository.getOffers(OffersPageQuery(0, 20)) },
+            block = { offersRepository.getOffers(PageQuery(0, 20)) },
             onStart = { updateState { copy(isOffersLoading = true) } },
             onSuccess = { offers ->
                 updateState { copy(offers = offers.data.map { it.toUiState() }) }
@@ -142,7 +140,7 @@ class HomeViewModel(
 
     private fun loadGoals() {
         tryToCall(
-            block = { goalsRepository.getGoals(GoalsPageQuery(0, 20)) },
+            block = { goalsRepository.getGoals(PageQuery(0, 20)) },
             onStart = { updateState { copy(isGoalsLoading = true) } },
             onSuccess = { goals ->
                 updateState { copy(goals = goals.data.map { it.toUiState() }) }
@@ -164,7 +162,7 @@ class HomeViewModel(
         tryToCall(
             block = {
                 categoriesRepository.getTopSpending(
-                    CategoriesPageQuery(page = 0, size = 5)
+                    PageQuery(page = 0, size = 5)
                 )
             },
             onStart = { updateState { copy(isTopSpendingLoading = true) } },

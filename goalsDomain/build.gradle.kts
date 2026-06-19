@@ -12,6 +12,7 @@ kotlin {
             dependencies {
                 api(libs.kotlinx.datetime)
                 api(projects.categoriesDomain)
+                api(projects.sharedDomain)
             }
         }
     }

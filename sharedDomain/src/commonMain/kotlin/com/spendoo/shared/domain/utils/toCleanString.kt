@@ -1,17 +1,13 @@
-package com.spendoo.categories.presentation.shared
+package com.spendoo.shared.domain.utils
 
 fun Double?.toCleanString(): String {
-    // If the Double is null, return an empty string
     if (this == null) return ""
     
-    // If it's a whole number, cast to Long to instantly remove ".0"
     if (this % 1.0 == 0.0) {
         return this.toLong().toString()
     }
     
     val str = this.toString()
-    
-    // Handle scientific notation (e.g., 1.23E-4 or 1.23E4) if present
     if (str.contains('E', ignoreCase = true)) {
         return handleScientificNotation(str)
     }
@@ -19,7 +15,6 @@ fun Double?.toCleanString(): String {
     return str
 }
 
-// Helper to expand scientific notation cleanly across platforms
 private fun handleScientificNotation(str: String): String {
     val parts = str.split(Regex("[eE]"))
     val coefficient = parts[0]

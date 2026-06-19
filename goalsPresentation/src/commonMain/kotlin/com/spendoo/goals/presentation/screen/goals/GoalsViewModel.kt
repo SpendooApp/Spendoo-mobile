@@ -4,12 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.goals.domain.entity.Goal
-import com.spendoo.goals.domain.entity.PriorityOption
 import com.spendoo.goals.domain.repository.GoalsRepository
-import com.spendoo.goals.domain.utils.PageQuery
 import com.spendoo.goals.presentation.screen.goals.components.AddAmountUiState
 import com.spendoo.goals.presentation.screen.addEditGoal.AddEditGoalUiState
 import com.spendoo.goals.presentation.screen.goals.components.GoalActionType
+import com.spendoo.shared.domain.utils.PageQuery
 import kotlinx.coroutines.launch
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.error_loading_goals

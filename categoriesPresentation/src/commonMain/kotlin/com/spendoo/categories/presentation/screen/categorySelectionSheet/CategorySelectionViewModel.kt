@@ -2,7 +2,7 @@ package com.spendoo.categories.presentation.screen.categorySelectionSheet
 
 import androidx.lifecycle.viewModelScope
 import com.spendoo.categories.domain.repository.CategoriesRepository
-import com.spendoo.categories.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.CategoryItemUiState
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.toCategoryItemUiState
 import com.spendoo.categories.presentation.screen.categories.CategoriesViewModel.Companion.INITIAL_PAGE

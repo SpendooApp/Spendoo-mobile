@@ -3,8 +3,8 @@ package com.spendoo.categories.domain.repository
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.categories.domain.entity.category.CategorySummary
 import com.spendoo.categories.domain.entity.category.CreateCategory
-import com.spendoo.categories.domain.utils.PageQuery
-import com.spendoo.categories.domain.utils.PagedData
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
 import com.spendoo.categories.domain.entity.category.UpdateCategory
 import com.spendoo.categories.domain.entity.transaction.CategorySpending
 

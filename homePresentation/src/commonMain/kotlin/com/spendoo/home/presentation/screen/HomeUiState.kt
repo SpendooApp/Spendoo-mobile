@@ -1,6 +1,6 @@
 package com.spendoo.home.presentation.screen
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import com.spendoo.goals.domain.entity.Goal
@@ -82,7 +82,7 @@ fun Goal.toUiState(): GoalUiState {
     return GoalUiState(
         id = id,
         name = name,
-        icon = CategoryIcon.fromStringOrDefault(icon.name), //TODO: move CategoryIcon to shared domain
+        icon = icon,
         progress = savingPercentage / 100f
     )
 }

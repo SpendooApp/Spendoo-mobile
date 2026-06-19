@@ -28,8 +28,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.TransactionEntryUiState
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.categories.presentation.shared.toCleanString
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.CustomTextField
@@ -41,6 +39,8 @@ import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.spendoo.designsystem.modifier.shimmerEffect
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toCleanString
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.choose_category
 import spendoo.designsystem.generated.resources.enter_a_title

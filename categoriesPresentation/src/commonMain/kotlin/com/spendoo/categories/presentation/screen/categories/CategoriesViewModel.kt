@@ -3,7 +3,7 @@ package com.spendoo.categories.presentation.screen.categories
 import androidx.lifecycle.viewModelScope
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.categories.domain.repository.CategoriesRepository
-import com.spendoo.categories.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEditCategoryUiState
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.CategoryActionType
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toAddEditCategoryUiState

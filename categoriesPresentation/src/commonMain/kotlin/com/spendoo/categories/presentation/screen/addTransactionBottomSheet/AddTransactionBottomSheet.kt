@@ -11,13 +11,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.AddExpenseEntriesSection
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.AddTransactionActionButtons
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.IncomeEntriesSection
