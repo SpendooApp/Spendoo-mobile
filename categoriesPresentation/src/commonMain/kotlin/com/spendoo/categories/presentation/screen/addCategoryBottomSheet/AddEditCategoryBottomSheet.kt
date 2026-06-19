@@ -21,8 +21,8 @@ import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.LiftoverFundsActionSheet
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableIconRow
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableRow
+import com.spendoo.designsystem.components.row.SelectableIconRow
+import com.spendoo.designsystem.components.row.SelectableRow
 import com.spendoo.categories.presentation.shared.getToday
 import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
 import com.spendoo.categories.presentation.shared.toCleanString
@@ -164,6 +164,10 @@ private fun AddEditCategoryContent(
                         }
                         .padding(bottom = 8.dp),
                     enabled = false,
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.onShowDatePicker(true)
+                    },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     trailingIcon = Res.drawable.ic_date.painter(),
                     trailingIconColor = Theme.colorScheme.text.label
@@ -182,6 +186,10 @@ private fun AddEditCategoryContent(
                     onValueChange = { },
                     hint = Res.string.leftover_funds_action.asString(),
                     enabled = false,
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.onShowLeftoverFundsActionSheet(true)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickableNoRipple {
@@ -226,7 +234,9 @@ private fun AddEditCategoryContent(
         item {
             SelectableIconRow(
                 selectedIcon = addEditCategoryUiState.icon,
-                onIconSelected = interactionListener::onIconChanged
+                onIconSelected = interactionListener::onIconChanged,
+                entries = CategoryIcon.entries,
+                toDrawableResource = { this.toDrawableResource() }
             )
         }
 

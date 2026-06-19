@@ -210,7 +210,7 @@ class AddTransactionViewModel(
             },
             block = {
                 val amount = state.value.savingAmount ?: 0.0
-                goalsRepository.addToSaving(amount)
+                goalsRepository.addToSavings(amount)
             },
             onSuccess = { onSuccess() },
             onError = { throwable ->

@@ -34,6 +34,7 @@ import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.cards.DetailItem
+import com.spendoo.designsystem.components.icon.CategoryIcon
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.text.Text
@@ -104,9 +105,9 @@ private fun ScheduledPaymentDetailsContent(
                     SpendooIconButton(
                         iconRes = Res.drawable.ic_edit,
                         contentDescription = stringResource(Res.string.edit),
-                        backgroundColor = Theme.colorScheme.button.secondary,
+                        backgroundColor = Theme.colorScheme.brand.secondary,
                         iconSize = 20.dp,
-                        tint = Theme.colorScheme.brand.primary,
+                        tint = Theme.colorScheme.icon.primary,
                         onClick = interactionListener::onEditClicked
                     )
                 },
@@ -114,9 +115,9 @@ private fun ScheduledPaymentDetailsContent(
                     SpendooIconButton(
                         iconRes = Res.drawable.ic_delete,
                         contentDescription = stringResource(Res.string.delete),
-                        backgroundColor = Theme.colorScheme.button.secondary,
+                        backgroundColor = Theme.colorScheme.brand.secondary,
                         iconSize = 20.dp,
-                        tint = Theme.colorScheme.brand.primary,
+                        tint = Theme.colorScheme.icon.primary,
                         onClick = interactionListener::onDeleteClicked
                     )
                 }
@@ -148,22 +149,13 @@ private fun ScheduledPaymentDetailsContent(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .background(Theme.colorScheme.button.secondary, RoundedCornerShape(16.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                painter = state.categoryIcon.toDrawableResource().painter(),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                                tint = Theme.colorScheme.brand.primary
-                            )
-                        }
+                        CategoryIcon(
+                            icon = state.categoryIcon.toDrawableResource(),
+                            size = 48.dp
+                        )
                         Text(
                             text = state.title,
-                            style = Theme.typography.title.small.copy(fontSize = 16.sp),
+                            style = Theme.typography.title.small,
                             color = Theme.colorScheme.text.title,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis

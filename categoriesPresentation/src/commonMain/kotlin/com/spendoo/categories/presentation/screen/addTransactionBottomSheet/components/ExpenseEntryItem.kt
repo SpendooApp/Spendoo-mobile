@@ -141,6 +141,7 @@ fun ExpenseEntryItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickableNoRipple { onCategoryClicked(entry.id) },
+                onTrailingIconClick = { onCategoryClicked(entry.id) },
                 trailingIcon = Res.drawable.ic_arrow_down.painter(),
                 trailingIconColor = Theme.colorScheme.text.label,
                 prefix = entry.categoryIcon?.let { icon ->

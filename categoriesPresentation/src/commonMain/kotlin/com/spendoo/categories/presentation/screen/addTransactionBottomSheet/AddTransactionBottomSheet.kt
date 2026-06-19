@@ -134,6 +134,10 @@ private fun AddTransactionBottomSheetContent(
                                 }
                                 .padding(bottom = 8.dp)
                                 .padding(horizontal = 16.dp),
+                            onTrailingIconClick = {
+                                focusManager.clearFocus()
+                                interactionListener.onDatePickerRequested()
+                            },
                             trailingIcon = Res.drawable.ic_date.painter(),
                             trailingIconColor = Theme.colorScheme.text.label
                         )

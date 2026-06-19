@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableRow
+import com.spendoo.designsystem.components.row.SelectableRow
 import com.spendoo.categories.presentation.screen.categorySelectionSheet.CategorySelectionSheet
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentSize
@@ -162,6 +162,10 @@ private fun AddScheduledPaymentContent(
                             interactionListener.onShowCategorySelectionSheet(true)
                         }
                         .padding(bottom = 8.dp),
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.onShowCategorySelectionSheet(true)
+                    },
                     trailingIcon = Res.drawable.ic_arrow_down.painter(),
                     trailingIconColor = Theme.colorScheme.text.link
                 )
@@ -178,6 +182,10 @@ private fun AddScheduledPaymentContent(
                             interactionListener.onShowDatePicker(true)
                         }
                         .padding(bottom = 16.dp),
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.onShowDatePicker(true)
+                    },
                     trailingIcon = Res.drawable.ic_date.painter(),
                     trailingIconColor = Theme.colorScheme.text.label
                 )
