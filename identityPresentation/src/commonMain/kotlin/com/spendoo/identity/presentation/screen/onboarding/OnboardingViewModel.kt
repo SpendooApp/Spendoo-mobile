@@ -1,7 +1,7 @@
 package com.spendoo.identity.presentation.screen.onboarding
 
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.identity.domain.repository.SettingsRepository
-import com.spendoo.identity.presentation.shared.BaseViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dollar
 import spendoo.designsystem.generated.resources.ic_done

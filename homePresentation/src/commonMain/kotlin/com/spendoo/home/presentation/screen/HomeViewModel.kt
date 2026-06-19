@@ -1,64 +1,88 @@
 package com.spendoo.home.presentation.screen
 
+import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
-import com.spendoo.categories.domain.utils.PageQuery as CategoriesPageQuery
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
+import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
-import com.spendoo.goals.domain.utils.PageQuery as GoalsPageQuery
-import com.spendoo.offers.domain.repository.OffersRepository
-import com.spendoo.offers.domain.utils.PageQuery as OffersPageQuery
-import com.spendoo.home.presentation.shared.BaseViewModel
 import com.spendoo.identity.domain.repository.ProfileRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import com.spendoo.offers.domain.repository.OffersRepository
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.error_loading_balance_summary
+import spendoo.designsystem.generated.resources.error_loading_goals
 import spendoo.designsystem.generated.resources.error_loading_offers
+import spendoo.designsystem.generated.resources.error_loading_top_spending
 import spendoo.designsystem.generated.resources.error_loading_user_data
+import com.spendoo.shared.domain.utils.PageQuery
 
 class HomeViewModel(
     private val offersRepository: OffersRepository,
     private val transactionsRepository: TransactionsRepository,
+    private val categoriesRepository: CategoriesRepository,
     private val profileRepository: ProfileRepository,
     private val goalsRepository: GoalsRepository
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeInteractionListener {
 
     init {
+        listenToResetSignal()
         getHomeData()
     }
 
-    private fun getHomeData() {
-        loadHeaderData()
-        loadContentData()
-    }
-
-    private fun loadHeaderData() {
-        tryToCall(
+    private fun listenToResetSignal() {
+        tryToCollect(
             block = {
-                coroutineScope {
-                    val balanceDeferred = async { transactionsRepository.getBalanceSummary() }
-                    val profileDeferred = async { profileRepository.getProfile() }
-                    val notificationsDeferred = async { profileRepository.getNotificationsCount() }
-                    Triple(balanceDeferred.await(), profileDeferred.await(), notificationsDeferred.await())
+                getResult<Boolean?>("reset", consume = true)
+            },
+            onEach = { shouldReset ->
+                if (shouldReset == true) {
+                    getHomeData()
                 }
             },
-            onStart = {
-                updateState {
-                    copy(
-                        isBalanceLoading = true,
-                        isUserLoading = true,
-                        isNotificationsLoading = true
+            onError = {}
+        )
+    }
+
+    private fun getHomeData() {
+        loadBalanceSummary()
+        loadUserProfile()
+        loadNotificationsCount()
+        loadOffers()
+        loadGoals()
+        loadTopSpending()
+    }
+
+    private fun loadBalanceSummary() {
+        tryToCall(
+            block = { transactionsRepository.getBalanceSummary() },
+            onStart = { updateState { copy(isBalanceLoading = true) } },
+            onSuccess = { summary ->
+                updateState { copy(balanceSummary = summary.toUiState()) }
+            },
+            onError = { error ->
+                error.message?.let {
+                    showSnackBar(
+                        title = Res.string.error_loading_balance_summary.toUiText(),
+                        message = UiText.DynamicString(it),
+                        isSuccess = false,
                     )
                 }
             },
-            onSuccess = { (summary, profile, notificationsCount) ->
+            onEnd = { updateState { copy(isBalanceLoading = false) } }
+        )
+    }
+
+    private fun loadUserProfile() {
+        tryToCall(
+            block = { profileRepository.getProfile() },
+            onStart = { updateState { copy(isUserLoading = true) } },
+            onSuccess = { profile ->
                 updateState {
                     copy(
-                        balanceSummary = summary.toUiState(),
                         userData = it.userData.copy(
                             userName = profile.fullName,
-                            userImageUrl = profile.imageUrl,
-                            notificationsCount = notificationsCount
+                            userImageUrl = profile.imageUrl
                         )
                     )
                 }
@@ -72,52 +96,34 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = {
-                updateState {
-                    copy(
-                        isBalanceLoading = false,
-                        isUserLoading = false,
-                        isNotificationsLoading = false
-                    )
-                }
-            }
+            onEnd = { updateState { copy(isUserLoading = false) } }
         )
     }
 
-    private fun loadContentData() {
+    private fun loadNotificationsCount() {
         tryToCall(
-            block = {
-                coroutineScope {
-                    val offersDeferred = async { offersRepository.getOffers(OffersPageQuery(0, 20)) }
-                    val goalsDeferred = async { goalsRepository.getGoals(GoalsPageQuery(0, 20)) }
-                    val spendingDeferred = async {
-                        transactionsRepository.getTopSpending(
-                            CategoriesPageQuery(
-                                page = 0,
-                                size = 5
-                            )
+            block = { profileRepository.getNotificationsCount() },
+            onStart = { updateState { copy(isNotificationsLoading = true) } },
+            onSuccess = { count ->
+                updateState {
+                    copy(
+                        userData = it.userData.copy(
+                            notificationsCount = count
                         )
-                    }
-                    Triple(offersDeferred.await(), goalsDeferred.await(), spendingDeferred.await())
-                }
-            },
-            onStart = {
-                updateState {
-                    copy(
-                        isOffersLoading = true,
-                        isGoalsLoading = true,
-                        isTopSpendingLoading = true
                     )
                 }
             },
-            onSuccess = { (offers, goals, spending) ->
-                updateState {
-                    copy(
-                        offers = offers.data.map { it.toUiState() },
-                        goals = goals.data.map { it.toUiState() },
-                        topSpending = spending.data.map { it.toUiState() }
-                    )
-                }
+            onError = { },
+            onEnd = { updateState { copy(isNotificationsLoading = false) } }
+        )
+    }
+
+    private fun loadOffers() {
+        tryToCall(
+            block = { offersRepository.getOffers(PageQuery(0, 20)) },
+            onStart = { updateState { copy(isOffersLoading = true) } },
+            onSuccess = { offers ->
+                updateState { copy(offers = offers.data.map { it.toUiState() }) }
             },
             onError = { error ->
                 error.message?.let {
@@ -128,23 +134,66 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = {
-                updateState {
-                    copy(
-                        isOffersLoading = false,
-                        isGoalsLoading = false,
-                        isTopSpendingLoading = false
+            onEnd = { updateState { copy(isOffersLoading = false) } }
+        )
+    }
+
+    private fun loadGoals() {
+        tryToCall(
+            block = { goalsRepository.getGoals(PageQuery(0, 20)) },
+            onStart = { updateState { copy(isGoalsLoading = true) } },
+            onSuccess = { goals ->
+                updateState { copy(goals = goals.data.map { it.toUiState() }) }
+            },
+            onError = { error ->
+                error.message?.let {
+                    showSnackBar(
+                        title = Res.string.error_loading_goals.toUiText(),
+                        message = UiText.DynamicString(it),
+                        isSuccess = false,
                     )
                 }
-            }
+            },
+            onEnd = { updateState { copy(isGoalsLoading = false) } }
         )
+    }
+
+    private fun loadTopSpending() {
+        tryToCall(
+            block = {
+                categoriesRepository.getTopSpending(
+                    PageQuery(page = 0, size = 5)
+                )
+            },
+            onStart = { updateState { copy(isTopSpendingLoading = true) } },
+            onSuccess = { spending ->
+                updateState { copy(topSpending = spending.data.map { it.toUiState() }) }
+            },
+            onError = { error ->
+                error.message?.let {
+                    showSnackBar(
+                        title = Res.string.error_loading_top_spending.toUiText(),
+                        message = UiText.DynamicString(it),
+                        isSuccess = false,
+                    )
+                }
+            },
+            onEnd = { updateState { copy(isTopSpendingLoading = false) } }
+        )
+    }
+
+    override fun onReload() {
+        getHomeData()
     }
 
     override fun onOfferClicked(offerId: String) {}
     override fun onGoalClicked(goalId: String) {}
     override fun onSpendingClicked(spendingId: String) {}
     override fun onViewAllOffersClicked() {}
-    override fun onViewAllGoalsClicked() {}
+    override fun onViewAllGoalsClicked() {
+        navigate(GoalsRoute)
+    }
+
     override fun onViewAllSpendingClicked() {}
     override fun onNotificationClicked() {}
     override fun onProfileClicked() {}

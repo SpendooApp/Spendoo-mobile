@@ -1,6 +1,6 @@
 package com.spendoo.categories.data.dataSource.remote.dto.category
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CategorySpendingDto(
     @SerialName("id")
-    val categoryId: String?,
+    val categoryId: String? = null,
     @SerialName("categoryName")
     val categoryName: String,
     @SerialName("categoryIcon")
@@ -21,5 +21,5 @@ fun CategorySpendingDto.toDomain(): CategorySpending = CategorySpending(
     categoryId = categoryId ?: "",
     categoryName = categoryName,
     categoryIcon = categoryIcon,
-    totalAmount = totalAmount,
+    totalAmount = -totalAmount,
 )

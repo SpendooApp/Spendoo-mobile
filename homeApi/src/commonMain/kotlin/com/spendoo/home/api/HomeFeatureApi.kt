@@ -1,15 +1,10 @@
 package com.spendoo.home.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
 
 @Stable
 interface HomeFeatureApi {
-    @Composable
-    fun TabEntry(
-        updateBottomNavigationVisibility: (Boolean) -> Unit,
-        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit = { _, _, _, _, _, _ -> }
-    )
+    operator fun invoke(): (NavKey) -> NavEntry<NavKey>
 }

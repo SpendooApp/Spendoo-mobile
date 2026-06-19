@@ -15,7 +15,6 @@ data class CategoriesUiState (
     val isCategoriesLoadingMore: Boolean = false,
     val categoryToEdit: AddEditCategoryUiState? = null,
     val isAddCategoryBottomSheetVisible: Boolean = false,
-    val isAddEditCategoryLoading: Boolean = false,
     val isCategoryActionsSheetVisible: Boolean = false,
     val isAddAmountToCategoryVisible: Boolean = false,
     val isAddAmountToCategoryLoading: Boolean = false
@@ -36,12 +35,6 @@ fun CategorySummary.toCategorySummaryUiState(): CategorySummaryUiState {
 }
 
 fun Budget.toBudgetDataUiState(): BudgetDataUiState {
-//    return BudgetDataUiState(
-//        startDate = this.startDate,
-//        endDate = this.endDate,
-//        percentage = if (this.amount > 0) (this.spentAmount / this.amount).toFloat() else 0f,
-//        total = this.amount.toInt()
-//    )
     return BudgetDataUiState(
         startDate = this.startDate.date,
         endDate = this.endDate.date,

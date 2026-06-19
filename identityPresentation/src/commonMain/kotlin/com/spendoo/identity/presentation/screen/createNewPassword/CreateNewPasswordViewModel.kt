@@ -1,34 +1,29 @@
 package com.spendoo.identity.presentation.screen.createNewPassword
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.toRoute
 import com.spendoo.designsystem.components.button.AppButtonState
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.identity.api.LoginRoute
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
 import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
-import com.spendoo.identity.presentation.navigation.CreateNewPasswordRoute
-import com.spendoo.identity.presentation.navigation.LoginRoute
-import com.spendoo.identity.presentation.shared.BaseViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.invalid_password
 import spendoo.designsystem.generated.resources.unknown_error
 
 class CreateNewPasswordViewModel(
+    private val email: String,
+    private val otp: String,
     private val resetPasswordRepository: ResetPasswordRepository,
     private val validationUseCase: ValidationUseCase,
-    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CreateNewPasswordUiState>(CreateNewPasswordUiState()),
     CreateNewPasswordInteractionListener {
-
-    private val navEmail = savedStateHandle.toRoute<CreateNewPasswordRoute>().email
-    private val navOtp = savedStateHandle.toRoute<CreateNewPasswordRoute>().otp
 
     init {
         updateState {
             copy(
-                email = navEmail,
-                otp = navOtp
+                email = this@CreateNewPasswordViewModel.email,
+                otp = this@CreateNewPasswordViewModel.otp
             )
         }
     }

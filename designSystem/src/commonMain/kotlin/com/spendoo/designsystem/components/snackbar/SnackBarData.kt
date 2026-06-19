@@ -9,5 +9,6 @@ data class SnackBarData(
     val isSuccess: Boolean = true,
     val customLeadingIcon: Painter? = null,
     val duration: Long? = null,
-    val iconTint: Color = Color.Unspecified
+     val iconTint: Color = Color.Unspecified,
+    val id: Long = 0L
 )

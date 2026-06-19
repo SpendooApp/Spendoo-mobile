@@ -24,7 +24,7 @@ internal val LightColorScheme = ColorScheme(
         purple = Color(0xFF9A83CE),
         success = Color(0xFFCCFFEB),
         warning = Color(0xFFFDDFCE),
-        done = Color(0xFF4E607E)
+        done = Color(0xFF001B2E)
     ),
     background = ColorScheme.Background(
         octonary = Color(0xFF179FDD).copy(alpha = 0.7f),

@@ -20,7 +20,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.get_started
 import spendoo.designsystem.generated.resources.ic_arrow_left
@@ -101,3 +101,4 @@ fun BottomArrowsPreview() = SpendooTheme {
         onPreviousButtonClicked = {}
     )
 }
+

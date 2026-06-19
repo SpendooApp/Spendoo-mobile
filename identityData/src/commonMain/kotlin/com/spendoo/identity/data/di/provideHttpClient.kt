@@ -76,7 +76,7 @@ internal fun provideHttpClient(
 
                             // Re-assemble the log message, swapping out the flat line for the beautiful block
                             message.substring(0, firstBrace) + prettyJsonString + message.substring(lastBrace + 1)
-                        } catch (e: Exception) {
+                        } catch (_: Exception) {
                             message // Fallback to raw text if it wasn't valid JSON after all
                         }
                     } else {
@@ -97,10 +97,17 @@ internal fun provideHttpClient(
                     )
                 }
                 refreshTokens {
-                    BearerTokens(
-                        accessToken = authorizationService().getNewAccessToken(),
-                        refreshToken = authorizationService().getRefreshToken(),
-                    )
+                    val currentRefreshToken = authorizationService().getRefreshToken()
+                    if (currentRefreshToken.isBlank()) {
+                        return@refreshTokens null
+                    }
+
+                    return@refreshTokens runCatching {
+                        BearerTokens(
+                            accessToken = authorizationService().getNewAccessToken(),
+                            refreshToken = currentRefreshToken,
+                        )
+                    }.getOrNull()
                 }
                 sendWithoutRequest { request ->
                     val path = request.url.encodedPath.removePrefix("/")

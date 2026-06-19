@@ -3,28 +3,35 @@ package com.spendoo.home.presentation.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.presentation.screen.components.GoalsSection
 import com.spendoo.home.presentation.screen.components.HomeHeader
 import com.spendoo.home.presentation.screen.components.OffersSection
 import com.spendoo.home.presentation.screen.components.TopSpendingSection
 import com.spendoo.home.presentation.screen.components.balanceSection
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
-    val state by viewModel.state.collectAsState()
+fun HomeScreen(
+    viewModel: HomeViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeContent(state = state, viewModel = viewModel)
 }
@@ -32,7 +39,7 @@ fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
 @Composable
 private fun HomeContent(
     state: HomeUiState,
-    viewModel: HomeInteractionListener
+    viewModel: HomeInteractionListener,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -86,6 +93,10 @@ private fun HomeContent(
                 onViewAll = viewModel::onViewAllSpendingClicked,
                 onSpendingClicked = viewModel::onSpendingClicked
             )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(80.dp).navigationBarsPadding())
         }
     }
 }

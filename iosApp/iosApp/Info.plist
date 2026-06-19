@@ -12,5 +12,9 @@
     <true/>
     <key>BASE_URL</key>
     <string>$(BASE_URL)</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs microphone access to record audio.</string>
 </dict>
 </plist>

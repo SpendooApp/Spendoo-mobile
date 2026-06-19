@@ -7,13 +7,14 @@ import androidx.compose.ui.Modifier.Companion
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.Dp
+import com.spendoo.designsystem.theme.theme.Theme
 
 @Composable
 fun CircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = ProgressIndicatorDefaults.circularColor,
+    color: Color = Theme.colorScheme.brand.primary,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
-    trackColor: Color = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
+    trackColor: Color = Theme.colorScheme.background.tertiary,
     strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap,
 ) {
     androidx.compose.material3.CircularProgressIndicator(
@@ -29,9 +30,9 @@ fun CircularProgressIndicator(
 fun CircularProgressIndicator(
     progress: () -> Float,
     modifier: Modifier = Modifier,
-    color: Color = ProgressIndicatorDefaults.circularColor,
+    color: Color = Theme.colorScheme.brand.primary,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
-    trackColor: Color = ProgressIndicatorDefaults.circularDeterminateTrackColor,
+    trackColor: Color = Theme.colorScheme.background.tertiary,
     strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
 ) {
     androidx.compose.material3.CircularProgressIndicator(

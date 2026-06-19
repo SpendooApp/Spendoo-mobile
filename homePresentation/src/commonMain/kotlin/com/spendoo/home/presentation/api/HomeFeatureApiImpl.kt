@@ -1,23 +1,17 @@
 package com.spendoo.home.presentation.api
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import com.spendoo.home.api.HomeFeatureApi
-import com.spendoo.home.presentation.navigation.HomeNavHost
-import com.spendoo.home.presentation.navigation.HomeRoute
+import com.spendoo.home.api.HomeRoute
+import com.spendoo.home.presentation.screen.HomeScreen
 
 class HomeFeatureApiImpl : HomeFeatureApi {
 
-    @Composable
-    override fun TabEntry(
-        updateBottomNavigationVisibility: (Boolean) -> Unit,
-        showSnackBar: (String, String?, Boolean, Painter?, Long?, Color) -> Unit
-    ) {
-        HomeNavHost(
-            updateBottomNavigationVisibility = updateBottomNavigationVisibility,
-            startDestination = HomeRoute,
-            showSnackBar = showSnackBar
-        )
+    override fun invoke(): (NavKey) -> NavEntry<NavKey> {
+        return entryProvider {
+            entry<HomeRoute> { HomeScreen() }
+        }
     }
 }

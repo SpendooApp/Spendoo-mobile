@@ -25,7 +25,7 @@ import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.identity.domain.entity.Gender
 import com.spendoo.identity.presentation.screen.signup.toResIcon
 import com.spendoo.identity.presentation.screen.signup.toResString
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SelectableGenderButton(
@@ -86,3 +86,4 @@ fun SelectableGenderButtonPreviewNotSelected() = SpendooTheme {
         onClick = {}
     )
 }
+

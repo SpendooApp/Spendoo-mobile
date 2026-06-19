@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -22,9 +25,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.modifier.DialogPosition
 import com.spendoo.designsystem.modifier.clickableNoRipple
+import com.spendoo.designsystem.modifier.dialogPosition
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.designsystem.utils.PreviewMultiDevices
@@ -34,6 +40,7 @@ import kotlinx.coroutines.delay
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_error
 import spendoo.designsystem.generated.resources.ic_success
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun CustomSnackBar(
@@ -92,6 +99,7 @@ fun CustomSnackBar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedSnackBar(
     isVisible: Boolean,
@@ -102,17 +110,31 @@ fun AnimatedSnackBar(
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
-        exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut(),
-        modifier = modifier.fillMaxWidth()
+        exit = slideOutVertically(
+            targetOffsetY = { -it },
+            animationSpec = tween(durationMillis = 120)
+        ) + fadeOut(animationSpec = tween(durationMillis = 120)),
     ) {
         LaunchedEffect(data) {
-            delay(data.duration ?: 2500L)
+            delay((data.duration ?: 1500L).milliseconds)
             onDismiss()
         }
-        CustomSnackBar(
-            modifier = Modifier,
-            data = data,
-            onDismiss = onDismiss
+        BasicAlertDialog(
+            modifier = modifier
+                .fillMaxWidth()
+                .dialogPosition(pos = DialogPosition.TOP),
+            onDismissRequest = onDismiss,
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true,
+            ),
+            content = {
+                CustomSnackBar(
+                    data = data,
+                    onDismiss = onDismiss
+                )
+            }
         )
     }
 }

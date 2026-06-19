@@ -1,60 +1,19 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
-    id("com.google.gms.google-services")
+    id("spendoo.kmp.application")
 }
-
-val localProperties = Properties()
-val localPropertiesFile: File = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(localPropertiesFile.inputStream())
-}
-
-val appVersionName =
-    project.property("VERSION_MAJOR").toString() + "." + project.property("VERSION_MINOR")
-        .toString()
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
+    android {
+        namespace = "com.spendoo.library"
     }
 
-    val xcf = XCFramework("SpendooApp")
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "SpendooApp"
-            isStatic = true
-            xcf.add(this)
-        }
-    }
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.bundles.koin)
-
+            implementation(libs.androidx.navigation3.ui)
+            implementation(libs.androidx.lifecycle.viewmodel.navigation3)
             implementation(projects.designSystem)
             implementation(projects.identityData)
             implementation(projects.identityDomain)
@@ -68,103 +27,46 @@ kotlin {
             implementation(projects.categoriesData)
             implementation(projects.categoriesApi)
             implementation(projects.categoriesPresentation)
+            implementation(projects.statisticsApi)
+            implementation(projects.statisticsPresentation)
+            implementation(projects.goalsApi)
+            implementation(projects.goalsPresentation)
+            implementation(projects.chatbotApi)
+            implementation(projects.chatbotPresentation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-    }
-}
-
-android {
-    namespace = "com.spendoo"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "com.spendoo"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = appVersionName
-
-        val baseUrl = localProperties.getProperty("BASE_URL", "")
-        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
-    }
-    signingConfigs {
-        if (project.hasProperty("KEYSTORE_STORE_FILE") || System.getenv("KEYSTORE_STORE_FILE") != null) {
-            create("release") {
-                val keystorePath = project.loadProperty(
-                    path = "local.properties",
-                    propertyName = "KEYSTORE_STORE_FILE",
-                )
-
-                storeFile = file(keystorePath)
-                storePassword = project.loadProperty("local.properties", "KEYSTORE_STORE_PASSWORD")
-                keyAlias = project.loadProperty("local.properties", "KEYSTORE_KEY_ALIAS")
-                keyPassword = project.loadProperty("local.properties", "KEYSTORE_KEY_PASSWORD")
-            }
+        androidMain.dependencies {
+            implementation(libs.androidx.poolingcontainer)
         }
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            if (signingConfigs.findByName("release") != null) {
-                signingConfig = signingConfigs.getByName("release")
-            }
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    buildFeatures {
-        buildConfig = true
     }
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
-}
-
-fun Project.loadProperty(
-    path: String,
-    propertyName: String,
-): String {
-    val properties = Properties()
-    val propertiesFile = project.rootProject.file(path)
-
-    if (propertiesFile.exists()) {
-        properties.load(propertiesFile.inputStream())
-        return properties.getProperty(propertyName)
-            ?: System.getenv(propertyName)
-            ?: throw GradleException("Property '$propertyName' not found in $path or environment")
-    } else {
-        // Fallback to environment variable for CI/CD
-        return System.getenv(propertyName)
-            ?: throw GradleException("Property file '$path' not found and '$propertyName' not in environment")
-    }
+    "androidRuntimeClasspath"(libs.compose.ui.tooling)
 }
 
 tasks.register("syncIosConfig") {
     group = "ios"
-    doLast {
-        val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
-        val escapedUrl = baseUrl.replace("//", "/$()/")
-        val configFile = file("../iosApp/Configuration/Config.xcconfig")
+    val localPropsFile = rootProject.layout.projectDirectory.file("local.properties")
+    val configFile = layout.projectDirectory.file("../iosApp/Configuration/Config.xcconfig")
+    inputs.file(localPropsFile).optional()
+    outputs.file(configFile)
 
-        if (configFile.exists()) {
-            val lines = configFile.readLines().toMutableList()
+    doLast {
+        val properties = Properties()
+        val localProps = localPropsFile.asFile
+        if (localProps.exists()) {
+            localProps.inputStream().use { properties.load(it) }
+        }
+
+        val baseUrl = properties.getProperty("BASE_URL").orEmpty()
+        val escapedUrl = baseUrl.replace("//", "/$()/")
+        val configFileOnDisk = configFile.asFile
+
+        if (configFileOnDisk.exists()) {
+            val lines = configFileOnDisk.readLines().toMutableList()
             val index = lines.indexOfFirst { it.startsWith("BASE_URL") }
             val newLine = "BASE_URL = $escapedUrl"
 
@@ -173,7 +75,7 @@ tasks.register("syncIosConfig") {
             } else {
                 lines.add(newLine)
             }
-            configFile.writeText(lines.joinToString("\n"))
+            configFileOnDisk.writeText(lines.joinToString("\n"))
         }
     }
 }

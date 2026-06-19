@@ -1,11 +1,10 @@
 package com.spendoo.home.presentation.screen
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.offers.domain.entity.Offer
-import com.spendoo.offers.domain.entity.Spending
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_car
@@ -42,7 +41,6 @@ data class HomeUiState(
         userImageUrl = null,
         notificationsCount = 0
     )
-//    val error: String? = null
 )
 
 data class BalanceSummaryUiState(
@@ -85,7 +83,7 @@ fun Goal.toUiState(): GoalUiState {
         id = id,
         name = name,
         icon = icon,
-        progress = progress
+        progress = savingPercentage / 100f
     )
 }
 

@@ -14,7 +14,6 @@ import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.service.AuthorizationService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -64,5 +63,5 @@ val identityDataModule = module {
         provideCoilClient()
     }
 
-    single(named(IDENTITY_SCOPE)) { CoroutineScope(Dispatchers.IO) }
+    single(named(IDENTITY_SCOPE)) { CoroutineScope(Dispatchers.Default) }
 }

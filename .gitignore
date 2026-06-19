@@ -33,3 +33,5 @@ debug.log
 */GoogleService-Info.plist
 *GoogleService-Info.plist
 /spendooApp/release
+/.vscode/settings.json
+**/bin/

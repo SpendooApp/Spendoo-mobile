@@ -12,6 +12,10 @@ interface BottomNavigationScope {
         error("The method is not implemented")
     }
 
+    fun centerItem(
+        icon: Painter,
+        entry: () -> Unit,
+    )
 }
 
 data class BottomNavigationItem(
@@ -23,6 +27,7 @@ data class BottomNavigationItem(
 
 internal class BottomNavigationScopeImpl : BottomNavigationScope {
     val items = mutableListOf<BottomNavigationItem>()
+    var centerItem: CenterNavigationItem? = null
 
     override fun bottomNavigationItem(
         notSelectedIcon: Painter,
@@ -32,4 +37,13 @@ internal class BottomNavigationScopeImpl : BottomNavigationScope {
     ) {
         items.add(BottomNavigationItem(notSelectedIcon, selectedIcon, title, entry))
     }
+
+    override fun centerItem(icon: Painter, entry: () -> Unit) {
+        centerItem = CenterNavigationItem(icon, entry)
+    }
 }
+
+data class CenterNavigationItem(
+    val icon: Painter,
+    val entry: () -> Unit
+)

@@ -1,17 +1,15 @@
 package com.spendoo.categories.presentation.screen.addCategoryBottomSheet
 
-import androidx.compose.runtime.Composable
 import com.spendoo.categories.domain.entity.category.Category
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.CreateBudget
 import com.spendoo.categories.domain.entity.category.CreateCategory
 import com.spendoo.categories.domain.entity.category.LeftOverOption
-import com.spendoo.categories.domain.entity.category.PriorityOption
+import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.domain.entity.category.UpdateCategory
 import com.spendoo.categories.domain.entity.category.toInt
-import com.spendoo.categories.presentation.shared.getToday
-import com.spendoo.designsystem.components.general.GenSelectableOption
+import com.spendoo.shared.domain.utils.getToday
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -43,10 +41,10 @@ import spendoo.designsystem.generated.resources.move_to_savings
 import spendoo.designsystem.generated.resources.reset_to_original_amount
 import spendoo.designsystem.generated.resources.weekly
 import spendoo.designsystem.generated.resources.yearly
-import kotlin.time.Instant
 
 data class AddEditCategoryUiState(
     val categoryId: String? = null,
+    val isLoading: Boolean = false,
     val categoryName: String = "",
     val budget: Double? = null,
     val budgetStartDate: LocalDate? = null,
@@ -146,27 +144,10 @@ fun PriorityOption.toStringResource(): StringResource {
     }
 }
 
-@Composable
-fun LeftOverOption.toSelectableOptions(): GenSelectableOption<LeftOverOption> {
+fun LeftOverOption.toName(): StringResource {
     return when (this) {
-        LeftOverOption.MOVE_TO_NEXT_PERIOD -> GenSelectableOption(
-            LeftOverOption.MOVE_TO_NEXT_PERIOD,
-            Res.string.move_to_next_period
-        )
-
-        LeftOverOption.RESET_TO_ORIGINAL_AMOUNT -> GenSelectableOption(
-            LeftOverOption.RESET_TO_ORIGINAL_AMOUNT,
-            Res.string.reset_to_original_amount
-        )
-
-        LeftOverOption.MOVE_TO_SAVINGS -> GenSelectableOption(
-            LeftOverOption.MOVE_TO_SAVINGS,
-            Res.string.move_to_savings
-        )
+        LeftOverOption.MOVE_TO_NEXT_PERIOD -> Res.string.move_to_next_period
+        LeftOverOption.RESET_TO_ORIGINAL_AMOUNT -> Res.string.reset_to_original_amount
+        LeftOverOption.MOVE_TO_SAVINGS -> Res.string.move_to_savings
     }
-}
-
-@Composable
-fun List<LeftOverOption>.toSelectableOptions(): List<GenSelectableOption<LeftOverOption>> {
-    return this.map { it.toSelectableOptions() }
 }

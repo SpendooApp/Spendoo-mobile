@@ -47,11 +47,11 @@ runs:
 
     - name: Create google-services.json
       shell: bash
-      run: echo "${{ inputs.credential-file-content-base64 }}" | base64 --decode > spendooApp/google-services.json
+      run: echo "${{ inputs.credential-file-content-base64 }}" | base64 --decode > androidApp/google-services.json
 
     - name: Create keystore file
       shell: bash
-      run: echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > spendooApp/spendoo-keystore.jks
+      run: echo "${{ inputs.android-keystore-base64 }}" | base64 --decode > androidApp/spendoo-keystore.jks
 
     - name: Make gradlew executable
       shell: bash
@@ -71,32 +71,32 @@ runs:
     - name: Version Bump
       uses: chkfung/android-version-actions@v1.2.3
       with:
-        gradlePath: spendooApp/build.gradle.kts
+        gradlePath: androidApp/build.gradle.kts
         versionCode: ${{ github.run_number }}
         versionName: ${{ env.APK_VERSION }}
 
     - name: Generate unsigned APK
       shell: bash
-      run: ./gradlew :spendooApp:assembleRelease --build-cache -x test -x lint
+      run: ./gradlew :androidApp:assembleRelease --build-cache -x test -x lint
 
     - name: Sign APK
       uses: r0adkll/sign-android-release@v1
       with:
-        releaseDirectory: spendooApp/build/outputs/apk/release
+        releaseDirectory: androidApp/build/outputs/apk/release
         signingKeyBase64: ${{ inputs.android-keystore-base64 }}
         keyStorePassword: ${{ inputs.keystore-password }}
         alias: ${{ inputs.android-key-alias }}
         keyPassword: ${{ inputs.android-key-alias-password }}
       env:
-        BUILD_TOOLS_VERSION: "35.0.0"
+        BUILD_TOOLS_VERSION: "36.0.0"
 
     - name: Set signed APK path to env
       shell: bash
       run: |
-        RELEASE_DIRECTORY="spendooApp/build/outputs/apk/release"
+        RELEASE_DIRECTORY="androidApp/build/outputs/apk/release"
         APK_NAME="Spendoo-v${APK_VERSION}"
  
-        mv "$RELEASE_DIRECTORY/spendooApp-release-unsigned-signed.apk" \
+        mv "$RELEASE_DIRECTORY/androidApp-release-unsigned-signed.apk" \
         "$RELEASE_DIRECTORY/$APK_NAME.apk"        
  
         echo "APK_NAME=$APK_NAME" >> $GITHUB_ENV

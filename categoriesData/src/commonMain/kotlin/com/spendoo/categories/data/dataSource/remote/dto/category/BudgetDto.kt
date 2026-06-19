@@ -1,8 +1,8 @@
 package com.spendoo.categories.data.dataSource.remote.dto.category
 
-import com.spendoo.categories.data.mapper.toLocalDateTimeOrDefault
 import com.spendoo.categories.domain.entity.category.Budget
 import com.spendoo.categories.domain.entity.category.toResetCycleOption
+import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -24,7 +24,7 @@ data class BudgetDto(
 
 fun BudgetDto.toDomain(): Budget = Budget(
     amount = amount,
-    spentAmount = spentAmount,
+    spentAmount = -spentAmount,
     spendingPercentage = spendingPercentage,
     period = period.toResetCycleOption(),
     startDate = startDate.toLocalDateTimeOrDefault(),

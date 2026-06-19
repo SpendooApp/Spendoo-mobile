@@ -1,6 +1,6 @@
 package com.spendoo.categories.domain.entity.transaction
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import com.spendoo.shared.domain.entity.CategoryIcon
 
 data class CategorySpending(
     val categoryId: String,

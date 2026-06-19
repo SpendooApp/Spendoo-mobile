@@ -23,7 +23,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingPageUiState
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_dollar
 import spendoo.designsystem.generated.resources.ic_done
@@ -130,3 +130,4 @@ fun OnboardingPagerPreview() = SpendooTheme {
         pagerState = pagerState,
     )
 }
+

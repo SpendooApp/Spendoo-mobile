@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,15 +15,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.categories.domain.entity.category.LeftOverOption
+import com.spendoo.shared.domain.entity.PriorityOption
+import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.LiftoverFundsActionSheet
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableIconRow
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectableResetCycleRow
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.SelectedPriorityRow
-import com.spendoo.categories.presentation.shared.getToday
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.categories.presentation.shared.toCleanString
+import com.spendoo.designsystem.components.row.SelectableIconRow
+import com.spendoo.designsystem.components.row.SelectableRow
+import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
+import com.spendoo.designsystem.components.general.AppSegmentedControl
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
 import com.spendoo.designsystem.components.text.Text
@@ -33,7 +37,12 @@ import com.spendoo.designsystem.utils.SpendooPreview
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlinx.datetime.LocalDate
+import androidx.compose.ui.tooling.preview.Preview
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toCleanString
+import org.jetbrains.compose.resources.StringResource
+import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_category
 import spendoo.designsystem.generated.resources.add_new_category
@@ -42,26 +51,31 @@ import spendoo.designsystem.generated.resources.edit_category
 import spendoo.designsystem.generated.resources.enter_budget
 import spendoo.designsystem.generated.resources.enter_budget_start_date
 import spendoo.designsystem.generated.resources.enter_category_name
+import spendoo.designsystem.generated.resources.high
 import spendoo.designsystem.generated.resources.ic_arrow_down
 import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.icon
 import spendoo.designsystem.generated.resources.leave_it_blank_or_0_for_no_budget_limit
 import spendoo.designsystem.generated.resources.leftover_funds_action
+import spendoo.designsystem.generated.resources.low
+import spendoo.designsystem.generated.resources.medium
 import spendoo.designsystem.generated.resources.priority
 import spendoo.designsystem.generated.resources.reset_budget_cycle
 
 @Composable
 fun AddEditCategoryBottomSheet(
     isVisible: Boolean,
-    initialAddEditCategoryUiState: AddEditCategoryUiState? = null,
+    initialAddEditCategoryUiState: AddEditCategoryUiState?,
     onDismiss: () -> Unit,
     onAddCategory: (AddEditCategoryUiState) -> Unit,
-    isLoading: Boolean
+    viewModel: AddCategoryViewModel = koinViewModel()
 ) {
-    var addEditCategoryUiState by remember(isVisible, initialAddEditCategoryUiState) {
-        mutableStateOf(
-            initialAddEditCategoryUiState ?: AddEditCategoryUiState()
-        )
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isVisible, initialAddEditCategoryUiState) {
+        if (isVisible) {
+            viewModel.init(initialAddEditCategoryUiState)
+        }
     }
 
     BottomSheet(
@@ -70,22 +84,24 @@ fun AddEditCategoryBottomSheet(
         horizontalPadding = 0.dp
     ) {
         AddEditCategoryContent(
-            isEditing = initialAddEditCategoryUiState != null,
-            addEditCategoryUiState = addEditCategoryUiState,
-            isLoading = isLoading,
-            onAddCategoryUiStateChange = { addEditCategoryUiState = it },
+            isEditing = state.categoryId != null,
+            isLoading = state.isLoading,
+            addEditCategoryUiState = state,
+            interactionListener = viewModel,
             onDismiss = onDismiss,
-            onSubmit = { onAddCategory(addEditCategoryUiState) }
+            onSubmit = {
+                viewModel.submit(onSuccess = onAddCategory)
+            }
         )
     }
 }
 
 @Composable
 private fun AddEditCategoryContent(
-    isEditing: Boolean = false,
+    isEditing: Boolean,
     addEditCategoryUiState: AddEditCategoryUiState,
-    isLoading: Boolean = false,
-    onAddCategoryUiStateChange: (AddEditCategoryUiState) -> Unit,
+    interactionListener: AddCategoryInteractionListener,
+    isLoading: Boolean,
     onDismiss: () -> Unit,
     onSubmit: () -> Unit
 ) {
@@ -115,13 +131,7 @@ private fun AddEditCategoryContent(
             ) {
                 CustomTextField(
                     value = addEditCategoryUiState.categoryName,
-                    onValueChange = {
-                        onAddCategoryUiStateChange(
-                            addEditCategoryUiState.copy(
-                                categoryName = it
-                            )
-                        )
-                    },
+                    onValueChange = interactionListener::onCategoryNameChanged,
                     hint = Res.string.enter_category_name.asString(),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -134,9 +144,7 @@ private fun AddEditCategoryContent(
 
                 CustomTextField(
                     value = addEditCategoryUiState.budget.toCleanString(),
-                    onValueChange = {
-                        onAddCategoryUiStateChange(addEditCategoryUiState.copy(budget = it.toCleanDoubleOrNull()))
-                    },
+                    onValueChange = { interactionListener.onBudgetChanged(it.toCleanDoubleOrNull()) },
                     hint = Res.string.enter_budget.asString(),
                     helperText = Res.string.leave_it_blank_or_0_for_no_budget_limit.asString(),
                     modifier = Modifier
@@ -156,10 +164,14 @@ private fun AddEditCategoryContent(
                         .fillMaxWidth()
                         .clickableNoRipple {
                             focusManager.clearFocus()
-                            onAddCategoryUiStateChange(addEditCategoryUiState.copy(showDatePicker = true))
+                            interactionListener.onShowDatePicker(true)
                         }
                         .padding(bottom = 8.dp),
                     enabled = false,
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.onShowDatePicker(true)
+                    },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     trailingIcon = Res.drawable.ic_date.painter(),
                     trailingIconColor = Theme.colorScheme.text.label
@@ -168,21 +180,8 @@ private fun AddEditCategoryContent(
                 DatePicker(
                     showDialog = addEditCategoryUiState.showDatePicker,
                     selectedDate = addEditCategoryUiState.budgetStartDate,
-                    onDateSelected = {
-                        onAddCategoryUiStateChange(
-                            addEditCategoryUiState.copy(
-                                budgetStartDate = it,
-                                showDatePicker = false
-                            )
-                        )
-                    },
-                    onDismiss = {
-                        onAddCategoryUiStateChange(
-                            addEditCategoryUiState.copy(
-                                showDatePicker = false
-                            )
-                        )
-                    }
+                    onDateSelected = interactionListener::onBudgetStartDateChanged,
+                    onDismiss = { interactionListener.onShowDatePicker(false) }
                 )
 
                 CustomTextField(
@@ -191,15 +190,15 @@ private fun AddEditCategoryContent(
                     onValueChange = { },
                     hint = Res.string.leftover_funds_action.asString(),
                     enabled = false,
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.onShowLeftoverFundsActionSheet(true)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickableNoRipple {
                             focusManager.clearFocus()
-                            onAddCategoryUiStateChange(
-                                addEditCategoryUiState.copy(
-                                    showLeftoverFundsActionSheet = true
-                                )
-                            )
+                            interactionListener.onShowLeftoverFundsActionSheet(true)
                         }
                         .padding(bottom = 14.dp),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -210,21 +209,8 @@ private fun AddEditCategoryContent(
                 LiftoverFundsActionSheet(
                     show = addEditCategoryUiState.showLeftoverFundsActionSheet,
                     initialSelectedOption = addEditCategoryUiState.leftoverFundsAction,
-                    onOptionSelected = { option ->
-                        onAddCategoryUiStateChange(
-                            addEditCategoryUiState.copy(
-                                leftoverFundsAction = option,
-                                showLeftoverFundsActionSheet = false
-                            )
-                        )
-                    },
-                    onDismiss = {
-                        onAddCategoryUiStateChange(
-                            addEditCategoryUiState.copy(
-                                showLeftoverFundsActionSheet = false
-                            )
-                        )
-                    }
+                    onOptionSelected = interactionListener::onLeftoverFundsActionChanged,
+                    onDismiss = { interactionListener.onShowLeftoverFundsActionSheet(false) }
                 )
 
                 Text(
@@ -234,11 +220,11 @@ private fun AddEditCategoryContent(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                SelectedPriorityRow(
-                    selectedPriority = addEditCategoryUiState.priority,
-                    onPrioritySelected = { priority ->
-                        onAddCategoryUiStateChange(addEditCategoryUiState.copy(priority = priority))
-                    }
+                AppSegmentedControl(
+                    options = PriorityOption.entries,
+                    selectedOption = addEditCategoryUiState.priority,
+                    onOptionSelected = interactionListener::onPriorityChanged,
+                    getName = { this.toName() }
                 )
 
                 Text(
@@ -253,9 +239,9 @@ private fun AddEditCategoryContent(
         item {
             SelectableIconRow(
                 selectedIcon = addEditCategoryUiState.icon,
-                onIconSelected = { icon ->
-                    onAddCategoryUiStateChange(addEditCategoryUiState.copy(icon = icon))
-                }
+                onIconSelected = interactionListener::onIconChanged,
+                entries = CategoryIcon.entries,
+                toDrawableResource = { this.toDrawableResource() }
             )
         }
 
@@ -269,11 +255,11 @@ private fun AddEditCategoryContent(
         }
 
         item {
-            SelectableResetCycleRow(
+            SelectableRow(
                 selectedCycle = addEditCategoryUiState.resetCycle,
-                onCycleSelected = { cycle ->
-                    onAddCategoryUiStateChange(addEditCategoryUiState.copy(resetCycle = cycle))
-                }
+                entries = ResetCycleOption.entries,
+                getName = { it.toStringResource().asString() },
+                onCycleSelected = interactionListener::onResetCycleChanged
             )
         }
     }
@@ -289,10 +275,29 @@ private fun AddCategoryScreenPreview() = SpendooPreview {
     }
     AddEditCategoryContent(
         addEditCategoryUiState = addEditCategoryUiState,
-        onAddCategoryUiStateChange = {
-            addEditCategoryUiState = it
+        interactionListener = object : AddCategoryInteractionListener {
+            override fun onCategoryNameChanged(name: String) {}
+            override fun onBudgetChanged(budget: Double?) {}
+            override fun onBudgetStartDateChanged(date: LocalDate) {}
+            override fun onLeftoverFundsActionChanged(action: LeftOverOption) {}
+            override fun onPriorityChanged(priority: PriorityOption) {}
+            override fun onIconChanged(icon: CategoryIcon) {}
+            override fun onResetCycleChanged(cycle: ResetCycleOption) {}
+            override fun onShowDatePicker(show: Boolean) {}
+            override fun onShowLeftoverFundsActionSheet(show: Boolean) {}
+            override fun submit(onSuccess: (AddEditCategoryUiState) -> Unit) {}
         },
         onDismiss = {},
-        onSubmit = {}
+        onSubmit = {},
+        isEditing = false,
+        isLoading = false
     )
+}
+
+private fun PriorityOption.toName(): StringResource {
+    return when (this) {
+        PriorityOption.LOW -> Res.string.low
+        PriorityOption.MEDIUM -> Res.string.medium
+        PriorityOption.HIGH -> Res.string.high
+    }
 }

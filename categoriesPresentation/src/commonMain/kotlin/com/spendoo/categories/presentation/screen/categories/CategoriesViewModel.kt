@@ -3,23 +3,20 @@ package com.spendoo.categories.presentation.screen.categories
 import androidx.lifecycle.viewModelScope
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.categories.domain.repository.CategoriesRepository
-import com.spendoo.categories.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEditCategoryUiState
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.CategoryActionType
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toAddEditCategoryUiState
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toCreateCategory
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toUpdateCategory
-import com.spendoo.categories.presentation.shared.BaseViewModel
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import kotlinx.coroutines.launch
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.category_id_is_missing
 import spendoo.designsystem.generated.resources.error_adding_amount_to_category
-import spendoo.designsystem.generated.resources.error_creating_category
 import spendoo.designsystem.generated.resources.error_deleting_category
 import spendoo.designsystem.generated.resources.error_loading_categories
 import spendoo.designsystem.generated.resources.error_loading_summary
-import spendoo.designsystem.generated.resources.error_updating_category
 
 class CategoriesViewModel(
     private val categoriesRepository: CategoriesRepository
@@ -62,7 +59,22 @@ class CategoriesViewModel(
     }
 
     init {
+        listenToResetSignal()
         getData()
+    }
+
+    private fun listenToResetSignal() {
+        tryToCollect(
+            block = {
+                getResult<Boolean?>("reset", consume = true)
+            },
+            onEach = { shouldReset ->
+                if (shouldReset == true) {
+                    getData()
+                }
+            },
+            onError = {}
+        )
     }
 
     private fun getData() {
@@ -96,6 +108,10 @@ class CategoriesViewModel(
         }
     }
 
+    override fun onReload() {
+        getData()
+    }
+
     override fun onListScrolled() {
         viewModelScope.launch {
             if (!state.value.categoriesEndReached) {
@@ -105,58 +121,8 @@ class CategoriesViewModel(
     }
 
     override fun onAddEditCategory(addEditCategoryUiState: AddEditCategoryUiState) {
-        if (addEditCategoryUiState.categoryId == null) {
-            createCategory(addEditCategoryUiState)
-        } else {
-            editCategory(categoryId = addEditCategoryUiState.categoryId, addEditCategoryUiState)
-        }
-    }
-
-    private fun createCategory(addEditCategoryUiState: AddEditCategoryUiState) {
-        tryToCall(
-            onStart = { updateState { it.copy(isAddEditCategoryLoading = true) } },
-            block = { categoriesRepository.createCategory(addEditCategoryUiState.toCreateCategory()) },
-            onSuccess = {
-                getData()
-                updateState { it.copy(isAddCategoryBottomSheetVisible = false) }
-            },
-            onError = { error ->
-                showSnackBar(
-                    title = UiText.StringRes(Res.string.error_creating_category),
-                    message = error.message?.let { error ->
-                        UiText.DynamicString(error)
-                    },
-                    isSuccess = false
-                )
-            },
-            onEnd = { updateState { it.copy(isAddEditCategoryLoading = false) } }
-        )
-    }
-
-    private fun editCategory(categoryId: String, addEditCategoryUiState: AddEditCategoryUiState) {
-        tryToCall(
-            onStart = { updateState { it.copy(isAddEditCategoryLoading = true) } },
-            block = {
-                categoriesRepository.updateCategory(
-                    categoryId = categoryId,
-                    addEditCategoryUiState.toUpdateCategory()
-                )
-            },
-            onSuccess = {
-                getData()
-                updateState { it.copy(isAddCategoryBottomSheetVisible = false) }
-            },
-            onError = { error ->
-                showSnackBar(
-                    title = UiText.StringRes(Res.string.error_updating_category),
-                    message = error.message?.let { error ->
-                        UiText.DynamicString(error)
-                    },
-                    isSuccess = false
-                )
-            },
-            onEnd = { updateState { it.copy(isAddEditCategoryLoading = false) } }
-        )
+        getData()
+        updateState { it.copy(isAddCategoryBottomSheetVisible = false) }
     }
 
     override fun onAddCategoryClicked() {

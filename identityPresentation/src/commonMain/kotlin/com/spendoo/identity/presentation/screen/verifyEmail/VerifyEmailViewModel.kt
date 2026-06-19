@@ -4,13 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.spendoo.designsystem.components.button.AppButtonState
+import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.identity.api.CreateNewPasswordRoute
 import com.spendoo.identity.domain.repository.RegisterRepository
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
 import com.spendoo.identity.domain.useCase.validation.auth.ValidationUseCase
-import com.spendoo.identity.presentation.navigation.CreateNewPasswordRoute
-import com.spendoo.identity.presentation.navigation.VerifyEmailRoute
-import com.spendoo.identity.presentation.shared.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,22 +20,20 @@ import spendoo.designsystem.generated.resources.otp_must_be_5_digits
 import spendoo.designsystem.generated.resources.unknown_error
 
 class VerifyEmailViewModel(
+    private val email: String,
+    private val isForgetPasswordFlow: Boolean,
     private val registerRepository: RegisterRepository,
     private val resetPasswordRepository: ResetPasswordRepository,
     private val validationUseCase: ValidationUseCase,
-    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<VerifyEmailUiState>(VerifyEmailUiState()), VerifyEmailInteractionListener {
 
-    private val navEmail = savedStateHandle.toRoute<VerifyEmailRoute>().email
-    private val navIsForgetPasswordFlow =
-        savedStateHandle.toRoute<VerifyEmailRoute>().isForgetPasswordFlow
     private var timerJob: Job? = null
 
     init {
         updateState {
             copy(
-                email = navEmail,
-                isForgetPasswordFlow = navIsForgetPasswordFlow,
+                email = this@VerifyEmailViewModel.email,
+                isForgetPasswordFlow = this@VerifyEmailViewModel.isForgetPasswordFlow,
             )
         }
         startTimer()

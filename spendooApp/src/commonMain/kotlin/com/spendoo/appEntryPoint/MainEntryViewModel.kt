@@ -2,22 +2,61 @@ package com.spendoo.appEntryPoint
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation3.runtime.NavKey
+import com.spendoo.categories.api.AddTransactionRoute
 import com.spendoo.designsystem.components.snackbar.SnackBarData
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.spendoo.designsystem.navigation.BaseViewModel
+import com.spendoo.designsystem.utils.asStringSuspend
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
-    private val _state = MutableStateFlow(MainEntryState())
-    val state = _state.asStateFlow()
+class MainEntryViewModel : BaseViewModel<MainEntryState>(MainEntryState()),
+    MainEntryInteractionListener {
 
-    override fun onBottomNavigationChanged(isShowed: Boolean) {
-        _state.update { it.copy(showBottomNavigation = isShowed) }
+    private var snackBarId = 0L
+
+    init {
+        viewModelScope.launch {
+            snackBarManager.snackBarEvent.collectLatest { event ->
+                val resolvedTitle = event.title.asStringSuspend()
+                val resolvedMessage = event.message?.asStringSuspend()
+                updateState {
+                    it.copy(
+                        isSnackBarVisible = true,
+                        snackBarData = SnackBarData(
+                            title = resolvedTitle,
+                            message = resolvedMessage,
+                            isSuccess = event.isSuccess,
+                            customLeadingIcon = event.customLeadingIcon,
+                            duration = event.duration,
+                            iconTint = event.iconTint,
+                            id = ++snackBarId
+                        )
+                    )
+                }
+            }
+        }
     }
 
-    override fun setActiveFeature(feature: Feature) {
-        _state.update { it.copy(activeFeature = feature) }
+    override fun onAddTransactionRequested() {
+        updateState { it.copy(isAddTransactionBottomSheetVisible = true) }
+    }
+
+    override fun onAddTransactionClicked() {
+        navigate(AddTransactionRoute)
+    }
+
+    override fun onAddTransactionDismissed() {
+        updateState { it.copy(isAddTransactionBottomSheetVisible = false) }
+    }
+
+    override fun onTransactionAdded() {
+        updateState {
+            it.copy(
+                isAddTransactionBottomSheetVisible = false,
+            )
+        }
     }
 
     override fun showSnackBar(
@@ -28,7 +67,7 @@ class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
         duration: Long?,
         iconTint: Color
     ) {
-        _state.update {
+        updateState {
             it.copy(
                 isSnackBarVisible = true,
                 snackBarData = SnackBarData(
@@ -37,13 +76,18 @@ class MainEntryViewModel : ViewModel(), MainEntryInteractionListener {
                     isSuccess = isSuccess,
                     customLeadingIcon = customLeadingIcon,
                     duration = duration,
-                    iconTint = iconTint
+                    iconTint = iconTint,
+                    id = ++snackBarId
                 )
             )
         }
     }
 
     override fun hideSnackBar() {
-        _state.update { it.copy(isSnackBarVisible = false) }
+        updateState { it.copy(isSnackBarVisible = false) }
+    }
+
+    override fun resetToRoute(route: NavKey, forceNavigate: Boolean) {
+        resetTo(route, forceNavigate)
     }
 }

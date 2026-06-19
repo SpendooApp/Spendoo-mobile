@@ -15,3 +15,9 @@ val customShadow = Shadow(
     blendMode = BlendMode.SrcAtop
 )
 
+val up4DropShadow = Shadow(
+    radius = 16.dp,
+    color = Color.Black.copy(alpha = 0.35f),
+    offset = DpOffset(x = 0.dp, y = 4.dp),
+    spread = 0.dp
+)

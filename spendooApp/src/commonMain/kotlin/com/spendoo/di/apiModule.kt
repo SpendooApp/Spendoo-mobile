@@ -2,6 +2,10 @@ package com.spendoo.di
 
 import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.categories.presentation.api.CategoriesFeatureApiImpl
+import com.spendoo.goals.api.GoalsFeatureApi
+import com.spendoo.goals.presentation.api.GoalsFeatureApiImpl
+import com.spendoo.statistics.api.StatisticsFeatureApi
+import com.spendoo.statistics.presentation.api.StatisticsFeatureApiImpl
 import com.spendoo.identity.api.IdentityFeatureApi
 import com.spendoo.identity.presentation.api.IdentityFeatureApiImpl
 import com.spendoo.home.api.HomeFeatureApi
@@ -9,9 +13,14 @@ import com.spendoo.home.presentation.api.HomeFeatureApiImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import com.spendoo.chatbot.api.ChatbotFeatureApi
+import com.spendoo.chatbot.presentation.api.ChatbotFeatureApiImpl
 
 val apiModule = module {
     singleOf(::IdentityFeatureApiImpl) bind IdentityFeatureApi::class
     singleOf(::HomeFeatureApiImpl) bind HomeFeatureApi::class
     singleOf(::CategoriesFeatureApiImpl) bind CategoriesFeatureApi::class
+    singleOf(::StatisticsFeatureApiImpl) bind StatisticsFeatureApi::class
+    singleOf(::GoalsFeatureApiImpl) bind GoalsFeatureApi::class
+    singleOf(::ChatbotFeatureApiImpl) bind ChatbotFeatureApi::class
 }

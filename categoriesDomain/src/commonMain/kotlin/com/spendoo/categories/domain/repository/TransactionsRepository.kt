@@ -1,11 +1,11 @@
 package com.spendoo.categories.domain.repository
 
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
-import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import com.spendoo.categories.domain.entity.transaction.CreateExpense
 import com.spendoo.categories.domain.entity.transaction.CreateIncome
-import com.spendoo.categories.domain.utils.PageQuery
-import com.spendoo.categories.domain.utils.PagedData
+import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
 import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.UpdateTransaction
 
@@ -23,6 +23,7 @@ interface TransactionsRepository {
         pageQuery: PageQuery
     ): PagedData<Transaction>
 
-    suspend fun getTopSpending(pageQuery: PageQuery): PagedData<CategorySpending>
-}
 
+    suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry>
+    suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry>
+}

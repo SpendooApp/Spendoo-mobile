@@ -48,7 +48,7 @@ import com.spendoo.identity.presentation.screen.signup.components.SelectableGend
 import com.spendoo.identity.presentation.screen.signup.components.TermsAndConditionsBottomSheet
 import com.spendoo.identity.presentation.shared.components.ScreenTemplate
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.already_have_an_account
@@ -193,6 +193,10 @@ private fun SignUpScreenContent(
                     ),
                     errorText = state.dateOfBirthError?.asString(),
                     enabled = false,
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.showDatePicker()
+                    },
                     modifier = Modifier
                         .padding(bottom = 12.dp)
                         .fillMaxWidth()
@@ -302,3 +306,4 @@ fun SignUpScreenPreview() = SpendooTheme {
         )
     )
 }
+

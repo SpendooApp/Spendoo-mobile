@@ -21,7 +21,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.asString
 import com.spendoo.identity.presentation.shared.components.ScreenTemplate
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.enter_your_email
@@ -88,3 +88,5 @@ fun ForgetPasswordScreenPreview() = SpendooTheme {
         }
     )
 }
+
+

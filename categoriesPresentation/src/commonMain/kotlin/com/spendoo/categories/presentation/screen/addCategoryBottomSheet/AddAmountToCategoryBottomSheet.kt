@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.spendoo.categories.presentation.shared.toCleanDoubleOrNull
-import com.spendoo.categories.presentation.shared.toCleanString
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
 import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.utils.extentions.asString
+import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
+import com.spendoo.shared.domain.utils.toCleanString
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add
 import spendoo.designsystem.generated.resources.add_amount_to
@@ -34,7 +34,7 @@ fun AddAmountToCategoryBottomSheet(
     onAddAmount: (Double) -> Unit,
     isLoading: Boolean
 ) {
-    var amountText: Double? by remember { mutableStateOf(initialAmount) }
+    var amountText: Double? by remember(initialAmount, isVisible) { mutableStateOf(initialAmount) }
 
     BottomSheet(
         isVisible = isVisible,

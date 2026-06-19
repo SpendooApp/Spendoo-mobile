@@ -41,7 +41,8 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import kotlinx.coroutines.delay
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun OtpInputField(
@@ -148,7 +149,7 @@ internal fun CharacterContainer(
     LaunchedEffect(key1 = isFocused) {
         if (isFocused && shouldShowCursor && shouldCursorBlink) {
             while (true) {
-                delay(800)
+                delay(800.milliseconds)
                 cursorVisible.value = !cursorVisible.value
             }
         } else if (!isFocused) {
@@ -205,3 +206,5 @@ fun OtpInputFieldPreview() = SpendooTheme {
         onOtpModified = {}
     )
 }
+
+

@@ -17,6 +17,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 class ProfileRepositoryImpl(
     client: HttpClient,
@@ -61,7 +62,7 @@ class ProfileRepositoryImpl(
     }
 
     override suspend fun getNotificationsCount(): Int {
-        delay(2000)
+        delay(2000.milliseconds)
         return 5 //TODO: Implement this method when the endpoint is ready
     }
 

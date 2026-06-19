@@ -17,7 +17,7 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.cancel
 import spendoo.designsystem.generated.resources.ok
@@ -63,7 +63,7 @@ fun DatePicker(
                 onDismissRequest = onDismiss,
                 confirmButton = {
                     TextButton(
-                        colors = ButtonDefaults.textButtonColors(contentColor = brandColor),
+                        colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
                         onClick = {
                             val selectedDateMillis = datePickerState.selectedDateMillis
                             if (selectedDateMillis != null) {
@@ -76,7 +76,7 @@ fun DatePicker(
                 },
                 dismissButton = {
                     TextButton(
-                        colors = ButtonDefaults.textButtonColors(contentColor = brandColor),
+                        colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
                         onClick = onDismiss
                     ) { Text(dismissText) }
                 },
@@ -138,3 +138,4 @@ fun ASDatePickerDialogPreview() = SpendooTheme {
         onDismiss = {}
     )
 }
+

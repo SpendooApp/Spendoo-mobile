@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.androidKotlinMultiplatformLibrary) apply false
     alias(libs.plugins.androidLint) apply false
+    alias(libs.plugins.kotlinx.serialization) apply false
     id("com.google.gms.google-services") version "4.4.4" apply false
 }
 
@@ -24,8 +25,8 @@ tasks.register("exportModuleDeps") {
                 .matching { it.name.contains("implementation", ignoreCase = true) }
                 .forEach { configuration ->
                     configuration.dependencies.forEach { dependency ->
-                        if (dependency is ProjectDependency && allModuleNames.contains(dependency.dependencyProject.name)) {
-                            projectDeps.add(dependency.dependencyProject.name)
+                        if (dependency is ProjectDependency && allModuleNames.contains(dependency.name)) {
+                            projectDeps.add(dependency.name)
                         }
                     }
                 }

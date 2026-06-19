@@ -18,4 +18,4 @@ data class ExpenseEntryDto(
     val note: String? = null,
 )
 
-fun ExpenseEntry.toDto(): ExpenseEntryDto = ExpenseEntryDto(title, amount, categoryId, transactionDate, note)
+fun ExpenseEntry.toDto(): ExpenseEntryDto = ExpenseEntryDto(title, amount, categoryId, transactionDate.toString(), note)
