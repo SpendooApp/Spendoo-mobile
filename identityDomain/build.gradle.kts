@@ -6,4 +6,12 @@ kotlin {
     android {
         namespace = "com.spendoo.identity.domain"
     }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(projects.sharedDomain)
+            }
+        }
+    }
 }

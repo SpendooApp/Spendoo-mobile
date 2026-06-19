@@ -9,11 +9,6 @@ import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
 import com.spendoo.shared.domain.utils.getToday
 import kotlinx.datetime.LocalDate
 import com.spendoo.designsystem.utils.UiText
-import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.overdue
-import spendoo.designsystem.generated.resources.today
-import spendoo.designsystem.generated.resources.tomorrow
-import spendoo.designsystem.generated.resources.days_left
 
 data class ScheduledPaymentsUiState(
     val summary: ScheduledPaymentSummaryUiState = ScheduledPaymentSummaryUiState(),
@@ -65,11 +60,3 @@ fun ScheduledPaymentUiState.toAddScheduledPaymentUiState(): AddScheduledPaymentU
     )
 }
 
-fun Long.toTimeLeftText(): UiText {
-    return when {
-        this < 0L -> UiText.StringRes(Res.string.overdue)
-        this == 0L -> UiText.StringRes(Res.string.today)
-        this == 1L -> UiText.StringRes(Res.string.tomorrow)
-        else -> UiText.StringRes(Res.string.days_left, this.toString())
-    }
-}

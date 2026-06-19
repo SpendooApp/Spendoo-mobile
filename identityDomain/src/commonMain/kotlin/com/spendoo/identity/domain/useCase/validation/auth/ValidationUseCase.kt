@@ -1,13 +1,10 @@
 package com.spendoo.identity.domain.useCase.validation.auth
 
+import com.spendoo.shared.domain.utils.getToday
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-
 
 class ValidationUseCase {
     private val maxFileSize = 5 * 1024 * 1024 // 5 MB
@@ -35,7 +32,7 @@ class ValidationUseCase {
 
     @OptIn(ExperimentalTime::class)
     fun validateAge(date: LocalDate): Boolean {
-        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val today = getToday()
         val yearAdjustment =
             if (today.month < date.month || (today.month == date.month && today.day <= date.day)) 1 else 0
         val age = today.year - date.year - yearAdjustment
@@ -45,7 +42,7 @@ class ValidationUseCase {
 
     @OptIn(ExperimentalTime::class)
     fun getMaximumAllowedRegistrationDate(): LocalDate {
-        return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return getToday()
             .minus(MIN_AGE.toLong(), DateTimeUnit.YEAR)
             .minus(1, DateTimeUnit.DAY)
     }

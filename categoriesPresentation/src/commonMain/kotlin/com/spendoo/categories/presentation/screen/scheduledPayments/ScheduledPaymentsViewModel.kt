@@ -7,10 +7,18 @@ import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.designsystem.utils.extentions.toTimeLeftText
+import com.spendoo.shared.domain.utils.getNow
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.toInstant
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 
+@OptIn(ExperimentalTime::class)
 class ScheduledPaymentsViewModel(
     private val scheduledPaymentsRepository: ScheduledPaymentsRepository
 ) : BaseViewModel<ScheduledPaymentsUiState>(ScheduledPaymentsUiState()),
@@ -28,17 +36,19 @@ class ScheduledPaymentsViewModel(
             ).data
         },
         onSuccess = { items ->
-            val today = getToday()
+            val now = getNow()
             updateState {
                 copy(
                     scheduledPayments = scheduledPayments + items.map { payment ->
-                        val daysDiff = payment.nextDueDate.toEpochDays() - today.toEpochDays()
+                        val nowInstant = now.toInstant(TimeZone.currentSystemDefault())
+                        val dueInstant = payment.nextDueDate.toInstant(TimeZone.currentSystemDefault())
+                        val daysDiff = (dueInstant - nowInstant).inWholeDays
                         ScheduledPaymentUiState(
                             id = payment.id,
                             name = payment.title,
                             amount = payment.amount.toString(),
                             categoryIcon = payment.categoryIcon,
-                            timeLeft = daysDiff.toTimeLeftText(),
+                            timeLeft = payment.nextDueDate.toTimeLeftText(now),
                             isDueSoon = daysDiff <= 1L,
                             startDate = payment.startDate,
                             categoryId = payment.categoryId,

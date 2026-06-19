@@ -4,6 +4,7 @@ import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
+import com.spendoo.shared.domain.utils.getNow
 import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.Serializable
 
@@ -28,7 +29,8 @@ data class ScheduledPaymentDto(
 
 fun ScheduledPaymentDto.toDomain(): ScheduledPayment {
     val domainFrequency = PaymentFrequency.fromDays(this.frequency)
-    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val now = getNow()
+    val today = now.date
     return ScheduledPayment(
         id = this.id,
         title = this.title,
@@ -36,7 +38,7 @@ fun ScheduledPaymentDto.toDomain(): ScheduledPayment {
         categoryId = this.categoryId,
         categoryIcon = CategoryIcon.fromStringOrDefault(this.categoryIcon),
         startDate = this.startDate?.toLocalDateTimeOrDefault()?.date ?: today,
-        nextDueDate = this.nextDueDate?.toLocalDateTimeOrDefault()?.date ?: today,
+        nextDueDate = this.nextDueDate?.toLocalDateTimeOrDefault() ?: now,
         nextReminderDate = this.nextReminderDate?.toLocalDateTimeOrDefault()?.date ?: today,
         frequency = domainFrequency,
         customFrequencyDays = if (domainFrequency == PaymentFrequency.CUSTOM) this.frequency else null,

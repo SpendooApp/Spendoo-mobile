@@ -5,9 +5,17 @@ import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.extentions.format
+import com.spendoo.designsystem.utils.extentions.toTimeLeftText
+import com.spendoo.shared.domain.utils.getNow
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.toInstant
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 
+@OptIn(ExperimentalTime::class)
 class ScheduledPaymentDetailsViewModel(
     private val paymentId: String,
     private val scheduledPaymentsRepository: ScheduledPaymentsRepository,
@@ -26,8 +34,10 @@ class ScheduledPaymentDetailsViewModel(
                 scheduledPaymentsRepository.getScheduledPayment(paymentId)
             },
             onSuccess = { payment ->
-                val today = getToday()
-                val daysDiff = payment.nextDueDate.toEpochDays() - today.toEpochDays()
+                val now = getNow()
+                val nowInstant = now.toInstant(TimeZone.currentSystemDefault())
+                val dueInstant = payment.nextDueDate.toInstant(TimeZone.currentSystemDefault())
+                val daysDiff = (dueInstant - nowInstant).inWholeDays
 
                 updateState {
                     copy(
@@ -42,8 +52,8 @@ class ScheduledPaymentDetailsViewModel(
                         customFrequencyDays = payment.customFrequencyDays,
                         reminderPeriod = payment.reminderPeriod,
                         reminderUnit = payment.reminderUnit,
-                        dueDate = payment.nextDueDate.format(),
-                        timeLeft = daysDiff.toTimeLeftText(),
+                        dueDate = payment.nextDueDate.date.format(),
+                        timeLeft = payment.nextDueDate.toTimeLeftText(now),
                         isDueSoon = daysDiff <= 1
                     )
                 }
