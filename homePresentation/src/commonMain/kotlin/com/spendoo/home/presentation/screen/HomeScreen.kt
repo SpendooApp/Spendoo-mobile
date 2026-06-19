@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.presentation.screen.components.GoalsSection
 import com.spendoo.home.presentation.screen.components.HomeHeader
@@ -30,7 +31,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeContent(state = state, viewModel = viewModel)
 }

@@ -111,7 +111,7 @@ fun SelectableOptionRowColumn(
 
 @Composable
 fun <T: Enum<T>> SelectableOptionRowColumn(
-    options: List<GenSelectableOption<T>>,
+    options: List<GenSelectableOption<T>>, //TODO: pass mapper to get the name instead
     selectedOption: T?,
     onOptionSelected: (T) -> Unit,
     modifier: Modifier = Modifier,

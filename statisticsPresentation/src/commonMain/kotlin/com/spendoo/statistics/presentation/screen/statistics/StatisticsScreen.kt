@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonType
@@ -31,7 +32,7 @@ import spendoo.designsystem.generated.resources.scheduled_payments
 fun StatisticsScreen(
     viewModel: StatisticsViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     StatisticsContent(
         state = state,

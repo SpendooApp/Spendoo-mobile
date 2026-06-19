@@ -193,6 +193,10 @@ private fun SignUpScreenContent(
                     ),
                     errorText = state.dateOfBirthError?.asString(),
                     enabled = false,
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        interactionListener.showDatePicker()
+                    },
                     modifier = Modifier
                         .padding(bottom = 12.dp)
                         .fillMaxWidth()

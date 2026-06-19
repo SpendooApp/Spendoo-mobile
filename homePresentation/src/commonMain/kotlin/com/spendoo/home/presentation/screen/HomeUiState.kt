@@ -82,8 +82,8 @@ fun Goal.toUiState(): GoalUiState {
     return GoalUiState(
         id = id,
         name = name,
-        icon = icon,
-        progress = progress
+        icon = CategoryIcon.fromStringOrDefault(icon.name), //TODO: move CategoryIcon to shared domain
+        progress = savingPercentage / 100f
     )
 }
 
