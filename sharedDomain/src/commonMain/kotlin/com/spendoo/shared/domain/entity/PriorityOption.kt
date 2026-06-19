@@ -1,4 +1,4 @@
-package com.spendoo.categories.domain.entity.category
+package com.spendoo.shared.domain.entity
 
 enum class PriorityOption { LOW, MEDIUM, HIGH }
 

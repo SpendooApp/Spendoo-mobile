@@ -3,7 +3,7 @@ package com.spendoo.categories.data.dataSource.remote.dto.category
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.categories.domain.entity.category.Category
-import com.spendoo.categories.domain.entity.category.toPriorityOption
+import com.spendoo.shared.domain.entity.toPriorityOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.spendoo.categories.domain.entity.category.LeftOverOption
-import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toSelectableOptions
+import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toName
 import com.spendoo.designsystem.components.general.SelectableOptionRowColumn
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
@@ -39,9 +39,10 @@ fun LiftoverFundsActionSheet(
         ) {
             item {
                 SelectableOptionRowColumn(
-                    options = LeftOverOption.entries.toSelectableOptions(),
+                    options = LeftOverOption.entries,
                     selectedOption = selectedOption,
                     onOptionSelected = { selectedOption = it },
+                    getName = { this.toName() }
                 )
             }
         }

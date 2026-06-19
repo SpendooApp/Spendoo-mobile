@@ -8,6 +8,7 @@ import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.goals.presentation.screen.goals.components.AddAmountUiState
 import com.spendoo.goals.presentation.screen.addEditGoal.AddEditGoalUiState
 import com.spendoo.goals.presentation.screen.goals.components.GoalActionType
+import com.spendoo.shared.domain.entity.toPriorityOption
 import com.spendoo.shared.domain.utils.PageQuery
 import kotlinx.coroutines.launch
 import spendoo.designsystem.generated.resources.Res

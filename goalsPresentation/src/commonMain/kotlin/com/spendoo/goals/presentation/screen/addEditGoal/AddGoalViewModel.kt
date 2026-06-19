@@ -1,10 +1,10 @@
 package com.spendoo.goals.presentation.screen.addEditGoal
 
-import com.spendoo.goals.domain.entity.PriorityOption
 import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.shared.domain.utils.toLocalDateTime
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res

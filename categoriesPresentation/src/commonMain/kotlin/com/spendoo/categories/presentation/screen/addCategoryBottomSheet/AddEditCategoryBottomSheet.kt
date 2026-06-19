@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
-import com.spendoo.categories.domain.entity.category.PriorityOption
+import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.LiftoverFundsActionSheet
 import com.spendoo.designsystem.components.row.SelectableIconRow
@@ -41,6 +41,7 @@ import kotlinx.datetime.LocalDate
 import androidx.compose.ui.tooling.preview.Preview
 import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import com.spendoo.shared.domain.utils.toCleanString
+import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_category
@@ -50,11 +51,14 @@ import spendoo.designsystem.generated.resources.edit_category
 import spendoo.designsystem.generated.resources.enter_budget
 import spendoo.designsystem.generated.resources.enter_budget_start_date
 import spendoo.designsystem.generated.resources.enter_category_name
+import spendoo.designsystem.generated.resources.high
 import spendoo.designsystem.generated.resources.ic_arrow_down
 import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.icon
 import spendoo.designsystem.generated.resources.leave_it_blank_or_0_for_no_budget_limit
 import spendoo.designsystem.generated.resources.leftover_funds_action
+import spendoo.designsystem.generated.resources.low
+import spendoo.designsystem.generated.resources.medium
 import spendoo.designsystem.generated.resources.priority
 import spendoo.designsystem.generated.resources.reset_budget_cycle
 
@@ -217,9 +221,10 @@ private fun AddEditCategoryContent(
                 )
 
                 AppSegmentedControl(
-                    options = PriorityOption.entries.map { it.toGenSelectableOption() },
+                    options = PriorityOption.entries,
                     selectedOption = addEditCategoryUiState.priority,
-                    onOptionSelected = interactionListener::onPriorityChanged
+                    onOptionSelected = interactionListener::onPriorityChanged,
+                    getName = { this.toName() }
                 )
 
                 Text(
@@ -289,4 +294,10 @@ private fun AddCategoryScreenPreview() = SpendooPreview {
     )
 }
 
-
+private fun PriorityOption.toName(): StringResource {
+    return when (this) {
+        PriorityOption.LOW -> Res.string.low
+        PriorityOption.MEDIUM -> Res.string.medium
+        PriorityOption.HIGH -> Res.string.high
+    }
+}

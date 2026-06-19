@@ -13,13 +13,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.goals.domain.entity.PriorityOption
 import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import com.spendoo.shared.domain.utils.toCleanString
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
 import com.spendoo.designsystem.components.general.AppSegmentedControl
-import com.spendoo.designsystem.components.general.GenSelectableOption
 import com.spendoo.designsystem.components.row.SelectableIconRow
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
@@ -32,6 +30,8 @@ import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.goals.presentation.screen.goals.components.toDrawableResource
 import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.shared.domain.entity.PriorityOption
+import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.cancel
@@ -180,9 +180,10 @@ private fun AddEditGoalContent(
                 )
 
                 AppSegmentedControl(
-                    options = PriorityOption.entries.map { it.toGenSelectableOption() },
+                    options = PriorityOption.entries,
                     selectedOption = addEditGoalUiState.priority,
-                    onOptionSelected = interactionListener::onPriorityChanged
+                    onOptionSelected = interactionListener::onPriorityChanged,
+                    getName = { this.toName() }
                 )
 
                 Text(
@@ -205,10 +206,10 @@ private fun AddEditGoalContent(
     }
 }
 
-private fun PriorityOption.toGenSelectableOption(): GenSelectableOption<PriorityOption> {
+private fun PriorityOption.toName(): StringResource {
     return when (this) {
-        PriorityOption.LOW -> GenSelectableOption(PriorityOption.LOW, Res.string.low)
-        PriorityOption.MEDIUM -> GenSelectableOption(PriorityOption.MEDIUM, Res.string.medium)
-        PriorityOption.HIGH -> GenSelectableOption(PriorityOption.HIGH, Res.string.high)
+        PriorityOption.LOW -> Res.string.low
+        PriorityOption.MEDIUM -> Res.string.medium
+        PriorityOption.HIGH -> Res.string.high
     }
 }

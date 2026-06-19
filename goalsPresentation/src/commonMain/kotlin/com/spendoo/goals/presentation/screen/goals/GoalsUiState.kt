@@ -3,7 +3,6 @@ package com.spendoo.goals.presentation.screen.goals
 import com.spendoo.designsystem.components.cards.Priority
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.goals.domain.entity.GoalsSummary
-import com.spendoo.goals.domain.entity.PriorityOption
 import com.spendoo.goals.presentation.screen.goals.components.AddAmountUiState
 import com.spendoo.goals.presentation.screen.addEditGoal.AddEditGoalUiState
 
@@ -31,11 +30,4 @@ fun Int.toUiState(isCompleted: Boolean) = if (isCompleted) {
         2 -> Priority.HIGH
         else -> Priority.MEDIUM
     }
-}
-
-fun Int.toPriorityOption() = when (this) {
-    0 -> PriorityOption.LOW
-    1 -> PriorityOption.MEDIUM
-    2 -> PriorityOption.HIGH
-    else -> PriorityOption.MEDIUM
 }

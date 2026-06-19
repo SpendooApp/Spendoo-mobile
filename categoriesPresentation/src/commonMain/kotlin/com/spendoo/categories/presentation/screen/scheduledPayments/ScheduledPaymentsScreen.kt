@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
-import com.spendoo.categories.domain.entity.category.PriorityOption
+import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentBottomSheet
 import com.spendoo.designsystem.components.appBar.SpendooIconButton

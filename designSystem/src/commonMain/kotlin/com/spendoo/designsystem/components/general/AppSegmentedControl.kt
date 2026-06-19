@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,6 +34,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.SpendooPreview
 import com.spendoo.designsystem.utils.extentions.asString
 import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.StringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.expenses
 import spendoo.designsystem.generated.resources.income
@@ -40,12 +42,13 @@ import kotlin.math.roundToInt
 
 @Composable
 fun <T : Enum<T>> AppSegmentedControl(
-    options: List<GenSelectableOption<T>>,
+    options: List<T>,
     selectedOption: T,
     onOptionSelected: (T) -> Unit,
+    getName: T.() -> StringResource,
     modifier: Modifier = Modifier
 ) {
-    var containerWidth by remember { mutableStateOf(0) }
+    var containerWidth by remember { mutableIntStateOf(0) }
     val animatedOffset = remember { Animatable(0f) }
 
     val itemWidth = if (containerWidth > 0 && options.isNotEmpty()) {
@@ -54,7 +57,7 @@ fun <T : Enum<T>> AppSegmentedControl(
 
     LaunchedEffect(selectedOption, containerWidth) {
         if (containerWidth > 0 && options.isNotEmpty()) {
-            val selectedIndex = options.indexOfFirst { it.elem == selectedOption }
+            val selectedIndex = options.indexOfFirst { it == selectedOption }
             val targetOffset = selectedIndex * itemWidth
             animatedOffset.animateTo(
                 targetValue = targetOffset.toFloat(),
@@ -95,7 +98,7 @@ fun <T : Enum<T>> AppSegmentedControl(
             verticalAlignment = Alignment.CenterVertically
         ) {
             options.forEach { option ->
-                val isSelected = option.elem == selectedOption
+                val isSelected = option == selectedOption
                 val textColor by animateColorAsState(
                     targetValue = if (isSelected) {
                         Theme.colorScheme.button.onPrimary
@@ -110,12 +113,12 @@ fun <T : Enum<T>> AppSegmentedControl(
                         .weight(1f)
                         .fillMaxHeight()
                         .clickableNoRipple {
-                            onOptionSelected(option.elem)
+                            onOptionSelected(option)
                         },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = option.name.asString(),
+                        text = option.getName().asString(),
                         style = Theme.typography.label.medium.medium,
                         color = textColor
                     )
@@ -130,13 +133,21 @@ enum class SampleEnum {
     OPTION1, OPTION2, OPTION3
 }
 
+fun SampleEnum.getName(): StringResource {
+    return when (this) {
+        SampleEnum.OPTION1 -> Res.string.income
+        SampleEnum.OPTION2 -> Res.string.expenses
+        SampleEnum.OPTION3 -> Res.string.income
+    }
+}
+
 @Preview
 @Composable
 fun AppSegmentedControlPreview() = SpendooPreview {
     val options = listOf(
-        GenSelectableOption(SampleEnum.OPTION1, Res.string.income),
-        GenSelectableOption(SampleEnum.OPTION2, Res.string.expenses),
-        GenSelectableOption(SampleEnum.OPTION3, Res.string.income)
+        SampleEnum.OPTION1,
+        SampleEnum.OPTION2,
+        SampleEnum.OPTION3
     )
     var selectedOption by remember {
         mutableStateOf(
@@ -146,7 +157,7 @@ fun AppSegmentedControlPreview() = SpendooPreview {
     AppSegmentedControl(
         options = options,
         selectedOption = selectedOption,
-        onOptionSelected = { selectedOption = it }
+        onOptionSelected = { selectedOption = it },
+        getName = { this.getName() },
     )
 }
-

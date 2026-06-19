@@ -105,7 +105,8 @@ private fun AddTransactionBottomSheetContent(
                         selectedOption = state.type,
                         onOptionSelected = interactionListener::onTypeSelected,
                         modifier = Modifier.padding(bottom = 24.dp, top = 8.dp)
-                            .padding(horizontal = 16.dp)
+                            .padding(horizontal = 16.dp),
+                        getName = { this.toName() }
                     )
 
                     AddExpenseEntriesSection(

@@ -2,7 +2,7 @@ package com.spendoo.categories.presentation.screen.addCategoryBottomSheet
 
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
-import com.spendoo.categories.domain.entity.category.PriorityOption
+import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.categories.domain.entity.category.ResetCycleOption
 import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.designsystem.navigation.BaseViewModel

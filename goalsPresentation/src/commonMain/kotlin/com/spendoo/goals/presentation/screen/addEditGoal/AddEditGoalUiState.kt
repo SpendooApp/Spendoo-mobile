@@ -1,7 +1,7 @@
 package com.spendoo.goals.presentation.screen.addEditGoal
 
-import com.spendoo.goals.domain.entity.PriorityOption
 import com.spendoo.shared.domain.entity.CategoryIcon
+import com.spendoo.shared.domain.entity.PriorityOption
 import kotlinx.datetime.LocalDate
 
 data class AddEditGoalUiState(

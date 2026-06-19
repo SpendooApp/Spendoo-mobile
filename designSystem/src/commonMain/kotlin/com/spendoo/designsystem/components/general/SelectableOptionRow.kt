@@ -34,11 +34,6 @@ data class SelectableOption(
     val text: String,
 )
 
-data class GenSelectableOption<T: Enum<T>>(
-    val elem: T,
-    val name: StringResource
-)
-
 @Composable
 fun SelectableOptionRow(
     optionName: String,
@@ -111,9 +106,10 @@ fun SelectableOptionRowColumn(
 
 @Composable
 fun <T: Enum<T>> SelectableOptionRowColumn(
-    options: List<GenSelectableOption<T>>, //TODO: pass mapper to get the name instead
+    options: List<T>,
     selectedOption: T?,
     onOptionSelected: (T) -> Unit,
+    getName: T.() -> StringResource,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -122,9 +118,9 @@ fun <T: Enum<T>> SelectableOptionRowColumn(
     ) {
         options.forEach { option ->
             SelectableOptionRow(
-                optionName = option.name.asString(),
-                isSelected = option.elem == selectedOption,
-                onClick = { onOptionSelected(option.elem) }
+                optionName = option.getName().asString(),
+                isSelected = option == selectedOption,
+                onClick = { onOptionSelected(option) }
             )
         }
     }

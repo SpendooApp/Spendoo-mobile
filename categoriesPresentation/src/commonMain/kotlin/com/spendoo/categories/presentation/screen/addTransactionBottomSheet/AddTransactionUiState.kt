@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.shared.domain.utils.getToday
-import com.spendoo.designsystem.components.general.GenSelectableOption
 import com.spendoo.designsystem.utils.extentions.asString
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.StringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.enter_a_title
 import spendoo.designsystem.generated.resources.enter_your_amount
@@ -91,10 +91,7 @@ data class AddTransactionUiState(
     val showCategorySheet: Boolean = false,
     val showAudioPicker: Boolean = false,
     val selectedEntryIdForCategory: String? = null,
-    val transactionTypeOptions: List<GenSelectableOption<TransactionType>> = listOf(
-        GenSelectableOption(TransactionType.Expense, Res.string.expenses),
-        GenSelectableOption(TransactionType.Income, Res.string.income),
-    ),
+    val transactionTypeOptions: List<TransactionType> = TransactionType.entries,
 ) {
     val isSavingAmountValid: Boolean
         get() = !isSavingChecked || (savingAmount != null && savingAmount > 0)
@@ -155,3 +152,8 @@ fun Category.toCategoryItemUiState() = CategoryItemUiState(
     name = categoryName,
     icon = categoryIcon
 )
+
+fun TransactionType.toName(): StringResource = when(this) {
+    TransactionType.Income -> Res.string.income
+    TransactionType.Expense -> Res.string.expenses
+}

@@ -2,7 +2,7 @@ package com.spendoo.categories.presentation.screen.scheduledPayments
 
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.category.LeftOverOption
-import com.spendoo.categories.domain.entity.category.PriorityOption
+import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentUiState
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
