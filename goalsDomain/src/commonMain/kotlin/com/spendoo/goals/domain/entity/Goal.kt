@@ -1,10 +1,15 @@
 package com.spendoo.goals.domain.entity
 
-import com.spendoo.categories.domain.entity.category.CategoryIcon
+import kotlinx.datetime.LocalDateTime
 
 data class Goal(
     val id: String,
     val name: String,
-    val icon: CategoryIcon,
-    val progress: Float
+    val priority: Int,
+    val icon: GoalIcon,
+    val deadline: LocalDateTime,
+    val currentAmount: Double,
+    val targetAmount: Double,
+    val savingPercentage: Int,
+    val isCompleted: Boolean
 )
