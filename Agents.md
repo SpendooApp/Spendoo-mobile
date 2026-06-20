@@ -50,6 +50,7 @@ Each feature is split into specific layers, each with its own responsibilities a
        - State management via `MutableStateFlow` (`updateState` helper).
        - Centralized navigation and snackbar functions via `Effector` and `SnackBarManager` delegation.
        - Coroutine helpers (`tryToCall`, `tryToCollect`, `createPaginator`) that safely handle exceptions, loading states, pagination and threading automatically.
+       - **Coroutine Cancellation**: `tryToCall` and `tryToCollect` automatically ignore `CancellationException` to prevent "Job was canceled" snackbars when the user navigates away. Do not catch or swallow `CancellationException` in repository or View Model code without rethrowing it, to preserve proper coroutine cancellation.
      - **Rule**: ViewModels interact directly with Repositories. Do not use Use Cases. Do not put mock data here.
   3. **`[Screen]UiState.kt`**: A data class representing the immutable state of the screen.
   4. **`[Screen]InteractionListener.kt`**: An interface defining all user interactions/events that the ViewModel implements. The UI composable calls these methods.
@@ -72,6 +73,7 @@ Each feature is split into specific layers, each with its own responsibilities a
 11. **Placeholder Comments**: Any temporary placeholders or incomplete implementations (e.g. placeholder icons, click listeners) must be documented with a comment starting explicitly with `// TODO`.
 12. **Build Validation**: Always run a compilation check or build (e.g., using `.\gradlew.bat compileKotlinMetadata` or equivalent build task) to verify that all code compiles successfully without errors before finishing a task.
 13. **Data Transfer Objects (DTOs)**: When defining DTOs for network requests, you can use domain Enums directly instead of mapping them to Strings, as `kotlinx.serialization` handles Enums automatically.
+14. **Custom Request Timeouts**: For endpoints requiring customized timeouts (e.g., long-running AI operations or media uploads), use the request-level `timeout` configuration block (provided by Ktor's `HttpTimeout` plugin) rather than modifying global client timeout settings.
 
 ## 🤖 Dynamic Learning Rule
 **IMPORTANT FOR ALL AGENTS**:
