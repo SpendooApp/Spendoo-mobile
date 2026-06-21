@@ -10,4 +10,12 @@ kotlin {
             enable = true
         }
     }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.compose.material)
+            }
+        }
+    }
 }

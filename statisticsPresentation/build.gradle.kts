@@ -23,6 +23,7 @@ kotlin {
                 implementation(projects.categoriesDomain)
                 implementation(projects.identityDomain)
                 implementation(projects.categoriesApi)
+                implementation(projects.charts)
             }
         }
         androidMain {
