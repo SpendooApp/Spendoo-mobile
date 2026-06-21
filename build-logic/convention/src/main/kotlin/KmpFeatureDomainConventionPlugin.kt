@@ -29,13 +29,17 @@ class KmpFeatureDomainConventionPlugin : Plugin<Project> {
                         instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     }
                 }
-            }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("kotlin-stdlib").get())
-                "commonMainImplementation"(libs.findLibrary("koin-core").get())
-                "commonMainImplementation"(libs.findLibrary("kotlinx-coroutines-core").get())
-                "commonMainImplementation"(libs.findLibrary("kotlinx-datetime").get())
+                sourceSets.configureEach {
+                    if (name == "commonMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("kotlin-stdlib").get())
+                            implementation(libs.findLibrary("koin-core").get())
+                            implementation(libs.findLibrary("kotlinx-coroutines-core").get())
+                            implementation(libs.findLibrary("kotlinx-datetime").get())
+                        }
+                    }
+                }
             }
         }
     }

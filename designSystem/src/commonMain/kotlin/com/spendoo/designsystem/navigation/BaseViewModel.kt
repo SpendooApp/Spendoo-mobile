@@ -8,6 +8,7 @@ import androidx.navigation3.runtime.NavKey
 import com.spendoo.designsystem.navigation.effector.Effector
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.pagination.Paginator
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -96,13 +97,23 @@ abstract class BaseViewModel<STATE>(
         onEnd: suspend () -> Unit = {},
         dispatcher: CoroutineDispatcher = dispatchers.io
     ): Job {
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable -> onError(throwable) }
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            if (throwable !is CancellationException) {
+                onError(throwable)
+            }
+        }
         return viewModelScope.launch(dispatcher + exceptionHandler) {
             onStart()
-            runCatching { block() }
-                .onSuccess { onSuccess(it) }
-                .onFailure { onError(it) }
-            onEnd()
+            try {
+                val result = block()
+                onSuccess(result)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Throwable) {
+                onError(e)
+            } finally {
+                onEnd()
+            }
         }
     }
 
@@ -115,18 +126,32 @@ abstract class BaseViewModel<STATE>(
         dispatcher: CoroutineDispatcher = dispatchers.io,
         scope: CoroutineScope = viewModelScope
     ): Job {
-        val exceptionHandler = CoroutineExceptionHandler { _, exception -> onError(exception) }
+        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+            if (exception !is CancellationException) {
+                onError(exception)
+            }
+        }
         return scope.launch(dispatcher + exceptionHandler) {
             block()
                 .flowOn(dispatcher)
                 .onStart { onStart() }
                 .onEach { onEach(it) }
                 .onCompletion { throwable ->
-                    throwable?.let {
-                        onError(throwable)
-                    } ?: onEnd()
+                    if (throwable != null) {
+                        if (throwable !is CancellationException) {
+                            onError(throwable)
+                        }
+                    } else {
+                        onEnd()
+                    }
                 }
-                .catch { throwable -> onError(throwable) }
+                .catch { throwable ->
+                    if (throwable !is CancellationException) {
+                        onError(throwable)
+                    } else {
+                        throw throwable
+                    }
+                }
                 .collect()
         }
     }

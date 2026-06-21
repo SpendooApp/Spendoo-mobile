@@ -19,6 +19,7 @@ import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.PagedData
 import com.spendoo.shared.domain.utils.orEmpty
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
@@ -125,6 +126,10 @@ class TransactionsRepositoryImpl(
     override suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry> {
         val response = tryToExecute<EnrichedAiExtractionResponseDto> {
             post(TransactionsEndpoints.VOICE_TO_TRANSACTION) {
+                timeout {
+                    requestTimeoutMillis = 120_000L
+                    socketTimeoutMillis = 120_000L
+                }
                 setBody(
                     MultiPartFormDataContent(
                         formData {
@@ -150,6 +155,10 @@ class TransactionsRepositoryImpl(
     override suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry> {
         val response = tryToExecute<EnrichedAiExtractionResponseDto> {
             post(TransactionsEndpoints.IMAGE_TO_TRANSACTION) {
+                timeout {
+                    requestTimeoutMillis = 120_000L
+                    socketTimeoutMillis = 120_000L
+                }
                 setBody(
                     MultiPartFormDataContent(
                         formData {

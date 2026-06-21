@@ -16,8 +16,10 @@ import com.spendoo.identity.domain.repository.AuthenticationRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 
 class AuthenticationRepositoryImpl(
     client: HttpClient,
@@ -49,21 +51,23 @@ class AuthenticationRepositoryImpl(
     }
 
     override suspend fun refreshAccessToken(): String {
-        return try {
-            val response = tryToExecute<AuthenticationResponse> {
-                post(REFRESH_ENDPOINT) {
-                    setBody(RefreshRequestDto(settings.refreshToken))
+        return withContext(NonCancellable) {
+            try {
+                val response = tryToExecute<AuthenticationResponse> {
+                    post(REFRESH_ENDPOINT) {
+                        setBody(RefreshRequestDto(settings.refreshToken))
+                    }
                 }
+                saveTokens(response.toDomain())
+                client.invalidateAuthTokens()
+                settings.accessToken
+            } catch (e: UnAuthorizedException) {
+                clearAuthStateAfterRefreshFailure()
+                throw e
+            } catch (e: UserIsBlockedException) {
+                clearAuthStateAfterRefreshFailure()
+                throw e
             }
-            saveTokens(response.toDomain())
-            client.invalidateAuthTokens()
-            settings.accessToken
-        } catch (e: UnAuthorizedException) {
-            clearAuthStateAfterRefreshFailure()
-            throw e
-        } catch (e: UserIsBlockedException) {
-            clearAuthStateAfterRefreshFailure()
-            throw e
         }
     }
 

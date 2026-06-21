@@ -473,7 +473,7 @@ private fun InputVoiceBottomSheetPreview() = SpendooTheme {
             override fun reset() {}
             override fun startTimer() {}
             override fun stopTimer() {}
-            override fun startPlaybackProgress(totalDuration: Long) {}
+            override fun startPlaybackProgress(totalDurationMillis: Long) {}
             override fun stopPlaybackProgress() {}
         },
         onDismiss = {},
