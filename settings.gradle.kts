@@ -51,4 +51,4 @@ include(":goalsPresentation")
 include(":chatbotApi")
 include(":chatbotPresentation")
 include(":sharedDomain")
-
+include(":charts")
