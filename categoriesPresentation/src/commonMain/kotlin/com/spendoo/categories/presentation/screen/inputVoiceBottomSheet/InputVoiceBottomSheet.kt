@@ -39,6 +39,7 @@ import space.kodio.compose.WaveformColors
 import space.kodio.compose.WaveformStyle
 import space.kodio.compose.rememberPlayerState
 import space.kodio.compose.rememberRecorderState
+import space.kodio.core.AudioQuality
 import space.kodio.core.security.AudioPermissionManager
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_cancel
@@ -63,7 +64,9 @@ fun InputVoiceBottomSheet(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
-    val recorderState = rememberRecorderState()
+    val recorderState = rememberRecorderState(
+        quality = AudioQuality.Voice
+    )
     val playerState = rememberPlayerState()
 
     LaunchedEffect(isVisible) {
