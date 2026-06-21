@@ -31,19 +31,17 @@ internal fun <T> DrawScope.xAxisDrawing(
     xAxisData.forEachIndexed { index, dataPoint ->
         val xLength = (textSpace.toDp()) + (index * xRegionWidth)
 
-        drawContext.canvas.nativeCanvas.apply {
-            drawText(
-                textMeasurer = textMeasure,
-                text = dataPoint.toString(),
-                style = xAxisStyle,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                topLeft = Offset(
-                    xLength.coerceAtMost(size.width.toDp()).toPx(),
-                    size.height / 1.07f
-                )
+        drawText(
+            textMeasurer = textMeasure,
+            text = dataPoint.toString(),
+            style = xAxisStyle,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            topLeft = Offset(
+                xLength.coerceAtMost(size.width.toDp()).toPx(),
+                size.height / 1.07f
             )
-        }
+        )
     }
 }
 
@@ -67,17 +65,15 @@ internal fun <T> DrawScope.xAxisDrawing(
         val xLength =
             (xRegionWidthWithoutSpacing / 3) + (index * (xRegionWidth))
 
-        drawContext.canvas.nativeCanvas.apply {
-            drawText(
-                textMeasurer = textMeasure,
-                text = dataPoint.toString(),
-                style = xAxisStyle,
-                maxLines = 1,
-                topLeft = Offset(
-                    xLength.toPx().coerceAtMost(size.width),
-                    (height.value + 10.dp.toPx()).coerceAtMost(size.height)
-                )
+        drawText(
+            textMeasurer = textMeasure,
+            text = dataPoint.toString(),
+            style = xAxisStyle,
+            maxLines = 1,
+            topLeft = Offset(
+                xLength.toPx().coerceAtMost(size.width),
+                (height.value + 10.dp.toPx()).coerceAtMost(size.height)
             )
-        }
+        )
     }
 }

@@ -9,7 +9,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
@@ -77,13 +76,11 @@ private fun DrawScope.chartRectangleWithText(
         style = Stroke(width = 1.dp.toPx())
     )
 
-    drawContext.canvas.nativeCanvas.apply {
-        drawText(
-            textMeasurer = textMeasurer,
-            text = text,
-            style = textStyle,
-            topLeft = textOffset
-        )
-    }
+    drawText(
+        textMeasurer = textMeasurer,
+        text = text,
+        style = textStyle,
+        topLeft = textOffset
+    )
 
 }

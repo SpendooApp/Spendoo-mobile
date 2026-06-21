@@ -2,7 +2,6 @@ package com.aay.compose.baseComponents
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
@@ -35,13 +34,11 @@ internal fun DrawScope.yAxisDrawing(
         }
 
         val y = (size.height.toDp() - spacing - i * (size.height.toDp() - spacing) / yAxisRange)
-        drawContext.canvas.nativeCanvas.apply {
-            drawText(
-                textMeasurer = textMeasure,
-                text = yValue.formatToThousandsMillionsBillions(),
-                style = yAxisStyle,
-                topLeft = Offset(0f, y.toPx())
-            )
-        }
+        drawText(
+            textMeasurer = textMeasure,
+            text = yValue.formatToThousandsMillionsBillions(),
+            style = yAxisStyle,
+            topLeft = Offset(0f, y.toPx())
+        )
     }
 }
