@@ -32,9 +32,15 @@ internal fun DrawScope.drawDefaultLineWithShadow(
     textMeasure: TextMeasurer,
     xRegionWidth: Dp,
 ) {
+    val fillPath = Path()
+    val solidPath = Path()
+    val dashedPath = Path()
 
-    val strokePathOfDefaultLine = drawLineAsDefault(
+    drawLineAsDefault(
         lineParameter = line,
+        fillPath = fillPath,
+        solidPath = solidPath,
+        dashedPath = dashedPath,
         lowerValue = lowerValue,
         upperValue = upperValue,
         animatedProgress = animatedProgress,
@@ -45,14 +51,15 @@ internal fun DrawScope.drawDefaultLineWithShadow(
     )
 
     if (line.lineShadow) {
-        val fillPath = strokePathOfDefaultLine.apply {
+        val shadowPath = Path().apply {
+            addPath(fillPath)
             lineTo(size.width - xRegionWidth.toPx() + 40.dp.toPx(), size.height * 40)
             lineTo(spacingX.toPx() * 2, size.height * 40)
             close()
         }
         clipRect(right = size.width * animatedProgress.value) {
             drawPath(
-                path = fillPath, brush = Brush.verticalGradient(
+                path = shadowPath, brush = Brush.verticalGradient(
                     colors = listOf(line.lineColor.copy(alpha = .3f), Color.Transparent),
                     endY = (size.height.toDp() - spacingY).toPx()
                 )
@@ -64,6 +71,9 @@ internal fun DrawScope.drawDefaultLineWithShadow(
 @OptIn(ExperimentalTextApi::class)
 private fun DrawScope.drawLineAsDefault(
     lineParameter: LineParameters,
+    fillPath: Path,
+    solidPath: Path,
+    dashedPath: Path,
     lowerValue: Float,
     upperValue: Float,
     animatedProgress: Animatable<Float, AnimationVector1D>,
@@ -71,11 +81,16 @@ private fun DrawScope.drawLineAsDefault(
     clickedPoints: MutableList<Pair<Float, Float>>,
     textMeasure: TextMeasurer,
     xRegionWidth: Dp,
-) = Path().apply {
+) {
     val height = size.height.toDp()
+    var prevX = 0f
+    var prevY = 0f
+
     drawPathLineWrapper(
         lineParameter = lineParameter,
-        strokePath = this,
+        fillPath = fillPath,
+        solidPath = solidPath,
+        dashedPath = dashedPath,
         animatedProgress = animatedProgress,
     ) { lineParameter, index ->
 
@@ -92,7 +107,6 @@ private fun DrawScope.drawLineAsDefault(
         val tolerance = 20.dp.toPx()
         val savedClicks =
             clickedOnThisPoint(clickedPoints, startXPoint.toPx(), startYPoint, tolerance)
-
 
         if (savedClicks) {
             if (lastClickedPoint != null) {
@@ -112,11 +126,41 @@ private fun DrawScope.drawLineAsDefault(
             }
         }
 
-        if (index == 0) {
-            moveTo(startXPoint.toPx(), startYPoint.toFloat())
-        } else {
-            lineTo(startXPoint.toPx(), startYPoint.toFloat())
+        if (lineParameter.highlightedPoints?.contains(index) == true) {
+            circleWithRectAndText(
+                x = startXPoint,
+                y = startYPoint,
+                textMeasure = textMeasure,
+                info = info,
+                stroke = Stroke(width = 2.dp.toPx()),
+                line = lineParameter,
+                animatedProgress = animatedProgress
+            )
         }
+
+        val currentX = startXPoint.toPx()
+        val currentY = startYPoint.toFloat()
+
+        if (index == 0) {
+            fillPath.moveTo(currentX, currentY)
+        } else {
+            fillPath.lineTo(currentX, currentY)
+
+            val isDashed = lineParameter.dashedRanges?.any { range ->
+                index in range && (index - 1) in range
+            } ?: false
+
+            if (isDashed) {
+                dashedPath.moveTo(prevX, prevY)
+                dashedPath.lineTo(currentX, currentY)
+            } else {
+                solidPath.moveTo(prevX, prevY)
+                solidPath.lineTo(currentX, currentY)
+            }
+        }
+
+        prevX = currentX
+        prevY = currentY
     }
 }
 

@@ -33,8 +33,15 @@ internal fun DrawScope.drawQuarticLineWithShadow(
     xRegionWidth: Dp,
     textMeasurer: TextMeasurer,
 ) {
-    val strokePathOfQuadraticLine = drawLineAsQuadratic(
+    val fillPath = Path()
+    val solidPath = Path()
+    val dashedPath = Path()
+
+    drawLineAsQuadratic(
         line = line,
+        fillPath = fillPath,
+        solidPath = solidPath,
+        dashedPath = dashedPath,
         lowerValue = lowerValue,
         upperValue = upperValue,
         animatedProgress = animatedProgress,
@@ -46,14 +53,15 @@ internal fun DrawScope.drawQuarticLineWithShadow(
     )
 
     if (line.lineShadow && !specialChart) {
-        val fillPath = strokePathOfQuadraticLine.apply {
+        val shadowPath = Path().apply {
+            addPath(fillPath)
             lineTo(size.width - xRegionWidth.toPx() + 40.dp.toPx(), size.height * 40)
             lineTo(spacingX.toPx() * 2, size.height * 40)
             close()
         }
         clipRect(right = size.width * animatedProgress.value) {
             drawPath(
-                path = fillPath, brush = Brush.verticalGradient(
+                path = shadowPath, brush = Brush.verticalGradient(
                     colors = listOf(
                         line.lineColor.copy(alpha = .3f), Color.Transparent
                     ), endY = (size.height.toDp() - spacingY).toPx()
@@ -66,6 +74,9 @@ internal fun DrawScope.drawQuarticLineWithShadow(
 @OptIn(ExperimentalTextApi::class)
 fun DrawScope.drawLineAsQuadratic(
     line: LineParameters,
+    fillPath: Path,
+    solidPath: Path,
+    dashedPath: Path,
     lowerValue: Float,
     upperValue: Float,
     animatedProgress: Animatable<Float, AnimationVector1D>,
@@ -74,13 +85,15 @@ fun DrawScope.drawLineAsQuadratic(
     clickedPoints: MutableList<Pair<Float, Float>>,
     textMeasurer: TextMeasurer,
     xRegionWidth: Dp
-) = Path().apply {
+) {
     var medX: Float
     val height = size.height.toDp()
 
     drawPathLineWrapper(
         lineParameter = line,
-        strokePath = this,
+        fillPath = fillPath,
+        solidPath = solidPath,
+        dashedPath = dashedPath,
         animatedProgress = animatedProgress,
     ) { lineParameter, index ->
 
@@ -134,10 +147,22 @@ fun DrawScope.drawLineAsQuadratic(
 
         }
 
+        if (line.highlightedPoints?.contains(index) == true) {
+            circleWithRectAndText(
+                x = xFirstPoint,
+                y = yFirstPoint,
+                textMeasure = textMeasurer,
+                info = info,
+                stroke = Stroke(width = 2.dp.toPx()),
+                line = line,
+                animatedProgress = animatedProgress
+            )
+        }
+
         if (index == 0) {
-            moveTo(xFirstPoint.toPx(), yFirstPoint.toFloat())
+            fillPath.moveTo(xFirstPoint.toPx(), yFirstPoint.toFloat())
             medX = ((xFirstPoint + xSecondPoint) / 2f).toPx()
-            cubicTo(
+            fillPath.cubicTo(
                 medX,
                 yFirstPoint.toFloat(),
                 medX,
@@ -147,7 +172,7 @@ fun DrawScope.drawLineAsQuadratic(
             )
         } else {
             medX = ((xFirstPoint + xSecondPoint) / 2f).toPx()
-            cubicTo(
+            fillPath.cubicTo(
                 medX,
                 yFirstPoint.toFloat(),
                 medX,
@@ -155,6 +180,36 @@ fun DrawScope.drawLineAsQuadratic(
                 xSecondPoint.toPx(),
                 ySecondPoint.toFloat()
             )
+        }
+
+        val isDashed = line.dashedRanges?.any { range ->
+            index in range && (index + 1) in range
+        } ?: false
+
+        val segmentLength = checkLastIndex(lineParameter.data, index)
+        if (segmentLength > 0) {
+            medX = ((xFirstPoint + xSecondPoint) / 2f).toPx()
+            if (isDashed) {
+                dashedPath.moveTo(xFirstPoint.toPx(), yFirstPoint.toFloat())
+                dashedPath.cubicTo(
+                    medX,
+                    yFirstPoint.toFloat(),
+                    medX,
+                    ySecondPoint.toFloat(),
+                    xSecondPoint.toPx(),
+                    ySecondPoint.toFloat()
+                )
+            } else {
+                solidPath.moveTo(xFirstPoint.toPx(), yFirstPoint.toFloat())
+                solidPath.cubicTo(
+                    medX,
+                    yFirstPoint.toFloat(),
+                    medX,
+                    ySecondPoint.toFloat(),
+                    xSecondPoint.toPx(),
+                    ySecondPoint.toFloat()
+                )
+            }
         }
 
         if (index == 0 && specialChart) {

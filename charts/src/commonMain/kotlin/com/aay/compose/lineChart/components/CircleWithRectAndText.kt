@@ -32,13 +32,15 @@ internal fun DrawScope.circleWithRectAndText(
     y: Double,
 ) {
     chartCircle(x.toPx(), y.toFloat(), line.lineColor, animatedProgress, stroke)
-    chartRectangleWithText(x, y, line.lineColor, textMeasure, info)
+    if (line.tooltipLabel != null) {
+        chartRectangleWithText(x, y, textMeasure, info, line)
+    }
 }
 
 
 @OptIn(ExperimentalTextApi::class)
 private fun DrawScope.chartRectangleWithText(
-    x: Dp, y: Double, color: Color, textMeasurer: TextMeasurer, infoText: Double,
+    x: Dp, y: Double, textMeasurer: TextMeasurer, infoText: Double, line: LineParameters,
 ) {
     val rectSize = Size(50.dp.toPx(), 30.dp.toPx())
     val rectTopLeft = Offset(
@@ -46,7 +48,14 @@ private fun DrawScope.chartRectangleWithText(
         y.toFloat() - rectSize.height * 1.5.toFloat()
     )
     val rectBounds = Rect(rectTopLeft, rectSize)
-    val text = "Value:${infoText.toFloat().formatToThousandsMillionsBillions()}"
+    
+    val prefix = line.tooltipLabel.orEmpty()
+    val formattedValue = infoText.toFloat().formatToThousandsMillionsBillions()
+    val text = if (prefix.isEmpty()) {
+        formattedValue
+    } else {
+        "$prefix:$formattedValue"
+    }
 
     val textStyle = TextStyle(fontSize = 8.sp, color = Color.Black)
 
@@ -61,7 +70,7 @@ private fun DrawScope.chartRectangleWithText(
     )
 
     drawRoundRect(
-        color = color,
+        color = line.lineColor,
         topLeft = rectBounds.topLeft,
         size = rectBounds.size,
         cornerRadius = CornerRadius(16.dp.toPx()),
