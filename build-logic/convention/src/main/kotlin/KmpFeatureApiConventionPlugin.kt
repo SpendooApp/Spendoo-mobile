@@ -25,20 +25,16 @@ class KmpFeatureApiConventionPlugin : Plugin<Project> {
                     compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
                     minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
                 }
-                jvm()
 
                 sourceSets.configureEach {
                     if (name == "commonMain") {
                         dependencies {
                             implementation(libs.findLibrary("androidx-navigation3-ui").get())
+                            implementation(libs.findLibrary("compose-runtime").get())
+                            implementation(libs.findLibrary("compose-ui").get())
                         }
                     }
                 }
-            }
-
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("compose-runtime").get())
-                "commonMainImplementation"(libs.findLibrary("compose-ui").get())
             }
         }
     }

@@ -5,7 +5,6 @@ import com.spendoo.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class KmpApplicationConventionPlugin : Plugin<Project> {
@@ -34,21 +33,28 @@ class KmpApplicationConventionPlugin : Plugin<Project> {
                         enable = true
                     }
                 }
-            }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("compose-runtime").get())
-                "commonMainImplementation"(libs.findLibrary("compose-foundation").get())
-                "commonMainImplementation"(libs.findLibrary("compose-material3").get())
-                "commonMainImplementation"(libs.findLibrary("compose-ui").get())
-                "commonMainImplementation"(libs.findLibrary("compose-resources").get())
-                "commonMainImplementation"(libs.findLibrary("compose-preview").get())
-                "commonMainImplementation"(libs.findLibrary("androidx-lifecycle-viewmodelCompose").get())
-                "commonMainImplementation"(libs.findLibrary("androidx-lifecycle-runtimeCompose").get())
-                "commonMainImplementation"(libs.findBundle("koin").get())
-
-                "androidMainImplementation"(libs.findLibrary("compose-preview").get())
-                "androidMainImplementation"(libs.findLibrary("androidx-activity-compose").get())
+                sourceSets.configureEach {
+                    if (name == "commonMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("compose-runtime").get())
+                            implementation(libs.findLibrary("compose-foundation").get())
+                            implementation(libs.findLibrary("compose-material3").get())
+                            implementation(libs.findLibrary("compose-ui").get())
+                            implementation(libs.findLibrary("compose-resources").get())
+                            implementation(libs.findLibrary("compose-preview").get())
+                            implementation(libs.findLibrary("androidx-lifecycle-viewmodelCompose").get())
+                            implementation(libs.findLibrary("androidx-lifecycle-runtimeCompose").get())
+                            implementation(libs.findBundle("koin").get())
+                        }
+                    }
+                    if (name == "androidMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("compose-preview").get())
+                            implementation(libs.findLibrary("androidx-activity-compose").get())
+                        }
+                    }
+                }
             }
         }
     }

@@ -29,26 +29,33 @@ class KmpFeaturePresentationConventionPlugin : Plugin<Project> {
                         enable = true
                     }
                 }
-            }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("kotlin-stdlib").get())
-                "commonMainImplementation"(libs.findLibrary("compose-runtime").get())
-                "commonMainImplementation"(libs.findLibrary("compose-foundation").get())
-                "commonMainImplementation"(libs.findLibrary("compose-ui").get())
-                "commonMainImplementation"(libs.findLibrary("compose-material3").get())
-                "commonMainImplementation"(libs.findLibrary("compose-resources").get())
-                "commonMainImplementation"(libs.findLibrary("compose-preview").get())
-                "commonMainImplementation"(libs.findLibrary("kotlinx-datetime").get())
-                "commonMainImplementation"(libs.findLibrary("coil-compose").get())
-                "commonMainImplementation"(libs.findBundle("koin").get())
-                "commonMainImplementation"(libs.findLibrary("koin-compose-navigation3").get())
-                "commonMainImplementation"(libs.findLibrary("androidx-navigation-compose").get())
-                "commonMainImplementation"(libs.findLibrary("androidx-navigation3-ui").get())
-                "commonMainImplementation"(libs.findLibrary("androidx-lifecycle-viewmodel-navigation3").get())
-
-                "androidMainImplementation"(libs.findLibrary("compose-preview").get())
-                "androidMainImplementation"(libs.findLibrary("androidx-activity-compose").get())
+                sourceSets.configureEach {
+                    if (name == "commonMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("kotlin-stdlib").get())
+                            implementation(libs.findLibrary("compose-runtime").get())
+                            implementation(libs.findLibrary("compose-foundation").get())
+                            implementation(libs.findLibrary("compose-ui").get())
+                            implementation(libs.findLibrary("compose-material3").get())
+                            implementation(libs.findLibrary("compose-resources").get())
+                            implementation(libs.findLibrary("compose-preview").get())
+                            implementation(libs.findLibrary("kotlinx-datetime").get())
+                            implementation(libs.findLibrary("coil-compose").get())
+                            implementation(libs.findBundle("koin").get())
+                            implementation(libs.findLibrary("koin-compose-navigation3").get())
+                            implementation(libs.findLibrary("androidx-navigation-compose").get())
+                            implementation(libs.findLibrary("androidx-navigation3-ui").get())
+                            implementation(libs.findLibrary("androidx-lifecycle-viewmodel-navigation3").get())
+                        }
+                    }
+                    if (name == "androidMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("compose-preview").get())
+                            implementation(libs.findLibrary("androidx-activity-compose").get())
+                        }
+                    }
+                }
             }
         }
     }

@@ -4,7 +4,6 @@ import com.spendoo.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class KmpLibraryConventionPlugin : Plugin<Project> {
@@ -33,10 +32,14 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                         instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     }
                 }
-            }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("kotlin-stdlib").get())
+                sourceSets.configureEach {
+                    if (name == "commonMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("kotlin-stdlib").get())
+                        }
+                    }
+                }
             }
         }
     }

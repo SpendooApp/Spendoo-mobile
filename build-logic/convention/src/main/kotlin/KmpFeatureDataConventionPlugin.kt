@@ -30,25 +30,31 @@ class KmpFeatureDataConventionPlugin : Plugin<Project> {
                         instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     }
                 }
-            }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("kotlin-stdlib").get())
-                "commonMainImplementation"(libs.findLibrary("kotlinx-coroutines-core").get())
-                "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())
-                "commonMainImplementation"(libs.findBundle("ktor").get())
-                "commonMainImplementation"(libs.findLibrary("koin-core").get())
-                "commonMainImplementation"(libs.findLibrary("multiplatform-settings").get())
-                "commonMainImplementation"(libs.findLibrary("kotlinx-datetime").get())
-
-                "androidMainImplementation"(libs.findLibrary("koin-android").get())
-                "androidMainImplementation"(libs.findLibrary("ktor-client-okhttp").get())
-            }
-
-            extensions.configure<KotlinMultiplatformExtension> {
-                sourceSets.findByName("iosMain")?.dependencies {
-                    libs.findLibrary("ktor-client-darwin").ifPresent {
-                        implementation(it)
+                sourceSets.configureEach {
+                    if (name == "commonMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("kotlin-stdlib").get())
+                            implementation(libs.findLibrary("kotlinx-coroutines-core").get())
+                            implementation(libs.findLibrary("kotlinx-serialization-json").get())
+                            implementation(libs.findBundle("ktor").get())
+                            implementation(libs.findLibrary("koin-core").get())
+                            implementation(libs.findLibrary("multiplatform-settings").get())
+                            implementation(libs.findLibrary("kotlinx-datetime").get())
+                        }
+                    }
+                    if (name == "androidMain") {
+                        dependencies {
+                            implementation(libs.findLibrary("koin-android").get())
+                            implementation(libs.findLibrary("ktor-client-okhttp").get())
+                        }
+                    }
+                    if (name == "iosMain") {
+                        libs.findLibrary("ktor-client-darwin").ifPresent {
+                            dependencies {
+                                implementation(it)
+                            }
+                        }
                     }
                 }
             }
