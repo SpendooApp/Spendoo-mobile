@@ -13,6 +13,7 @@ kotlin {
                 implementation(projects.statisticsDomain)
                 implementation(projects.identityDomain)
                 implementation(projects.sharedDomain)
+                implementation(projects.sharedData)
             }
         }
     }

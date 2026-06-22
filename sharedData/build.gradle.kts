@@ -4,14 +4,13 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.spendoo.identity.data"
+        namespace = "com.spendoo.shared.data"
     }
 
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.identityDomain)
-                implementation(projects.sharedData)
+                api(projects.sharedDomain)
             }
         }
     }

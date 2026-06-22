@@ -1,13 +1,13 @@
 package com.spendoo.categories.data.repository
 
-import com.spendoo.categories.data.dataSource.remote.dto.BasePagedData
+import com.spendoo.shared.data.dataSource.remote.dto.BasePagedData
 import com.spendoo.categories.data.dataSource.remote.dto.category.BalanceSummaryDto
-import com.spendoo.categories.data.dataSource.remote.dto.toPagedData
+import com.spendoo.shared.data.dataSource.remote.dto.toPagedData
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.TransactionDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDomain
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDto
 import com.spendoo.categories.data.dataSource.remote.endpoint.TransactionsEndpoints
-import com.spendoo.categories.data.shared.BaseGateway
+import com.spendoo.shared.data.shared.BaseGateway
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CreateExpense
 import com.spendoo.categories.domain.entity.transaction.CreateIncome
@@ -37,10 +37,13 @@ class TransactionsRepositoryImpl(
     client: HttpClient,
 ) : BaseGateway(client), TransactionsRepository {
 
-    override suspend fun getTransactions(pageQuery: PageQuery): PagedData<Transaction> {
+    override suspend fun getTransactions(search: String?, pageQuery: PageQuery): PagedData<Transaction> {
         val response = tryToExecute<BasePagedData<TransactionDto>> {
             get(TransactionsEndpoints.TRANSACTIONS) {
                 url {
+                    if (!search.isNullOrBlank()) {
+                        parameters.append("search", search)
+                    }
                     parameters.append("page", pageQuery.page.toString())
                     parameters.append("size", pageQuery.size.toString())
                     pageQuery.sort?.forEach { sort -> parameters.append("sort", sort) }

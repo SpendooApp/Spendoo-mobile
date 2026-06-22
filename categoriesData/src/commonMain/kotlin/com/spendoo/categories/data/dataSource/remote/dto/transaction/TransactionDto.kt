@@ -3,6 +3,7 @@ package com.spendoo.categories.data.dataSource.remote.dto.transaction
 import com.spendoo.categories.data.dataSource.remote.dto.category.CategoryLiteDto
 import com.spendoo.categories.data.dataSource.remote.dto.category.toDomain
 import com.spendoo.categories.domain.entity.transaction.Transaction
+import com.spendoo.categories.domain.entity.transaction.TransactionType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,10 +17,12 @@ data class TransactionDto(
     val amount: Double,
     @SerialName("note")
     val note: String? = null,
-    @SerialName("date")
-    val date: String,
+    @SerialName("transactionDate")
+    val transactionDate: String,
     @SerialName("categoryResponse")
     val category: CategoryLiteDto? = null,
+    @SerialName("type")
+    val type: TransactionType,
 )
 
 fun TransactionDto.toDomain(): Transaction = Transaction(
@@ -27,6 +30,7 @@ fun TransactionDto.toDomain(): Transaction = Transaction(
     title = title,
     amount = amount,
     note = note,
-    date = date,
+    date = transactionDate,
     category = category?.toDomain(),
+    type = type,
 )

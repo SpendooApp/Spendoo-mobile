@@ -1,14 +1,14 @@
-package com.spendoo.goals.data.shared
+package com.spendoo.shared.data.shared
 
-import com.spendoo.identity.domain.exception.EmailAlreadyExistsException
-import com.spendoo.identity.domain.exception.InternetException
-import com.spendoo.identity.domain.exception.InvalidCredentialsException
-import com.spendoo.identity.domain.exception.InvalidRequestException
-import com.spendoo.identity.domain.exception.NoNetworkException
-import com.spendoo.identity.domain.exception.TooManyRequestsException
-import com.spendoo.identity.domain.exception.UnAuthorizedException
-import com.spendoo.identity.domain.exception.UnknownErrorException
-import com.spendoo.identity.domain.exception.UserIsBlockedException
+import com.spendoo.shared.domain.exception.EmailAlreadyExistsException
+import com.spendoo.shared.domain.exception.InternetException
+import com.spendoo.shared.domain.exception.InvalidCredentialsException
+import com.spendoo.shared.domain.exception.InvalidRequestException
+import com.spendoo.shared.domain.exception.NoNetworkException
+import com.spendoo.shared.domain.exception.TooManyRequestsException
+import com.spendoo.shared.domain.exception.UnAuthorizedException
+import com.spendoo.shared.domain.exception.UnknownErrorException
+import com.spendoo.shared.domain.exception.UserIsBlockedException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
@@ -52,4 +52,3 @@ abstract class BaseGateway(val client: HttpClient) {
         }
     }
 }
-

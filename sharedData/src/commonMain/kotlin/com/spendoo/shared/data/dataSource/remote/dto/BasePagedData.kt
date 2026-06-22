@@ -1,4 +1,4 @@
-package com.spendoo.categories.data.dataSource.remote.dto
+package com.spendoo.shared.data.dataSource.remote.dto
 
 import com.spendoo.shared.domain.utils.PagedData
 import kotlinx.serialization.SerialName
@@ -37,29 +37,3 @@ fun <DTO, ENTITY> BasePagedData<DTO>.toPagedData(mapper: (DTO) -> ENTITY?): Page
         isLastPage = last,
     )
 }
-
-@Serializable
-data class PageableMetaDto(
-    @SerialName("offset")
-    val offset: Long,
-    @SerialName("sort")
-    val sort: SortDto,
-    @SerialName("unpaged")
-    val unpaged: Boolean,
-    @SerialName("paged")
-    val paged: Boolean,
-    @SerialName("pageNumber")
-    val pageNumber: Int,
-    @SerialName("pageSize")
-    val pageSize: Int,
-)
-
-@Serializable
-data class SortDto(
-    @SerialName("empty")
-    val empty: Boolean,
-    @SerialName("sorted")
-    val sorted: Boolean,
-    @SerialName("unsorted")
-    val unsorted: Boolean,
-)

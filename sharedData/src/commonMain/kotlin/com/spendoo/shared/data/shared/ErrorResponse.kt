@@ -1,4 +1,4 @@
-package com.spendoo.identity.data.shared
+package com.spendoo.shared.data.shared
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
