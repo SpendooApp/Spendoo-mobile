@@ -38,7 +38,7 @@ fun NavigationRoot(
     goalsFeatureApi: GoalsFeatureApi = koinInject(),
     chatbotFeatureApi: ChatbotFeatureApi = koinInject(),
 ) {
-    NavDisplay<NavKey>(
+    NavDisplay(
         modifier = Modifier
             .fillMaxSize(),
         backStack = backStack,

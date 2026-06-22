@@ -29,6 +29,8 @@ kotlin {
             implementation(projects.categoriesPresentation)
             implementation(projects.statisticsApi)
             implementation(projects.statisticsPresentation)
+            implementation(projects.statisticsDomain)
+            implementation(projects.statisticsData)
             implementation(projects.goalsApi)
             implementation(projects.goalsPresentation)
             implementation(projects.chatbotApi)
