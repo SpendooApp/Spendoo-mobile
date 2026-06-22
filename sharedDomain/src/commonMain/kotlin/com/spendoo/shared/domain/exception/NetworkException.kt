@@ -1,4 +1,4 @@
-package com.spendoo.identity.domain.exception
+package com.spendoo.shared.domain.exception
 
 abstract class AuthenticationException(message: String) : Exception(message)
 
@@ -7,6 +7,7 @@ class UserIsBlockedException : AuthenticationException("user with mobile number:
 class InvalidCredentialsException : AuthenticationException(
     "user with email, doesn't exist or password is incorrect"
 )
+
 class UnAuthorizedException : AuthenticationException("user has no access to application")
 class EmailAlreadyExistsException : AuthenticationException("Phone number already exists")
 class TooManyRequestsException : AuthenticationException("Too many requests")
