@@ -140,7 +140,7 @@ class TransactionsRepositoryImpl(
                                     append(HttpHeaders.ContentType, ContentType.Application.OctetStream.toString())
                                     append(
                                         HttpHeaders.ContentDisposition,
-                                        "filename=\"voice.m4a\""
+                                        "filename=\"voice.wav\""
                                     )
                                 }
                             )
