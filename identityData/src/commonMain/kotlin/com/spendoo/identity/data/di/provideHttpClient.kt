@@ -25,6 +25,7 @@ import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import kotlinx.coroutines.CancellationException
 
 internal fun provideHttpClient(
     baseUrl: String,
@@ -102,12 +103,16 @@ internal fun provideHttpClient(
                         return@refreshTokens null
                     }
 
-                    return@refreshTokens runCatching {
+                    return@refreshTokens try {
                         BearerTokens(
                             accessToken = authorizationService().getNewAccessToken(),
                             refreshToken = currentRefreshToken,
                         )
-                    }.getOrNull()
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (_: Exception) {
+                        null
+                    }
                 }
                 sendWithoutRequest { request ->
                     val path = request.url.encodedPath.removePrefix("/")

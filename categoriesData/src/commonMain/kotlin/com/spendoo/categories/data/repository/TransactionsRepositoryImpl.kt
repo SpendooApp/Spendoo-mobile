@@ -129,9 +129,9 @@ class TransactionsRepositoryImpl(
     override suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry> {
         val response = tryToExecute<EnrichedAiExtractionResponseDto> {
             post(TransactionsEndpoints.VOICE_TO_TRANSACTION) {
-                timeout {
-                    requestTimeoutMillis = 120_000L
-                    socketTimeoutMillis = 120_000L
+                timeout { //TODO: Check the enough timeout for large voice files
+                    requestTimeoutMillis = Long.MAX_VALUE
+                    socketTimeoutMillis = Long.MAX_VALUE
                 }
                 setBody(
                     MultiPartFormDataContent(
@@ -158,9 +158,9 @@ class TransactionsRepositoryImpl(
     override suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry> {
         val response = tryToExecute<EnrichedAiExtractionResponseDto> {
             post(TransactionsEndpoints.IMAGE_TO_TRANSACTION) {
-                timeout {
-                    requestTimeoutMillis = 120_000L
-                    socketTimeoutMillis = 120_000L
+                timeout { //TODO: Check the is enough timeout for large images
+                    requestTimeoutMillis = Long.MAX_VALUE
+                    socketTimeoutMillis = Long.MAX_VALUE
                 }
                 setBody(
                     MultiPartFormDataContent(
