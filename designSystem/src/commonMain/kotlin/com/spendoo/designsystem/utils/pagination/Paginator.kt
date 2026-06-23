@@ -1,5 +1,7 @@
 package com.spendoo.designsystem.utils.pagination
 
+import kotlinx.coroutines.CancellationException
+
 class Paginator<Key, Items>(
     private val initialKey: Key,
     private val onLoadUpdated: (Boolean) -> Unit,
@@ -21,18 +23,21 @@ class Paginator<Key, Items>(
         isMakingRequest = true
         onLoadUpdated(true)
 
-        runCatching {
-            onRequest(currentKey)
-        }.onSuccess { items ->
+        try {
+            val items = onRequest(currentKey)
             isMakingRequest = false
             currentKey = getNextKey(currentKey, items)
             onSuccess(items, currentKey)
             onLoadUpdated(false)
             isEndReached = endReached(currentKey, items)
-        }.onFailure {
+        } catch (e: CancellationException) {
+            isMakingRequest = false
+            onLoadUpdated(false)
+            throw e
+        } catch (e: Exception) {
             isMakingRequest = false
             isErrorState = true
-            onError(it)
+            onError(e)
             onLoadUpdated(false)
         }
     }

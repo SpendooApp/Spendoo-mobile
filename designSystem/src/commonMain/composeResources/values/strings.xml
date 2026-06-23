@@ -220,4 +220,27 @@
     <string name="save_goal">Save Goal</string>
     <string name="confirm">Confirm</string>
     <string name="add_to_goal_title">Add to %1$s</string>
+    <string name="charts">Charts</string>
+    <string name="transactions">Transactions</string>
+    <string name="last_six_periods">Last 6 periods</string>
+    <string name="within">Within</string>
+    <string name="risk">Risk</string>
+    <string name="overspending">Overspending</string>
+    <string name="top_categories">Top Categories</string>
+    <string name="see_all">See All</string>
+    <string name="total">Total</string>
+    <string name="error_loading_statistics">Error loading statistics</string>
+    <string name="due_in_days">Due date in %1$s days</string>
+    <string name="reports">Reports</string>
+    <string name="budget">Budget</string>
+    <string name="spent">Spent</string>
+    <string name="search_transactions">Search transactions</string>
+    <string name="no_transactions_found">No transactions found</string>
+    <string name="category_label">Category: %1$s</string>
+    <string name="transaction_actions">Transaction Actions</string>
+    <string name="sorting_options">Sorting Options</string>
+    <string name="date_ascending">Oldest first</string>
+    <string name="date_descending">Newest first</string>
+    <string name="amount_ascending">Lowest amount first</string>
+    <string name="amount_descending">Highest amount first</string>
 </resources>

@@ -211,4 +211,27 @@
     <string name="save_goal">حفظ الهدف</string>
     <string name="confirm">تأكيد</string>
     <string name="add_to_goal_title">إضافة إلى %1$s</string>
+    <string name="charts">الرسوم البيانية</string>
+    <string name="transactions">المعاملات</string>
+    <string name="last_six_periods">آخر 6 فترات</string>
+    <string name="within">ضمن الحد</string>
+    <string name="risk">خطر</string>
+    <string name="overspending">تجاوز الإنفاق</string>
+    <string name="top_categories">أعلى الفئات</string>
+    <string name="see_all">عرض الكل</string>
+    <string name="total">الإجمالي</string>
+    <string name="error_loading_statistics">خطأ في تحميل الإحصائيات</string>
+    <string name="due_in_days">تاريخ الاستحقاق خلال %1$s أيام</string>
+    <string name="reports">التقارير</string>
+    <string name="budget">الميزانية</string>
+    <string name="spent">المنفق</string>
+    <string name="search_transactions">البحث عن معاملات</string>
+    <string name="no_transactions_found">لم يتم العثور على معاملات</string>
+    <string name="category_label">الفئة: %1$s</string>
+    <string name="transaction_actions">إجراءات المعاملة</string>
+    <string name="sorting_options">خيارات الترتيب</string>
+    <string name="date_ascending">الأقدم أولاً</string>
+    <string name="date_descending">الأحدث أولاً</string>
+    <string name="amount_ascending">الأقل مبلغاً أولاً</string>
+    <string name="amount_descending">الأعلى مبلغاً أولاً</string>
 </resources>
