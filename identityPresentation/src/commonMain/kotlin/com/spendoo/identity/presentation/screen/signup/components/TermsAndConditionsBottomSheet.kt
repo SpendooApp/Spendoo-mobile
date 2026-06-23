@@ -27,7 +27,8 @@ fun TermsAndConditionsBottomSheet(isVisible: Boolean, onDismissRequest: () -> Un
             Text(
                 text = Res.string.terms_and_conditions_for_spendoo.asString(),
                 style = Theme.typography.body.small,
-                modifier = Modifier.weight(1f).padding(bottom = 16.dp).verticalScroll(scrollState)
+                modifier = Modifier.weight(1f).padding(bottom = 16.dp).verticalScroll(scrollState),
+                color = Theme.colorScheme.text.title
             )
             AppButton(
                 text = Res.string.ok.asString(),

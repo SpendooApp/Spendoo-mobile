@@ -57,7 +57,7 @@ class IdentityFeatureApiImpl : IdentityFeatureApi {
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
-                        Text("Profile", Theme.typography.label.medium.medium)
+                        Text("Profile", style = Theme.typography.label.medium.medium, color = Theme.colorScheme.text.title)
                     }
                 }
             }

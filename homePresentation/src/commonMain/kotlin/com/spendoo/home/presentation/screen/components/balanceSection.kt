@@ -52,7 +52,7 @@ fun LazyListScope.balanceSection(
                 MoneyCard(
                     modifier = Modifier.weight(1f),
                     isLoading = isLoading,
-                    amount = balanceSummary.income.toInt().toString(),
+                    amount = balanceSummary.expenses.toInt().toString(),
                     amountColor = Theme.colorScheme.brand.onSecondary,
                     amountTextStyle = Theme.typography.heading.medium,
                     title = stringResource(Res.string.expenses),
@@ -72,7 +72,7 @@ fun LazyListScope.balanceSection(
                 MoneyCard(
                     modifier = Modifier.weight(1f),
                     isLoading = isLoading,
-                    amount = balanceSummary.expenses.toInt().toString(),
+                    amount = balanceSummary.income.toInt().toString(),
                     amountColor = Theme.colorScheme.brand.onSecondary,
                     amountTextStyle = Theme.typography.heading.medium,
                     title = stringResource(Res.string.income),
