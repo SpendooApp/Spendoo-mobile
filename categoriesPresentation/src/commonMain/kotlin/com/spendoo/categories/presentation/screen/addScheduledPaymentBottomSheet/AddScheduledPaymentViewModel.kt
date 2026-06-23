@@ -15,8 +15,7 @@ import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.custom_frequency_must_be_greater_than_zero
 
 class AddScheduledPaymentViewModel(
-    private val repository: ScheduledPaymentsRepository,
-    private val categoriesRepository: CategoriesRepository
+    private val repository: ScheduledPaymentsRepository
 ) : BaseViewModel<AddScheduledPaymentUiState>(AddScheduledPaymentUiState()),
     AddScheduledPaymentInteractionListener {
 
@@ -75,17 +74,11 @@ class AddScheduledPaymentViewModel(
                 if (reminderPeriodUnit in availableUnits) reminderPeriodUnit else availableUnits.firstOrNull()
                     ?: ReminderUnit.DAY
 
-            val customError = if (frequency == PaymentFrequency.CUSTOM && (customDays ?: 0) <= 0) {
-                Res.string.custom_frequency_must_be_greater_than_zero
-            } else null
-
-            val reminderError = validateReminderPeriod(reminderPeriodValue, newUnit)
-
             copy(
                 frequency = frequency,
                 reminderPeriodUnit = newUnit,
-                customFrequencyDaysError = customError,
-                reminderPeriodValueError = reminderError
+                customFrequencyDaysError = null,
+                reminderPeriodValueError = null
             )
         }
     }
@@ -99,17 +92,11 @@ class AddScheduledPaymentViewModel(
                     if (reminderPeriodUnit in availableUnits) reminderPeriodUnit else availableUnits.firstOrNull()
                         ?: ReminderUnit.DAY
 
-                val customError = if ((customDays ?: 0) <= 0) {
-                    Res.string.custom_frequency_must_be_greater_than_zero
-                } else null
-
-                val reminderError = validateReminderPeriod(reminderPeriodValue, newUnit)
-
                 copy(
                     customFrequencyDays = days,
                     reminderPeriodUnit = newUnit,
-                    customFrequencyDaysError = customError,
-                    reminderPeriodValueError = reminderError
+                    customFrequencyDaysError = null,
+                    reminderPeriodValueError = null
                 )
             }
         }
@@ -118,10 +105,9 @@ class AddScheduledPaymentViewModel(
     override fun onReminderPeriodValueChanged(value: String) {
         if (value.isEmpty() || value.all { it.isDigit() }) {
             updateState {
-                val reminderError = validateReminderPeriod(value, reminderPeriodUnit)
                 copy(
                     reminderPeriodValue = value,
-                    reminderPeriodValueError = reminderError
+                    reminderPeriodValueError = null
                 )
             }
         }
@@ -129,10 +115,9 @@ class AddScheduledPaymentViewModel(
 
     override fun onReminderPeriodUnitChanged(unit: ReminderUnit) {
         updateState {
-            val reminderError = validateReminderPeriod(reminderPeriodValue, unit)
             copy(
                 reminderPeriodUnit = unit,
-                reminderPeriodValueError = reminderError
+                reminderPeriodValueError = null
             )
         }
     }
