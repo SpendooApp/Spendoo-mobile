@@ -34,6 +34,7 @@ import com.spendoo.identity.api.CreateNewPasswordRoute
 import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
+import com.spendoo.categories.api.TransactionDetailsRoute
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.modules.SerializersModule
@@ -74,6 +75,7 @@ fun EntryPoint(
                 subclass(StatisticsRoute::class, StatisticsRoute.serializer())
                 subclass(ScheduledPaymentsRoute::class, ScheduledPaymentsRoute.serializer())
                 subclass(ScheduledPaymentDetailsRoute::class, ScheduledPaymentDetailsRoute.serializer())
+                subclass(TransactionDetailsRoute::class, TransactionDetailsRoute.serializer())
             }
         }
     }
@@ -105,7 +107,7 @@ fun EntryPoint(
             || currentRoute is ChatbotRoute
             || currentRoute is AddTransactionRoute
 
-    val activeFeature = backStack.firstOrNull()
+    val activeFeature = currentRoute
 
     LaunchedEffect(isOnBoardingCompleted, accessToken) {
         val targetRoute = when {
@@ -114,8 +116,22 @@ fun EntryPoint(
             else -> HomeRoute
         }
 
-        if (currentRoute == SplashRoute || currentRoute != targetRoute) {
-            effector.resetTo(targetRoute, true)
+        val isUnauthRoute = currentRoute == SplashRoute 
+                || currentRoute == OnBoardingRoute 
+                || currentRoute == LoginRoute 
+                || currentRoute == SignUpRoute 
+                || currentRoute == ForgetPasswordRoute 
+                || currentRoute == VerifyEmailRoute 
+                || currentRoute == CreateNewPasswordRoute
+
+        if (targetRoute == HomeRoute) {
+            if (isUnauthRoute) {
+                effector.resetTo(targetRoute, true)
+            }
+        } else {
+            if (currentRoute != targetRoute) {
+                effector.resetTo(targetRoute, true)
+            }
         }
     }
 

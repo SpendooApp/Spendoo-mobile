@@ -25,12 +25,12 @@ import com.spendoo.categories.presentation.screen.categorySelectionSheet.Categor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.remember
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.enter_custom_days
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
+import com.spendoo.designsystem.components.dropdownMenu.DropdownMenu
+import com.spendoo.designsystem.components.dropdownMenu.DropdownMenuItem
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
