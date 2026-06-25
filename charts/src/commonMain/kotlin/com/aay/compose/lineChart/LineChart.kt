@@ -63,12 +63,13 @@ fun LineChart(
     showYAxis: Boolean = ChartDefaultValues.showyAxis,
     oneLineChart: Boolean = ChartDefaultValues.specialChart,
     gridOrientation: GridOrientation = ChartDefaultValues.gridOrientation,
-    legendPosition: LegendPosition = ChartDefaultValues.legendPosition
+    legendPosition: LegendPosition = ChartDefaultValues.legendPosition,
+    pointsGap: Dp? = null,
 ) {
     val clickedPoints = remember { mutableStateListOf<Pair<Float, Float>>() }
 
     Box(modifier.wrapContentHeight()) {
-        Column() {
+        Column {
             when(legendPosition){
                 LegendPosition.TOP -> {
                     LazyRow(
@@ -107,7 +108,8 @@ fun LineChart(
                             clickedPoints.add(x to y)
                         },
                         clickedPoints = clickedPoints,
-                        gridOrientation = gridOrientation
+                        gridOrientation = gridOrientation,
+                        pointsGap = pointsGap,
                     )
                 }
                 LegendPosition.BOTTOM -> {
@@ -133,7 +135,8 @@ fun LineChart(
                             clickedPoints.add(x to y)
                         },
                         clickedPoints = clickedPoints,
-                        gridOrientation = gridOrientation
+                        gridOrientation = gridOrientation,
+                        pointsGap = pointsGap,
                     )
                     LazyRow(
                         horizontalArrangement = horizontalArrangement,
@@ -173,7 +176,8 @@ fun LineChart(
                             clickedPoints.add(x to y)
                         },
                         clickedPoints = clickedPoints,
-                        gridOrientation = gridOrientation
+                        gridOrientation = gridOrientation,
+                        pointsGap = pointsGap,
                     )
                 }
             }

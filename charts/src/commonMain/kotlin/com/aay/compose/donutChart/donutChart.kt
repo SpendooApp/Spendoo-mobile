@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +36,7 @@ import kotlin.math.min
  * @param innerCircularColor Color of the inner circular area of the donut chart (default is Gray).
  * @param ratioLineColor Color of the lines connecting ratio labels to chart segments (default is Gray).
  * @param legendPosition Position of the legend within the chart (default is [LegendPosition.TOP]).
+ * @param donutThickness Thickness of the donut ring (default is calculated dynamically).
  *
  * @see PieChartData
  * @see LegendPosition
@@ -46,6 +48,7 @@ fun DonutChart(
     pieChartData: List<PieChartData>,
     centerTitle: String = "",
     centerTitleStyle: TextStyle = TextStyle.Default,
+    animateChart: Boolean = true,
     animation: AnimationSpec<Float> = TweenSpec(durationMillis = 3000),
     descriptionStyle: TextStyle = TextStyle.Default,
     textRatioStyle: TextStyle = TextStyle.Default.copy(fontSize = 12.sp),
@@ -53,6 +56,8 @@ fun DonutChart(
     innerCircularColor: Color = Color.Gray,
     ratioLineColor: Color = Color.Gray,
     legendPosition: LegendPosition = ChartDefaultValues.legendPosition,
+    showRatioLines: Boolean = true,
+    donutThickness: Dp? = null,
 ) {
     var totalSum = 0.0f
     val pieValueWithRatio = mutableListOf<Float>()
@@ -71,10 +76,16 @@ fun DonutChart(
     val textSize = textLayoutResult.size
 
     checkIfDataIsNegative(data = pieChartData.map { it.data })
-    val transitionProgress = remember(pieValueWithRatio) { Animatable(initialValue = 0F) }
+    val transitionProgress = remember(pieValueWithRatio) {
+        Animatable(initialValue = if (animateChart) 0F else 1F)
+    }
 
-    LaunchedEffect(pieChartData) {
-        transitionProgress.animateTo(1F, animationSpec = animation)
+    LaunchedEffect(pieChartData, animateChart) {
+        if (animateChart) {
+            transitionProgress.animateTo(1F, animationSpec = animation)
+        } else {
+            transitionProgress.snapTo(1F)
+        }
     }
 
     Column(
@@ -102,7 +113,9 @@ fun DonutChart(
                     textSize = textSize,
                     pieValueWithRatio = pieValueWithRatio,
                     totalSum = totalSum,
-                    transitionProgress = transitionProgress
+                    transitionProgress = transitionProgress,
+                    showRatioLines = showRatioLines,
+                    donutThickness = donutThickness,
                 )
             }
 
@@ -120,7 +133,9 @@ fun DonutChart(
                     textSize = textSize,
                     pieValueWithRatio = pieValueWithRatio,
                     totalSum = totalSum,
-                    transitionProgress = transitionProgress
+                    transitionProgress = transitionProgress,
+                    showRatioLines = showRatioLines,
+                    donutThickness = donutThickness,
                 )
                 PieChartDescriptionComposable(
                     pieChartData = pieChartData,
@@ -143,7 +158,9 @@ fun DonutChart(
                     textSize = textSize,
                     pieValueWithRatio = pieValueWithRatio,
                     totalSum = totalSum,
-                    transitionProgress = transitionProgress
+                    transitionProgress = transitionProgress,
+                    showRatioLines = showRatioLines,
+                    donutThickness = donutThickness,
                 )
             }
         }
@@ -169,16 +186,22 @@ private fun drawDonutChart(
     pieValueWithRatio: MutableList<Float>,
     totalSum: Float,
     transitionProgress: Animatable<Float, AnimationVector1D>,
+    showRatioLines: Boolean,
+    donutThickness: Dp?,
 ) {
     Box(
         modifier = modifier.fillMaxSize()
             .drawBehind {
                 val canvasWidth = size.width
                 val canvasHeight = size.height
-                val minValue = min(canvasWidth, canvasHeight)
-                    .coerceAtMost(canvasHeight / 2)
-                    .coerceAtMost(canvasWidth / 2)
-                val arcWidth = (size.minDimension.dp.toPx() * 0.13f).coerceAtMost(minValue / 4)
+                val minValue = if (showRatioLines) {
+                    min(canvasWidth, canvasHeight)
+                        .coerceAtMost(canvasHeight / 2)
+                        .coerceAtMost(canvasWidth / 2)
+                } else {
+                    min(canvasWidth, canvasHeight) * 0.85f
+                }
+                val arcWidth = donutThickness?.toPx() ?: (size.minDimension.dp.toPx() * 0.13f).coerceAtMost(minValue / 4)
 
                 drawCenterText(
                     textMeasure = textMeasure,
@@ -199,7 +222,8 @@ private fun drawDonutChart(
                     ratioLineColor = ratioLineColor,
                     arcWidth = arcWidth,
                     minValue = minValue,
-                    pieChart = ChartTypes.DONUT_CHART
+                    pieChart = ChartTypes.DONUT_CHART,
+                    showRatioLines = showRatioLines
                 )
                 //draw outer circle
                 draPieCircle(

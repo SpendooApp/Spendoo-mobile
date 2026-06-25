@@ -161,34 +161,23 @@ fun DrawScope.drawLineAsQuadratic(
 
         if (index == 0) {
             fillPath.moveTo(xFirstPoint.toPx(), yFirstPoint.toFloat())
-            medX = ((xFirstPoint + xSecondPoint) / 2f).toPx()
-            fillPath.cubicTo(
-                medX,
-                yFirstPoint.toFloat(),
-                medX,
-                ySecondPoint.toFloat(),
-                xSecondPoint.toPx(),
-                ySecondPoint.toFloat()
-            )
-        } else {
-            medX = ((xFirstPoint + xSecondPoint) / 2f).toPx()
-            fillPath.cubicTo(
-                medX,
-                yFirstPoint.toFloat(),
-                medX,
-                ySecondPoint.toFloat(),
-                xSecondPoint.toPx(),
-                ySecondPoint.toFloat()
-            )
         }
 
-        val isDashed = line.dashedRanges?.any { range ->
-            index in range && (index + 1) in range
-        } ?: false
-
-        val segmentLength = checkLastIndex(lineParameter.data, index)
-        if (segmentLength > 0) {
+        if (index < lineParameter.data.lastIndex) {
             medX = ((xFirstPoint + xSecondPoint) / 2f).toPx()
+            fillPath.cubicTo(
+                medX,
+                yFirstPoint.toFloat(),
+                medX,
+                ySecondPoint.toFloat(),
+                xSecondPoint.toPx(),
+                ySecondPoint.toFloat()
+            )
+
+            val isDashed = line.dashedRanges?.any { range ->
+                index in range && (index + 1) in range
+            } ?: false
+
             if (isDashed) {
                 dashedPath.moveTo(xFirstPoint.toPx(), yFirstPoint.toFloat())
                 dashedPath.cubicTo(
@@ -224,7 +213,7 @@ fun DrawScope.drawLineAsQuadratic(
 }
 
 private fun checkLastIndex(data: List<Double>, index: Int): Int {
-    return if (data[index] == data[data.lastIndex])
+    return if (index == data.lastIndex)
         0
     else
         1

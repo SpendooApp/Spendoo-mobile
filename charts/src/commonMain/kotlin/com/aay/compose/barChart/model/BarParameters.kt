@@ -6,5 +6,5 @@ data class BarParameters(
     val dataName: String,
     val data: List<Double>,
     val barColor: Color,
+    val barColors: List<Color>? = null,
 )
-

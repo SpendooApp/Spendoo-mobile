@@ -58,6 +58,7 @@ fun PieChart(
     ratioLineColor: Color = Color.Gray,
     descriptionStyle: TextStyle = TextStyle.Default,
     legendPosition: LegendPosition = ChartDefaultValues.legendPosition,
+    showRatioLines: Boolean = true,
 ) {
     var totalSum = 0.0f
     val pieValueWithRatio = mutableListOf<Float>()
@@ -99,7 +100,8 @@ fun PieChart(
                     pieValueWithRatio = pieValueWithRatio,
                     totalSum = totalSum,
                     transitionProgress = transitionProgress,
-                    textMeasure = textMeasure
+                    textMeasure = textMeasure,
+                    showRatioLines = showRatioLines
                 )
             }
 
@@ -113,7 +115,8 @@ fun PieChart(
                     pieValueWithRatio = pieValueWithRatio,
                     totalSum = totalSum,
                     transitionProgress = transitionProgress,
-                    textMeasure = textMeasure
+                    textMeasure = textMeasure,
+                    showRatioLines = showRatioLines
                 )
 
                 PieChartDescriptionComposable(
@@ -133,7 +136,8 @@ fun PieChart(
                     pieValueWithRatio = pieValueWithRatio,
                     totalSum = totalSum,
                     transitionProgress = transitionProgress,
-                    textMeasure = textMeasure
+                    textMeasure = textMeasure,
+                    showRatioLines = showRatioLines
                 )
             }
         }
@@ -153,15 +157,20 @@ private fun drawPieChart(
     totalSum: Float,
     transitionProgress: Animatable<Float, AnimationVector1D>,
     textMeasure: TextMeasurer,
+    showRatioLines: Boolean,
 ) {
     Box(
         modifier = modifier.fillMaxSize()
             .drawBehind {
                 val canvasWidth = size.width
                 val canvasHeight = size.height
-                val minValue = min(canvasWidth, canvasHeight)
-                    .coerceAtMost(canvasHeight / 2)
-                    .coerceAtMost(canvasWidth / 2)
+                val minValue = if (showRatioLines) {
+                    min(canvasWidth, canvasHeight)
+                        .coerceAtMost(canvasHeight / 2)
+                        .coerceAtMost(canvasWidth / 2)
+                } else {
+                    min(canvasWidth, canvasHeight) * 0.85f
+                }
                 val arcWidth =
                     (size.minDimension.dp.toPx() * 0.13f).coerceAtMost(minValue / 4)
 
@@ -175,7 +184,8 @@ private fun drawPieChart(
                     ratioLineColor = ratioLineColor,
                     arcWidth = arcWidth,
                     minValue = minValue,
-                    pieChart = ChartTypes.PIE_CHART
+                    pieChart = ChartTypes.PIE_CHART,
+                    showRatioLines = showRatioLines
                 )
                 //draw outer circle
                 draPieCircle(

@@ -29,7 +29,8 @@ internal fun DrawScope.drawPedigreeChart(
     ratioLineColor: Color,
     arcWidth: Float,
     minValue: Float,
-    pieChart: ChartTypes
+    pieChart: ChartTypes,
+    showRatioLines: Boolean = true
 ) {
     val outerCircularRadius = (minValue / 2) + (arcWidth / 1.2f)
     var startArc = -90F
@@ -61,7 +62,9 @@ internal fun DrawScope.drawPedigreeChart(
             }
             val secondLineEnd = Offset(lineEnd.x + (arcWidth * regionSign), lineEnd.y)
 
-            drawLines(ratioLineColor, lineStart, lineEnd, secondLineEnd)
+            if (showRatioLines) {
+                drawLines(ratioLineColor, lineStart, lineEnd, secondLineEnd)
+            }
 
             scale(1.3f) {
                 drawArc(
@@ -75,14 +78,16 @@ internal fun DrawScope.drawPedigreeChart(
             }
 
 
-            val textOffset = getTextOffsetByRegion(regionSign, lineEnd.x, secondLineEnd.y, arcWidth)
+            if (showRatioLines) {
+                val textOffset = getTextOffsetByRegion(regionSign, lineEnd.x, secondLineEnd.y, arcWidth)
 
-            ratioText(
-                textMeasure,
-                getPartRatio(pieValueWithRatio, index),
-                textRatioStyle,
-                Offset(textOffset.x, textOffset.y - 40.toDp().toPx())
-            )
+                ratioText(
+                    textMeasure,
+                    getPartRatio(pieValueWithRatio, index),
+                    textRatioStyle,
+                    Offset(textOffset.x, textOffset.y - 40.toDp().toPx())
+                )
+            }
             startArc += arcWithAnimation
             startArcWithoutAnimation += arcWithoutAnimation
 
@@ -105,7 +110,9 @@ internal fun DrawScope.drawPedigreeChart(
 
             val secondLineEnd = Offset(lineEnd.x + (arcWidth * regionSign), lineEnd.y)
 
-            drawLines(ratioLineColor, lineStart, lineEnd, secondLineEnd)
+            if (showRatioLines) {
+                drawLines(ratioLineColor, lineStart, lineEnd, secondLineEnd)
+            }
             drawArc(
                 color = pieChartData[index].color,
                 startAngle = startArc,
@@ -118,13 +125,15 @@ internal fun DrawScope.drawPedigreeChart(
                 topLeft = arcOffset
             )
 
-            val textOffset = getTextOffsetByRegion(regionSign, lineEnd.x, secondLineEnd.y, arcWidth)
-            ratioText(
-                textMeasure,
-                getPartRatio(pieValueWithRatio, index),
-                textRatioStyle,
-                Offset(textOffset.x, textOffset.y - 40.toDp().toPx())
-            )
+            if (showRatioLines) {
+                val textOffset = getTextOffsetByRegion(regionSign, lineEnd.x, secondLineEnd.y, arcWidth)
+                ratioText(
+                    textMeasure,
+                    getPartRatio(pieValueWithRatio, index),
+                    textRatioStyle,
+                    Offset(textOffset.x, textOffset.y - 40.toDp().toPx())
+                )
+            }
             startArc += arcWithAnimation
             startArcWithoutAnimation += arcWithoutAnimation
         }

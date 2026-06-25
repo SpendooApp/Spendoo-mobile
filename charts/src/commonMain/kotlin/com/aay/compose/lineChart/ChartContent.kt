@@ -47,6 +47,7 @@ internal fun ChartContent(
     onChartClick: (Float, Float) -> Unit,
     clickedPoints: MutableList<Pair<Float, Float>>,
     gridOrientation: GridOrientation,
+    pointsGap: Dp?,
 ) {
 
     val textMeasure = rememberTextMeasurer()
@@ -76,7 +77,7 @@ internal fun ChartContent(
         ).size.width
         val spacingX = (size.width / 50.dp.toPx()).dp
         val spacingY = (size.height / 8.dp.toPx()).dp
-        val xRegionWidth = (size.width.toDp() / (xAxisData.size - 1).toDp()).toDp() - (textLayoutResult.toDp() / 2)
+        val xRegionWidth = pointsGap ?: ((size.width.toDp() / (xAxisData.size - 1).toDp()).toDp() - (textLayoutResult.toDp() / 2))
 
         baseChartContainer(
             xAxisData = xAxisData,

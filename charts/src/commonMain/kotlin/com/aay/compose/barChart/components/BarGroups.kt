@@ -28,9 +28,10 @@ internal fun DrawScope.drawBarGroups(
 
             val xAxisLength = (index * xRegionWidth)
             val lengthWithRatio = xAxisLength + (barIndex * (barWidth + spaceBetweenBars))
+            val color = bar.barColors?.getOrNull(index) ?: bar.barColor
 
             drawRoundRect(
-                brush = Brush.verticalGradient(listOf(bar.barColor, bar.barColor)),
+                brush = Brush.verticalGradient(listOf(color, color)),
                 topLeft = Offset(
                     lengthWithRatio.coerceAtMost(maxWidth).toPx(),
                     height.value - barLength.toPx()
