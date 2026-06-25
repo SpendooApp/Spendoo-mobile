@@ -1,9 +1,9 @@
 package com.spendoo.statistics.data.repository
 
+import com.spendoo.shared.data.shared.BaseGateway
 import com.spendoo.statistics.data.dataSource.remote.dto.CombinedStatsResponse
 import com.spendoo.statistics.data.dataSource.remote.dto.toDomain
 import com.spendoo.statistics.data.dataSource.remote.endpoint.StatisticsEndpoints
-import com.spendoo.statistics.data.shared.BaseGateway
 import com.spendoo.statistics.domain.entity.CombinedStats
 import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.repository.StatisticsRepository

@@ -14,7 +14,7 @@ data class BudgetStatusResponse(
 
 fun BudgetStatusResponse.toDomain(): BudgetStatusInfo {
     return BudgetStatusInfo(
-        buckets = this.buckets.map { it.toDomain() },
+        buckets = this.buckets.takeLast(6).map { it.toDomain() },
         highestSpending = this.highestSpending
     )
 }

@@ -1,5 +1,6 @@
 package com.spendoo.statistics.data.dataSource.remote.dto
 
+import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.statistics.domain.entity.CategorySpending
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -23,7 +24,7 @@ fun CategorySpendingDto.toDomain(): CategorySpending {
     return CategorySpending(
         categoryId = this.categoryId,
         categoryName = this.categoryName,
-        categoryIcon = this.categoryIcon,
+        categoryIcon = CategoryIcon.fromStringOrDefault(this.categoryIcon),
         spending = this.spending,
         percentageChange = this.percentageChange,
         contributionPercentage = this.contributionPercentage
