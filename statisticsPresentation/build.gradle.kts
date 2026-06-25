@@ -20,10 +20,12 @@ kotlin {
             dependencies {
                 implementation(projects.designSystem)
                 implementation(projects.statisticsApi)
+                implementation(projects.statisticsDomain)
                 implementation(projects.categoriesDomain)
                 implementation(projects.identityDomain)
                 implementation(projects.categoriesApi)
                 implementation(projects.charts)
+                implementation(projects.sharedDomain)
             }
         }
         androidMain {
