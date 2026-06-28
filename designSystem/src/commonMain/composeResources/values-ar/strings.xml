@@ -286,4 +286,22 @@
     <string name="month_oct">أكتوبر</string>
     <string name="month_nov">نوفمبر</string>
     <string name="month_dec">ديسمبر</string>
+    <string name="export_report">تصدير التقرير</string>
+    <string name="time_period">الفترة الزمنية</string>
+    <string name="last_month">الشهر الماضي</string>
+    <string name="custom_range">نطاق مخصص</string>
+    <string name="range">النطاق</string>
+    <string name="start_date">تاريخ البدء</string>
+    <string name="end_date">تاريخ الانتهاء</string>
+    <string name="report_type">نوع التقرير</string>
+    <string name="summary_charts">رسوم بيانية ملخصة</string>
+    <string name="detailed_report">تقرير مفصل</string>
+    <string name="data_to_include">البيانات لتضمينها</string>
+    <string name="full_report">التقرير الكامل</string>
+    <string name="only_expenses">النفقات فقط</string>
+    <string name="budget_analysis">تحليل الميزانية</string>
+    <string name="generate">إنشاء</string>
+    <string name="download_report">تنزيل التقرير</string>
+    <string name="please_select_dates">يرجى تحديد تاريخي البدء والانتهاء</string>
+    <string name="start_date_cannot_be_after_end_date">لا يمكن أن يكون تاريخ البدء بعد تاريخ الانتهاء</string>
 </resources>

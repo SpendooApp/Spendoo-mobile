@@ -286,4 +286,22 @@
     <string name="month_oct">Oct</string>
     <string name="month_nov">Nov</string>
     <string name="month_dec">Dec</string>
+    <string name="export_report">Export Report</string>
+    <string name="time_period">Time Period</string>
+    <string name="last_month">Last Month</string>
+    <string name="custom_range">Custom Range</string>
+    <string name="range">Range</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="report_type">Report Type</string>
+    <string name="summary_charts">Summary charts</string>
+    <string name="detailed_report">Detailed Report</string>
+    <string name="data_to_include">Data to Include</string>
+    <string name="full_report">Full Report</string>
+    <string name="only_expenses">Only Expenses</string>
+    <string name="budget_analysis">Budget Analysis</string>
+    <string name="generate">Generate</string>
+    <string name="download_report">Download Report</string>
+    <string name="please_select_dates">Please select both start and end dates</string>
+    <string name="start_date_cannot_be_after_end_date">Start date cannot be after end date</string>
 </resources>
