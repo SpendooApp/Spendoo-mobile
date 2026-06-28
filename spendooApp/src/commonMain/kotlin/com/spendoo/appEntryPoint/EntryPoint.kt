@@ -39,8 +39,9 @@ import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
 import com.spendoo.goals.api.GoalsRoute
+import com.spendoo.statistics.api.DownloadRoute
+import com.spendoo.statistics.api.ExportRoute
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -76,6 +77,8 @@ fun EntryPoint(
                 subclass(ScheduledPaymentsRoute::class, ScheduledPaymentsRoute.serializer())
                 subclass(ScheduledPaymentDetailsRoute::class, ScheduledPaymentDetailsRoute.serializer())
                 subclass(TransactionDetailsRoute::class, TransactionDetailsRoute.serializer())
+                subclass(ExportRoute::class, ExportRoute.serializer())
+                subclass(DownloadRoute::class, DownloadRoute.serializer())
             }
         }
     }
