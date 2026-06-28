@@ -19,7 +19,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.layout.height
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -73,51 +84,88 @@ private fun StatisticsContent(
     state: StatisticsUiState,
     listener: StatisticsInteractionListener
 ) {
+    var topBarHeight by remember { mutableStateOf(0) }
+    var topBarOffsetHeightPx by remember { mutableStateOf(0f) }
+    val density = LocalDensity.current
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val delta = available.y
+                val newOffset = topBarOffsetHeightPx + delta
+                topBarOffsetHeightPx = newOffset.coerceIn(-topBarHeight.toFloat(), 0f)
+                return Offset.Zero
+            }
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Theme.colorScheme.background.primary)
                 .statusBarsPadding()
+                .nestedScroll(nestedScrollConnection)
         ) {
-            TopBar(
-                title = state.userName,
-                leading = {
-                    AsyncImage(
-                        model = state.userImageUrl,
-                        placeholder = Res.drawable.avatar_me.painter(),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .size(50.dp)
-                            .clip(CircleShape)
-                            .border(0.5.dp, Theme.colorScheme.button.secondary, CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-                },
-                actions = listOf(
-                    {
-                        SpendooIconButton(
-                            iconRes = Res.drawable.ic_user_follow,
-                            contentDescription = "Profile",
-                            size = 48.dp,
-                            iconSize = 24.dp,
-                            showBorder = true,
-                            onClick = { /* TODO: navigate to profile details */ }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .let { modifier ->
+                        if (topBarHeight > 0) {
+                            modifier.height(with(density) { (topBarHeight + topBarOffsetHeightPx).coerceAtLeast(0f).toDp() })
+                        } else {
+                            modifier
+                        }
+                    }
+                    .graphicsLayer {
+                        alpha = if (topBarHeight > 0) (1f + topBarOffsetHeightPx / topBarHeight) else 1f
+                        translationY = topBarOffsetHeightPx
+                    }
+            ) {
+                TopBar(
+                    title = state.userName,
+                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                        if (topBarHeight == 0) {
+                            topBarHeight = coordinates.size.height
+                        }
+                    },
+                    leading = {
+                        AsyncImage(
+                            model = state.userImageUrl,
+                            placeholder = Res.drawable.avatar_me.painter(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(50.dp)
+                                .clip(CircleShape)
+                                .border(0.5.dp, Theme.colorScheme.button.secondary, CircleShape),
+                            contentScale = ContentScale.Crop
                         )
                     },
-                    {
-                        SpendooIconButton(
-                            iconRes = Res.drawable.ic_download,
-                            contentDescription = "Download Report",
-                            size = 48.dp,
-                            iconSize = 24.dp,
-                            showBorder = true,
-                            onClick = { /* TODO: download report action */ }
-                        )
-                    }
+                    actions = listOf(
+                        {
+                            SpendooIconButton(
+                                iconRes = Res.drawable.ic_user_follow,
+                                contentDescription = "Profile",
+                                size = 48.dp,
+                                iconSize = 24.dp,
+                                showBorder = true,
+                                onClick = { /* TODO: navigate to profile details */ }
+                            )
+                        },
+                        {
+                            SpendooIconButton(
+                                iconRes = Res.drawable.ic_download,
+                                contentDescription = "Download Report",
+                                size = 48.dp,
+                                iconSize = 24.dp,
+                                showBorder = true,
+                                onClick = listener::onDownloadReportClicked
+                            )
+                        }
+                    )
                 )
-            )
+            }
 
             AppSegmentedControl(
                 options = StatisticsTab.entries,
@@ -218,6 +266,7 @@ private fun StatisticsContentTransactionsPreview() {
             ),
             listener = object : StatisticsInteractionListener {
                 override fun onReload() {}
+                override fun onDownloadReportClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}
@@ -358,6 +407,7 @@ private fun StatisticsContentChartsPreview() {
             ),
             listener = object : StatisticsInteractionListener {
                 override fun onReload() {}
+                override fun onDownloadReportClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}
