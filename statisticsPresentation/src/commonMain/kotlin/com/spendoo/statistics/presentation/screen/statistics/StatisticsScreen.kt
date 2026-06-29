@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.general.AppSegmentedControl
@@ -73,10 +74,15 @@ fun StatisticsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    StatisticsContent(
-        state = state,
-        listener = viewModel
-    )
+    PullToRefresh(
+        isRefreshing = state.isRefreshing,
+        onRefresh = viewModel::onReload
+    ) {
+        StatisticsContent(
+            state = state,
+            listener = viewModel
+        )
+    }
 }
 
 @Composable

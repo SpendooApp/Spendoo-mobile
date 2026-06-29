@@ -105,6 +105,7 @@ data class PieChartUiState(
 )
 
 data class StatisticsUiState(
+    val isRefreshing: Boolean = false,
     val isLoading: Boolean = false,
     val selectedTab: StatisticsTab = StatisticsTab.CHARTS,
     val selectedGranularity: Granularity = Granularity.WEEK,

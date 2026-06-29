@@ -1,6 +1,8 @@
 package com.spendoo.goals.presentation.screen.goals
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import com.spendoo.goals.presentation.screen.addEditGoal.AddEditGoalBottomSheet
 import com.spendoo.goals.presentation.screen.goals.components.GoalActionsSheet
 import com.spendoo.goals.presentation.screen.goals.components.toDrawableResource
 import com.spendoo.designsystem.utils.pagination.PaginationTrigger
+import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.cards.GoalCard
@@ -58,10 +61,15 @@ fun GoalsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    GoalsContent(
-        state = state,
-        listener = viewModel
-    )
+    PullToRefresh(
+        isRefreshing = state.isRefreshing,
+        onRefresh = viewModel::onReload
+    ) {
+        GoalsContent(
+            state = state,
+            listener = viewModel
+        )
+    }
 }
 
 @Composable
@@ -215,7 +223,8 @@ private fun GoalsContent(
 
         if (!state.isGoalsLoading && state.goals.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
