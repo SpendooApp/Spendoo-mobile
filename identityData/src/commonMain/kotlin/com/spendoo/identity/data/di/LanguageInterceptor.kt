@@ -5,6 +5,8 @@ import io.ktor.client.plugins.api.createClientPlugin
 
 fun languageInterceptor() = createClientPlugin("LanguageInterceptor") {
     onRequest { request, _ ->
-        request.headers.append("Accept-Language", languageCode)
+        if (!request.headers.contains("Accept-Language")) {
+            request.headers.append("Accept-Language", languageCode)
+        }
     }
 }

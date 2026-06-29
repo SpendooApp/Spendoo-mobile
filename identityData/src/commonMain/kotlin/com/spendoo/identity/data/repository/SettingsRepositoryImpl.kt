@@ -26,6 +26,7 @@ class SettingsRepositoryImpl(
     override fun observeAppLanguage(): StateFlow<AppLanguage> = _appLanguageFlow
 
     override fun getCurrentAppLanguage(): AppLanguage = settings.appLanguage.toAppLanguage()
+    override fun getCurrentTheme(): AppTheme = settings.appTheme.toAppTheme()
 
     override suspend fun applyAppTheme(appTheme: AppTheme) {
         settings.appTheme = appTheme.name
