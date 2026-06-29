@@ -71,6 +71,9 @@ class StatisticsViewModel(
                     copy(isTransactionsLoadingMore = isLoading)
                 }
             }
+            if (!isLoading) {
+                checkRefreshFinished()
+            }
         },
         onError = {
             updateState {
@@ -88,7 +91,7 @@ class StatisticsViewModel(
 
     init {
         listenToResetSignal()
-        onReload()
+        loadData()
         setupSearchDebounce()
     }
 
@@ -132,11 +135,26 @@ class StatisticsViewModel(
         )
     }
 
-    override fun onReload() {
+    private fun checkRefreshFinished() {
+        updateState {
+            if (!isLoading && !isTransactionsLoading) {
+                copy(isRefreshing = false)
+            } else {
+                this
+            }
+        }
+    }
+
+    private fun loadData() {
         loadUserProfile()
         loadStatistics(state.value.selectedGranularity)
         loadScheduledPayments()
         resetAndLoadTransactions()
+    }
+
+    override fun onReload() {
+        updateState { copy(isRefreshing = true) }
+        loadData()
     }
 
     override fun onDownloadReportClicked() {
@@ -222,9 +240,11 @@ class StatisticsViewModel(
                         isLoading = false
                     )
                 }
+                checkRefreshFinished()
             },
             onError = { throwable ->
                 updateState { copy(isLoading = false) }
+                checkRefreshFinished()
                 showSnackBar(
                     title = Res.string.error_loading_statistics.toUiText(),
                     message = throwable.message?.let { UiText.DynamicString(it) },

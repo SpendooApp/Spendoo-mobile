@@ -71,6 +71,9 @@ class ScheduledPaymentsViewModel(
                     copy(isScheduledPaymentsLoadingMore = isLoading)
                 }
             }
+            if (!isLoading) {
+                checkRefreshFinished()
+            }
         },
         onError = {
             updateState {
@@ -84,7 +87,7 @@ class ScheduledPaymentsViewModel(
 
     init {
         listenToResetSignal()
-        onReload()
+        loadData()
     }
 
     private fun listenToResetSignal() {
@@ -101,7 +104,17 @@ class ScheduledPaymentsViewModel(
         )
     }
 
-    override fun onReload() {
+    private fun checkRefreshFinished() {
+        updateState {
+            if (!isSummaryLoading && !isScheduledPaymentsLoading) {
+                copy(isRefreshing = false)
+            } else {
+                this
+            }
+        }
+    }
+
+    private fun loadData() {
         paginator.reset()
         updateState { copy(scheduledPayments = emptyList()) }
         viewModelScope.launch {
@@ -116,18 +129,24 @@ class ScheduledPaymentsViewModel(
                         summary = ScheduledPaymentSummaryUiState(
                             totalScheduledAmount = summary.totalScheduledAmount,
                             upcomingCount = summary.upcomingCount
-                        ),
-                        isSummaryLoading = false
+                        )
                     )
                 }
             },
-            onError = {
-                updateState { copy(isSummaryLoading = false) }
-            },
+            onError = {},
             onStart = {
                 updateState { copy(isSummaryLoading = true) }
+            },
+            onEnd = {
+                updateState { copy(isSummaryLoading = false) }
+                checkRefreshFinished()
             }
         )
+    }
+
+    override fun onReload() {
+        updateState { copy(isRefreshing = true) }
+        loadData()
     }
 
     override fun onBackClicked() {

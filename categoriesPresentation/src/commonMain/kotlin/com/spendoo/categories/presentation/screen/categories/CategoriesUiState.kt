@@ -7,6 +7,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEdit
 import com.spendoo.designsystem.components.cards.BudgetDataUiState
 
 data class CategoriesUiState (
+    val isRefreshing: Boolean = false,
     val summary: CategorySummaryUiState = CategorySummaryUiState(),
     val isSummaryLoading: Boolean = false,
     val categories: List<Category> = emptyList(),

@@ -1,6 +1,8 @@
 package com.spendoo.categories.presentation.screen.categories
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +33,7 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddEdit
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.components.CategoryActionsSheet
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.designsystem.utils.pagination.PaginationTrigger
+import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.cards.CategoryCard
@@ -56,7 +59,12 @@ fun CategoriesScreen(
 ) {
     val state by categoriesViewModel.state.collectAsStateWithLifecycle()
 
-    CategoriesScreenContent(state = state, interactionListener = categoriesViewModel)
+    PullToRefresh(
+        isRefreshing = state.isRefreshing,
+        onRefresh = categoriesViewModel::onReload
+    ) {
+        CategoriesScreenContent(state = state, interactionListener = categoriesViewModel)
+    }
 }
 
 @Composable
@@ -189,7 +197,8 @@ private fun CategoriesScreenContent(
         )
         if (!state.isCategoriesLoading && state.categories.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
