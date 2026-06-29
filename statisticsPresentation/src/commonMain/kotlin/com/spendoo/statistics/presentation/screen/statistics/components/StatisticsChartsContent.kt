@@ -106,7 +106,7 @@ fun StatisticsChartsContent(
                         LineChartSection(
                             lineChartUiState = lineState,
                             animateChart = animateChart,
-                            pointsGap = 30.dp
+                            pointsGap = 45.dp
                         )
                     }
                     HorizontalDivider(

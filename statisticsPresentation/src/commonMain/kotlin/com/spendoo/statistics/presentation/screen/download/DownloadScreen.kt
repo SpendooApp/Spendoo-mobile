@@ -1,6 +1,7 @@
 package com.spendoo.statistics.presentation.screen.download
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -21,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.designsystem.components.appBar.TopBar
@@ -175,7 +178,6 @@ private fun DownloadContent(
                     if (activePdfBytes != null) {
                         PdfViewer(
                             pdf = activePdfBytes,
-                            aspectRatio = null,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -203,7 +205,20 @@ private fun DownloadActionSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+            )
+            .background(
+                Theme.colorScheme.background.tertiary,
+                RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+            )
+            .border(
+                1.dp,
+                Theme.colorScheme.border.secondary,
+                RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 20.dp)
             .navigationBarsPadding()
     ) {
         val filename = viewModel.getPdfFilename()
@@ -228,27 +243,23 @@ private fun DownloadActionSection(
 private fun getChartsPdfPages(state: DownloadUiState, screenWidth: Int): List<PdfPageInput> {
     val pointsCount = state.lineChartUiState?.xAxisLabels?.size ?: 0
     val page1Width = maxOf(screenWidth, pointsCount * 30 + 80)
-    val page1Height = 260 + 80 + 32
     val page1 = PdfPageInput(
         widthDp = page1Width,
-        heightDp = page1Height,
+        heightDp = 0,
         content = { Page1Content(state = state) }
     )
 
     val barCount = state.barChartUiState?.xAxisLabels?.size ?: 0
     val page2Width = maxOf(screenWidth, barCount * 47 + 80)
-    val page2Height = 200 + 40 + 32 + 40
     val page2 = PdfPageInput(
         widthDp = page2Width,
-        heightDp = page2Height,
+        heightDp = 0,
         content = { Page2Content(state = state) }
     )
 
-    val categoriesCount = state.combinedStats?.topCategories?.topCategories?.size ?: 0
-    val page3Height = 260 + (categoriesCount * 50) + 32
     val page3 = PdfPageInput(
         widthDp = screenWidth,
-        heightDp = page3Height,
+        heightDp = 0,
         content = { Page3Content(state = state) }
     )
 
@@ -260,7 +271,7 @@ private fun Page1Content(state: DownloadUiState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Theme.colorScheme.background.primary)
+            .background(Theme.colorScheme.background.secondary)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -283,7 +294,7 @@ private fun Page1Content(state: DownloadUiState) {
             LineChartSection(
                 lineChartUiState = lineState,
                 animateChart = false,
-                pointsGap = 30.dp
+                pointsGap = 45.dp
             )
         }
     }
@@ -294,7 +305,7 @@ private fun Page2Content(state: DownloadUiState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Theme.colorScheme.background.primary)
+            .background(Theme.colorScheme.background.secondary)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -317,7 +328,7 @@ private fun Page3Content(state: DownloadUiState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Theme.colorScheme.background.primary)
+            .background(Theme.colorScheme.background.secondary)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {

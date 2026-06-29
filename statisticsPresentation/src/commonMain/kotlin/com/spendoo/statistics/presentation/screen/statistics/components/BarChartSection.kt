@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.aay.compose.barChart.BarChart
@@ -24,7 +23,6 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.asString
-import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.statistics.domain.entity.BudgetStatus
 import com.spendoo.statistics.presentation.screen.statistics.BarChartBucketUiState
 import com.spendoo.statistics.presentation.screen.statistics.BarChartUiState
@@ -79,7 +77,7 @@ fun BarChartSection(
                 legendPosition = LegendPosition.DISAPPEAR,
                 barWidth = 12.dp,
                 barCornerRadius = 100.dp,
-                spaceBetweenGroups = 35.dp,
+                spaceBetweenGroups = 30.dp,
                 yAxisStyle = Theme.typography.label.medium.extraSmall.copy(color = Theme.colorScheme.text.body),
                 xAxisStyle = Theme.typography.label.medium.extraSmall.copy(color = Theme.colorScheme.text.body),
             )

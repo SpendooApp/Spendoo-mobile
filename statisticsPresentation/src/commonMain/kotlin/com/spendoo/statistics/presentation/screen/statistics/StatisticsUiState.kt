@@ -11,11 +11,8 @@ import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.TransactionType
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
 import com.spendoo.designsystem.utils.UiText
-import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.designsystem.utils.extentions.toTimeLeftText
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.daysUntil
 import kotlinx.datetime.number
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -28,7 +25,6 @@ import spendoo.designsystem.generated.resources.charts
 import spendoo.designsystem.generated.resources.daily
 import spendoo.designsystem.generated.resources.date_ascending
 import spendoo.designsystem.generated.resources.date_descending
-import spendoo.designsystem.generated.resources.due_in_days
 import spendoo.designsystem.generated.resources.ic_car
 import spendoo.designsystem.generated.resources.ic_categories
 import spendoo.designsystem.generated.resources.ic_cinema
@@ -48,7 +44,6 @@ import spendoo.designsystem.generated.resources.ic_travel
 import spendoo.designsystem.generated.resources.ic_wifi
 import spendoo.designsystem.generated.resources.month_apr
 import spendoo.designsystem.generated.resources.month_aug
-import spendoo.designsystem.generated.resources.month_day_format
 import spendoo.designsystem.generated.resources.month_dec
 import spendoo.designsystem.generated.resources.month_feb
 import spendoo.designsystem.generated.resources.month_jan
@@ -77,8 +72,6 @@ import spendoo.designsystem.generated.resources.month_day_sep
 import spendoo.designsystem.generated.resources.month_day_oct
 import spendoo.designsystem.generated.resources.month_day_nov
 import spendoo.designsystem.generated.resources.month_day_dec
-import spendoo.designsystem.generated.resources.today
-import spendoo.designsystem.generated.resources.tomorrow
 import spendoo.designsystem.generated.resources.transaction_date_am_format
 import spendoo.designsystem.generated.resources.transaction_date_pm_format
 import spendoo.designsystem.generated.resources.transactions
@@ -114,7 +107,7 @@ data class PieChartUiState(
 data class StatisticsUiState(
     val isLoading: Boolean = false,
     val selectedTab: StatisticsTab = StatisticsTab.CHARTS,
-    val selectedGranularity: Granularity = Granularity.MONTH,
+    val selectedGranularity: Granularity = Granularity.WEEK,
     val combinedStats: CombinedStats? = null,
     val lineChartUiState: LineChartUiState? = null,
     val barChartUiState: BarChartUiState? = null,
@@ -136,7 +129,7 @@ data class StatisticsUiState(
 fun formatTransactionDate(dateStr: String): UiText {
     val localDateTime = try {
         LocalDateTime.parse(dateStr)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         return UiText.DynamicString(dateStr)
     }
     val year = localDateTime.year.toString()
@@ -232,7 +225,7 @@ fun getMonthNameRes(month: kotlinx.datetime.Month): StringResource {
 fun formatXAxisLabel(dateTime: LocalDateTime, granularity: Granularity): UiText {
     return when (granularity) {
         Granularity.DAY -> UiText.StringRes(Res.string.number_format, dateTime.day.toString())
-        Granularity.WEEK -> UiText.StringRes(Res.string.week_label_format, ((dateTime.day - 1) / 7 + 1).toString())
+        Granularity.WEEK -> UiText.StringRes(Res.string.week_label_format, ((dateTime.date.dayOfYear - 1) / 7 + 1).toString())
         Granularity.MONTH -> UiText.StringRes(getMonthNameRes(dateTime.month))
         Granularity.YEAR -> UiText.StringRes(Res.string.number_format, dateTime.year.toString())
     }
