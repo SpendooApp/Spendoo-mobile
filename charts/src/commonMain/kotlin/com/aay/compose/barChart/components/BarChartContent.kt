@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.Dp
@@ -21,9 +20,8 @@ import com.aay.compose.baseComponents.xAxisDrawing
 import com.aay.compose.utils.ChartDefaultValues.specialChart
 import com.aay.compose.utils.checkIfDataValid
 import com.aay.compose.utils.formatToThousandsMillionsBillions
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -58,39 +56,38 @@ internal fun BarChartContent(
     var lowerValue by rememberSaveable {
         mutableStateOf(barsParameters.getLowerValue())
     }
-    var maxWidth by remember { mutableStateOf(0.dp) }
-    var yTextLayoutResult by remember { mutableStateOf(0.dp) }
-    var maxHeight by remember { mutableStateOf(0f) }
-    var xRegionWidthWithoutSpacing by remember { mutableStateOf(0.dp) }
-    var xRegionWidth by remember { mutableStateOf(0.dp) }
-
-    //initial height set at 0.dp
-    var boxWidth by remember { mutableStateOf(0.dp) }
-    var boxHeight by remember { mutableStateOf(0.dp) }
-
-    // get local density from composable
     val density = LocalDensity.current
 
-    checkIfDataValid(xAxisData = xAxisData, barParameters = barsParameters)
-    Box(modifier = modifier.fillMaxSize().onGloballyPositioned {
-        boxWidth = with(density) {
-            it.size.width.toDp()
-        }
-        boxHeight = with(density) {
-            it.size.height.toDp()
-        }
+    val yTextLayoutResultDp = with(density) {
+        textMeasure.measure(
+            text = AnnotatedString(upperValue.toFloat().formatToThousandsMillionsBillions()),
+            style = yAxisStyle
+        ).size.width.toDp()
     }
-    ) {
+
+    checkIfDataValid(xAxisData = xAxisData, barParameters = barsParameters)
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+        val boxHeight = maxHeight
+
+        val spacingY = (boxHeight / 10) + 10.dp
+        val xRegionWidth = ((barWidth + spaceBetweenBars) * barsParameters.size) + spaceBetweenGroups
+        val xRegionWidthWithoutSpacing = xRegionWidth - spaceBetweenGroups
+        val lastLabelWidthDp = with(density) {
+            if (xAxisData.isNotEmpty()) {
+                textMeasure.measure(
+                    text = AnnotatedString(xAxisData.last().toString()),
+                    style = xAxisStyle
+                ).size.width.toDp()
+            } else {
+                0.dp
+            }
+        }
+        val chartMaxWidth = (xRegionWidth * xAxisData.size) - spaceBetweenGroups + lastLabelWidthDp + 16.dp
+        val chartMaxHeight = boxHeight - spacingY
+
         Canvas(
             modifier = Modifier.fillMaxSize()
         ) {
-
-            val spacingY = (boxHeight / 10)
-            xRegionWidth = ((barWidth + spaceBetweenBars) * barsParameters.size) + spaceBetweenGroups
-            xRegionWidthWithoutSpacing = xRegionWidth - spaceBetweenGroups
-            maxWidth = (xRegionWidth * xAxisData.size) - spaceBetweenGroups
-            maxHeight = boxHeight.toPx() - spacingY.toPx() + 10.dp.toPx()
-
             baseChartContainer(
                 xAxisData = xAxisData,
                 textMeasure = textMeasure,
@@ -112,26 +109,21 @@ internal fun BarChartContent(
         }
 
         Box(
-            modifier = Modifier.fillMaxSize().padding(start = yTextLayoutResult + (yTextLayoutResult / 2))
+            modifier = Modifier.fillMaxSize().padding(start = yTextLayoutResultDp + (yTextLayoutResultDp / 2))
                 .horizontalScroll(rememberScrollState())
         ) {
 
             Canvas(
-                Modifier.width(maxWidth).fillMaxHeight()
-
+                Modifier.width(chartMaxWidth).fillMaxHeight()
             ) {
-                yTextLayoutResult = textMeasure.measure(
-                    text = AnnotatedString(upperValue.toFloat().formatToThousandsMillionsBillions()),
-                ).size.width.toDp()
-
                 drawBarGroups(
                     barsParameters = barsParameters,
                     upperValue = upperValue,
                     barWidth = barWidth,
                     xRegionWidth = xRegionWidth,
                     spaceBetweenBars = spaceBetweenBars,
-                    maxWidth = maxWidth,
-                    height = maxHeight.dp,
+                    maxWidth = chartMaxWidth,
+                    height = chartMaxHeight,
                     animatedProgress = animatedProgress,
                     barCornerRadius = barCornerRadius
                 )
@@ -143,7 +135,7 @@ internal fun BarChartContent(
                     specialChart = specialChart,
                     xRegionWidth = xRegionWidth,
                     xRegionWidthWithoutSpacing = xRegionWidthWithoutSpacing,
-                    height = maxHeight.dp,
+                    height = chartMaxHeight,
                 )
             }
         }
@@ -151,14 +143,10 @@ internal fun BarChartContent(
 
 
     LaunchedEffect(barsParameters, animateChart) {
+        upperValue = barsParameters.getUpperValue()
+        lowerValue = barsParameters.getLowerValue()
         if (animateChart) {
-
-            collectToSnapShotFlow(barsParameters) {
-                upperValue = it.getUpperValue()
-                lowerValue = it.getLowerValue()
-            }
-
-            delay(400)
+            delay(400.milliseconds)
             animatedProgress.animateTo(
                 targetValue = 1f, animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
             )
@@ -172,17 +160,5 @@ private fun List<BarParameters>.getUpperValue(): Double {
 
 private fun List<BarParameters>.getLowerValue(): Double {
     return this.flatMap { item -> item.data }.minOrNull() ?: 0.0
-}
-
-private fun CoroutineScope.collectToSnapShotFlow(
-    linesParameters: List<BarParameters>, makeUpdateData: (List<BarParameters>) -> Unit
-) {
-    this.launch {
-        snapshotFlow {
-            linesParameters
-        }.collect {
-            makeUpdateData(it)
-        }
-    }
 }
 

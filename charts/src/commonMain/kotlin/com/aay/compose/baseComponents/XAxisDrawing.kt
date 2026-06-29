@@ -65,14 +65,27 @@ internal fun <T> DrawScope.xAxisDrawing(
         val xLength =
             (xRegionWidthWithoutSpacing / 3) + (index * (xRegionWidth))
 
+        val textLayoutResult = textMeasure.measure(
+            text = dataPoint.toString(),
+            style = xAxisStyle
+        )
+        val textWidth = textLayoutResult.size.width
+
+        val xPosition = xLength.toPx()
+        val adjustedX = if (xPosition + textWidth > size.width) {
+            size.width - textWidth
+        } else {
+            xPosition
+        }
+
         drawText(
             textMeasurer = textMeasure,
             text = dataPoint.toString(),
             style = xAxisStyle,
             maxLines = 1,
             topLeft = Offset(
-                xLength.toPx().coerceAtMost(size.width),
-                (height.value + 10.dp.toPx()).coerceAtMost(size.height)
+                adjustedX,
+                (height.toPx() + 10.dp.toPx())
             )
         )
     }

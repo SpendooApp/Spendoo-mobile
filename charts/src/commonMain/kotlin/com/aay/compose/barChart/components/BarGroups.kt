@@ -24,17 +24,17 @@ internal fun DrawScope.drawBarGroups(
 
         bar.data.forEachIndexed { index, data ->
             val ratio = (data.toFloat()) / (upperValue.toFloat())
-            val barLength = ((height / 1.02.toFloat().dp).toDp() * animatedProgress.value) * ratio
+            val barLength = (height / 1.02f) * animatedProgress.value * ratio
 
             val xAxisLength = (index * xRegionWidth)
             val lengthWithRatio = xAxisLength + (barIndex * (barWidth + spaceBetweenBars))
             val color = bar.barColors?.getOrNull(index) ?: bar.barColor
 
             drawRoundRect(
-                brush = Brush.verticalGradient(listOf(color, color)),
+                color = color,
                 topLeft = Offset(
                     lengthWithRatio.coerceAtMost(maxWidth).toPx(),
-                    height.value - barLength.toPx()
+                    height.toPx() - barLength.toPx()
                 ),
                 size = Size(
                     width = barWidth.toPx(),
