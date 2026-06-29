@@ -12,7 +12,7 @@ import androidx.core.graphics.createBitmap
 
 private const val IMAGE_SCALE = 1.67f // Scale up for better image rendering quality
 
-actual suspend fun splitPdfToPngs(pdfData: ByteArray): List<ByteArray> = withContext(Dispatchers.IO) {
+actual suspend fun splitPdfToPngs(pdfData: ByteArray): List<PdfPage> = withContext(Dispatchers.IO) {
     runCatching {
         val tempFile = File.createTempFile("temp_pdf", ".pdf")
         tempFile.writeBytes(pdfData)
@@ -20,14 +20,14 @@ actual suspend fun splitPdfToPngs(pdfData: ByteArray): List<ByteArray> = withCon
     }.getOrElse { emptyList() }
 }
 
-private fun renderPdfToPngs(pdfFile: File): List<ByteArray> {
+private fun renderPdfToPngs(pdfFile: File): List<PdfPage> {
     val fileDescriptor = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY)
     val renderer = PdfRenderer(fileDescriptor)
 
     return buildList {
         repeat(renderer.pageCount) { index ->
-            val pageBytes = renderer.renderPageToPng(index)
-            add(pageBytes)
+            val page = renderer.renderPageToPng(index)
+            add(page)
         }
     }.also {
         renderer.close()
@@ -36,7 +36,7 @@ private fun renderPdfToPngs(pdfFile: File): List<ByteArray> {
     }
 }
 
-private fun PdfRenderer.renderPageToPng(pageIndex: Int): ByteArray {
+private fun PdfRenderer.renderPageToPng(pageIndex: Int): PdfPage {
     openPage(pageIndex).use { page ->
         val width = (page.width * IMAGE_SCALE).toInt()
         val height = (page.height * IMAGE_SCALE).toInt()
@@ -48,10 +48,11 @@ private fun PdfRenderer.renderPageToPng(pageIndex: Int): ByteArray {
 
         page.render(bitmap, null, matrix, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
-        return ByteArrayOutputStream().use { output ->
+        val pngData = ByteArrayOutputStream().use { output ->
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
             bitmap.recycle()
             output.toByteArray()
         }
+        return PdfPage(pngData = pngData, width = width, height = height)
     }
 }

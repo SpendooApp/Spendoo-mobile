@@ -256,7 +256,7 @@
     <string name="number_format">%1$s</string>
     <string name="transaction_date_am_format">%1$s/%2$s/%3$s  %4$s:%5$s ص</string>
     <string name="transaction_date_pm_format">%1$s/%2$s/%3$s  %4$s:%5$s م</string>
-    <string name="week_label_format">أ%1$s</string>
+    <string name="week_label_format">أسبوع %1$s</string>
     <string name="month_day_format">%2$s %1$s</string>
     <string name="month_day_jan">%1$s يناير</string>
     <string name="month_day_feb">%1$s فبراير</string>

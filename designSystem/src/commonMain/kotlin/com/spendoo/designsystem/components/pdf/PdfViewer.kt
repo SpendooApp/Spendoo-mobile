@@ -30,10 +30,9 @@ import com.spendoo.designsystem.theme.theme.Theme
 fun PdfViewer(
     modifier: Modifier = Modifier,
     pdf: ByteArray,
-    aspectRatio: Float? = 0.7071f,
     onPagesReady: (Boolean) -> Unit = {}
 ) {
-    var pages by remember { mutableStateOf<List<ByteArray>?>(null) }
+    var pages by remember { mutableStateOf<List<PdfPage>?>(null) }
     
     LaunchedEffect(pdf) {
         pages = splitPdfToPngs(pdfData = pdf)
@@ -59,19 +58,13 @@ fun PdfViewer(
         ) {
             items(pages.orEmpty()) { page ->
                 AsyncImage(
-                    model = page,
+                    model = page.pngData,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .let { mod ->
-                            if (aspectRatio != null) {
-                                mod.aspectRatio(aspectRatio)
-                            } else {
-                                mod
-                            }
-                        }
+                        .aspectRatio(page.aspectRatio)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White),
+                        .background(Theme.colorScheme.background.secondary),
                 )
             }
         }

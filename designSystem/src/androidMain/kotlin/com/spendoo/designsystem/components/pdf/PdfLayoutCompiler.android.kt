@@ -84,8 +84,12 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
         composeView.setViewTreeViewModelStoreOwner(lifecycleOwner)
         composeView.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
 
+        val scrollView = android.widget.ScrollView(context).apply {
+            addView(composeView)
+        }
+
         // Attach to window to allow active recomposition & rendering passes
-        decorView?.addView(composeView, ViewGroup.LayoutParams(width, height))
+        decorView?.addView(scrollView, ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT))
 
         try {
             // Wait for composition to complete
@@ -111,7 +115,7 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
             return outputStream.toByteArray()
         } finally {
             // Always detach from window
-            decorView?.removeView(composeView)
+            decorView?.removeView(scrollView)
         }
     }
 
@@ -143,7 +147,11 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
                 composeView.setViewTreeViewModelStoreOwner(lifecycleOwner)
                 composeView.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
 
-                decorView?.addView(composeView, ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT))
+                val scrollView = android.widget.ScrollView(context).apply {
+                    addView(composeView)
+                }
+
+                decorView?.addView(scrollView, ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT))
 
                 try {
                     // Wait for composition to complete
@@ -173,7 +181,7 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
                     composeView.draw(page.canvas)
                     pdfDocument.finishPage(page)
                 } finally {
-                    decorView?.removeView(composeView)
+                    decorView?.removeView(scrollView)
                 }
             }
 

@@ -15,6 +15,9 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.refTo
 import platform.posix.memcpy
 
+import kotlinx.cinterop.useContents
+import platform.CoreGraphics.CGSizeMake
+
 actual class PdfLayoutCompiler actual constructor(context: Any?) {
     @OptIn(ExperimentalForeignApi::class)
     actual suspend fun compileComposeToPdf(
@@ -65,7 +68,6 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
             if (context != null) {
                 pages.forEach { pageInput ->
                     val width = pageInput.widthDp.toDouble()
-                    val height = if (pageInput.heightDp > 0) pageInput.heightDp.toDouble() else 842.0
                     
                     val controller = androidx.compose.ui.window.ComposeUIViewController {
                         SpendooTheme(darkTheme = Theme.isDarkTheme) {
@@ -75,11 +77,22 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
                         }
                     }
                     val view = controller.view
+                    
+                    val height = if (pageInput.heightDp > 0) {
+                        pageInput.heightDp.toDouble()
+                    } else {
+                        view.setFrame(CGRectMake(0.0, 0.0, width, 10000.0))
+                        view.setNeedsLayout()
+                        view.layoutIfNeeded()
+                        val fittedSize = view.sizeThatFits(CGSizeMake(width, Double.MAX_VALUE))
+                        fittedSize.useContents { height }
+                    }
+                    
                     view.setFrame(CGRectMake(0.0, 0.0, width, height))
                     view.setNeedsLayout()
                     view.layoutIfNeeded()
 
-                    context.beginPageWithBounds(CGRectMake(0.0, 0.0, width, height), null)
+                    context.beginPageWithBounds(CGRectMake(0.0, 0.0, width, height), emptyMap<Any?, Any?>())
                     view.layer.renderInContext(UIGraphicsGetCurrentContext())
                 }
             }

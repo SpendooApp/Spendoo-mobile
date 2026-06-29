@@ -256,7 +256,7 @@
     <string name="number_format">%1$s</string>
     <string name="transaction_date_am_format">%1$s/%2$s/%3$s  %4$s:%5$s AM</string>
     <string name="transaction_date_pm_format">%1$s/%2$s/%3$s  %4$s:%5$s PM</string>
-    <string name="week_label_format">W%1$s</string>
+    <string name="week_label_format">Week %1$s</string>
     <string name="month_day_format">%2$s %1$s</string>
     <string name="month_day_jan">Jan %1$s</string>
     <string name="month_day_feb">Feb %1$s</string>

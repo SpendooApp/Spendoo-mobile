@@ -38,12 +38,12 @@ import platform.posix.memcpy
 private const val IMAGE_SCALE = 1.67f
 
 @OptIn(ExperimentalForeignApi::class)
-actual suspend fun splitPdfToPngs(pdfData: ByteArray): List<ByteArray> {
+actual suspend fun splitPdfToPngs(pdfData: ByteArray): List<PdfPage> {
     val cfData = pdfData.asCFData() ?: return emptyList()
     val provider = CGDataProviderCreateWithCFData(cfData)
     val document = CGPDFDocumentCreateWithProvider(provider) ?: return emptyList()
 
-    val result = mutableListOf<ByteArray>()
+    val result = mutableListOf<PdfPage>()
     try {
         val totalPages = CGPDFDocumentGetNumberOfPages(document)
         for (pageNumber in 1..totalPages.toInt()) {
@@ -59,7 +59,7 @@ actual suspend fun splitPdfToPngs(pdfData: ByteArray): List<ByteArray> {
 }
 
 @OptIn(ExperimentalForeignApi::class)
-private fun renderPdfPageToPng(page: CGPDFPageRef?): ByteArray? {
+private fun renderPdfPageToPng(page: CGPDFPageRef?): PdfPage? {
     if (page == null) return null
 
     val pageRect = CGPDFPageGetBoxRect(page, kCGPDFMediaBox)
@@ -84,14 +84,13 @@ private fun renderPdfPageToPng(page: CGPDFPageRef?): ByteArray? {
     try {
         CGContextScaleCTM(context, scale, scale)
 
-        // Draw white background, then render the PDF Page
-        CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0)
-        CGContextFillRect(context, pageRect)
+        // Render the PDF Page directly, preserving transparent backgrounds
         CGContextDrawPDFPage(context, page)
 
         val cgImage = CGBitmapContextCreateImage(context) ?: return null
         val imageData = UIImagePNGRepresentation(UIImage(cgImage))
-        return imageData?.toByteArray()
+        val pngData = imageData?.toByteArray() ?: return null
+        return PdfPage(pngData = pngData, width = width.toInt(), height = height.toInt())
     } finally {
         CGContextRelease(context)
         CGColorSpaceRelease(colorSpace)
