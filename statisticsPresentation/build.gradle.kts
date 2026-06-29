@@ -26,6 +26,10 @@ kotlin {
                 implementation(projects.categoriesApi)
                 implementation(projects.charts)
                 implementation(projects.sharedDomain)
+
+                implementation(libs.filekit.compose)
+                implementation(libs.filekit.core)
+                implementation(libs.filekit.dialogs)
             }
         }
         androidMain {

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -107,7 +108,7 @@ private fun ExportContent(
                     onTimePeriodSelected = listener::onTimePeriodSelected
                 )
 
-                if (state.timePeriod == TimePeriod.CUSTOM_RANGE) {
+                AnimatedVisibility(visible = state.timePeriod == TimePeriod.CUSTOM_RANGE) {
                     RangeSection(
                         startDateText = state.startDate?.format(),
                         endDateText = state.endDate?.format(),
@@ -125,7 +126,7 @@ private fun ExportContent(
                     getIcon = { it.toIconResource() },
                 )
 
-                if (state.reportType == ReportType.DETAILED_REPORT) {
+                AnimatedVisibility(visible = state.reportType == ReportType.DETAILED_REPORT) {
                     SelectOptionSection(
                         title = Res.string.data_to_include,
                         selected = state.dataToInclude,
