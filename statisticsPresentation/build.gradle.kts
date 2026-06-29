@@ -20,9 +20,16 @@ kotlin {
             dependencies {
                 implementation(projects.designSystem)
                 implementation(projects.statisticsApi)
+                implementation(projects.statisticsDomain)
                 implementation(projects.categoriesDomain)
                 implementation(projects.identityDomain)
                 implementation(projects.categoriesApi)
+                implementation(projects.charts)
+                implementation(projects.sharedDomain)
+
+                implementation(libs.filekit.compose)
+                implementation(libs.filekit.core)
+                implementation(libs.filekit.dialogs)
             }
         }
         androidMain {

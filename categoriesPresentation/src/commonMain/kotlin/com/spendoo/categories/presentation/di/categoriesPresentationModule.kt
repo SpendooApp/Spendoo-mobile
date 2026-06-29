@@ -8,6 +8,7 @@ import com.spendoo.categories.presentation.screen.categories.CategoriesViewModel
 import com.spendoo.categories.presentation.screen.scheduledPaymentDetails.ScheduledPaymentDetailsViewModel
 import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentViewModel
 import com.spendoo.categories.presentation.screen.scheduledPayments.ScheduledPaymentsViewModel
+import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -20,4 +21,5 @@ val categoriesPresentationModule = module {
     viewModelOf(::ScheduledPaymentDetailsViewModel)
     viewModelOf(::AddScheduledPaymentViewModel)
     viewModelOf(::ScheduledPaymentsViewModel)
+    viewModelOf(::TransactionDetailsViewModel)
 }

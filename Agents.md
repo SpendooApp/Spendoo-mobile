@@ -72,10 +72,18 @@ Each feature is split into specific layers, each with its own responsibilities a
 10. **No Non-null Assertion Operator (`!!`)**: Never use the non-null assertion operator `!!`. Write smart code that handles nullability safely using smart casts, early returns, safe calls (`?.let`), or meaningful exceptions if absolutely critical.
 11. **Placeholder Comments**: Any temporary placeholders or incomplete implementations (e.g. placeholder icons, click listeners) must be documented with a comment starting explicitly with `// TODO`.
 12. **Build Validation**: Always run a compilation check or build (e.g., using `.\gradlew.bat compileKotlinMetadata` or equivalent build task) to verify that all code compiles successfully without errors before finishing a task.
-13. **Data Transfer Objects (DTOs)**: When defining DTOs for network requests, you can use domain Enums directly instead of mapping them to Strings, as `kotlinx.serialization` handles Enums automatically.
+13. **Do Not Define Duplicate DTO Enums**: Do not define separate enum classes in the data/DTO layer (e.g., `TransactionTypeDto`). Use the domain layer's enum class directly in the DTO, and configure `kotlinx-serialization` in the domain module if necessary. Do not serialize duplicate data layer enums.
 14. **Custom Request Timeouts**: For endpoints requiring customized timeouts (e.g., long-running AI operations or media uploads), use the request-level `timeout` configuration block (provided by Ktor's `HttpTimeout` plugin) rather than modifying global client timeout settings.
+15. **Coroutine Cancellation / Exception Swallowing**: Do not swallow `CancellationException` when catching exceptions in coroutine blocks or suspend functions. Avoid using standard `runCatching` blocks on operations that perform suspending calls, since `runCatching` catches all `Throwable`s (including `CancellationException`) and will swallow the cancellation. Instead, use a `try-catch` block where `CancellationException` is caught and explicitly rethrown, or check the caught throwable and rethrow it if it is a `CancellationException`.
+16. **Compose Previews**: Every Composable function that draws visual UI should have a corresponding `@Preview` function. Previews must be declared `private` and wrapped in `SpendooTheme`. For Modal Bottom Sheets (or similar components that do not render standalone in a preview), extract their internal content layout into a separate Composable function (e.g. `[Name]Content`) and preview that content instead of the sheet wrapper.
+17. **Helper and Formatting Functions**:
+    - **Screen-State Bound Helpers**: Helper/formatting functions that are related to specific classes used in the screen state (e.g. `formatXAxisLabel`, `formatTransactionDate`, `formatMonthDay`) must be placed in the corresponding UI state file (`[Screen]UiState.kt`).
+    - **General Formatting Utilities**: General utility/formatting functions that are not related to specific screen state classes (e.g. `formatMoney`) must be moved to a `utils` folder/package in a file named after the function (e.g., `formatMoney.kt`). If they are or can be used across multiple modules, they must be placed in the shared domain module (e.g. `com.spendoo.shared.domain.utils`).
+
+## 🎨 UI & Styling Rules
+1. **Currency Representation**: Do not use the literal dollar sign (`$`) anywhere in the user-facing interface. Always render the `Res.drawable.ic_money` icon next to the amount text with matching size and color.
+2. **Budget Transactions Policy**: Budget transactions (`TransactionType.BUDGET`) are strictly read-only. Do not display action menus (like dots menu) or edit/delete options on their lists or details. Clearly display their transaction type badge to the user.
 
 ## 🤖 Dynamic Learning Rule
 **IMPORTANT FOR ALL AGENTS**:
 If you learn something from the user during a conversation, and it is a general best practice or rule that can be applied later for new edits (not just a one-off specific case), you MUST update this `Agents.md` file to add it as a rule. This ensures continuous learning and adaptation to the user's coding style and preferences.
-

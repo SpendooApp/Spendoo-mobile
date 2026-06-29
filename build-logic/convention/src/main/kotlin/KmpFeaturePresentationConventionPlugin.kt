@@ -37,7 +37,6 @@ class KmpFeaturePresentationConventionPlugin : Plugin<Project> {
                             implementation(libs.findLibrary("compose-runtime").get())
                             implementation(libs.findLibrary("compose-foundation").get())
                             implementation(libs.findLibrary("compose-ui").get())
-                            implementation(libs.findLibrary("compose-material3").get())
                             implementation(libs.findLibrary("compose-resources").get())
                             implementation(libs.findLibrary("compose-preview").get())
                             implementation(libs.findLibrary("kotlinx-datetime").get())

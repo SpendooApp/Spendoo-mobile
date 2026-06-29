@@ -90,6 +90,7 @@ fun OutlinedButtonPreview2() = SpendooTheme {
         Text(
             "Button Button Button",
             style = Theme.typography.label.medium.medium,
+            color = Theme.colorScheme.text.title
         )
     }
 }

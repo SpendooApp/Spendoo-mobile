@@ -39,6 +39,7 @@ import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.spendoo.designsystem.modifier.shimmerEffect
+import com.spendoo.designsystem.utils.asString
 import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import com.spendoo.shared.domain.utils.toCleanString
 import spendoo.designsystem.generated.resources.Res
@@ -112,7 +113,7 @@ fun ExpenseEntryItem(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
                 ),
-                errorText = entry.titleError,
+                errorText = entry.titleError?.asString(),
                 singleLine = true
             )
 
@@ -130,7 +131,7 @@ fun ExpenseEntryItem(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 ),
-                errorText = entry.amountError
+                errorText = entry.amountError?.asString()
             )
 
             CustomTextField(
@@ -154,7 +155,7 @@ fun ExpenseEntryItem(
                         )
                     }
                 },
-                errorText = entry.categoryError
+                errorText = entry.categoryError?.asString()
             )
 
             CustomTextField(
@@ -165,7 +166,7 @@ fun ExpenseEntryItem(
                     .fillMaxWidth(),
                 singleLine = false,
                 minLines = 3,
-                errorText = entry.noteError
+                errorText = entry.noteError?.asString()
             )
         }
     }

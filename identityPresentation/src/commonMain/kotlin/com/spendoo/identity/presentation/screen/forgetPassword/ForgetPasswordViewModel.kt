@@ -18,8 +18,7 @@ class ForgetPasswordViewModel(
     ForgetPasswordInteractionListener {
 
     override fun onEmailChange(newEmail: String) {
-        updateState { copy(email = newEmail) }
-        validateEmail()
+        updateState { copy(email = newEmail, emailError = null) }
     }
 
     override fun onSendCodeClicked() {

@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,6 +22,7 @@ import com.spendoo.categories.api.CategoriesRoute
 import com.spendoo.goals.api.GoalsFeatureApi
 import com.spendoo.chatbot.api.ChatbotFeatureApi
 import com.spendoo.chatbot.api.ChatbotRoute
+import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.api.HomeFeatureApi
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.identity.api.IdentityFeatureApi
@@ -38,9 +40,10 @@ fun NavigationRoot(
     goalsFeatureApi: GoalsFeatureApi = koinInject(),
     chatbotFeatureApi: ChatbotFeatureApi = koinInject(),
 ) {
-    NavDisplay<NavKey>(
+    NavDisplay(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(Theme.colorScheme.background.primary),
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         sceneStrategy = DialogSceneStrategy(),

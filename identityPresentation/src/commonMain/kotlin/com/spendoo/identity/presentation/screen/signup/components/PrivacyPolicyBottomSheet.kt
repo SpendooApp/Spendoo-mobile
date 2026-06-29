@@ -27,6 +27,7 @@ fun PrivacyPolicyBottomSheet(isVisible: Boolean, onDismissRequest: () -> Unit) {
             Text(
                 text = Res.string.privacy_policy_for_spendoo.asString(),
                 style = Theme.typography.body.small,
+                color = Theme.colorScheme.text.title,
                 modifier = Modifier.weight(1f).padding(bottom = 16.dp).verticalScroll(scrollState)
             )
             AppButton(

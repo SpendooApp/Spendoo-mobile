@@ -1,5 +1,6 @@
 package com.spendoo.designsystem.utils
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,8 +11,8 @@ import com.spendoo.designsystem.theme.theme.Theme
 @Composable
 fun SpendooPreview(
     modifier: Modifier = Modifier,
-    color: Color = Theme.colorScheme.background.tertiary,
-    darkTheme: Boolean = false,
+    color: Color = Theme.colorScheme.background.primary,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     SpendooTheme(darkTheme = darkTheme) {

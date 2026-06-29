@@ -9,10 +9,12 @@ import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.categories.api.CategoriesRoute
 import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
+import com.spendoo.categories.api.TransactionDetailsRoute
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionBottomSheet
 import com.spendoo.categories.presentation.screen.categories.CategoriesScreen
 import com.spendoo.categories.presentation.screen.scheduledPaymentDetails.ScheduledPaymentDetailsScreen
 import com.spendoo.categories.presentation.screen.scheduledPayments.ScheduledPaymentsScreen
+import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsScreen
 
 
 class CategoriesFeatureApiImpl : CategoriesFeatureApi {
@@ -26,6 +28,9 @@ class CategoriesFeatureApiImpl : CategoriesFeatureApi {
             entry<ScheduledPaymentsRoute> { ScheduledPaymentsScreen() }
             entry<ScheduledPaymentDetailsRoute> { route ->
                 ScheduledPaymentDetailsScreen(paymentId = route.paymentId)
+            }
+            entry<TransactionDetailsRoute> { route ->
+                TransactionDetailsScreen(transactionId = route.transactionId)
             }
         }
     }

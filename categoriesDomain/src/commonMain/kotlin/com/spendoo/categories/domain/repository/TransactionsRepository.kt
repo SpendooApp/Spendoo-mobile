@@ -10,7 +10,7 @@ import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.UpdateTransaction
 
 interface TransactionsRepository {
-    suspend fun getTransactions(pageQuery: PageQuery): PagedData<Transaction>
+    suspend fun getTransactions(search: String?, pageQuery: PageQuery): PagedData<Transaction>
     suspend fun createIncome(request: CreateIncome)
     suspend fun createExpense(request: CreateExpense)
     suspend fun getTransaction(transactionId: String): Transaction

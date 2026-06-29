@@ -41,7 +41,7 @@ class VerifyEmailViewModel(
 
     override fun onOtpChange(newOtp: String) {
         val onlyDigits = newOtp.filter { it.isDigit() }.take(5)
-        updateState { copy(otp = onlyDigits) }
+        updateState { copy(otp = onlyDigits, otpError = null) }
     }
 
     override fun onVerifyClicked() {

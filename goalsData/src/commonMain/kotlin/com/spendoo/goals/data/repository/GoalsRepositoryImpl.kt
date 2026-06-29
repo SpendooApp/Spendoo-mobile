@@ -2,7 +2,9 @@ package com.spendoo.goals.data.repository
 
 import com.spendoo.goals.data.dataSource.remote.dto.*
 import com.spendoo.goals.data.endpoint.GoalsEndpoints
-import com.spendoo.goals.data.shared.BaseGateway
+import com.spendoo.shared.data.shared.BaseGateway
+import com.spendoo.shared.data.dataSource.remote.dto.BasePagedData
+import com.spendoo.shared.data.dataSource.remote.dto.toPagedData
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.goals.domain.entity.GoalsSummary
 import com.spendoo.goals.domain.repository.GoalsRepository

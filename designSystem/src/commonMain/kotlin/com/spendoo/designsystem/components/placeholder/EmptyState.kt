@@ -1,0 +1,68 @@
+package com.spendoo.designsystem.components.placeholder
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.spendoo.designsystem.components.button.AppButton
+import com.spendoo.designsystem.components.button.AppButtonSize
+import com.spendoo.designsystem.components.button.AppButtonType
+import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.theme.theme.SpendooTheme
+import com.spendoo.designsystem.theme.theme.Theme
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.add_transaction
+import spendoo.designsystem.generated.resources.no_transactions_found
+
+@Composable
+fun EmptyState(
+    text: StringResource,
+    onActionText: StringResource,
+    onAddClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Theme.colorScheme.background.secondary, RoundedCornerShape(16.dp))
+            .border(1.dp, Theme.colorScheme.border.secondary, RoundedCornerShape(16.dp))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = stringResource(text),
+            style = Theme.typography.body.medium,
+            color = Theme.colorScheme.text.body,
+            textAlign = TextAlign.Center
+        )
+        AppButton(
+            type = AppButtonType.Primary,
+            onClick = onAddClick,
+            text = stringResource(onActionText),
+            size = AppButtonSize.Small,
+            modifier = Modifier.fillMaxWidth(0.8f)
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun EmptyStatePreview() = SpendooTheme {
+    EmptyState(
+        text = Res.string.no_transactions_found,
+        onActionText = Res.string.add_transaction,
+        onAddClick = {}
+    )
+}

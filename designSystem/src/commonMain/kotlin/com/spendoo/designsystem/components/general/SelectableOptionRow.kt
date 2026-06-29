@@ -28,6 +28,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
 import org.jetbrains.compose.resources.StringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.spendoo.designsystem.components.checkbox.CustomRadioButton
 
 data class SelectableOption(
     val id: String,
@@ -57,22 +58,12 @@ fun SelectableOptionRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        customIcon?.invoke() ?: Box(
-            modifier = Modifier
-                .size(28.dp)
-                .clip(CircleShape)
-                .border(width = 2.dp, color = borderColor, shape = CircleShape),
-            contentAlignment = Alignment.Center,
-        ) {
-            if (isSelected) {
-                Box(
-                    modifier = Modifier
-                        .size(12.dp)
-                        .clip(CircleShape)
-                        .background(borderColor)
-                )
-            }
-        }
+        customIcon?.invoke() ?: CustomRadioButton(
+            selected = isSelected,
+            size = 28.dp,
+            onClick = onClick,
+        )
+
 
         Text(
             modifier = Modifier.weight(1f),

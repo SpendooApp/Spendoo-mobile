@@ -16,6 +16,9 @@ import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.readBytes
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+import com.spendoo.categories.presentation.compressImage
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.error_adding_expenses_transaction
@@ -27,6 +30,14 @@ import spendoo.designsystem.generated.resources.please_fix_errors_before_submitt
 import spendoo.designsystem.generated.resources.invalid_saving_amount
 import spendoo.designsystem.generated.resources.please_enter_a_valid_amount
 import spendoo.designsystem.generated.resources.invalid_income_data
+import com.spendoo.shared.domain.entity.CategoryIcon
+import spendoo.designsystem.generated.resources.enter_a_title
+import spendoo.designsystem.generated.resources.enter_your_amount
+import spendoo.designsystem.generated.resources.title_too_short
+import spendoo.designsystem.generated.resources.title_too_long
+import spendoo.designsystem.generated.resources.enter_a_valid_amount
+import spendoo.designsystem.generated.resources.note_too_long
+import spendoo.designsystem.generated.resources.please_select_a_category
 
 class AddTransactionViewModel(
     private val transactionsRepository: TransactionsRepository,
@@ -48,19 +59,19 @@ class AddTransactionViewModel(
     }
 
     override fun onIncomeTitleChanged(title: String) {
-        updateState { it.copy(incomeTitle = title) }
+        updateState { it.copy(incomeTitle = title, incomeTitleError = null) }
     }
 
     override fun onIncomeAmountChanged(amount: String) {
-        updateState { it.copy(incomeAmount = amount.toCleanDoubleOrNull()) }
+        updateState { it.copy(incomeAmount = amount.toCleanDoubleOrNull(), incomeAmountError = null) }
     }
 
     override fun onSavingAmountChanged(amount: String) {
-        updateState { it.copy(savingAmount = amount.toCleanDoubleOrNull()) }
+        updateState { it.copy(savingAmount = amount.toCleanDoubleOrNull(), savingAmountError = null) }
     }
 
     override fun onNoteChanged(note: String) {
-        updateState { it.copy(incomeNote = note) }
+        updateState { it.copy(incomeNote = note, incomeNoteError = null) }
     }
 
     override fun onDateSelected(date: LocalDate) {
@@ -76,7 +87,7 @@ class AddTransactionViewModel(
     }
 
     override fun onSavingChecked(checked: Boolean) {
-        updateState { it.copy(isSavingChecked = checked) }
+        updateState { it.copy(isSavingChecked = checked, savingAmountError = null) }
     }
 
     // Expense Entry Actions
@@ -94,7 +105,14 @@ class AddTransactionViewModel(
     override fun onEntryChanged(id: String, entry: TransactionEntryUiState) {
         updateState {
             it.copy(expenseEntries = it.expenseEntries.map { existing ->
-                if (existing.id == id) entry else existing
+                if (existing.id == id) {
+                    entry.copy(
+                        titleError = if (entry.title != existing.title) null else existing.titleError,
+                        amountError = if (entry.amount != existing.amount) null else existing.amountError,
+                        noteError = if (entry.note != existing.note) null else existing.noteError,
+                        categoryError = if (entry.categoryId != existing.categoryId) null else existing.categoryError
+                    )
+                } else existing
             })
         }
     }
@@ -110,7 +128,8 @@ class AddTransactionViewModel(
                 entry.copy(
                     categoryId = category.id,
                     categoryName = category.name,
-                    categoryIcon = category.icon
+                    categoryIcon = category.icon,
+                    categoryError = null
                 )
             } else entry
         }
@@ -140,8 +159,15 @@ class AddTransactionViewModel(
     override fun onSelectImage(file: PlatformFile?) {
         viewModelScope.launch {
             file?.let { 
+                updateState { copy(isProcessingMedia = true) }
                 val bytes = it.readBytes()
-                onImageProcessed(bytes)
+                val originalSize = bytes.size
+                val compressed = withContext(Dispatchers.Default) {
+                    compressImage(bytes)
+                }
+                val compressedSize = compressed.size
+                println("Image Compression: Before = ${originalSize / 1024} KB, After = ${compressedSize / 1024} KB")
+                onImageProcessed(compressed)
             }
         }
     }
@@ -179,14 +205,101 @@ class AddTransactionViewModel(
         )
     }
 
+    private fun validateEntryTitle(title: String): UiText? = when {
+        title.isBlank() -> UiText.StringRes(Res.string.enter_a_title)
+        title.length < 2 -> UiText.StringRes(Res.string.title_too_short)
+        title.length > 50 -> UiText.StringRes(Res.string.title_too_long)
+        else -> null
+    }
+
+    private fun validateEntryAmount(amount: Double?): UiText? = when {
+        amount == null -> UiText.StringRes(Res.string.enter_your_amount)
+        amount <= 0 -> UiText.StringRes(Res.string.enter_a_valid_amount)
+        else -> null
+    }
+
+    private fun validateEntryNote(note: String): UiText? = when {
+        note.length > 200 -> UiText.StringRes(Res.string.note_too_long)
+        else -> null
+    }
+
+    private fun validateEntryCategory(categoryId: String?, categoryName: String?, categoryIcon: CategoryIcon?): UiText? {
+        val hasCategory = categoryId != null && categoryName != null && categoryIcon != null
+        return if (!hasCategory) UiText.StringRes(Res.string.please_select_a_category) else null
+    }
+
+    private fun validateExpenseEntries(): Boolean {
+        var hasErrors = false
+        val validatedEntries = state.value.expenseEntries.map { entry ->
+            val titleErr = validateEntryTitle(entry.title)
+            val amountErr = validateEntryAmount(entry.amount)
+            val noteErr = validateEntryNote(entry.note)
+            val categoryErr = validateEntryCategory(entry.categoryId, entry.categoryName, entry.categoryIcon)
+            
+            if (titleErr != null || amountErr != null || noteErr != null || categoryErr != null) {
+                hasErrors = true
+            }
+            entry.copy(
+                titleError = titleErr,
+                amountError = amountErr,
+                noteError = noteErr,
+                categoryError = categoryErr
+            )
+        }
+        updateState { copy(expenseEntries = validatedEntries) }
+        return !hasErrors
+    }
+
+    private fun validateIncomeForm(): Boolean {
+        val titleErr = validateEntryTitle(state.value.incomeTitle)
+        val amountErr = validateEntryAmount(state.value.incomeAmount)
+        val noteErr = validateEntryNote(state.value.incomeNote)
+        
+        updateState {
+            copy(
+                incomeTitleError = titleErr,
+                incomeAmountError = amountErr,
+                incomeNoteError = noteErr
+            )
+        }
+        return titleErr == null && amountErr == null && noteErr == null
+    }
+
+    private fun validateSavingAmount(): Boolean {
+        val amountErr = if (state.value.isSavingChecked) {
+            validateEntryAmount(state.value.savingAmount)
+        } else null
+        
+        updateState {
+            copy(savingAmountError = amountErr)
+        }
+        return amountErr == null
+    }
+
     override fun submit() {
         val currentState = state.value
         if (currentState.isSubmitting) return
 
-        when {
-            currentState.isSavingChecked -> addToSaving()
-            currentState.type == TransactionType.Income -> createIncome()
-            else -> createExpense()
+        when (currentState.type) {
+            TransactionType.Income -> {
+                if (currentState.isSavingChecked) {
+                    val isSavingValid = validateSavingAmount()
+                    if (isSavingValid) {
+                        addToSaving()
+                    }
+                } else {
+                    val isIncomeValid = validateIncomeForm()
+                    if (isIncomeValid) {
+                        createIncome()
+                    }
+                }
+            }
+            TransactionType.Expense -> {
+                val isExpenseValid = validateExpenseEntries()
+                if (isExpenseValid) {
+                    createExpense()
+                }
+            }
         }
     }
 
