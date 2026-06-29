@@ -27,9 +27,12 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlinx.coroutines.CancellationException
 
+import com.spendoo.identity.domain.repository.SettingsRepository
+
 internal fun provideHttpClient(
     baseUrl: String,
     authorizationService: suspend () -> AuthorizationService,
+    settingsRepository: () -> SettingsRepository,
 ): HttpClient {
 
     val prettyJson = Json {
@@ -46,7 +49,7 @@ internal fun provideHttpClient(
             accept(ContentType.Application.Json)
         }
 
-        install(languageInterceptor())
+        install(languageThemeInterceptor(settingsRepository))
 
         install(ContentNegotiation) {
             json(

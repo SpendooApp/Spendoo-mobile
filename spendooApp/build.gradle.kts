@@ -41,6 +41,7 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(libs.androidx.poolingcontainer)
+            implementation(libs.androidx.core.ktx)
         }
     }
 }

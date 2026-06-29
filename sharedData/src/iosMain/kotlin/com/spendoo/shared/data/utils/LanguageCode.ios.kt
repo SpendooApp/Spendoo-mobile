@@ -1,4 +1,4 @@
-package com.spendoo.identity.data.utils
+package com.spendoo.shared.data.utils
 
 import platform.Foundation.NSLocale
 import platform.Foundation.preferredLanguages
