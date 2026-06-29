@@ -30,6 +30,7 @@ import com.spendoo.designsystem.theme.theme.Theme
 fun PdfViewer(
     modifier: Modifier = Modifier,
     pdf: ByteArray,
+    aspectRatio: Float? = 0.7071f,
     onPagesReady: (Boolean) -> Unit = {}
 ) {
     var pages by remember { mutableStateOf<List<ByteArray>?>(null) }
@@ -62,7 +63,13 @@ fun PdfViewer(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(0.7071f) // Standard A4 Aspect Ratio (1 / √2)
+                        .let { mod ->
+                            if (aspectRatio != null) {
+                                mod.aspectRatio(aspectRatio)
+                            } else {
+                                mod
+                            }
+                        }
                         .clip(RoundedCornerShape(8.dp))
                         .background(Color.White),
                 )

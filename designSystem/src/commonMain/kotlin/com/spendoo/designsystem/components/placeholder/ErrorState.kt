@@ -25,9 +25,13 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.retry
 
+import com.spendoo.designsystem.utils.UiText
+import com.spendoo.designsystem.utils.asString
+import com.spendoo.designsystem.utils.toUiText
+
 @Composable
 fun ErrorState(
-    text: StringResource,
+    text: UiText,
     onActionText: StringResource,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
@@ -42,7 +46,7 @@ fun ErrorState(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(text),
+            text = text.asString(),
             style = Theme.typography.body.medium,
             color = Theme.colorScheme.additional.onError,
             textAlign = TextAlign.Center
@@ -55,6 +59,21 @@ fun ErrorState(
             modifier = Modifier.fillMaxWidth(0.6f)
         )
     }
+}
+
+@Composable
+fun ErrorState(
+    text: StringResource,
+    onActionText: StringResource,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ErrorState(
+        text = text.toUiText(),
+        onActionText = onActionText,
+        onRetry = onRetry,
+        modifier = modifier
+    )
 }
 
 @Composable

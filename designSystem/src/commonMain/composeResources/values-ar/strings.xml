@@ -304,4 +304,7 @@
     <string name="download_report">تنزيل التقرير</string>
     <string name="please_select_dates">يرجى تحديد تاريخي البدء والانتهاء</string>
     <string name="start_date_cannot_be_after_end_date">لا يمكن أن يكون تاريخ البدء بعد تاريخ الانتهاء</string>
+    <string name="statistics_summary_report">تقرير ملخص الإحصائيات</string>
+    <string name="cashflow_history">سجل التدفق النقدي</string>
+    <string name="budget_status">حالة الميزانية</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.ComposeView
@@ -59,7 +60,7 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
         widthDp: Int,
         heightDp: Int,
         scale: Float,
-        parentContext: androidx.compose.runtime.CompositionContext?,
+        parentContext: CompositionContext?,
         content: @Composable () -> Unit
     ): ByteArray {
         val density = context.resources.displayMetrics.density
@@ -111,6 +112,76 @@ actual class PdfLayoutCompiler actual constructor(context: Any?) {
         } finally {
             // Always detach from window
             decorView?.removeView(composeView)
+        }
+    }
+
+    actual suspend fun compileMultiplePagesToPdf(
+        pages: List<PdfPageInput>,
+        scale: Float,
+        parentContext: CompositionContext?
+    ): ByteArray {
+        val density = context.resources.displayMetrics.density
+        val decorView = context.findActivity()?.window?.decorView as? ViewGroup
+        val pdfDocument = PdfDocument()
+
+        try {
+            pages.forEachIndexed { index, pageInput ->
+                val width = (pageInput.widthDp * density).toInt()
+                
+                val composeView = ComposeView(context).apply {
+                    parentContext?.let { setParentCompositionContext(it) }
+                    setContent {
+                        Box(modifier = Modifier.graphicsLayer(scaleX = scale, scaleY = scale)) {
+                            pageInput.content()
+                        }
+                    }
+                    visibility = View.INVISIBLE
+                }
+
+                val lifecycleOwner = DummyLifecycleOwner()
+                composeView.setViewTreeLifecycleOwner(lifecycleOwner)
+                composeView.setViewTreeViewModelStoreOwner(lifecycleOwner)
+                composeView.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
+
+                decorView?.addView(composeView, ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT))
+
+                try {
+                    // Wait for composition to complete
+                    kotlinx.coroutines.yield()
+                    androidx.compose.runtime.withFrameNanos { }
+                    androidx.compose.runtime.withFrameNanos { }
+
+                    val height = if (pageInput.heightDp > 0) {
+                        (pageInput.heightDp * density).toInt()
+                    } else {
+                        // Measure dynamically
+                        composeView.measure(
+                            View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                        )
+                        composeView.measuredHeight
+                    }
+
+                    composeView.measure(
+                        View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+                    )
+                    composeView.layout(0, 0, width, height)
+
+                    val pageInfo = PdfDocument.PageInfo.Builder(width, height, index + 1).create()
+                    val page = pdfDocument.startPage(pageInfo)
+                    composeView.draw(page.canvas)
+                    pdfDocument.finishPage(page)
+                } finally {
+                    decorView?.removeView(composeView)
+                }
+            }
+
+            val outputStream = ByteArrayOutputStream()
+            pdfDocument.writeTo(outputStream)
+            return outputStream.toByteArray()
+        } finally {
+            pdfDocument.close()
         }
     }
 }
