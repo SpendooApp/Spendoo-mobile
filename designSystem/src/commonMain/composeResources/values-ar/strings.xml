@@ -61,6 +61,8 @@
     <string name="weekly">أسبوعي</string>
     <string name="monthly">شهري</string>
     <string name="yearly">سنوي</string>
+    <string name="free">مجاني</string>
+    <string name="billed">مفوتر %1$s</string>
     <string name="edit_category">تعديل الفئة</string>
     <string name="add_new_category">إضافة فئة جديدة</string>
     <string name="enter_category_name">أدخل اسم الفئة</string>

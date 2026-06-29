@@ -61,6 +61,8 @@
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="yearly">Yearly</string>
+    <string name="free">Free</string>
+    <string name="billed">billed %1$s</string>
     <string name="edit_category">Edit Category</string>
     <string name="add_new_category">Add New Category</string>
     <string name="enter_category_name">Enter Category Name</string>
