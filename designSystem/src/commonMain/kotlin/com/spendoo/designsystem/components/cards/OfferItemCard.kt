@@ -29,19 +29,26 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
+import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.ic_money
 import spendoo.designsystem.generated.resources.ic_money_in_offer
 import spendoo.designsystem.generated.resources.ic_money_small
+import spendoo.designsystem.generated.resources.vs
+
+
+
+data class OfferItemCardUiState(
+    val title: String,
+    val description: String,
+    val save: Int,
+    val previous: Int,
+    val after: Int,
+)
 
 
 @Composable
 fun OfferItemCard(
-    title: String,
-    description: String,
-    save: Int,
-    previous: Int,
-    after: Int,
+    offer: OfferItemCardUiState,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Theme.colorScheme.button.secondary,
     shape: Shape = RoundedCornerShape(24.dp)
@@ -54,31 +61,33 @@ fun OfferItemCard(
 
     ) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = title,
+                text = offer.title,
                 style = Theme.typography.heading.extraSmall,
                 color = Theme.colorScheme.text.title,
                 maxLines = 1,
                 overflow = Ellipsis,
             )
-            Box(modifier = Modifier
-                .background(Theme.colorScheme.additional.success, RoundedCornerShape(6.dp))
-                .padding(horizontal = 4.dp , vertical = 5.dp)) {
+            Box(
+                modifier = Modifier
+                    .background(Theme.colorScheme.additional.success, RoundedCornerShape(6.dp))
+                    .padding(horizontal = 4.dp, vertical = 5.dp)
+            ) {
                 Text(
-                    text = "$save",
+                    text = "${offer.save}",
                     style = Theme.typography.label.medium.small,
                     color = Theme.colorScheme.additional.onSuccess,
                 )
             }
         }
         Text(
-            text = description,
+            text = offer.description,
             style = Theme.typography.body.small,
             color = Theme.colorScheme.text.body,
         )
@@ -87,8 +96,9 @@ fun OfferItemCard(
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Theme.colorScheme.border.secondary)
 
 
-        Row(modifier = modifier
-            .fillMaxWidth(),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically)
         {
             Icon(
@@ -98,14 +108,14 @@ fun OfferItemCard(
             )
             Text(
                 modifier = Modifier.padding(start = 2.dp),
-                text = "$previous",
+                text = "${offer.after}",
                 color = Theme.colorScheme.icon.primary,
                 style = Theme.typography.label.medium.medium
             )
             Text(
                 modifier = Modifier
                     .padding(start = 4.dp),
-                text = "VS",
+                text = stringResource(Res.string.vs),
                 color = Theme.colorScheme.text.body,
                 style = Theme.typography.label.medium.small,
             )
@@ -119,7 +129,7 @@ fun OfferItemCard(
             Text(
                 modifier = Modifier.padding(start = 2.dp)
                     .weight(1f),
-                text = "$after",
+                text = "${offer.previous}",
                 color = Theme.colorScheme.text.body,
                 style = Theme.typography.label.medium.small,
                 textDecoration = TextDecoration.LineThrough
@@ -134,12 +144,12 @@ fun OfferItemCard(
 @Composable
 private fun OfferItemCard() = SpendooTheme {
     OfferItemCard(
-        title = "Nescafe Gold",
-        description = "Premium instant coffee - Make it at home",
-        save = -4800 ,
-        previous = 150 ,
-        after = 350,
+        offer = OfferItemCardUiState(
+            title = "Nescafe Gold",
+            description = "Premium instant coffee - Make it at home",
+            save = -4800,
+            previous = 150,
+            after = 350,
+        ),
     )
 }
-
-
