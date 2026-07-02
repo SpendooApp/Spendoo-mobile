@@ -5,3 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object HomeRoute : NavKey
+
+@Serializable
+data object NotificationsRoute : NavKey
+
+@Serializable
+data object TopSpendingRoute : NavKey
