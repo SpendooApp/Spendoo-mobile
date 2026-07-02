@@ -13,4 +13,5 @@ interface AuthenticationRepository {
     suspend fun saveAuthTokens(authTokens: AuthenticationTokens)
     suspend fun clearAuthTokens()
     fun observeTokenChange(): StateFlow<String>
+    suspend fun sendDeviceToken(token: String)
 }

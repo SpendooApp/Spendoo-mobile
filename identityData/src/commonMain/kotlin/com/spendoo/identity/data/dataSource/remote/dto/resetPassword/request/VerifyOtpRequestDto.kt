@@ -9,4 +9,6 @@ class VerifyOtpRequestDto (
     val email: String,
     @SerialName("otp")
     val otp: String,
+    @SerialName("deviceToken")
+    val deviceToken: String? = null
 )

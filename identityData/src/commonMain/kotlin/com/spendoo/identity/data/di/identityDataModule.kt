@@ -36,6 +36,7 @@ val identityDataModule = module {
             baseUrl = get<String>(named(BASE_URL)),
             authorizationService = { get<AuthorizationService>() },
             settingsRepository = { get<SettingsRepository>() },
+            globalNavigationHandler = get(),
         )
     }
     single(named(COIL_CLIENT)) {

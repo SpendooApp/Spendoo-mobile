@@ -17,12 +17,15 @@ data class RegisterRequestDto(
     val birthDate: String,
     @SerialName("gender")
     val gender: Gender,
+    @SerialName("deviceToken")
+    val deviceToken: String? = null
 )
 
-fun RegisterRequest.toDto() = RegisterRequestDto(
+fun RegisterRequest.toDto(deviceToken: String?) = RegisterRequestDto(
     fullName = fullName,
     email = email,
     password = password,
     birthDate = birthDate.toString(),
     gender = gender,
+    deviceToken = deviceToken
 )
