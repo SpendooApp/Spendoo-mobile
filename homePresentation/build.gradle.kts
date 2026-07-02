@@ -30,6 +30,7 @@ kotlin {
                 implementation(projects.goalsDomain)
                 implementation(projects.goalsApi)
                 implementation(projects.sharedDomain)
+                implementation(libs.kmpnotifier)
             }
         }
         androidMain {

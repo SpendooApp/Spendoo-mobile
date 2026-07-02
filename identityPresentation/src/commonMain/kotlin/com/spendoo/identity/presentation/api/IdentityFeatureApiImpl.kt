@@ -20,6 +20,7 @@ import com.spendoo.identity.api.OnBoardingRoute
 import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.api.SignUpRoute
 import com.spendoo.identity.api.SplashRoute
+import com.spendoo.identity.api.SubscriptionRoute
 import com.spendoo.identity.api.VerifyEmailRoute
 import com.spendoo.identity.presentation.screen.createNewPassword.CreateNewPasswordScreen
 import com.spendoo.identity.presentation.screen.forgetPassword.ForgetPasswordScreen
@@ -57,7 +58,25 @@ class IdentityFeatureApiImpl : IdentityFeatureApi {
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
-                        Text("Profile", style = Theme.typography.label.medium.medium, color = Theme.colorScheme.text.title)
+                        Text(
+                            "Profile",
+                            style = Theme.typography.label.medium.medium,
+                            color = Theme.colorScheme.text.title
+                        )
+                    }
+                }
+            }
+            entry<SubscriptionRoute> {
+                Box(
+                    Modifier.fillMaxSize().background(Color.Green),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column {
+                        Text(
+                            "Subscription",
+                            style = Theme.typography.label.medium.medium,
+                            color = Theme.colorScheme.text.title
+                        )
                     }
                 }
             }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 class InputVoiceViewModel : BaseViewModel<InputVoiceUiState>(InputVoiceUiState()),
     InputVoiceInteractionListener {
@@ -38,7 +39,7 @@ class InputVoiceViewModel : BaseViewModel<InputVoiceUiState>(InputVoiceUiState()
             val initialDuration = state.value.timerDuration
             while (isActive) {
                 updateState { it.copy(timerDuration = initialDuration + (Clock.System.now() - startMoment)) }
-                delay(100)
+                delay(100.milliseconds)
             }
         }
     }
@@ -59,7 +60,7 @@ class InputVoiceViewModel : BaseViewModel<InputVoiceUiState>(InputVoiceUiState()
                 val progress = (startProgress + (elapsed.toFloat() / totalDurationMillis)).coerceIn(0f, 1f)
                 updateState { it.copy(playbackProgress = progress) }
                 if (progress >= 1f) break
-                delay(16)
+                delay(16.milliseconds)
             }
         }
     }

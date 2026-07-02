@@ -22,6 +22,7 @@ kotlin {
                 implementation(projects.identityDomain)
                 implementation(projects.identityApi)
                 implementation(projects.homeApi)
+                implementation(libs.kmpnotifier)
             }
         }
         androidMain {
