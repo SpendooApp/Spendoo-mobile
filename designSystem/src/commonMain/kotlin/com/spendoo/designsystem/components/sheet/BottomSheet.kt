@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,10 +41,14 @@ fun BottomSheet(
     skipPartiallyExpanded: Boolean = false,
     containerColor: Color = Theme.colorScheme.background.tertiary,
     scrimColor: Color = Color.Black.copy(alpha = 0.33f),
+    canSwipeToDismiss: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = skipPartiallyExpanded
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        confirmValueChange = { sheetValue ->
+            !(!canSwipeToDismiss && sheetValue == SheetValue.Hidden && isVisible)
+        }
     )
     val scope = rememberCoroutineScope()
     var showSheet by remember { mutableStateOf(false) }
@@ -62,8 +67,10 @@ fun BottomSheet(
     if (showSheet) {
         ModalBottomSheet(
             onDismissRequest = {
-                showSheet = false
-                onDismiss()
+                if (canSwipeToDismiss) {
+                    showSheet = false
+                    onDismiss()
+                }
             },
             sheetState = sheetState,
             containerColor = containerColor,

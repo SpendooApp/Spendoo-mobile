@@ -35,6 +35,7 @@ import com.aay.compose.utils.checkIfDataValid
 import com.aay.compose.utils.formatToThousandsMillionsBillions
 import com.aay.compose.baseComponents.xAxisDrawing
 import com.aay.compose.lineChart.components.drawQuarticLineWithShadow
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -212,7 +213,7 @@ internal fun ChartContent(
         upperValue = linesParameters.getUpperValue()
         lowerValue = linesParameters.getLowerValue()
         if (animateChart) {
-            delay(400)
+            delay(400.milliseconds)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(durationMillis = 1000, easing = LinearEasing)

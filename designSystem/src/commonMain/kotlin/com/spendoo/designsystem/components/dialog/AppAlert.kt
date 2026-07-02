@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
@@ -80,12 +82,14 @@ fun AppAlertContent(
     actionText: String,
     onActionClick: () -> Unit,
     dismissText: String,
+    minWidth: Dp = 328.dp,
+    shape: Shape = RoundedCornerShape(20.dp),
     onDismissRequest: () -> Unit,
 ) {
     Box(
         modifier = modifier
-            .width(328.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .width(minWidth)
+            .clip(shape)
             .background(Theme.colorScheme.background.tertiary)
             .padding(vertical = 16.dp)
     ) {
@@ -100,7 +104,7 @@ fun AppAlertContent(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Top
                 ) {
                     Text(
                         text = title,
@@ -180,7 +184,7 @@ private fun LazyListScope.bodySection(
 
 @PreviewLightDark
 @Composable
-fun AppAlertContentPreview() = SpendooPreview {
+private fun AppAlertContentPreview() = SpendooPreview {
     AppAlertContent(
         iconRes = Res.drawable.img_microphone_record,
         title = "Title Title Title Title Title Title Title Title Title Title Title Title",
