@@ -35,6 +35,10 @@ kotlin {
             implementation(projects.goalsPresentation)
             implementation(projects.chatbotApi)
             implementation(projects.chatbotPresentation)
+            implementation(projects.logging)
+            implementation(projects.sharedDomain)
+            implementation(projects.sharedData)
+            api(libs.kmpnotifier)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

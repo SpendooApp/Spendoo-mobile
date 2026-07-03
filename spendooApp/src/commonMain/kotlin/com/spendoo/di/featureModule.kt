@@ -12,6 +12,7 @@ import com.spendoo.identity.domain.di.domainModule as identityDomainModule
 import com.spendoo.identity.presentation.di.identityScreensModule
 import com.spendoo.identity.data.di.identityDataModule
 import com.spendoo.chatbot.presentation.di.chatbotPresentationModule
+import com.spendoo.logging.di.loggingModule
 import org.koin.dsl.module
 
 val featureModule = module {
@@ -27,6 +28,7 @@ val featureModule = module {
         goalsPresentationModule,
         statisticsPresentationModule,
         statisticsDataModule,
-        chatbotPresentationModule
+        chatbotPresentationModule,
+        loggingModule
     )
 }

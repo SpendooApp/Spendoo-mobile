@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
     id("com.google.gms.google-services")
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val localProperties = Properties()
@@ -88,6 +89,9 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.core)
+
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }
 
 fun Project.loadProperty(

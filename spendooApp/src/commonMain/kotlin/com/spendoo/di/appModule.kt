@@ -7,6 +7,8 @@ import com.spendoo.designsystem.navigation.SnackBarManager
 import com.spendoo.designsystem.navigation.effector.Effector
 import com.spendoo.designsystem.navigation.effector.EffectorImpl
 import com.spendoo.designsystem.navigation.getDispatcherProvider
+import com.spendoo.navigation.GlobalNavigationHandlerImpl
+import com.spendoo.shared.domain.navigation.GlobalNavigationHandler
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
@@ -20,4 +22,5 @@ val appModule = module {
     singleOf(::MainEntryViewModel)
     singleOf(::EffectorImpl) bind Effector::class
     singleOf(::ResultStore)
+    singleOf(::GlobalNavigationHandlerImpl) bind GlobalNavigationHandler::class
 }
