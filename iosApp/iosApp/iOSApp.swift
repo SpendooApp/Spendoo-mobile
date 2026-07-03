@@ -36,7 +36,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                 code: 0,
                 userInfo: [
                     NSLocalizedDescriptionKey: throwable.message ?? "Unknown Kotlin Exception",
-                    "KotlinStackTrace": throwable.stackTrace.joined(separator: "\n")
+                    "KotlinStackTrace": String(describing: throwable)
                 ]
             )
             #if canImport(FirebaseCrashlytics)
