@@ -43,4 +43,5 @@ val identityDataModule = module {
         provideCoilClient()
     }
     single(named(IDENTITY_SCOPE)) { CoroutineScope(Dispatchers.Default) }
+    includes(platformIdentityDataModule)
 }

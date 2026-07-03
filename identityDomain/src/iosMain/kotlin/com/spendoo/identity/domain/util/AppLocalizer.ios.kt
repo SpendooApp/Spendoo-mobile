@@ -1,7 +1,6 @@
-package com.spendoo.util
+package com.spendoo.identity.domain.util
 
 import com.spendoo.identity.domain.repository.SettingsRepository
-import com.spendoo.identity.domain.util.AppLanguage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

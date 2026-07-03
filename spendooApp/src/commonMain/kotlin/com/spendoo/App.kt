@@ -19,7 +19,7 @@ import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppTheme
-import com.spendoo.util.AppLocalizer
+import com.spendoo.identity.domain.util.AppLocalizer
 import com.spendoo.util.SetSystemBarsAppearance
 import com.spendoo.util.toStringMap
 import kotlinx.coroutines.CoroutineExceptionHandler

@@ -13,5 +13,10 @@ kotlin {
                 implementation(projects.sharedDomain)
             }
         }
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.core.ktx)
+            }
+        }
     }
 }

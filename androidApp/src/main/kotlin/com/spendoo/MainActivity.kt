@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mmk.kmpnotifier.KMPNotifier
 import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.permission.permissionUtil
-import com.spendoo.util.AppLocalizer
+import com.spendoo.identity.domain.util.AppLocalizer
 import org.koin.android.ext.android.inject
 import space.kodio.core.Kodio
 import space.kodio.core.initialize

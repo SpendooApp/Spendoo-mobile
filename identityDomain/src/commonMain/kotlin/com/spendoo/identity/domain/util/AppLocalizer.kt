@@ -1,4 +1,4 @@
-package com.spendoo.util
+package com.spendoo.identity.domain.util
 
 expect class AppLocalizer {
     fun getDeviceLanguageIso(): String
