@@ -1,34 +1,35 @@
 package com.spendoo.statistics.presentation.screen.statistics
 
+import androidx.lifecycle.viewModelScope
+import com.spendoo.categories.api.CategoriesRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.categories.api.TransactionDetailsRoute
-import com.spendoo.statistics.api.ExportRoute
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
+import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.getNow
 import com.spendoo.shared.domain.utils.getToday
+import com.spendoo.statistics.api.ExportRoute
 import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.repository.StatisticsRepository
-import com.spendoo.identity.domain.repository.ProfileRepository
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.plus
-import kotlinx.datetime.minus
-import kotlinx.datetime.atTime
-import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.error_loading_statistics
-import spendoo.designsystem.generated.resources.an_error_occurred
-import spendoo.designsystem.generated.resources.done
-import androidx.lifecycle.viewModelScope
-import com.spendoo.categories.api.CategoriesRoute
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.an_error_occurred
+import spendoo.designsystem.generated.resources.done
+import spendoo.designsystem.generated.resources.error_loading_statistics
 import kotlin.time.Duration.Companion.milliseconds
 
 class StatisticsViewModel(
@@ -125,6 +126,7 @@ class StatisticsViewModel(
         tryToCollect(
             block = {
                 searchQueryFlow
+                    .drop(1)
                     .debounce(SEARCH_DEBOUNCE_DELAY_MS.milliseconds)
                     .distinctUntilChanged()
             },
@@ -356,6 +358,6 @@ class StatisticsViewModel(
     companion object {
         const val INITIAL_PAGE = 0
         const val PAGE_SIZE = 20
-        const val SEARCH_DEBOUNCE_DELAY_MS = 300L
+        const val SEARCH_DEBOUNCE_DELAY_MS = 400L
     }
 }

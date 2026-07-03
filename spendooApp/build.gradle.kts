@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.util.Properties
 
 plugins {
@@ -35,7 +37,7 @@ kotlin {
             implementation(projects.goalsPresentation)
             implementation(projects.chatbotApi)
             implementation(projects.chatbotPresentation)
-            implementation(projects.logging)
+            api(projects.logging)
             implementation(projects.sharedDomain)
             implementation(projects.sharedData)
             api(libs.kmpnotifier)
@@ -46,6 +48,13 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.poolingcontainer)
             implementation(libs.androidx.core.ktx)
+        }
+    }
+
+    targets.withType<KotlinNativeTarget>().configureEach {
+        binaries.withType<Framework>().configureEach {
+            export(projects.logging)
+            export(libs.kmpnotifier)
         }
     }
 }
