@@ -13,6 +13,7 @@ import com.spendoo.identity.presentation.di.identityScreensModule
 import com.spendoo.identity.data.di.identityDataModule
 import com.spendoo.chatbot.presentation.di.chatbotPresentationModule
 import com.spendoo.logging.di.loggingModule
+import org.spendoo.scraper.data.di.scraperDataModule
 import org.koin.dsl.module
 
 val featureModule = module {
@@ -23,6 +24,7 @@ val featureModule = module {
         categoriesDataModule,
         categoriesPresentationModule,
         offersDataModule,
+        scraperDataModule,
         homePresentationModule,
         goalsDataModule,
         goalsPresentationModule,

@@ -11,6 +11,7 @@ dependencies {
     compileOnly("com.android.tools.build:gradle:9.2.1")
     compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.21")
     compileOnly("org.jetbrains.compose:compose-gradle-plugin:1.11.0")
+    compileOnly("androidx.room:room-gradle-plugin:2.8.4")
 }
 
 gradlePlugin {
@@ -42,6 +43,10 @@ gradlePlugin {
         register("kmpApplication") {
             id = "spendoo.kmp.application"
             implementationClass = "KmpApplicationConventionPlugin"
+        }
+        register("kmpRoom") {
+            id = "spendoo.kmp.room"
+            implementationClass = "com.spendoo.convention.KmpRoomConventionPlugin"
         }
     }
 }

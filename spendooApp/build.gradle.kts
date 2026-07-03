@@ -24,6 +24,7 @@ kotlin {
             implementation(projects.homeApi)
             implementation(projects.homePresentation)
             implementation(projects.offersData)
+            implementation(projects.scraperData)
             implementation(projects.goalsData)
             implementation(projects.categoriesDomain)
             implementation(projects.categoriesData)
