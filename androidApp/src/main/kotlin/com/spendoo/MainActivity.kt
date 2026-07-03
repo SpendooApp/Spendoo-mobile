@@ -16,10 +16,13 @@ import space.kodio.core.Kodio
 import space.kodio.core.initialize
 import space.kodio.core.onRequestPermissionsResult
 
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+
 class MainActivity : ComponentActivity() {
     private val localizer: AppLocalizer by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         Kodio.initialize(this)

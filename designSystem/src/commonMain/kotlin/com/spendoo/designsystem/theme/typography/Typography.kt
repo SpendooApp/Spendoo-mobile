@@ -9,7 +9,7 @@ data class Typography(
     val heading: Heading,
     val title: Title,
     val body: Body,
-    val label: Label
+    val label: Label,
 ) {
 
     data class Heading(

@@ -27,15 +27,14 @@ import com.spendoo.identity.presentation.screen.forgetPassword.ForgetPasswordScr
 import com.spendoo.identity.presentation.screen.login.LoginScreen
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingScreen
 import com.spendoo.identity.presentation.screen.signup.SignUpScreen
+import com.spendoo.identity.presentation.screen.splash.SplashScreen
 import com.spendoo.identity.presentation.screen.verifyEmail.VerifyEmailScreen
 
 class IdentityFeatureApiImpl : IdentityFeatureApi {
 
     override fun invoke(): (NavKey) -> NavEntry<NavKey> {
         return entryProvider {
-            entry<SplashRoute> {
-                Box(Modifier.fillMaxSize().background(Theme.colorScheme.background.primary))
-            }
+            entry<SplashRoute> { SplashScreen() }
             entry<OnBoardingRoute> { OnboardingScreen() }
             entry<LoginRoute> { LoginScreen() }
             entry<SignUpRoute> { SignUpScreen() }

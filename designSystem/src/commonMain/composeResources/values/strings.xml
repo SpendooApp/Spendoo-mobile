@@ -2,6 +2,7 @@
 <resources>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
+    <string name="splash_tagline">Track. Save. Achieve.</string>
     <string name="onboarding_title_welcome">Welcome to SPENDoo</string>
     <string name="onboarding_desc_welcome">Your smart companion for managing finances and achieving your financial goals effortlessly.</string>
     <string name="onboarding_title_track_spending">Track Your Spending</string>

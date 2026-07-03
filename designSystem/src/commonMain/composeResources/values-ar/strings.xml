@@ -2,6 +2,7 @@
 <resources>
     <string name="skip">تخطي</string>
     <string name="get_started">ابدأ الآن</string>
+    <string name="splash_tagline">تتبع. ادخر. حقق أهدافك.</string>
     <string name="onboarding_title_welcome">مرحبًا بك في SPENDoo</string>
     <string name="onboarding_desc_welcome">رفيقك الذكي لإدارة أموالك وتحقيق أهدافك المالية بسهولة.</string>
     <string name="onboarding_title_track_spending">تتبع إنفاقك</string>

@@ -17,6 +17,11 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>This app needs microphone access to record audio.</string>
     <key>UILaunchScreen</key>
-    <dict/>
+    <dict>
+        <key>UIImageName</key>
+        <string>img_splash_stats</string>
+        <key>UIColorName</key>
+        <string>SplashBackground</string>
+    </dict>
 </dict>
 </plist>

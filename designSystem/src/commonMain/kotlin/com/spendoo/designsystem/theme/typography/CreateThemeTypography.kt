@@ -5,11 +5,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.Font
+import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.poppins_medium
 import spendoo.designsystem.generated.resources.poppins_regular
 import spendoo.designsystem.generated.resources.poppins_semi_bold
-import org.jetbrains.compose.resources.Font
-import spendoo.designsystem.generated.resources.Res
 
 @Composable
 fun createThemeTypography(): Typography {
