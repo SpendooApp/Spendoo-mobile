@@ -8,16 +8,14 @@ import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.shared.data.shared.BaseGateway
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
-import io.ktor.client.request.get
-import io.ktor.client.request.patch
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
+import io.ktor.client.request.get
+import io.ktor.client.request.patch
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.milliseconds
 
 class ProfileRepositoryImpl(
     client: HttpClient,
@@ -78,12 +76,6 @@ class ProfileRepositoryImpl(
             }
         }
     }
-
-    override suspend fun getNotificationsCount(): Int {
-        delay(2000.milliseconds)
-        return 5 //TODO: Implement this method when the endpoint is ready
-    }
-
 
     companion object {
         const val PROFILE_ENDPOINT = "api/v1/identity/profile"

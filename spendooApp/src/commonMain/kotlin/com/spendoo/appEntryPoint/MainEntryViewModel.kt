@@ -90,4 +90,8 @@ class MainEntryViewModel : BaseViewModel<MainEntryState>(MainEntryState()),
     override fun resetToRoute(route: NavKey, forceNavigate: Boolean) {
         resetTo(route, forceNavigate)
     }
+
+    override fun navigateToRoute(route: NavKey, forceNavigate: Boolean) {
+        navigate(route, forceNavigate)
+    }
 }

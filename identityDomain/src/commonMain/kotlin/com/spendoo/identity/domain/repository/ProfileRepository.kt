@@ -9,7 +9,6 @@ interface ProfileRepository {
     suspend fun updateProfileImage(fileBytes: ByteArray, fileName: String): String
     suspend fun deleteProfileImage()
     suspend fun updateProfile(fullName: String, gender: Gender, birthDate: LocalDate)
-    suspend fun getNotificationsCount(): Int
 }
 
 

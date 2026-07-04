@@ -313,4 +313,10 @@
     <string name="note_optional">Note (Optional)</string>
     <string name="save">Save</string>
     <string name="top_spending_categories">Top Spending Categories</string>
+    <string name="could_not_clear_chat_history">Couldn't clear chat history</string>
+    <string name="could_not_load_chat_history">Couldn't load chat history</string>
+    <string name="could_not_send_message">Couldn't send message</string>
+    <string name="let_simplify_your_financial_journey">Let’s simplify your financial journey</string>
+    <string name="hey_i_m_spendoo_bot">Hey! I’m SpendooBot</string>
+    <string name="ask_ai_anything">Ask AI anything...</string>
 </resources>

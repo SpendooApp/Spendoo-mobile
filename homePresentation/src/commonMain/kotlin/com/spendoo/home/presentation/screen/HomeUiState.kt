@@ -131,5 +131,5 @@ fun CategorySpending.toUiState(): SpendingUiState {
 data class UserData(
     val userName: String,
     val userImageUrl: String?,
-    val notificationsCount: Int
+    val notificationsCount: Long
 )

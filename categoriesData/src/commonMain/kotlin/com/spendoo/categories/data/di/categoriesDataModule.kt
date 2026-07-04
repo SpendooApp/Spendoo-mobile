@@ -1,9 +1,11 @@
 package com.spendoo.categories.data.di
 
 import com.spendoo.categories.data.local.CategoriesDatabase
+import com.spendoo.categories.data.repository.BudgetActionRepositoryImpl
 import com.spendoo.categories.data.repository.CategoriesRepositoryImpl
 import com.spendoo.categories.data.repository.ScheduledPaymentsRepositoryImpl
 import com.spendoo.categories.data.repository.TransactionsRepositoryImpl
+import com.spendoo.categories.domain.repository.BudgetActionRepository
 import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
@@ -19,5 +21,7 @@ val categoriesDataModule = module {
     singleOf(::CategoriesRepositoryImpl) bind CategoriesRepository::class
     singleOf(::TransactionsRepositoryImpl) bind TransactionsRepository::class
     singleOf(::ScheduledPaymentsRepositoryImpl) bind ScheduledPaymentsRepository::class
+    singleOf(::BudgetActionRepositoryImpl) bind BudgetActionRepository::class
     single { get<CategoriesDatabase>().expenseTitleDao() }
 }
+

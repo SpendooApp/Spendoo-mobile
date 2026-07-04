@@ -10,6 +10,7 @@ import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.identity.domain.repository.ProfileRepository
+import com.spendoo.notifications.domain.repository.NotificationRepository
 import com.spendoo.offers.domain.repository.OffersRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import spendoo.designsystem.generated.resources.Res
@@ -24,6 +25,7 @@ class HomeViewModel(
     private val transactionsRepository: TransactionsRepository,
     private val categoriesRepository: CategoriesRepository,
     private val profileRepository: ProfileRepository,
+    private val notificationRepository: NotificationRepository,
     private val goalsRepository: GoalsRepository
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeInteractionListener {
 
@@ -109,7 +111,7 @@ class HomeViewModel(
 
     private fun loadNotificationsCount() {
         tryToCall(
-            block = { profileRepository.getNotificationsCount() },
+            block = { notificationRepository.getUnreadNotificationsCount() },
             onStart = { updateState { copy(isNotificationsLoading = true) } },
             onSuccess = { count ->
                 updateState {

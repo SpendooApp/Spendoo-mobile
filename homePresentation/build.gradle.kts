@@ -31,6 +31,7 @@ kotlin {
                 implementation(projects.goalsApi)
                 implementation(projects.categoriesApi)
                 implementation(projects.sharedDomain)
+                implementation(projects.notificationsDomain)
                 implementation(libs.kmpnotifier)
             }
         }

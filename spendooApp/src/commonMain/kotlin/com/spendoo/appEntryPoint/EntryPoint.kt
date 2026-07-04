@@ -13,7 +13,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.spendoo.categories.api.AddTransactionRoute
 import com.spendoo.categories.api.CategoriesRoute
-import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.designsystem.components.snackbar.AnimatedSnackBar
 import com.spendoo.designsystem.navigation.effector.Effect
 import com.spendoo.designsystem.navigation.effector.EffectHandler
@@ -73,7 +72,6 @@ fun EntryPoint(
     val showBottomNavigation = currentRoute is HomeRoute
             || currentRoute is CategoriesRoute
             || currentRoute is StatisticsRoute
-            || currentRoute is ChatbotRoute
             || currentRoute is AddTransactionRoute
 
     val activeFeature = currentRoute
