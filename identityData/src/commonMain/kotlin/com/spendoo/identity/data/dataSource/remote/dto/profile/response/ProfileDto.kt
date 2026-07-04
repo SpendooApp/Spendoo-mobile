@@ -1,5 +1,6 @@
 package com.spendoo.identity.data.dataSource.remote.dto.profile.response
 
+import com.spendoo.identity.domain.model.PlanCode
 import com.spendoo.identity.domain.model.Profile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,6 +17,10 @@ data class ProfileDto(
     val gender: String,
     @SerialName("imageUrl")
     val imageUrl: String? = null,
+    @SerialName("currentPlan")
+    val currentPlan: String = "",
+    @SerialName("planCode")
+    val planCode: PlanCode = PlanCode.FREE,
 )
 
 fun ProfileDto.toDomain(): Profile = Profile(
@@ -24,4 +29,6 @@ fun ProfileDto.toDomain(): Profile = Profile(
     birthDate = birthDate,
     gender = gender,
     imageUrl = imageUrl,
-)
+    currentPlan = currentPlan,
+    planCode = planCode,
+)

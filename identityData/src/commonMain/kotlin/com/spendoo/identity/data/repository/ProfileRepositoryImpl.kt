@@ -61,10 +61,29 @@ class ProfileRepositoryImpl(
         }
     }
 
+    override suspend fun updateProfile(
+        fullName: String,
+        gender: com.spendoo.identity.domain.model.Gender,
+        birthDate: kotlinx.datetime.LocalDate
+    ) {
+        tryToExecute<Unit> {
+            patch(PROFILE_ENDPOINT) {
+                setBody(
+                    com.spendoo.identity.data.dataSource.remote.dto.profile.request.UpdateProfileRequestDto(
+                        fullName = fullName,
+                        gender = gender,
+                        birthDate = birthDate.toString()
+                    )
+                )
+            }
+        }
+    }
+
     override suspend fun getNotificationsCount(): Int {
         delay(2000.milliseconds)
         return 5 //TODO: Implement this method when the endpoint is ready
     }
+
 
     companion object {
         const val PROFILE_ENDPOINT = "api/v1/identity/profile"
