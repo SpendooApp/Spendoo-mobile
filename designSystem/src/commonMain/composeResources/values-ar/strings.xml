@@ -211,4 +211,6 @@
     <string name="save_goal">حفظ الهدف</string>
     <string name="confirm">تأكيد</string>
     <string name="add_to_goal_title">إضافة إلى %1$s</string>
+    <string name="congratulations">مبروك!</string>
+    <string name="you_have_unlocked_a_new_badge">لقد حصلت علي شارة جديدة</string>
 </resources>

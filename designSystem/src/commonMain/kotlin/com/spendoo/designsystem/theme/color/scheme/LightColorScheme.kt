@@ -1,5 +1,6 @@
 package com.spendoo.designsystem.theme.color.scheme
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -24,7 +25,8 @@ internal val LightColorScheme = ColorScheme(
         purple = Color(0xFF9A83CE),
         success = Color(0xFFCCFFEB),
         warning = Color(0xFFFDDFCE),
-        done = Color(0xFF001B2E)
+        done = Color(0xFF001B2E),
+        golden = Color(0xFFFFB759)
     ),
     background = ColorScheme.Background(
         octonary = Color(0xFF179FDD).copy(alpha = 0.7f),
@@ -89,6 +91,15 @@ internal val LightColorScheme = ColorScheme(
                 Color(0xFF00EEFF),
                 Color(0xFF179FDD)
             )
+        ),
+        brandVertical = Brush.linearGradient(
+            colors = listOf(
+                Color(0xFF179FDD),
+                Color(0xFF004E85),
+                Color(0xFF179FDD)
+            ),
+            start = Offset(0f, 0f),
+            end = Offset(0f, Float.POSITIVE_INFINITY)
         )
     )
 )

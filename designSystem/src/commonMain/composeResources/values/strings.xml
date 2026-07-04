@@ -220,4 +220,6 @@
     <string name="save_goal">Save Goal</string>
     <string name="confirm">Confirm</string>
     <string name="add_to_goal_title">Add to %1$s</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="you_have_unlocked_a_new_badge">You\'ve unlocked a new badge</string>
 </resources>
