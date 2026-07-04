@@ -56,5 +56,11 @@ include(":sharedDomain")
 include(":sharedData")
 include(":charts")
 include(":logging")
+include(":notificationsDomain")
+include(":notificationsData")
+include(":chatbotDomain")
+include(":chatbotData")
 include(":scraperDomain")
 include(":scraperData")
+
+
