@@ -64,6 +64,7 @@ data class AddTransactionUiState(
     val incomeAmountError: UiText? = null,
     val incomeNoteError: UiText? = null,
     val savingAmountError: UiText? = null,
+    val savedExpenseTitles: List<String> = emptyList(),
 ) {
     val isSavingAmountValid: Boolean
         get() = !isSavingChecked || (savingAmount != null && savingAmount > 0)
@@ -96,4 +97,15 @@ fun Category.toCategoryItemUiState() = CategoryItemUiState(
 fun TransactionType.toName(): StringResource = when(this) {
     TransactionType.Income -> Res.string.income
     TransactionType.Expense -> Res.string.expenses
+}
+
+fun filterSuggestedTitles(query: String, savedTitles: List<String>): List<String> {
+    if (savedTitles.isEmpty()) return emptyList()
+    val trimmed = query.trim()
+    if (trimmed.isEmpty()) return savedTitles.take(5)
+
+    return savedTitles
+        .filter { it.contains(trimmed, ignoreCase = true) && !it.equals(trimmed, ignoreCase = true) }
+        .sortedByDescending { it.startsWith(trimmed, ignoreCase = true) }
+        .take(5)
 }

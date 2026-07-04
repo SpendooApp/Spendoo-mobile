@@ -31,4 +31,6 @@ interface TransactionsRepository {
 
     suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry>
     suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry>
+    suspend fun saveExpenseTitles(titles: List<String>)
+    suspend fun getSavedExpenseTitles(): List<String>
 }

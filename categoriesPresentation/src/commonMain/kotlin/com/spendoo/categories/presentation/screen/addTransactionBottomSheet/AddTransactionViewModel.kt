@@ -45,6 +45,20 @@ class AddTransactionViewModel(
 ) : BaseViewModel<AddTransactionUiState>(AddTransactionUiState()),
     AddTransactionInteractionListener {
 
+    init {
+        loadSavedExpenseTitles()
+    }
+
+    private fun loadSavedExpenseTitles() {
+        tryToCall(
+            block = { transactionsRepository.getSavedExpenseTitles() },
+            onSuccess = { titles ->
+                updateState { copy(savedExpenseTitles = titles) }
+            },
+            onError = {}
+        )
+    }
+
 
     override fun onSheetHidden() {
         resetForm()
@@ -397,6 +411,8 @@ class AddTransactionViewModel(
                 updateState { it.copy(isSubmitting = true) }
             },
             block = {
+                val titles = state.value.expenseEntries.map { it.title }.filter { it.isNotBlank() }
+                transactionsRepository.saveExpenseTitles(titles)
                 val entries = state.value.expenseEntries.map {
                     ExpenseEntry(
                         title = it.title,

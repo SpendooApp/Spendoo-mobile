@@ -2,6 +2,7 @@ package com.spendoo.categories.presentation.screen.addTransactionBottomSheet.com
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,24 +26,25 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.TransactionEntryUiState
+import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.filterSuggestedTitles
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.modifier.clickableNoRipple
+import com.spendoo.designsystem.modifier.shimmerEffect
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.SpendooPreview
+import com.spendoo.designsystem.utils.asString
 import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.painter
-import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.spendoo.designsystem.modifier.shimmerEffect
-import com.spendoo.designsystem.utils.asString
 import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import com.spendoo.shared.domain.utils.toCleanString
+import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.choose_category
 import spendoo.designsystem.generated.resources.enter_a_title
@@ -54,6 +57,7 @@ import spendoo.designsystem.generated.resources.write_a_note_optional
 fun ExpenseEntryItem(
     index: Int,
     entry: TransactionEntryUiState,
+    savedTitles: List<String> = emptyList(),
     onCategoryClicked: (id: String) -> Unit,
     onEntryChanged: (id: String, entry: TransactionEntryUiState) -> Unit,
     onRemoveClicked: (id: String) -> Unit,
@@ -62,6 +66,10 @@ fun ExpenseEntryItem(
     onHeightChanged: ((Dp) -> Unit)? = null,
 ) {
     val density = LocalDensity.current
+    val suggestions = remember(entry.title, savedTitles) {
+        filterSuggestedTitles(entry.title, savedTitles)
+    }
+
     Column(
         modifier = modifier
             .widthIn(min = 280.dp)
@@ -116,6 +124,33 @@ fun ExpenseEntryItem(
                 errorText = entry.titleError?.asString(),
                 singleLine = true
             )
+
+            if (suggestions.isNotEmpty()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    suggestions.forEach { suggestion ->
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(Theme.colorScheme.button.secondary)
+                                .clickableNoRipple {
+                                    onEntryChanged(entry.id, entry.copy(title = suggestion))
+                                }
+                                .padding(horizontal = 10.dp, vertical = 6.dp)
+                        ) {
+                            Text(
+                                text = suggestion,
+                                style = Theme.typography.label.medium.small,
+                                color = Theme.colorScheme.button.onSecondary
+                            )
+                        }
+                    }
+                }
+            }
 
             CustomTextField(
                 value = entry.amount.toCleanString(),
@@ -238,21 +273,17 @@ fun ExpenseEntryItemShimmer(
 @Composable
 @Preview
 fun ExpenseEntryItemPreview() = SpendooPreview {
-    LazyRow {
-        item {
-            ExpenseEntryItem(
-                index = 0,
-                entry = TransactionEntryUiState(
-                    title = "Groceries",
-                    amount = 50.00,
-                    categoryName = "Food",
-                    categoryIcon = null
-                ),
-                onCategoryClicked = {},
-                onRemoveClicked = {},
-                onEntryChanged = { _, _ -> },
-                showRemoveButton = true
-            )
-        }
-    }
+    ExpenseEntryItem(
+        index = 0,
+        entry = TransactionEntryUiState(
+            title = "Groceries",
+            amount = 50.00,
+            categoryName = "Food",
+            categoryIcon = null
+        ),
+        onCategoryClicked = {},
+        onRemoveClicked = {},
+        onEntryChanged = { _, _ -> },
+        showRemoveButton = true
+    )
 }

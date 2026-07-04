@@ -34,9 +34,14 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.EnrichedAiExtractionResponseDto
+import com.spendoo.categories.data.local.dao.ExpenseTitleDao
+import com.spendoo.categories.data.local.entity.ExpenseTitleEntity
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class TransactionsRepositoryImpl(
     client: HttpClient,
+    private val expenseTitleDao: ExpenseTitleDao,
 ) : BaseGateway(client), TransactionsRepository {
 
     override suspend fun getTransactions(search: String?, pageQuery: PageQuery): PagedData<Transaction> {
@@ -203,5 +208,21 @@ class TransactionsRepositoryImpl(
             }
         }
         return response.items.map { it.toDomain() }
+    }
+
+    @OptIn(ExperimentalTime::class)
+    override suspend fun saveExpenseTitles(titles: List<String>) {
+        val now = Clock.System.now().toEpochMilliseconds()
+        val entities = titles
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .map { ExpenseTitleEntity(title = it, createdAt = now) }
+        if (entities.isNotEmpty()) {
+            expenseTitleDao.insertTitles(entities)
+        }
+    }
+
+    override suspend fun getSavedExpenseTitles(): List<String> {
+        return expenseTitleDao.getAllTitles()
     }
 }

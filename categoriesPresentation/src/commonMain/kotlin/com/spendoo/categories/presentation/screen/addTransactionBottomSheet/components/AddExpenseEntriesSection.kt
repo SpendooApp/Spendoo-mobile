@@ -118,6 +118,7 @@ fun AddExpenseEntriesSection(
                             .heightIn(min = maxHeight),
                         index = index,
                         entry = entry,
+                        savedTitles = state.savedExpenseTitles,
                         onEntryChanged = interactionListener::onEntryChanged,
                         onCategoryClicked = interactionListener::onCategoryFieldClicked,
                         onRemoveClicked = interactionListener::removeExpenseEntry,

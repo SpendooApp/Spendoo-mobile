@@ -1,5 +1,6 @@
 plugins {
     id("spendoo.kmp.feature.data")
+    id("spendoo.kmp.room")
 }
 
 kotlin {
