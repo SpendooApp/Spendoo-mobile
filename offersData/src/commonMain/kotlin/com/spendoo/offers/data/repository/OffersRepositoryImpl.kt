@@ -12,6 +12,10 @@ import org.spendoo.scraper.domain.repository.AmazonScraperRepository
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+
 class OffersRepositoryImpl(
     private val offersDao: OffersDao,
     private val scraperRepository: AmazonScraperRepository,
@@ -41,33 +45,40 @@ class OffersRepositoryImpl(
             // Delete old data for expired keywords
             offersDao.deleteOffersForKeywords(missingOrExpiredKeywords, language)
 
-            // Fetch new data per keyword to map them correctly in DB
-            for (kw in missingOrExpiredKeywords) {
-                val newOffers = scraperRepository.search(
-                    query = listOf(kw),
-                    sortBy = "price_asc",
-                    maxPrice = maxPrice,
-                    offersOnly = true,
-                    country = "eg",
-                    language = language
-                )
+            // Fetch new data per keyword concurrently to map them correctly in DB
+            coroutineScope {
+                val results = missingOrExpiredKeywords.map { kw ->
+                    async {
+                        val newOffers = scraperRepository.search(
+                            query = listOf(kw),
+                            sortBy = "price_asc",
+                            maxPrice = maxPrice,
+                            offersOnly = true,
+                            country = "eg",
+                            language = language
+                        )
 
-                val entities = newOffers.mapIndexed { index, product ->
-                    OfferEntity(
-                        id = product.link ?: "${product.title.hashCode()}_$index",
-                        keyword = kw,
-                        language = language,
-                        discountPercent = null,
-                        imageUrl = product.imageUrl,
-                        title = product.title,
-                        price = product.price,
-                        currency = product.currency,
-                        link = product.link
-                    )
+                        val entities = newOffers.mapIndexed { index, product ->
+                            OfferEntity(
+                                id = product.link ?: "${product.title.hashCode()}_$index",
+                                keyword = kw,
+                                language = language,
+                                discountPercent = null,
+                                imageUrl = product.imageUrl,
+                                title = product.title,
+                                price = product.price,
+                                currency = product.currency,
+                                link = product.link
+                            )
+                        }
+                        kw to entities
+                    }
+                }.awaitAll()
+
+                for ((kw, entities) in results) {
+                    offersDao.insertOffers(entities)
+                    offersDao.insertKeywordCacheStatus(listOf(KeywordCacheEntity(kw, language, currentTime)))
                 }
-                
-                offersDao.insertOffers(entities)
-                offersDao.insertKeywordCacheStatus(listOf(KeywordCacheEntity(kw, language, currentTime)))
             }
         }
 

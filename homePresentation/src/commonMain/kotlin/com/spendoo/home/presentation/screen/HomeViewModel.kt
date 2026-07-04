@@ -129,11 +129,19 @@ class HomeViewModel(
     }
 
     private fun loadOffers() {
-        val topSpendingCategories = state.value.topSpending.map { it.categoryName }
-        val maxPrice = state.value.topSpending.minOfOrNull { it.amount }
-        //TODO: Top frequent items
         tryToCall(
-            block = { offersRepository.getOffers(PageQuery(0, 20), topSpendingCategories, maxPrice) },
+            block = {
+                val frequentItems = transactionsRepository.getTopFrequencyItems(
+                    categoryId = null,
+                    pageQuery = PageQuery(page = 0, size = 5)
+                )
+                val frequentNames = frequentItems.data.map { it.itemName }
+                val frequentMaxPrice = frequentItems.data.maxOfOrNull { it.totalAmount }
+
+                val keywords = (frequentNames).filter { it.isNotBlank() }.distinct()
+
+                offersRepository.getOffers(PageQuery(0, 20), keywords, frequentMaxPrice)
+            },
             onStart = { updateState { copy(isOffersLoading = true) } },
             onSuccess = { offers ->
                 updateState { copy(offers = offers.data.map { it.toUiState() }) }

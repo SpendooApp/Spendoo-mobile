@@ -80,6 +80,7 @@ private fun HomeContent(
                 isLoading = state.isOffersLoading,
                 onViewAll = viewModel::onViewAllOffersClicked,
                 onOfferClicked = { link ->
+                    println("Offer clicked with link: $link")
                     link?.takeIf { it.isNotBlank() }?.let { url ->
                         val formattedUrl = if (url.startsWith("http://") || url.startsWith("https://")) url else "https://$url"
                         uriHandler.openUri(formattedUrl)
