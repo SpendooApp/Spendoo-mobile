@@ -46,6 +46,9 @@ class GoalsViewModel(
                         copy(isGoalsLoadingMore = isLoading, isGoalsLoading = false)
                     }
                 }
+                if (!isLoading) {
+                    checkRefreshFinished()
+                }
             },
             onError = { error ->
                 showSnackBar(
@@ -78,7 +81,10 @@ class GoalsViewModel(
                     isSuccess = false
                 )
             },
-            onEnd = { updateState { it.copy(isSummaryLoading = false) } }
+            onEnd = {
+                updateState { it.copy(isSummaryLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -90,7 +96,18 @@ class GoalsViewModel(
         }
     }
 
+    private fun checkRefreshFinished() {
+        updateState {
+            if (!isSummaryLoading && !isGoalsLoading) {
+                copy(isRefreshing = false)
+            } else {
+                this
+            }
+        }
+    }
+
     override fun onReload() {
+        updateState { copy(isRefreshing = true) }
         getData()
     }
 

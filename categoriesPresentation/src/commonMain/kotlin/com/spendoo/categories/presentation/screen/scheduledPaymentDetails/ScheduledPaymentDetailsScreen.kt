@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
@@ -35,14 +33,12 @@ import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.cards.DetailItem
 import com.spendoo.designsystem.components.icon.CategoryIcon
-import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.asString
-import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -98,7 +94,7 @@ private fun ScheduledPaymentDetailsContent(
     ) {
         TopBar(
             modifier = Modifier.fillMaxWidth(),
-            title = state.title,
+            title = "",
             onBackClicked = interactionListener::onBackClicked,
             actions = listOf(
                 {
@@ -266,7 +262,7 @@ fun ScheduledPaymentDetailsScreenPreview() = SpendooTheme {
         state = ScheduledPaymentDetailsUiState(
             isLoading = false,
             title = "Daily Coffee",
-            amount = "$5.00",
+            amount = "5.00",
             timeLeft = UiText.DynamicString("2 days left"),
             dueDate = "2024-10-10",
             isDueSoon = true

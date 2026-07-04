@@ -27,6 +27,7 @@ import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.utils.asString
 import com.spendoo.shared.domain.utils.toCleanString
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
@@ -58,7 +59,7 @@ fun IncomeEntriesSection(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     enabled = !state.isSavingChecked,
                     singleLine = true,
-                    errorText = state.incomeTitleError
+                    errorText = state.incomeTitleError?.asString()
                 )
             }
             CustomTextField(
@@ -70,7 +71,7 @@ fun IncomeEntriesSection(
                 hint = stringResource(Res.string.enter_your_amount),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                errorText = if (state.isSavingChecked) state.savingAmountError else state.incomeAmountError
+                errorText = if (state.isSavingChecked) state.savingAmountError?.asString() else state.incomeAmountError?.asString()
             )
             Row(
                 modifier = Modifier

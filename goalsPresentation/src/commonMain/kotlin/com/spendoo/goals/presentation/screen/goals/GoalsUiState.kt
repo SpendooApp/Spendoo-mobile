@@ -7,6 +7,7 @@ import com.spendoo.goals.presentation.screen.goals.components.AddAmountUiState
 import com.spendoo.goals.presentation.screen.addEditGoal.AddEditGoalUiState
 
 data class GoalsUiState(
+    val isRefreshing: Boolean = false,
     val isSummaryLoading: Boolean = false,
     val isGoalsLoading: Boolean = false,
     val isGoalsLoadingMore: Boolean = false,

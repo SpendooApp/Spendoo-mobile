@@ -14,3 +14,6 @@ data object ScheduledPaymentsRoute : NavKey
 
 @Serializable
 data class ScheduledPaymentDetailsRoute(val paymentId: String) : NavKey
+
+@Serializable
+data class TransactionDetailsRoute(val transactionId: String) : NavKey

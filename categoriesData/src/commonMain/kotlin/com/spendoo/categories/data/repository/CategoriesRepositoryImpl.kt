@@ -1,13 +1,13 @@
 package com.spendoo.categories.data.repository
 
-import com.spendoo.categories.data.dataSource.remote.dto.BasePagedData
+import com.spendoo.shared.data.dataSource.remote.dto.BasePagedData
 import com.spendoo.categories.data.dataSource.remote.dto.category.CategoryDto
 import com.spendoo.categories.data.dataSource.remote.dto.category.CategorySummaryDto
 import com.spendoo.categories.data.dataSource.remote.dto.category.toDomain
 import com.spendoo.categories.data.dataSource.remote.dto.category.toDto
-import com.spendoo.categories.data.dataSource.remote.dto.toPagedData
+import com.spendoo.shared.data.dataSource.remote.dto.toPagedData
 import com.spendoo.categories.data.dataSource.remote.endpoint.CategoriesEndpoints
-import com.spendoo.categories.data.shared.BaseGateway
+import com.spendoo.shared.data.shared.BaseGateway
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.categories.domain.entity.category.CategorySummary
 import com.spendoo.categories.domain.entity.category.CreateCategory

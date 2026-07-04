@@ -32,8 +32,7 @@ class SignUpViewModel(
     }
 
     override fun onFullNameChange(newFullName: String) {
-        updateState { copy(fullName = newFullName) }
-        validateFullName()
+        updateState { copy(fullName = newFullName, fullNameError = null) }
     }
 
     override fun showDatePicker() {
@@ -41,8 +40,7 @@ class SignUpViewModel(
     }
 
     override fun onChangeDateOfBirth(newDateOfBirth: LocalDate) {
-        updateState { copy(dateOfBirth = newDateOfBirth, showDatePicker = false) }
-        validateAge()
+        updateState { copy(dateOfBirth = newDateOfBirth, showDatePicker = false, dateOfBirthError = null) }
     }
 
     override fun onDismissDatePicker() {
@@ -50,13 +48,11 @@ class SignUpViewModel(
     }
 
     override fun onEmailChange(newEmail: String) {
-        updateState { copy(email = newEmail) }
-        validateEmail()
+        updateState { copy(email = newEmail, emailError = null) }
     }
 
     override fun onPasswordChange(newPassword: String) {
-        updateState { copy(password = newPassword) }
-        validatePassword()
+        updateState { copy(password = newPassword, passwordError = null) }
     }
 
     override fun onTogglePasswordVisibility() {

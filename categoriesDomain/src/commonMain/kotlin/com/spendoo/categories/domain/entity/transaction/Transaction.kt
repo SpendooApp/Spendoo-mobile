@@ -9,4 +9,5 @@ data class Transaction(
     val note: String? = null,
     val date: String,
     val category: CategoryLite? = null,
+    val type: TransactionType,
 )

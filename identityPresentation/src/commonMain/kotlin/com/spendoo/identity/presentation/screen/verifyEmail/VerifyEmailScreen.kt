@@ -134,7 +134,8 @@ private fun VerifyEmailScreenContent(
                         ),
                         modifier = Modifier
                             .align(Alignment.End)
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 16.dp),
+                        color = Theme.colorScheme.text.title
                     )
                 }
             }

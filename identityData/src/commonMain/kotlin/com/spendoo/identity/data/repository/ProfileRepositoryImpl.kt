@@ -3,9 +3,9 @@ package com.spendoo.identity.data.repository
 import com.spendoo.identity.data.dataSource.remote.dto.profile.response.ProfileDto
 import com.spendoo.identity.data.dataSource.remote.dto.profile.response.ProfileImageDto
 import com.spendoo.identity.data.dataSource.remote.dto.profile.response.toDomain
-import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.domain.model.Profile
 import com.spendoo.identity.domain.repository.ProfileRepository
+import com.spendoo.shared.data.shared.BaseGateway
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

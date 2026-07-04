@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private const val COIL_CLIENT = "CoilClient"
@@ -24,44 +25,21 @@ private const val IDENTITY_SCOPE = "IdentityScope"
 
 val identityDataModule = module {
     singleOf(::Settings)
-
-    single<AuthenticationRepository> {
-        AuthenticationRepositoryImpl(
-            client = get(),
-            settings = get(),
-        )
-    }
-
-    single<ResetPasswordRepository> {
-        ResetPasswordRepositoryImpl(client = get())
-    }
-
-    single<RegisterRepository> {
-        RegisterRepositoryImpl(
-            client = get(),
-            authenticationRepository = get()
-        )
-    }
-
-    single<ProfileRepository> {
-        ProfileRepositoryImpl(client = get())
-    }
-
-    single<SettingsRepository> {
-        SettingsRepositoryImpl(settings = get())
-    }
-
+    singleOf(::AuthenticationRepositoryImpl) bind AuthenticationRepository::class
+    singleOf(::ResetPasswordRepositoryImpl) bind ResetPasswordRepository::class
+    singleOf(::RegisterRepositoryImpl) bind RegisterRepository::class
+    singleOf(::ProfileRepositoryImpl) bind ProfileRepository::class
+    singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
     singleOf(::AuthorizationService)
     single {
         provideHttpClient(
             baseUrl = get<String>(named(BASE_URL)),
             authorizationService = { get<AuthorizationService>() },
+            settingsRepository = { get<SettingsRepository>() },
         )
     }
-
     single(named(COIL_CLIENT)) {
         provideCoilClient()
     }
-
     single(named(IDENTITY_SCOPE)) { CoroutineScope(Dispatchers.Default) }
 }

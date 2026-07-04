@@ -3,8 +3,8 @@ package com.spendoo.identity.data.repository
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.OtpRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.ResetPasswordRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.VerifyOtpRequestDto
-import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.domain.repository.ResetPasswordRepository
+import com.spendoo.shared.data.shared.BaseGateway
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody

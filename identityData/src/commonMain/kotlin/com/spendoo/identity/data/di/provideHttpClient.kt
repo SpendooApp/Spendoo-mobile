@@ -25,10 +25,14 @@ import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import kotlinx.coroutines.CancellationException
+
+import com.spendoo.identity.domain.repository.SettingsRepository
 
 internal fun provideHttpClient(
     baseUrl: String,
     authorizationService: suspend () -> AuthorizationService,
+    settingsRepository: () -> SettingsRepository,
 ): HttpClient {
 
     val prettyJson = Json {
@@ -45,7 +49,7 @@ internal fun provideHttpClient(
             accept(ContentType.Application.Json)
         }
 
-        install(languageInterceptor())
+        install(languageThemeInterceptor(settingsRepository))
 
         install(ContentNegotiation) {
             json(
@@ -102,12 +106,16 @@ internal fun provideHttpClient(
                         return@refreshTokens null
                     }
 
-                    return@refreshTokens runCatching {
+                    return@refreshTokens try {
                         BearerTokens(
                             accessToken = authorizationService().getNewAccessToken(),
                             refreshToken = currentRefreshToken,
                         )
-                    }.getOrNull()
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (_: Exception) {
+                        null
+                    }
                 }
                 sendWithoutRequest { request ->
                     val path = request.url.encodedPath.removePrefix("/")

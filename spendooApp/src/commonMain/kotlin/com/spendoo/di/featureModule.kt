@@ -5,6 +5,7 @@ import com.spendoo.categories.presentation.di.categoriesPresentationModule
 import com.spendoo.goals.data.di.goalsDataModule
 import com.spendoo.goals.presentation.di.goalsPresentationModule
 import com.spendoo.statistics.presentation.di.statisticsPresentationModule
+import com.spendoo.statistics.data.di.statisticsDataModule
 import com.spendoo.offers.data.di.offersDataModule
 import com.spendoo.home.presentation.di.homePresentationModule
 import com.spendoo.identity.domain.di.domainModule as identityDomainModule
@@ -25,6 +26,7 @@ val featureModule = module {
         goalsDataModule,
         goalsPresentationModule,
         statisticsPresentationModule,
+        statisticsDataModule,
         chatbotPresentationModule
     )
 }

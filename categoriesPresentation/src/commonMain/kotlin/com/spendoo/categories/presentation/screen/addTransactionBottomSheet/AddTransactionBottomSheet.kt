@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,6 +36,7 @@ import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.spendoo.designsystem.utils.asString
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add
@@ -94,6 +96,7 @@ private fun AddTransactionBottomSheetContent(
             actionText = stringResource(Res.string.add),
             showActionButtons = false,
             modifier = Modifier.padding(bottom = 80.dp)
+                .keepScreenOn()
         ) {
             item {
                 Column(
@@ -158,7 +161,7 @@ private fun AddTransactionBottomSheetContent(
                                 .padding(horizontal = 16.dp),
                             singleLine = false,
                             minLines = 3,
-                            errorText = state.incomeNoteError
+                            errorText = state.incomeNoteError?.asString()
                         )
                     }
                 }

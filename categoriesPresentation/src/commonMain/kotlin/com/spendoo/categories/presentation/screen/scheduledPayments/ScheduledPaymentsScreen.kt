@@ -1,6 +1,8 @@
 package com.spendoo.categories.presentation.screen.scheduledPayments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import com.spendoo.categories.domain.entity.category.LeftOverOption
 import com.spendoo.shared.domain.entity.PriorityOption
 import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.toDrawableResource
 import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentBottomSheet
+import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.badge.UpcomingBadge
@@ -56,10 +59,15 @@ fun ScheduledPaymentsScreen(
     viewModel: ScheduledPaymentsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    ScheduledPaymentsContent(
-        state = state,
-        interactionListener = viewModel,
-    )
+    PullToRefresh(
+        isRefreshing = state.isRefreshing,
+        onRefresh = viewModel::onReload
+    ) {
+        ScheduledPaymentsContent(
+            state = state,
+            interactionListener = viewModel,
+        )
+    }
 }
 
 @Composable
@@ -152,7 +160,8 @@ private fun ScheduledPaymentsMainContent(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f),
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState()),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
