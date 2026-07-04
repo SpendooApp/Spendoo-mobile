@@ -308,4 +308,9 @@
     <string name="statistics_summary_report">Statistics Summary Report</string>
     <string name="cashflow_history">Cashflow History</string>
     <string name="budget_status">Budget Status</string>
+    <string name="title">Title</string>
+    <string name="amount">Amount</string>
+    <string name="note_optional">Note (Optional)</string>
+    <string name="save">Save</string>
+    <string name="top_spending_categories">Top Spending Categories</string>
 </resources>

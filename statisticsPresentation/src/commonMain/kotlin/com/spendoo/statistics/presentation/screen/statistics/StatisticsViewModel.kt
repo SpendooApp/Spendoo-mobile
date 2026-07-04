@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.spendoo.categories.api.CategoriesRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.categories.api.TransactionDetailsRoute
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
@@ -17,6 +18,7 @@ import com.spendoo.statistics.api.ExportRoute
 import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.repository.StatisticsRepository
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -38,6 +40,8 @@ class StatisticsViewModel(
     private val transactionsRepository: TransactionsRepository,
     private val profileRepository: ProfileRepository
 ) : BaseViewModel<StatisticsUiState>(StatisticsUiState()), StatisticsInteractionListener {
+
+    val refreshSignal: Flow<Boolean?> = getResult("refreshTransactions", consume = true)
 
     private val searchQueryFlow = MutableStateFlow("")
 
@@ -328,7 +332,7 @@ class StatisticsViewModel(
 
     override fun onEditTransaction(transactionId: String) {
         updateState { copy(isActionsSheetVisible = false) }
-        // TODO: Navigate to Edit Transaction screen when route is added
+        navigate(EditTransactionRoute(transactionId = transactionId))
     }
 
     override fun onDeleteTransaction(transactionId: String) {

@@ -20,3 +20,12 @@ data class TransactionDetailsRoute(val transactionId: String) : NavKey
 
 @Serializable
 data class FinancialActionRoute(val tile: String, val body: String, val payload: Map<String, String>) : NavKey
+
+@Serializable
+data object TopSpendingCategoriesRoute : NavKey
+
+@Serializable
+data class CategoryOffersRoute(val categoryId: String) : NavKey
+
+@Serializable
+data class EditTransactionRoute(val transactionId: String) : NavKey

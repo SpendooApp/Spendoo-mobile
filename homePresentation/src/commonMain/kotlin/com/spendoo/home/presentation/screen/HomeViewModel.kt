@@ -1,5 +1,7 @@
 package com.spendoo.home.presentation.screen
 
+import com.spendoo.categories.api.CategoryOffersRoute
+import com.spendoo.categories.api.TopSpendingCategoriesRoute
 import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
@@ -9,13 +11,13 @@ import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.offers.domain.repository.OffersRepository
+import com.spendoo.shared.domain.utils.PageQuery
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.error_loading_balance_summary
 import spendoo.designsystem.generated.resources.error_loading_goals
 import spendoo.designsystem.generated.resources.error_loading_offers
 import spendoo.designsystem.generated.resources.error_loading_top_spending
 import spendoo.designsystem.generated.resources.error_loading_user_data
-import com.spendoo.shared.domain.utils.PageQuery
 
 class HomeViewModel(
     private val offersRepository: OffersRepository,
@@ -48,7 +50,6 @@ class HomeViewModel(
         loadBalanceSummary()
         loadUserProfile()
         loadNotificationsCount()
-        loadOffers()
         loadGoals()
         loadTopSpending()
     }
@@ -128,8 +129,11 @@ class HomeViewModel(
     }
 
     private fun loadOffers() {
+        val topSpendingCategories = state.value.topSpending.map { it.categoryName }
+        val maxPrice = state.value.topSpending.minOfOrNull { it.amount }
+        //TODO: Top frequent items
         tryToCall(
-            block = { offersRepository.getOffers(PageQuery(0, 20)) },
+            block = { offersRepository.getOffers(PageQuery(0, 20), topSpendingCategories, maxPrice) },
             onStart = { updateState { copy(isOffersLoading = true) } },
             onSuccess = { offers ->
                 updateState { copy(offers = offers.data.map { it.toUiState() }) }
@@ -183,6 +187,7 @@ class HomeViewModel(
             onStart = { updateState { copy(isTopSpendingLoading = true) } },
             onSuccess = { spending ->
                 updateState { copy(topSpending = spending.data.map { it.toUiState() }) }
+                loadOffers()
             },
             onError = { error ->
                 error.message?.let {
@@ -192,6 +197,7 @@ class HomeViewModel(
                         isSuccess = false,
                     )
                 }
+                updateState { copy(isOffersLoading = false) }
             },
             onEnd = {
                 updateState { copy(isTopSpendingLoading = false) }
@@ -217,13 +223,17 @@ class HomeViewModel(
 
     override fun onOfferClicked(offerId: String) {}
     override fun onGoalClicked(goalId: String) {}
-    override fun onSpendingClicked(spendingId: String) {}
+    override fun onSpendingClicked(categoryId: String) {
+        navigate(CategoryOffersRoute(categoryId = categoryId))
+    }
     override fun onViewAllOffersClicked() {}
     override fun onViewAllGoalsClicked() {
         navigate(GoalsRoute)
     }
 
-    override fun onViewAllSpendingClicked() {}
+    override fun onViewAllSpendingClicked() {
+        navigate(TopSpendingCategoriesRoute)
+    }
     override fun onNotificationClicked() {}
     override fun onProfileClicked() {}
 }

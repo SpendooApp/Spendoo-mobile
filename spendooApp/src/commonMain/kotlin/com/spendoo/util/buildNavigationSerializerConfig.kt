@@ -8,12 +8,14 @@ import com.spendoo.categories.api.FinancialActionRoute
 import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.categories.api.TransactionDetailsRoute
+import com.spendoo.categories.api.TopSpendingCategoriesRoute
+import com.spendoo.categories.api.CategoryOffersRoute
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.goals.api.AchievementsRoute
 import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.home.api.NotificationsRoute
-import com.spendoo.home.api.TopSpendingRoute
 import com.spendoo.identity.api.CreateNewPasswordRoute
 import com.spendoo.identity.api.ForgetPasswordRoute
 import com.spendoo.identity.api.LoginRoute
@@ -53,9 +55,11 @@ fun buildNavigationSerializerConfig(): SavedStateConfiguration = SavedStateConfi
             subclass(DownloadRoute::class, DownloadRoute.serializer())
             subclass(AchievementsRoute::class, AchievementsRoute.serializer())
             subclass(NotificationsRoute::class, NotificationsRoute.serializer())
-            subclass(TopSpendingRoute::class, TopSpendingRoute.serializer())
             subclass(SubscriptionRoute::class, SubscriptionRoute.serializer())
             subclass(FinancialActionRoute::class, FinancialActionRoute.serializer())
+            subclass(TopSpendingCategoriesRoute::class, TopSpendingCategoriesRoute.serializer())
+            subclass(CategoryOffersRoute::class, CategoryOffersRoute.serializer())
+            subclass(EditTransactionRoute::class, EditTransactionRoute.serializer())
         }
     }
 }

@@ -308,4 +308,5 @@
     <string name="statistics_summary_report">تقرير ملخص الإحصائيات</string>
     <string name="cashflow_history">سجل التدفق النقدي</string>
     <string name="budget_status">حالة الميزانية</string>
+    <string name="title">عنوان</string>
 </resources>

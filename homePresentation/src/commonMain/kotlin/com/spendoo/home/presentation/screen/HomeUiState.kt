@@ -1,10 +1,10 @@
 package com.spendoo.home.presentation.screen
 
-import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CategorySpending
 import com.spendoo.goals.domain.entity.Goal
 import com.spendoo.offers.domain.entity.Offer
+import com.spendoo.shared.domain.entity.CategoryIcon
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_car
@@ -27,12 +27,12 @@ import spendoo.designsystem.generated.resources.ic_wifi
 
 data class HomeUiState(
     val isRefreshing: Boolean = false,
-    val isBalanceLoading: Boolean = false,
-    val isUserLoading: Boolean = false,
-    val isOffersLoading: Boolean = false,
-    val isGoalsLoading: Boolean = false,
-    val isTopSpendingLoading: Boolean = false,
-    val isNotificationsLoading: Boolean = false,
+    val isBalanceLoading: Boolean = true,
+    val isUserLoading: Boolean = true,
+    val isOffersLoading: Boolean = true,
+    val isGoalsLoading: Boolean = true,
+    val isTopSpendingLoading: Boolean = true,
+    val isNotificationsLoading: Boolean = true,
     val balanceSummary: BalanceSummaryUiState = BalanceSummaryUiState(),
     val offers: List<OfferUiState> = emptyList(),
     val goals: List<GoalUiState> = emptyList(),

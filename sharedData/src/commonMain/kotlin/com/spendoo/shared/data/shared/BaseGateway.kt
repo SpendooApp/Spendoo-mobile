@@ -35,8 +35,8 @@ abstract class BaseGateway(val client: HttpClient) {
                 status == HttpStatusCode.BadRequest -> InvalidRequestException()
                 status == HttpStatusCode.Conflict -> EmailAlreadyExistsException()
                 status.value in 400..499 -> InvalidRequestException()
-                status.value in 500..599 -> UnknownErrorException("HTTP ${status.value}: $message")
-                else -> UnknownErrorException("HTTP ${status.value}: $message")
+                status.value in 500..599 -> UnknownErrorException(message)
+                else -> UnknownErrorException(message)
             }
 
         } catch (e: InternetException.NoInternetException) {

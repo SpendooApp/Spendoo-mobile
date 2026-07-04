@@ -17,8 +17,12 @@ import com.spendoo.categories.presentation.screen.financialActionScreen.Financia
 import com.spendoo.categories.presentation.screen.scheduledPaymentDetails.ScheduledPaymentDetailsScreen
 import com.spendoo.categories.presentation.screen.scheduledPayments.ScheduledPaymentsScreen
 import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsScreen
-
-
+import com.spendoo.categories.presentation.screen.topSpendingCategories.TopSpendingCategoriesScreen
+import com.spendoo.categories.presentation.screen.categoryOffers.CategoryOffersScreen
+import com.spendoo.categories.presentation.screen.editTransactionBottomSheet.EditTransactionBottomSheet
+import com.spendoo.categories.api.TopSpendingCategoriesRoute
+import com.spendoo.categories.api.CategoryOffersRoute
+import com.spendoo.categories.api.EditTransactionRoute
 class CategoriesFeatureApiImpl : CategoriesFeatureApi {
 
     override fun invoke(): (NavKey) -> NavEntry<NavKey> {
@@ -42,6 +46,15 @@ class CategoriesFeatureApiImpl : CategoriesFeatureApi {
                     body = route.body,
                     payload = route.payload
                 )
+            }
+            entry<TopSpendingCategoriesRoute> { TopSpendingCategoriesScreen() }
+            entry<CategoryOffersRoute> { route ->
+                CategoryOffersScreen(categoryId = route.categoryId)
+            }
+            entry<EditTransactionRoute>(
+                metadata = DialogSceneStrategy.dialog()
+            ) { route ->
+                EditTransactionBottomSheet(transactionId = route.transactionId)
             }
         }
     }

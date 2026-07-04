@@ -22,4 +22,5 @@ interface GoalsInteractionListener {
     
     fun onListScrolled()
     fun onAddEditGoal(addEditUiState: AddEditGoalUiState)
+    fun onAddAmountErrorDismissed()
 }

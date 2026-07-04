@@ -94,7 +94,7 @@ private fun HomeContent(
                 spending = state.topSpending,
                 isLoading = state.isTopSpendingLoading,
                 onViewAll = viewModel::onViewAllSpendingClicked,
-                onSpendingClicked = viewModel::onSpendingClicked
+                onCategoryClicked = viewModel::onSpendingClicked
             )
         }
 

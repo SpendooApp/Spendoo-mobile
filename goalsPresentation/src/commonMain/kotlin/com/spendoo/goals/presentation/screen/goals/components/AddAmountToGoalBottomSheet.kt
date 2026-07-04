@@ -18,6 +18,7 @@ import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
 import com.spendoo.designsystem.components.textField.CustomTextField
+import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.extentions.asString
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add_to_goal_title
@@ -27,7 +28,8 @@ import spendoo.designsystem.generated.resources.confirm
 
 data class AddAmountUiState(
     val amount: Double? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val error: UiText? = null
 )
 
 @Composable
@@ -37,7 +39,9 @@ fun AddAmountToGoalBottomSheet(
     initialAmount: Double?,
     goalName: String,
     onAddAmount: (Double) -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    errorText: String? = null,
+    onAmountChanged: () -> Unit = {}
 ) {
     var amountText: Double? by remember(initialAmount, isVisible) { mutableStateOf(initialAmount) }
 
@@ -66,8 +70,10 @@ fun AddAmountToGoalBottomSheet(
                     value = amountText.toCleanString(),
                     onValueChange = { newValue ->
                         amountText = newValue.toCleanDoubleOrNull()
+                        onAmountChanged()
                     },
                     hint = Res.string.enter_your_amount.asString(),
+                    errorText = errorText,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),

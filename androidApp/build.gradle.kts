@@ -82,6 +82,7 @@ kotlin {
 
 dependencies {
     implementation(projects.spendooApp)
+    implementation(projects.identityDomain)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.compose.ui.tooling.preview)

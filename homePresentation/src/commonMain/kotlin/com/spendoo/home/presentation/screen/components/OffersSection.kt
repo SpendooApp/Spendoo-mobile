@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.modifier.shimmerEffect
@@ -30,9 +29,9 @@ import com.spendoo.home.presentation.screen.OfferUiState
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.no_offers_yet
-import spendoo.designsystem.generated.resources.offers
 import spendoo.designsystem.generated.resources.offer_image
 import spendoo.designsystem.generated.resources.offer_off
+import spendoo.designsystem.generated.resources.offers
 
 @Composable
 fun OffersSection(
@@ -99,13 +98,13 @@ private fun OfferCard(offer: OfferUiState, onClick: () -> Unit) {
             .width(260.dp)
             .height(170.dp)
             .clip(RoundedCornerShape(32.dp))
-            .background(Color.LightGray)
+            .background(Color.White)
             .clickableNoRipple { onClick() }
     ) {
         AsyncImage(
             model = offer.imageUrl,
             contentDescription = stringResource(Res.string.offer_image),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier = Modifier.matchParentSize()
         )
         offer.discountPercent?.let { discount ->

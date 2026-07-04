@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.spendoo.designsystem.utils.asString
 import com.spendoo.goals.presentation.screen.goals.components.AddAmountToGoalBottomSheet
 import com.spendoo.goals.presentation.screen.addEditGoal.AddEditGoalBottomSheet
 import com.spendoo.goals.presentation.screen.goals.components.GoalActionsSheet
@@ -256,7 +257,9 @@ private fun GoalsContent(
         goalName = state.goalToEdit?.name ?: "",
         initialAmount = null,
         onAddAmount = listener::onAddAmount,
-        isLoading = state.addAmountUiState.isLoading
+        isLoading = state.addAmountUiState.isLoading,
+        errorText = state.addAmountUiState.error?.asString(),
+        onAmountChanged = listener::onAddAmountErrorDismissed
     )
 
     AddAmountToGoalBottomSheet(
@@ -265,6 +268,8 @@ private fun GoalsContent(
         goalName = stringResource(Res.string.unassigned_savings),
         initialAmount = null,
         onAddAmount = listener::onAddAmountToSavings,
-        isLoading = state.addAmountUiState.isLoading
+        isLoading = state.addAmountUiState.isLoading,
+        errorText = state.addAmountUiState.error?.asString(),
+        onAmountChanged = listener::onAddAmountErrorDismissed
     )
 }
