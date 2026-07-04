@@ -1,6 +1,5 @@
 package com.spendoo.designsystem.components.cards
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +26,6 @@ import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_warning
 
-
-
 @Composable
 fun NotificationCard(
     icon: DrawableResource,
@@ -43,11 +40,11 @@ fun NotificationCard(
         modifier = modifier
             .background(backgroundColor, shape)
             .border(1.dp, Theme.colorScheme.border.primary, shape)
-            .padding( 16.dp),
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

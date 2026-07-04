@@ -2,12 +2,12 @@ package com.spendoo.designsystem.components.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,15 +24,15 @@ import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
-import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.designsystem.utils.extentions.asString
+import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.ic_done_mark
-import spendoo.designsystem.generated.resources.ic_thunder
 import spendoo.designsystem.generated.resources.billed
 import spendoo.designsystem.generated.resources.free
-import spendoo.designsystem.generated.resources.month
+import spendoo.designsystem.generated.resources.ic_done_mark
+import spendoo.designsystem.generated.resources.ic_thunder
+import spendoo.designsystem.generated.resources.per_month
 import spendoo.designsystem.generated.resources.year
 
 @Composable
@@ -147,7 +147,7 @@ private fun SubscriptionBuyCardPricing(
 
         Text(
             modifier = Modifier.padding(start = 2.dp, bottom = 2.dp),
-            text = "/${Res.string.month.asString().lowercase()}",
+            text = Res.string.per_month.asString(),
             style = Theme.typography.body.small,
             color = Theme.colorScheme.text.body,
         )

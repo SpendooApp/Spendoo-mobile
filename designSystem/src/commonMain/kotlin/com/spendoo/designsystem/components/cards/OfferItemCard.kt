@@ -3,7 +3,6 @@ package com.spendoo.designsystem.components.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,9 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
-import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
-import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_TYPE_NORMAL
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
@@ -34,7 +30,6 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_money_in_offer
 import spendoo.designsystem.generated.resources.ic_money_small
 import spendoo.designsystem.generated.resources.vs
-
 
 
 data class OfferItemCardUiState(
@@ -138,8 +133,6 @@ fun OfferItemCard(
     }
 }
 
-//@Preview(widthDp = 320)
-//@Preview(widthDp = 320, uiMode = UI_MODE_NIGHT_YES or UI_MODE_TYPE_NORMAL)
 @PreviewLightDark
 @Composable
 private fun OfferItemCard() = SpendooTheme {

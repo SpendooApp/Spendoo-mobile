@@ -171,6 +171,7 @@
     <string name="day">Day</string>
     <string name="hour">Hour</string>
     <string name="month">Month</string>
+    <string name="per_month">/month</string>
     <string name="year">Year</string>
     <string name="time_left">Time Left</string>
     <string name="due_date">Due Date</string>
@@ -222,4 +223,8 @@
     <string name="save_goal">Save Goal</string>
     <string name="confirm">Confirm</string>
     <string name="add_to_goal_title">Add to %1$s</string>
+    <string name="vs">vs</string>
+    <string name="price_each">%1$s each</string>
+    <string name="recommended_brands">Recommended Brands</string>
+    <string name="times_per_month">%1$s times per month</string>
 </resources>
