@@ -61,14 +61,16 @@ fun BalanceSummary.toUiState(): BalanceSummaryUiState {
 data class OfferUiState(
     val id: String,
     val discountPercent: Int?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val link: String? = null
 )
 
 fun Offer.toUiState(): OfferUiState {
     return OfferUiState(
         id = id,
         discountPercent = discountPercent,
-        imageUrl = imageUrl
+        imageUrl = imageUrl,
+        link = link
     )
 }
 

@@ -2,7 +2,7 @@ package com.spendoo.home.presentation.screen
 
 interface HomeInteractionListener {
     fun onReload()
-    fun onOfferClicked(offerId: String)
+    fun onOfferClicked(link: String?)
     fun onGoalClicked(goalId: String)
     fun onSpendingClicked(categoryId: String)
     fun onViewAllOffersClicked()

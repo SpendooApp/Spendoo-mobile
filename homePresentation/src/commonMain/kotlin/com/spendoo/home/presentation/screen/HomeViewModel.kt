@@ -221,7 +221,7 @@ class HomeViewModel(
         getHomeData()
     }
 
-    override fun onOfferClicked(offerId: String) {}
+    override fun onOfferClicked(link: String?) {}
     override fun onGoalClicked(goalId: String) {}
     override fun onSpendingClicked(categoryId: String) {
         navigate(CategoryOffersRoute(categoryId = categoryId))

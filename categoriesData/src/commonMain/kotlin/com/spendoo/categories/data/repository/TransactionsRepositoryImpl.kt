@@ -3,6 +3,7 @@ package com.spendoo.categories.data.repository
 import com.spendoo.shared.data.dataSource.remote.dto.BasePagedData
 import com.spendoo.categories.data.dataSource.remote.dto.category.BalanceSummaryDto
 import com.spendoo.shared.data.dataSource.remote.dto.toPagedData
+import com.spendoo.categories.data.dataSource.remote.dto.transaction.FrequencyItemDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.TransactionDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDomain
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDto
@@ -11,6 +12,7 @@ import com.spendoo.shared.data.shared.BaseGateway
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CreateExpense
 import com.spendoo.categories.domain.entity.transaction.CreateIncome
+import com.spendoo.categories.domain.entity.transaction.FrequencyItem
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.UpdateTransaction
@@ -116,6 +118,25 @@ class TransactionsRepositoryImpl(
                 url {
                     parameters.append("startDate", startDate)
                     parameters.append("endDate", endDate)
+                    parameters.append("page", pageQuery.page.toString())
+                    parameters.append("size", pageQuery.size.toString())
+                    pageQuery.sort?.forEach { sort -> parameters.append("sort", sort) }
+                }
+            }
+        }
+        return response.toPagedData { it.toDomain() }.orEmpty()
+    }
+
+    override suspend fun getTopFrequencyItems(
+        categoryId: String?,
+        pageQuery: PageQuery,
+    ): PagedData<FrequencyItem> {
+        val response = tryToExecute<BasePagedData<FrequencyItemDto>> {
+            get(TransactionsEndpoints.TOP_FREQUENCY_ITEMS) {
+                url {
+                    if (!categoryId.isNullOrBlank()) {
+                        parameters.append("categoryId", categoryId)
+                    }
                     parameters.append("page", pageQuery.page.toString())
                     parameters.append("size", pageQuery.size.toString())
                     pageQuery.sort?.forEach { sort -> parameters.append("sort", sort) }

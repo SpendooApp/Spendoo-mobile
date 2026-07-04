@@ -39,7 +39,7 @@ fun OffersSection(
     offers: List<OfferUiState>,
     isLoading: Boolean,
     onViewAll: () -> Unit,
-    onOfferClicked: (String) -> Unit
+    onOfferClicked: (String?) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -84,7 +84,7 @@ fun OffersSection(
                 contentPadding = PaddingValues(horizontal = 16.dp)
             ) {
                 items(offers) { offer ->
-                    OfferCard(offer = offer, onClick = { onOfferClicked(offer.id) })
+                    OfferCard(offer = offer, onClick = { onOfferClicked(offer.link) })
                 }
             }
         }

@@ -3,11 +3,12 @@ package com.spendoo.categories.domain.repository
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CreateExpense
 import com.spendoo.categories.domain.entity.transaction.CreateIncome
+import com.spendoo.categories.domain.entity.transaction.FrequencyItem
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
-import com.spendoo.shared.domain.utils.PageQuery
-import com.spendoo.shared.domain.utils.PagedData
 import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.UpdateTransaction
+import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.shared.domain.utils.PagedData
 
 interface TransactionsRepository {
     suspend fun getTransactions(search: String?, pageQuery: PageQuery): PagedData<Transaction>
@@ -23,6 +24,10 @@ interface TransactionsRepository {
         pageQuery: PageQuery
     ): PagedData<Transaction>
 
+    suspend fun getTopFrequencyItems(
+        categoryId: String?,
+        pageQuery: PageQuery
+    ): PagedData<FrequencyItem>
 
     suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry>
     suspend fun getReadyInputFromImage(file: ByteArray): List<ReadyTransactionEntry>

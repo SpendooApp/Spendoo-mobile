@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.designsystem.components.indicator.PullToRefresh
@@ -44,6 +45,8 @@ private fun HomeContent(
     state: HomeUiState,
     viewModel: HomeInteractionListener,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +79,13 @@ private fun HomeContent(
                 offers = state.offers,
                 isLoading = state.isOffersLoading,
                 onViewAll = viewModel::onViewAllOffersClicked,
-                onOfferClicked = viewModel::onOfferClicked
+                onOfferClicked = { link ->
+                    link?.takeIf { it.isNotBlank() }?.let { url ->
+                        val formattedUrl = if (url.startsWith("http://") || url.startsWith("https://")) url else "https://$url"
+                        uriHandler.openUri(formattedUrl)
+                    }
+                    viewModel.onOfferClicked(link)
+                }
             )
         }
 
