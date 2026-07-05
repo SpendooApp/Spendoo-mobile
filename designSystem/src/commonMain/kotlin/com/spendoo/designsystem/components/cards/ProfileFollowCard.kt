@@ -56,7 +56,7 @@ fun ProfileFollowCard(
             maxLines = 1,
             overflow = Ellipsis
         )
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
@@ -95,19 +95,23 @@ private fun ProfileFollowCardPreview() {
             imageUrl = "",
             name = "Nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
             actions = listOf(
-                { ActionButton(
-                    onActionClick = { },
-                    text = "Approve",
-                    textColor = Theme.colorScheme.button.primary,
-                    backgroundColor = Theme.colorScheme.button.secondary,
-                ) },
-                { ActionButton(
-                    onActionClick = { },
-                    text = "Approve",
-                    textColor = Theme.colorScheme.button.primary,
-                    backgroundColor = Theme.colorScheme.button.secondary,
-                ) }
-        )
+                {
+                    ActionButton(
+                        onActionClick = { },
+                        text = "Approve",
+                        textColor = Theme.colorScheme.button.primary,
+                        backgroundColor = Theme.colorScheme.button.secondary,
+                    )
+                },
+                {
+                    ActionButton(
+                        onActionClick = { },
+                        text = "Approve",
+                        textColor = Theme.colorScheme.button.primary,
+                        backgroundColor = Theme.colorScheme.button.secondary,
+                    )
+                }
+            )
         )
     }
 }

@@ -316,5 +316,7 @@
     <string name="recommended_brands">Recommended Brands</string>
     <string name="times_per_month">%1$s times per month</string>
     <string name="congratulations">Congratulations!</string>
-    <string name="you_have_unlocked_a_new_badge">You\'ve unlocked a new badge</string>
+    <string name="you_have_unlocked_a_new_badge">You've unlocked a new badge</string>
+    <string name="level_x">Level %1$s</string>
+    <string name="claim_badge">Claim Badge</string>
 </resources>

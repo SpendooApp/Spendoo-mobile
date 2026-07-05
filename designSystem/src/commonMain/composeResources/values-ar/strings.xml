@@ -317,4 +317,6 @@
     <string name="times_per_month">%1$s مرات في الشهر</string>
     <string name="congratulations">مبروك!</string>
     <string name="you_have_unlocked_a_new_badge">لقد حصلت علي شارة جديدة</string>
+    <string name="level_x">المستوى %1$s</string>
+    <string name="claim_badge">احصل على الشارة</string>
 </resources>

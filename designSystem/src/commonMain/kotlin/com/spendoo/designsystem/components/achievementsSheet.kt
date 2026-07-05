@@ -25,6 +25,7 @@ import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.claim_badge
 import spendoo.designsystem.generated.resources.congratulations
 import spendoo.designsystem.generated.resources.ic_stars
 import spendoo.designsystem.generated.resources.img_coin
@@ -52,7 +53,8 @@ fun AchievementsBottomSheet(
                 icon = icon,
                 type = type,
                 name = name,
-                description = description
+                description = description,
+                onDismiss = onDismiss
             )
         }
     )
@@ -60,23 +62,28 @@ fun AchievementsBottomSheet(
 
 @Composable
 private fun AchievementsBottomSheetContent(
-    modifier: Modifier = Modifier,
     level: Int,
     icon: DrawableResource,
     type: String,
     name: String,
     description: String,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.TopCenter,
     ) {
         Column(
-            modifier = Modifier.padding(45.dp, 65.dp),
+            modifier = Modifier.background(
+                if (Theme.isDarkTheme)
+                    Theme.colorScheme.background.tertiary
+                else
+                    Theme.colorScheme.primary.variant200,
+            ).padding(45.dp, 65.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-
-            ) {
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -137,15 +144,15 @@ private fun AchievementsBottomSheetContent(
                     maxLines = 1,
                 )
             }
+
             AppButton(
                 type = AppButtonType.Primary,
-                onClick = {},
-                text = "Claim Badge",
+                onClick = onDismiss,
+                text = Res.string.claim_badge.asString(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
             )
-
         }
         Icon(
             painter = Res.drawable.ic_stars.painter(),
@@ -153,15 +160,14 @@ private fun AchievementsBottomSheetContent(
             modifier = Modifier.align(Alignment.TopCenter).padding(top = 12.dp),
             tint = Theme.colorScheme.additional.golden
         )
-
     }
-
 }
 
 @PreviewLightDark
 @Composable
 private fun AchievementsPreview() = SpendooTheme {
     AchievementsBottomSheetContent(
+        onDismiss = {},
         level = 1,
         icon = Res.drawable.img_coin,
         type = "Savings",
