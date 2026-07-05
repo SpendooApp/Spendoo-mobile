@@ -2,9 +2,9 @@ package com.spendoo.statistics.presentation.screen.statistics
 
 import androidx.lifecycle.viewModelScope
 import com.spendoo.categories.api.CategoriesRoute
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.categories.api.TransactionDetailsRoute
-import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
@@ -35,11 +35,14 @@ import spendoo.designsystem.generated.resources.error_loading_statistics
 import kotlin.time.Duration.Companion.milliseconds
 
 class StatisticsViewModel(
+    private val targetUserId: String? = null,
+    private val targetUserName: String? = null,
+    private val targetUserImageUrl: String? = null,
     private val statisticsRepository: StatisticsRepository,
     private val scheduledPaymentsRepository: ScheduledPaymentsRepository,
     private val transactionsRepository: TransactionsRepository,
     private val profileRepository: ProfileRepository
-) : BaseViewModel<StatisticsUiState>(StatisticsUiState()), StatisticsInteractionListener {
+) : BaseViewModel<StatisticsUiState>(StatisticsUiState(targetUserId = targetUserId, userName = targetUserName ?: "", userImageUrl = targetUserImageUrl)), StatisticsInteractionListener {
 
     val refreshSignal: Flow<Boolean?> = getResult("refreshTransactions", consume = true)
 
@@ -163,11 +166,16 @@ class StatisticsViewModel(
         loadData()
     }
 
+    override fun onClickBack() {
+        popBackStack()
+    }
+
     override fun onDownloadReportClicked() {
-        navigate(ExportRoute)
+        navigate(ExportRoute(targetUserId))
     }
 
     private fun resetAndLoadTransactions() {
+        if (targetUserId != null) return
         transactionsPaginator.reset()
         updateState { copy(transactions = emptyList()) }
         viewModelScope.launch {
@@ -176,6 +184,7 @@ class StatisticsViewModel(
     }
 
     private fun loadUserProfile() {
+        if (targetUserId != null) return
         tryToCall(
             block = { profileRepository.getProfile() },
             onSuccess = { profile ->
@@ -209,7 +218,13 @@ class StatisticsViewModel(
 
         updateState { copy(isLoading = true) }
         tryToCall(
-            block = { statisticsRepository.getStatistics(granularity, startDateTime, endDateTime) },
+            block = { 
+                if (targetUserId != null) {
+                    statisticsRepository.getUserStatistics(targetUserId, granularity, startDateTime, endDateTime)
+                } else {
+                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime) 
+                }
+            },
             onSuccess = { stats ->
                 val lineChartUiState = LineChartUiState(
                     budgetData = stats.financialStats.buckets.map { it.budget },
@@ -261,6 +276,7 @@ class StatisticsViewModel(
     }
 
     private fun loadScheduledPayments() {
+        if (targetUserId != null) return
         updateState { copy(isScheduledPaymentsError = false) }
         tryToCall(
             block = { scheduledPaymentsRepository.getScheduledPayments(PageQuery(page = 0, size = 10)) },

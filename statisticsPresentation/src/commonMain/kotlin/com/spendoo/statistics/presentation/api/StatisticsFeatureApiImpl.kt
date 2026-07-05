@@ -14,8 +14,8 @@ import com.spendoo.statistics.presentation.screen.download.DownloadScreen
 class StatisticsFeatureApiImpl : StatisticsFeatureApi {
     override fun invoke(): (NavKey) -> NavEntry<NavKey> {
         return entryProvider {
-            entry<StatisticsRoute> { StatisticsScreen() }
-            entry<ExportRoute> { ExportScreen() }
+            entry<StatisticsRoute> { route -> StatisticsScreen(route.userId, route.userName, route.userImageUrl) }
+            entry<ExportRoute> { route -> ExportScreen(route.targetUserId) }
             entry<DownloadRoute> { DownloadScreen() }
         }
     }

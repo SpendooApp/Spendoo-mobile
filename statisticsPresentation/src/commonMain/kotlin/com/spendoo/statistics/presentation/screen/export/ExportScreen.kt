@@ -42,6 +42,7 @@ import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.data_to_include
 import spendoo.designsystem.generated.resources.export_report
@@ -51,7 +52,8 @@ import spendoo.designsystem.generated.resources.report_type
 
 @Composable
 fun ExportScreen(
-    viewModel: ExportViewModel = koinViewModel()
+    targetUserId: String? = null,
+    viewModel: ExportViewModel = koinViewModel(parameters = { parametersOf(targetUserId) })
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

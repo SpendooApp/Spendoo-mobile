@@ -15,6 +15,7 @@ import spendoo.designsystem.generated.resources.please_select_dates
 import spendoo.designsystem.generated.resources.start_date_cannot_be_after_end_date
 
 class ExportViewModel(
+    private val targetUserId: String? = null,
     private val statisticsRepository: StatisticsRepository
 ) : BaseViewModel<ExportUiState>(ExportUiState()), ExportInteractionListener {
 
@@ -80,7 +81,8 @@ class ExportViewModel(
             startDate = currentState.startDate,
             endDate = currentState.endDate,
             reportType = currentState.reportType,
-            dataToInclude = currentState.dataToInclude.takeIf { currentState.reportType == ReportType.DETAILED_REPORT }
+            dataToInclude = currentState.dataToInclude.takeIf { currentState.reportType == ReportType.DETAILED_REPORT },
+            targetUserId = targetUserId
         )
 
         statisticsRepository.saveExportChoices(choices)

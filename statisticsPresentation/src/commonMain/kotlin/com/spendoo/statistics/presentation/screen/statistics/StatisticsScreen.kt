@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -24,24 +25,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.foundation.layout.height
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.general.AppSegmentedControl
+import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.UiText
@@ -64,6 +64,7 @@ import com.spendoo.statistics.presentation.screen.statistics.components.Transact
 import com.spendoo.statistics.presentation.screen.statistics.components.TransactionSortSheet
 import kotlinx.datetime.LocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.avatar_me
 import spendoo.designsystem.generated.resources.ic_download
@@ -71,7 +72,10 @@ import spendoo.designsystem.generated.resources.ic_user_follow
 
 @Composable
 fun StatisticsScreen(
-    viewModel: StatisticsViewModel = koinViewModel()
+    userId: String? = null,
+    userName: String? = null,
+    userImageUrl: String? = null,
+    viewModel: StatisticsViewModel = koinViewModel(parameters = { parametersOf(userId, userName, userImageUrl) })
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -139,6 +143,7 @@ private fun StatisticsContent(
             ) {
                 TopBar(
                     title = state.userName,
+                    onBackClicked = state.targetUserId?.let { listener::onClickBack },
                     modifier = Modifier.onGloballyPositioned { coordinates ->
                         if (topBarHeight == 0) {
                             topBarHeight = coordinates.size.height
@@ -157,17 +162,19 @@ private fun StatisticsContent(
                             contentScale = ContentScale.Crop
                         )
                     },
-                    actions = listOf(
-                        {
-                            SpendooIconButton(
-                                iconRes = Res.drawable.ic_user_follow,
-                                contentDescription = "Profile",
-                                size = 48.dp,
-                                iconSize = 24.dp,
-                                showBorder = true,
-                                onClick = { /* TODO: navigate to profile details */ }
-                            )
-                        },
+                    actions = listOfNotNull(
+                        if (state.targetUserId == null) {
+                            {
+                                SpendooIconButton(
+                                    iconRes = Res.drawable.ic_user_follow,
+                                    contentDescription = "Profile",
+                                    size = 48.dp,
+                                    iconSize = 24.dp,
+                                    showBorder = true,
+                                    onClick = {  }
+                                )
+                            }
+                        } else null,
                         {
                             SpendooIconButton(
                                 iconRes = Res.drawable.ic_download,
@@ -182,16 +189,18 @@ private fun StatisticsContent(
                 )
             }
 
-            AppSegmentedControl(
-                options = StatisticsTab.entries,
-                selectedOption = state.selectedTab,
-                onOptionSelected = listener::onTabSelected,
-                getName = { this.toName() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .border(1.dp, Theme.colorScheme.border.secondary, RoundedCornerShape(12.dp))
-            )
+            if (state.targetUserId == null) {
+                AppSegmentedControl(
+                    options = StatisticsTab.entries,
+                    selectedOption = state.selectedTab,
+                    onOptionSelected = listener::onTabSelected,
+                    getName = { this.toName() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .border(1.dp, Theme.colorScheme.border.secondary, RoundedCornerShape(12.dp))
+                )
+            }
 
             AnimatedContent(
                 targetState = state.selectedTab,
@@ -281,6 +290,7 @@ private fun StatisticsContentTransactionsPreview() {
             ),
             listener = object : StatisticsInteractionListener {
                 override fun onReload() {}
+                override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
@@ -422,6 +432,7 @@ private fun StatisticsContentChartsPreview() {
             ),
             listener = object : StatisticsInteractionListener {
                 override fun onReload() {}
+                override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}

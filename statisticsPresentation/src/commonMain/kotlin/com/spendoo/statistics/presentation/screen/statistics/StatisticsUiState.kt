@@ -115,6 +115,7 @@ data class StatisticsUiState(
     val pieChartUiState: List<PieChartUiState> = emptyList(),
     val scheduledPayments: List<StatisticsScheduledPaymentUiState> = emptyList(),
     val isScheduledPaymentsError: Boolean = false,
+    val targetUserId: String? = null,
     val userName: String = "",
     val userImageUrl: String? = null,
     val searchQuery: String = "",
