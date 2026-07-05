@@ -1,6 +1,5 @@
 package com.spendoo.designsystem.components.cards
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -31,7 +30,6 @@ import spendoo.designsystem.generated.resources.ic_money_in_offer
 import spendoo.designsystem.generated.resources.ic_money_small
 import spendoo.designsystem.generated.resources.vs
 
-
 data class OfferItemCardUiState(
     val title: String,
     val description: String,
@@ -46,14 +44,13 @@ fun OfferItemCard(
     offer: OfferItemCardUiState,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Theme.colorScheme.button.secondary,
-    shape: Shape = RoundedCornerShape(24.dp)
+    shape: Shape = RoundedCornerShape(12.dp)
 ) {
     Column(
         modifier = modifier
             .background(backgroundColor, shape)
             .border(1.dp, Theme.colorScheme.border.primary, shape)
             .padding( 12.dp),
-
     ) {
         Row(
             modifier = Modifier
@@ -64,7 +61,7 @@ fun OfferItemCard(
             Text(
                 modifier = Modifier.weight(1f),
                 text = offer.title,
-                style = Theme.typography.heading.extraSmall,
+                style = Theme.typography.heading.tiny,
                 color = Theme.colorScheme.text.title,
                 maxLines = 1,
                 overflow = Ellipsis,
@@ -76,24 +73,20 @@ fun OfferItemCard(
             ) {
                 Text(
                     text = "${offer.save}",
-                    style = Theme.typography.label.medium.small,
+                    style = Theme.typography.label.medium.extraSmall,
                     color = Theme.colorScheme.additional.onSuccess,
                 )
             }
         }
         Text(
             text = offer.description,
-            style = Theme.typography.body.small,
+            style = Theme.typography.label.medium.small,
             color = Theme.colorScheme.text.body,
         )
 
-
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = Theme.colorScheme.border.secondary)
 
-
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically)
         {
             Icon(
@@ -122,8 +115,7 @@ fun OfferItemCard(
                 contentDescription = null,
             )
             Text(
-                modifier = Modifier.padding(start = 2.dp)
-                    .weight(1f),
+                modifier = Modifier.padding(start = 2.dp),
                 text = "${offer.previous}",
                 color = Theme.colorScheme.text.body,
                 style = Theme.typography.label.medium.small,

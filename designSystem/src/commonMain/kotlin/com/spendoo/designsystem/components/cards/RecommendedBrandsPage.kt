@@ -6,19 +6,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
@@ -46,117 +44,129 @@ fun RecommendedBrandsPage(
     perEachAmount: String,
     offers: List<OfferItemCardUiState>,
     modifier: Modifier = Modifier,
-    categoryIcon: DrawableResource = Res.drawable.ic_drink,
+    categoryIcon: DrawableResource,
+    shape: Shape = RoundedCornerShape(16.dp)
 ) {
+
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(Theme.colorScheme.background.primary)
-            .verticalScroll(rememberScrollState())
-            .padding(8.dp)
+            .fillMaxWidth()
+            .clip(shape)
+            .background(Theme.colorScheme.background.secondary)
+            .border(1.dp, Theme.colorScheme.border.primary, shape)
+            .padding(16.dp),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .background(Theme.colorScheme.background.secondary)
-                .border(1.dp, Theme.colorScheme.border.secondary, RoundedCornerShape(24.dp))
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        CardHeader(
+            modifier = Modifier.padding(bottom = 16.dp),
+            categoryIcon = categoryIcon,
+            categoryName = categoryName,
+            usageCount = usageCount,
+            totalAmount = totalAmount,
+            perEachAmount = perEachAmount
+        )
+
+        Row(
+            modifier = Modifier.padding(bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                CategoryIcon(
-                    icon = categoryIcon,
-                    size = 56.dp
-                )
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = categoryName,
-                        style = Theme.typography.heading.small,
-                        color = Theme.colorScheme.text.title
-                    )
-                    Text(
-                        text = stringResource(Res.string.times_per_month, usageCount),
-                        style = Theme.typography.label.medium.medium,
-                        color = Theme.colorScheme.text.body
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Icon(
-                            painter = Res.drawable.ic_money_in_offer.painter(),
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                            tint = Theme.colorScheme.text.title
-                        )
-                        Text(
-                            text = totalAmount,
-                            style = Theme.typography.heading.small,
-                            color = Theme.colorScheme.text.title
-                        )
-                    }
-                    Text(
-                        text = stringResource(Res.string.price_each, perEachAmount),
-                        style = Theme.typography.label.medium.medium,
-                        color = Theme.colorScheme.text.body
-                    )
-                }
-            }
+            Icon(
+                painter = Res.drawable.ic_thunder.painter(),
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = Theme.colorScheme.additional.onWarning
+            )
+            Text(
+                text = stringResource(Res.string.recommended_brands),
+                style = Theme.typography.label.medium.medium,
+                color = Theme.colorScheme.text.title
+            )
+        }
 
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+        if (offers.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = Res.drawable.ic_thunder.painter(),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = Theme.colorScheme.button.primary
-                )
                 Text(
-                    text = stringResource(Res.string.recommended_brands),
-                    style = Theme.typography.title.medium,
-                    color = Theme.colorScheme.text.title
+                    text = stringResource(Res.string.no_offers_yet),
+                    style = Theme.typography.label.medium.medium,
+                    color = Theme.colorScheme.text.titleSmall
                 )
             }
-
-            if (offers.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 24.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(Res.string.no_offers_yet),
-                        style = Theme.typography.label.medium.medium,
-                        color = Theme.colorScheme.text.titleSmall
-                    )
-                }
-            } else {
-                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    offers.forEach { offer ->
-                        OfferItemCard(offer = offer)
-                    }
+        } else {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                offers.forEach { offer ->
+                    OfferItemCard(offer = offer)
                 }
             }
         }
+    }
 
-        Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(8.dp))
+}
+
+@Composable
+private fun CardHeader(
+    categoryIcon: DrawableResource,
+    categoryName: String,
+    usageCount: Int,
+    totalAmount: String,
+    perEachAmount: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        CategoryIcon(
+            icon = categoryIcon,
+            size = 40.dp
+        )
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = categoryName,
+                style = Theme.typography.title.small,
+                color = Theme.colorScheme.text.title
+            )
+            Text(
+                text = stringResource(Res.string.times_per_month, usageCount),
+                style = Theme.typography.label.medium.small,
+                color = Theme.colorScheme.text.body
+            )
+        }
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Icon(
+                    painter = Res.drawable.ic_money_in_offer.painter(),
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint = Theme.colorScheme.text.title
+                )
+                Text(
+                    text = totalAmount,
+                    style = Theme.typography.label.medium.large,
+                    color = Theme.colorScheme.text.title
+                )
+            }
+            Text(
+                text = stringResource(Res.string.price_each, perEachAmount),
+                style = Theme.typography.label.medium.extraSmall,
+                color = Theme.colorScheme.text.body
+            )
+        }
     }
 }
 
@@ -191,6 +201,7 @@ fun RecommendedBrandsPagePreview() = SpendooTheme {
                 previous = 350,
                 after = 200,
             ),
-        )
+        ),
+        categoryIcon = Res.drawable.ic_drink
     )
 }
