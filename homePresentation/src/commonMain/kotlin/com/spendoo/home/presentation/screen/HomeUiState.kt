@@ -26,6 +26,7 @@ import spendoo.designsystem.generated.resources.ic_travel
 import spendoo.designsystem.generated.resources.ic_wifi
 
 data class HomeUiState(
+    val isRefreshing: Boolean = false,
     val isBalanceLoading: Boolean = false,
     val isUserLoading: Boolean = false,
     val isOffersLoading: Boolean = false,

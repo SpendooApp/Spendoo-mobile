@@ -11,6 +11,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.identityDomain)
+                implementation(projects.sharedData)
             }
         }
     }

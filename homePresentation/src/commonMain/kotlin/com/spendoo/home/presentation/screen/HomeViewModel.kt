@@ -69,7 +69,10 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = { updateState { copy(isBalanceLoading = false) } }
+            onEnd = {
+                updateState { copy(isBalanceLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -96,7 +99,10 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = { updateState { copy(isUserLoading = false) } }
+            onEnd = {
+                updateState { copy(isUserLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -114,7 +120,10 @@ class HomeViewModel(
                 }
             },
             onError = { },
-            onEnd = { updateState { copy(isNotificationsLoading = false) } }
+            onEnd = {
+                updateState { copy(isNotificationsLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -134,7 +143,10 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = { updateState { copy(isOffersLoading = false) } }
+            onEnd = {
+                updateState { copy(isOffersLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -154,7 +166,10 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = { updateState { copy(isGoalsLoading = false) } }
+            onEnd = {
+                updateState { copy(isGoalsLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -178,11 +193,25 @@ class HomeViewModel(
                     )
                 }
             },
-            onEnd = { updateState { copy(isTopSpendingLoading = false) } }
+            onEnd = {
+                updateState { copy(isTopSpendingLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
+    private fun checkRefreshFinished() {
+        updateState {
+            if (!isBalanceLoading && !isUserLoading && !isNotificationsLoading && !isOffersLoading && !isGoalsLoading && !isTopSpendingLoading) {
+                copy(isRefreshing = false)
+            } else {
+                this
+            }
+        }
+    }
+
     override fun onReload() {
+        updateState { copy(isRefreshing = true) }
         getHomeData()
     }
 

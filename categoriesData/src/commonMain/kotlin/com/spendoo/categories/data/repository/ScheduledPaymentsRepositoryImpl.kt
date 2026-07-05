@@ -1,13 +1,13 @@
 package com.spendoo.categories.data.repository
 
-import com.spendoo.categories.data.dataSource.remote.dto.BasePagedData
+import com.spendoo.shared.data.dataSource.remote.dto.BasePagedData
 import com.spendoo.categories.data.dataSource.remote.dto.scheduledPayment.ScheduledPaymentDto
 import com.spendoo.categories.data.dataSource.remote.dto.scheduledPayment.ScheduledPaymentsSummaryDto
 import com.spendoo.categories.data.dataSource.remote.dto.scheduledPayment.toDomain
 import com.spendoo.categories.data.dataSource.remote.dto.scheduledPayment.toDto
-import com.spendoo.categories.data.dataSource.remote.dto.toPagedData
+import com.spendoo.shared.data.dataSource.remote.dto.toPagedData
 import com.spendoo.categories.data.dataSource.remote.endpoint.ScheduledPaymentsEndpoints
-import com.spendoo.categories.data.shared.BaseGateway
+import com.spendoo.shared.data.shared.BaseGateway
 import com.spendoo.categories.domain.entity.scheduledPayment.CreateScheduledPayment
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
 import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPaymentsSummary

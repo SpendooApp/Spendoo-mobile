@@ -5,11 +5,11 @@ import com.spendoo.identity.data.dataSource.remote.dto.auth.response.Authenticat
 import com.spendoo.identity.data.dataSource.remote.dto.auth.response.toDomain
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.OtpRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.resetPassword.request.VerifyOtpRequestDto
-import com.spendoo.identity.data.shared.BaseGateway
 import com.spendoo.identity.data.utils.invalidateAuthTokens
 import com.spendoo.identity.domain.model.RegisterRequest
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.RegisterRepository
+import com.spendoo.shared.data.shared.BaseGateway
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody

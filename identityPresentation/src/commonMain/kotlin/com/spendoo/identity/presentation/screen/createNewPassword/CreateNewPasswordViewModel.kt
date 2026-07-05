@@ -29,8 +29,7 @@ class CreateNewPasswordViewModel(
     }
 
     override fun onPasswordChange(newPassword: String) {
-        updateState { copy(password = newPassword) }
-        validatePassword()
+        updateState { copy(password = newPassword, passwordError = null) }
     }
 
     override fun onTogglePasswordVisibility() {

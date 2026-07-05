@@ -45,6 +45,9 @@ class CategoriesViewModel(
                         copy(isCategoriesLoadingMore = isLoading, isCategoriesLoading = false)
                     }
                 }
+                if (!isLoading) {
+                    checkRefreshFinished()
+                }
             },
             onError = { error ->
                 showSnackBar(
@@ -96,7 +99,10 @@ class CategoriesViewModel(
                     isSuccess = false
                 )
             },
-            onEnd = { updateState { it.copy(isSummaryLoading = false) } }
+            onEnd = {
+                updateState { it.copy(isSummaryLoading = false) }
+                checkRefreshFinished()
+            }
         )
     }
 
@@ -108,7 +114,18 @@ class CategoriesViewModel(
         }
     }
 
+    private fun checkRefreshFinished() {
+        updateState {
+            if (!isSummaryLoading && !isCategoriesLoading) {
+                copy(isRefreshing = false)
+            } else {
+                this
+            }
+        }
+    }
+
     override fun onReload() {
+        updateState { copy(isRefreshing = true) }
         getData()
     }
 

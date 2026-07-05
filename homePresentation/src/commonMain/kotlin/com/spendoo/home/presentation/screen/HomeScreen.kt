@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spendoo.designsystem.theme.theme.Theme
+import com.spendoo.designsystem.components.indicator.PullToRefresh
 import com.spendoo.home.presentation.screen.components.GoalsSection
 import com.spendoo.home.presentation.screen.components.HomeHeader
 import com.spendoo.home.presentation.screen.components.OffersSection
@@ -33,7 +34,12 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    HomeContent(state = state, viewModel = viewModel)
+    PullToRefresh(
+        isRefreshing = state.isRefreshing,
+        onRefresh = viewModel::onReload
+    ) {
+        HomeContent(state = state, viewModel = viewModel)
+    }
 }
 
 @Composable

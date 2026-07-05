@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
@@ -57,6 +58,8 @@ fun CustomTextField(
     trailingIcon: Painter? = null,
     trailingIconColor: Color? = null,
     backgroundColor: Color = Color.Unspecified,
+    textColor: Color = Theme.colorScheme.text.title,
+    textStyle: TextStyle = Theme.typography.body.small,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     errorText: String? = null,
@@ -99,8 +102,8 @@ fun CustomTextField(
             keyboardOptions = keyboardOptions,
             visualTransformation = visualTransformation,
             isError = showError,
-            textStyle = typography.body.small.copy(
-                color = colors.text.title,
+            textStyle = textStyle.copy(
+                color = textColor,
                 textAlign = TextAlign.Start
             ),
             prefix = prefix,

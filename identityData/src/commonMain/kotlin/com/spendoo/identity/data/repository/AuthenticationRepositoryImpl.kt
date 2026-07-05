@@ -7,10 +7,10 @@ import com.spendoo.identity.data.dataSource.remote.dto.auth.request.LoginRequest
 import com.spendoo.identity.data.dataSource.remote.dto.auth.request.RefreshRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.auth.response.AuthenticationResponse
 import com.spendoo.identity.data.dataSource.remote.dto.auth.response.toDomain
-import com.spendoo.identity.data.shared.BaseGateway
+import com.spendoo.shared.data.shared.BaseGateway
+import com.spendoo.shared.domain.exception.UnAuthorizedException
+import com.spendoo.shared.domain.exception.UserIsBlockedException
 import com.spendoo.identity.data.utils.invalidateAuthTokens
-import com.spendoo.identity.domain.exception.UnAuthorizedException
-import com.spendoo.identity.domain.exception.UserIsBlockedException
 import com.spendoo.identity.domain.model.AuthenticationTokens
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import io.ktor.client.HttpClient

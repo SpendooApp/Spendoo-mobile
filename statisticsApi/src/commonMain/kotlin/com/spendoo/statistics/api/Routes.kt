@@ -5,3 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object StatisticsRoute : NavKey
+
+@Serializable
+data object ExportRoute : NavKey
+
+@Serializable
+data object DownloadRoute : NavKey

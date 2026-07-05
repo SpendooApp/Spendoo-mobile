@@ -11,6 +11,7 @@ import kotlinx.datetime.LocalDate
 import com.spendoo.designsystem.utils.UiText
 
 data class ScheduledPaymentsUiState(
+    val isRefreshing: Boolean = false,
     val summary: ScheduledPaymentSummaryUiState = ScheduledPaymentSummaryUiState(),
     val isSummaryLoading: Boolean = false,
     val scheduledPayments: List<ScheduledPaymentUiState> = emptyList(),
