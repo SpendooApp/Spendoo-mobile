@@ -1,18 +1,12 @@
 package com.spendoo.identity.presentation.api
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import com.spendoo.designsystem.components.text.Text
-import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.identity.api.CreateNewPasswordRoute
+import com.spendoo.identity.api.EditProfileRoute
+import com.spendoo.identity.api.FollowersRoute
+import com.spendoo.identity.api.FollowingRoute
 import com.spendoo.identity.api.ForgetPasswordRoute
 import com.spendoo.identity.api.IdentityFeatureApi
 import com.spendoo.identity.api.LoginRoute
@@ -23,9 +17,13 @@ import com.spendoo.identity.api.SplashRoute
 import com.spendoo.identity.api.SubscriptionRoute
 import com.spendoo.identity.api.VerifyEmailRoute
 import com.spendoo.identity.presentation.screen.createNewPassword.CreateNewPasswordScreen
+import com.spendoo.identity.presentation.screen.editProfile.EditProfileScreen
+import com.spendoo.identity.presentation.screen.followers.FollowersScreen
+import com.spendoo.identity.presentation.screen.following.FollowingScreen
 import com.spendoo.identity.presentation.screen.forgetPassword.ForgetPasswordScreen
 import com.spendoo.identity.presentation.screen.login.LoginScreen
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingScreen
+import com.spendoo.identity.presentation.screen.profile.ProfileScreen
 import com.spendoo.identity.presentation.screen.signup.SignUpScreen
 import com.spendoo.identity.presentation.screen.splash.SplashScreen
 import com.spendoo.identity.presentation.screen.subscription.SubscriptionScreen
@@ -54,18 +52,16 @@ class IdentityFeatureApiImpl : IdentityFeatureApi {
                 )
             }
             entry<ProfileRoute> {
-                Box(
-                    Modifier.fillMaxSize().background(Color.Blue),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column {
-                        Text(
-                            "Profile",
-                            style = Theme.typography.label.medium.medium,
-                            color = Theme.colorScheme.text.title
-                        )
-                    }
-                }
+                ProfileScreen()
+            }
+            entry<FollowingRoute> {
+                FollowingScreen()
+            }
+            entry<FollowersRoute> {
+                FollowersScreen()
+            }
+            entry<EditProfileRoute> {
+                EditProfileScreen()
             }
             entry<SubscriptionRoute> {
                 SubscriptionScreen()

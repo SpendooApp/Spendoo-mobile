@@ -71,10 +71,8 @@ fun EntryPoint(
 
     val showBottomNavigation = currentRoute is HomeRoute
             || currentRoute is CategoriesRoute
-            || currentRoute is StatisticsRoute
+            || (currentRoute is StatisticsRoute && currentRoute.userId == null)
             || currentRoute is AddTransactionRoute
-
-    val activeFeature = currentRoute
 
     LaunchedEffect(isOnBoardingCompleted, accessToken) {
         val targetRoute = when {
@@ -122,7 +120,7 @@ fun EntryPoint(
 
             AppBottomNavigationBar(
                 showBottomNavigation,
-                activeFeature,
+                currentRoute,
                 viewModel
             )
         }

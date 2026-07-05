@@ -4,19 +4,22 @@ import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.spendoo.categories.api.AddTransactionRoute
 import com.spendoo.categories.api.CategoriesRoute
+import com.spendoo.categories.api.CategoryOffersRoute
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.api.FinancialActionRoute
 import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
-import com.spendoo.categories.api.TransactionDetailsRoute
 import com.spendoo.categories.api.TopSpendingCategoriesRoute
-import com.spendoo.categories.api.CategoryOffersRoute
-import com.spendoo.categories.api.EditTransactionRoute
+import com.spendoo.categories.api.TransactionDetailsRoute
 import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.goals.api.AchievementsRoute
 import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.home.api.NotificationsRoute
 import com.spendoo.identity.api.CreateNewPasswordRoute
+import com.spendoo.identity.api.EditProfileRoute
+import com.spendoo.identity.api.FollowersRoute
+import com.spendoo.identity.api.FollowingRoute
 import com.spendoo.identity.api.ForgetPasswordRoute
 import com.spendoo.identity.api.LoginRoute
 import com.spendoo.identity.api.OnBoardingRoute
@@ -60,6 +63,9 @@ fun buildNavigationSerializerConfig(): SavedStateConfiguration = SavedStateConfi
             subclass(TopSpendingCategoriesRoute::class, TopSpendingCategoriesRoute.serializer())
             subclass(CategoryOffersRoute::class, CategoryOffersRoute.serializer())
             subclass(EditTransactionRoute::class, EditTransactionRoute.serializer())
+            subclass(FollowingRoute::class, FollowingRoute.serializer())
+            subclass(FollowersRoute::class, FollowersRoute.serializer())
+            subclass(EditProfileRoute::class, EditProfileRoute.serializer())
         }
     }
 }

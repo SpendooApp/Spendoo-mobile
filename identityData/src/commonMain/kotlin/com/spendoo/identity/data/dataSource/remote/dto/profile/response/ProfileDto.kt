@@ -11,6 +11,8 @@ data class ProfileDto(
     val id: String,
     @SerialName("fullName")
     val fullName: String,
+    @SerialName("email")
+    val email: String? = null,
     @SerialName("birthDate")
     val birthDate: String,
     @SerialName("gender")
@@ -18,7 +20,7 @@ data class ProfileDto(
     @SerialName("imageUrl")
     val imageUrl: String? = null,
     @SerialName("currentPlan")
-    val currentPlan: String = "",
+    val currentPlan: String? = "",
     @SerialName("planCode")
     val planCode: PlanCode = PlanCode.FREE,
 )
@@ -29,6 +31,7 @@ fun ProfileDto.toDomain(): Profile = Profile(
     birthDate = birthDate,
     gender = gender,
     imageUrl = imageUrl,
-    currentPlan = currentPlan,
+    currentPlan = currentPlan.orEmpty(),
     planCode = planCode,
-)
+    email = email.orEmpty()
+)

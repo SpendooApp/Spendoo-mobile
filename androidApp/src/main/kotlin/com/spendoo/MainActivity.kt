@@ -7,16 +7,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.mmk.kmpnotifier.KMPNotifier
 import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.permission.permissionUtil
 import com.spendoo.identity.domain.util.AppLocalizer
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.init
 import org.koin.android.ext.android.inject
 import space.kodio.core.Kodio
 import space.kodio.core.initialize
 import space.kodio.core.onRequestPermissionsResult
-
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : ComponentActivity() {
     private val localizer: AppLocalizer by inject()
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         Kodio.initialize(this)
+        FileKit.init(this)
         localizer.applyLocaleToContext()
         KMPNotifier.onCreateOrOnNewIntent(intent)
         val permissionUtil by permissionUtil()

@@ -33,12 +33,14 @@ fun ProfileFollowCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Theme.colorScheme.background.secondary,
     shape: Shape = RoundedCornerShape(16.dp),
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor, shape = shape)
             .border(color = Theme.colorScheme.border.primary, width = 0.5.dp, shape = shape)
+            .clickableNoRipple(onClick = onClick)
             .padding(8.dp, 8.dp),
         verticalAlignment = Alignment.CenterVertically
 

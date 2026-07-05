@@ -21,8 +21,13 @@ kotlin {
                 implementation(projects.designSystem)
                 implementation(projects.identityDomain)
                 implementation(projects.identityApi)
+                implementation(projects.categoriesApi)
+                implementation(projects.sharedDomain)
                 implementation(projects.homeApi)
+                implementation(projects.statisticsApi)
                 implementation(libs.kmpnotifier)
+                implementation(libs.filekit.compose)
+                implementation(libs.filekit.core)
             }
         }
         androidMain {

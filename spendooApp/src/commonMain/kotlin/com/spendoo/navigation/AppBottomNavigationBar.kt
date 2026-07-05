@@ -88,7 +88,7 @@ fun BoxScope.AppBottomNavigationBar(
                     notSelectedIcon = painterResource(Res.drawable.ic_stats2),
                     title = Res.string.stats.asString(),
                     entry = {
-                        interactionListener.resetToRoute(StatisticsRoute)
+                        interactionListener.resetToRoute(StatisticsRoute())
                     }
                 )
 

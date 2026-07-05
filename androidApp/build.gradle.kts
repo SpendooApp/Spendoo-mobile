@@ -89,6 +89,8 @@ dependencies {
     implementation(libs.kodio.core)
     debugImplementation(libs.compose.ui.tooling)
 
+    implementation(libs.filekit.compose)
+
     implementation(libs.koin.android)
     implementation(libs.koin.core)
 

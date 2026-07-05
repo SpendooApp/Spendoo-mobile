@@ -1,8 +1,10 @@
 package com.spendoo.identity.data.repository
 
+import com.spendoo.identity.data.dataSource.remote.dto.profile.request.UpdateProfileRequestDto
 import com.spendoo.identity.data.dataSource.remote.dto.profile.response.ProfileDto
 import com.spendoo.identity.data.dataSource.remote.dto.profile.response.ProfileImageDto
 import com.spendoo.identity.data.dataSource.remote.dto.profile.response.toDomain
+import com.spendoo.identity.domain.model.Gender
 import com.spendoo.identity.domain.model.Profile
 import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.shared.data.shared.BaseGateway
@@ -16,6 +18,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import kotlinx.datetime.LocalDate
 
 class ProfileRepositoryImpl(
     client: HttpClient,
@@ -38,7 +41,7 @@ class ProfileRepositoryImpl(
                                 key = "file",
                                 value = fileBytes,
                                 headers = Headers.build {
-                                    append(HttpHeaders.ContentType, ContentType.Application.OctetStream.toString())
+                                    append(HttpHeaders.ContentType, ContentType.Image.JPEG.toString())
                                     append(
                                         HttpHeaders.ContentDisposition,
                                         "filename=\"$fileName\""
@@ -61,13 +64,13 @@ class ProfileRepositoryImpl(
 
     override suspend fun updateProfile(
         fullName: String,
-        gender: com.spendoo.identity.domain.model.Gender,
-        birthDate: kotlinx.datetime.LocalDate
+        gender: Gender,
+        birthDate: LocalDate
     ) {
         tryToExecute<Unit> {
             patch(PROFILE_ENDPOINT) {
                 setBody(
-                    com.spendoo.identity.data.dataSource.remote.dto.profile.request.UpdateProfileRequestDto(
+                    UpdateProfileRequestDto(
                         fullName = fullName,
                         gender = gender,
                         birthDate = birthDate.toString()

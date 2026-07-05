@@ -13,11 +13,11 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.cancel
 import spendoo.designsystem.generated.resources.ok
@@ -130,7 +130,7 @@ fun DatePicker(
 
 @Composable
 @Preview
-fun ASDatePickerDialogPreview() = SpendooTheme {
+fun DatePickerDialogPreview() = SpendooTheme {
     DatePicker(
         showDialog = true,
         selectedDate = LocalDate(2026, 1, 7),
