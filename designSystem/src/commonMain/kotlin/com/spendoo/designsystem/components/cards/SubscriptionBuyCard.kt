@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -43,78 +44,98 @@ fun SubscriptionBuyCard(
     yearlySubscriptionPrice: Double,
     features: List<String>,
     isSelected: Boolean,
+    isMostPopular: Boolean,
     modifier: Modifier = Modifier,
     icon: DrawableResource = Res.drawable.ic_thunder,
     backgroundColor: Color = Theme.colorScheme.background.secondary,
     shape: Shape = RoundedCornerShape(16.dp)
 ) {
-    Column(
-        modifier = modifier
-            .background(backgroundColor, shape)
-            .border(1.24.dp, if (isSelected) Theme.colorScheme.icon.primary else Theme.colorScheme.border.primary, shape)
-            .padding(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
+    Box {
+        Column(
+            modifier = modifier
+                .background(backgroundColor, shape)
+                .border(
+                    1.24.dp,
+                    if (isSelected) Theme.colorScheme.icon.primary else Theme.colorScheme.border.primary,
+                    shape
+                )
+                .padding(16.dp)
         ) {
-            CategoryIcon(
-                icon = icon,
-                iconTint = Theme.colorScheme.icon.primary,
-                size = 40.dp
-            )
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
             ) {
-                Text(
-                    text = title,
-                    style = Theme.typography.title.small,
-                    color = Theme.colorScheme.text.title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                CategoryIcon(
+                    icon = icon,
+                    iconTint = Theme.colorScheme.icon.primary,
+                    size = 40.dp
                 )
-                Text(
-                    text = description,
-                    style = Theme.typography.label.medium.small,
-                    color = Theme.colorScheme.text.body,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Text(
+                        text = title,
+                        style = Theme.typography.title.small,
+                        color = Theme.colorScheme.text.title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = description,
+                        style = Theme.typography.label.medium.small,
+                        color = Theme.colorScheme.text.body,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                SubscriptionBuyCardSelectionBadge(isSelected = isSelected)
             }
 
-            SubscriptionBuyCardSelectionBadge(isSelected = isSelected)
-        }
+            when (subscriptionPrice) {
+                0.0 -> {
+                    Text(
+                        modifier = Modifier.padding(top = 16.dp),
+                        text = Res.string.free.asString(),
+                        style = Theme.typography.heading.large,
+                        color = Theme.colorScheme.text.title,
+                    )
+                }
 
-        when(subscriptionPrice) {
-            0.0 -> {
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    text = Res.string.free.asString(),
-                    style = Theme.typography.heading.large,
-                    color = Theme.colorScheme.text.title,
-                )
-            }
-            else -> {
-                SubscriptionBuyCardPricing(
-                    monthlyPrice = subscriptionPrice,
-                    yearlySubscriptionPrice = yearlySubscriptionPrice
-                )
-            }
-        }
-
-        if (features.isNotEmpty()) {
-            Column(
-                modifier = Modifier.padding(top = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                features.forEach { feature ->
-                    SubscriptionBuyCardFeatureRow(feature)
+                else -> {
+                    SubscriptionBuyCardPricing(
+                        monthlyPrice = subscriptionPrice,
+                        yearlySubscriptionPrice = yearlySubscriptionPrice
+                    )
                 }
             }
+
+            if (features.isNotEmpty()) {
+                Column(
+                    modifier = Modifier.padding(top = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    features.forEach { feature ->
+                        SubscriptionBuyCardFeatureRow(feature)
+                    }
+                }
+            }
+        }
+
+        if (isMostPopular) {
+            Text(
+                text = "Most popular",
+                style = Theme.typography.label.medium.small,
+                color = Theme.colorScheme.background.secondary,
+                modifier = Modifier.align(Alignment.TopCenter)
+                    .offset(y = (-10).dp)
+                    .background(Theme.colorScheme.gradient.brand, RoundedCornerShape(8.dp))
+                    .padding(8.dp, 4.dp)
+            )
         }
     }
 }
@@ -230,6 +251,7 @@ private fun SubscriptionBuyCardPreview() = SpendooTheme {
         features = previewFeatures,
         isSelected = true,
         yearlySubscriptionPrice = 0.0,
+        isMostPopular = false
     )
 }
 
@@ -245,6 +267,6 @@ private fun SubscriptionBuyCardPreview2() = SpendooTheme {
         yearlySubscriptionPrice = 95.88,
         features = previewFeatures,
         isSelected = false,
-
-        )
+        isMostPopular = true
+    )
 }

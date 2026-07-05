@@ -331,4 +331,13 @@
     <string name="let_simplify_your_financial_journey">Let’s simplify your financial journey</string>
     <string name="hey_i_m_spendoo_bot">Hey! I’m SpendooBot</string>
     <string name="ask_ai_anything">Ask AI anything...</string>
+    <string name="category_offers">Category offers</string>
+    <string name="no_offers_found">No offers found for this category</string>
+    <string name="unlock_spendoo_premium">Unlock Spendoo Premium</string>
+    <string name="save_20_percent">Save 20%</string>
+    <string name="continue_with">Continue with %1$s</string>
+    <string name="continue_button">Continue</string>
+    <string name="cancel_anytime_secure_payment">Cancel anytime · Secure payment</string>
+    <string name="available_online_offer">Available online offer</string>
 </resources>
+

@@ -28,9 +28,11 @@ import com.spendoo.identity.presentation.screen.login.LoginScreen
 import com.spendoo.identity.presentation.screen.onboarding.OnboardingScreen
 import com.spendoo.identity.presentation.screen.signup.SignUpScreen
 import com.spendoo.identity.presentation.screen.splash.SplashScreen
+import com.spendoo.identity.presentation.screen.subscription.SubscriptionScreen
 import com.spendoo.identity.presentation.screen.verifyEmail.VerifyEmailScreen
 
 class IdentityFeatureApiImpl : IdentityFeatureApi {
+
 
     override fun invoke(): (NavKey) -> NavEntry<NavKey> {
         return entryProvider {
@@ -66,19 +68,9 @@ class IdentityFeatureApiImpl : IdentityFeatureApi {
                 }
             }
             entry<SubscriptionRoute> {
-                Box(
-                    Modifier.fillMaxSize().background(Color.Green),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column {
-                        Text(
-                            "Subscription",
-                            style = Theme.typography.label.medium.medium,
-                            color = Theme.colorScheme.text.title
-                        )
-                    }
-                }
+                SubscriptionScreen()
             }
         }
     }
+
 }

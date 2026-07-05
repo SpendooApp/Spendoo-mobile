@@ -22,6 +22,8 @@ kotlin {
                 implementation(projects.categoriesApi)
                 implementation(projects.categoriesDomain)
                 implementation(projects.goalsDomain)
+                implementation(projects.offersDomain)
+
 
                 implementation(libs.filekit.compose)
                 implementation(libs.filekit.core)

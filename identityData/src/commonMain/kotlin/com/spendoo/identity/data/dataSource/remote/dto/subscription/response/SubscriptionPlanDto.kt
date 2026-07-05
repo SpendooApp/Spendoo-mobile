@@ -19,11 +19,11 @@ data class SubscriptionPlanDto(
     val priceMonthly: Double,
     @SerialName("priceYearly")
     val priceYearly: Double,
-    @SerialName("isMostPopular")
+    @SerialName("mostPopular")
     val isMostPopular: Boolean,
     @SerialName("benefits")
     val benefits: List<String>,
-    @SerialName("isSelected")
+    @SerialName("selected")
     val isSelected: Boolean
 )
 

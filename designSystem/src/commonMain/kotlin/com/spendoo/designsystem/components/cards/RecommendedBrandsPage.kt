@@ -37,7 +37,7 @@ import spendoo.designsystem.generated.resources.recommended_brands
 import spendoo.designsystem.generated.resources.times_per_month
 
 @Composable
-fun RecommendedBrandsPage(
+fun RecommendedBrandsCard(
     categoryName: String,
     usageCount: Int,
     totalAmount: String,
@@ -45,6 +45,7 @@ fun RecommendedBrandsPage(
     offers: List<OfferItemCardUiState>,
     modifier: Modifier = Modifier,
     categoryIcon: DrawableResource,
+    onOfferClick: ((OfferItemCardUiState) -> Unit)? = null,
     shape: Shape = RoundedCornerShape(16.dp)
 ) {
 
@@ -99,11 +100,15 @@ fun RecommendedBrandsPage(
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 offers.forEach { offer ->
-                    OfferItemCard(offer = offer)
+                    OfferItemCard(
+                        offer = offer,
+                        onClick = if (onOfferClick != null) { { onOfferClick(offer) } } else null
+                    )
                 }
             }
         }
     }
+
 
     Spacer(modifier = Modifier.height(8.dp))
 }
@@ -173,8 +178,8 @@ private fun CardHeader(
 
 @PreviewLightDark
 @Composable
-fun RecommendedBrandsPagePreview() = SpendooTheme {
-    RecommendedBrandsPage(
+fun RecommendedBrandsCardPreview() = SpendooTheme {
+    RecommendedBrandsCard(
         categoryName = "Coffee",
         usageCount = 24,
         totalAmount = "8,400",

@@ -82,7 +82,14 @@ class OffersRepositoryImpl(
             }
         }
 
-        val cachedOffers = offersDao.getOffersForKeywords(keywords, language)
+        val offset = query.page * query.size
+        val totalCount = offersDao.getOffersCountForKeywords(keywords, language)
+        val cachedOffers = offersDao.getOffersForKeywords(
+            keywords = keywords,
+            language = language,
+            limit = query.size,
+            offset = offset
+        )
         val mappedOffers = cachedOffers.map { entity ->
             Offer(
                 id = entity.id,
@@ -97,8 +104,10 @@ class OffersRepositoryImpl(
 
         return PagedData(
             data = mappedOffers,
-            totalItems = mappedOffers.size.toLong(),
-            isLastPage = true
+            totalItems = totalCount,
+            isLastPage = (offset + mappedOffers.size) >= totalCount
         )
+
+
     }
 }
