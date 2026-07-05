@@ -28,12 +28,12 @@ import com.spendoo.designsystem.utils.extentions.asString
 import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources._year
 import spendoo.designsystem.generated.resources.billed
 import spendoo.designsystem.generated.resources.free
 import spendoo.designsystem.generated.resources.ic_done_mark
 import spendoo.designsystem.generated.resources.ic_thunder
 import spendoo.designsystem.generated.resources.per_month
-import spendoo.designsystem.generated.resources.year
 
 @Composable
 fun SubscriptionBuyCard(
@@ -144,7 +144,7 @@ private fun SubscriptionBuyCardPricing(
         if (yearlySubscriptionPrice != 0.0) {
             Text(
                 modifier = Modifier.padding(start = 12.dp),
-                text = "${Res.string.billed.asString(yearlySubscriptionPrice)} /${Res.string.year.asString().lowercase()}",
+                text = "${Res.string.billed.asString(yearlySubscriptionPrice)} /${Res.string._year.asString()}",
                 style = Theme.typography.label.medium.small,
                 color = Theme.colorScheme.button.primary,
             )

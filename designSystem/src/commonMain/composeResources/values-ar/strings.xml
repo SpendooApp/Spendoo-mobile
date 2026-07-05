@@ -148,6 +148,7 @@
     <string name="month">شهر</string>
     <string name="per_month">/شهر</string>
     <string name="year">سنة</string>
+    <string name="_year">سنة</string>
     <string name="time_left">الوقت المتبقي</string>
     <string name="due_date">تاريخ الاستحقاق</string>
     <string name="money_amount">مبلغ المال</string>

@@ -173,6 +173,7 @@
     <string name="month">Month</string>
     <string name="per_month">/month</string>
     <string name="year">Year</string>
+    <string name="_year">year</string>
     <string name="time_left">Time Left</string>
     <string name="due_date">Due Date</string>
     <string name="money_amount">Money Amount</string>
