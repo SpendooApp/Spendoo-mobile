@@ -9,6 +9,8 @@ import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
+import com.spendoo.home.api.NotificationsRoute
+import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.notifications.domain.repository.NotificationRepository
 import com.spendoo.offers.domain.repository.OffersRepository
@@ -231,7 +233,6 @@ class HomeViewModel(
         getHomeData()
     }
 
-    override fun onOfferClicked(link: String?) {}
     override fun onGoalClicked(goalId: String) {}
     override fun onSpendingClicked(categoryId: String) {
         navigate(CategoryOffersRoute(categoryId = categoryId))
@@ -244,6 +245,10 @@ class HomeViewModel(
     override fun onViewAllSpendingClicked() {
         navigate(TopSpendingCategoriesRoute)
     }
-    override fun onNotificationClicked() {}
-    override fun onProfileClicked() {}
+    override fun onNotificationClicked() {
+        navigate(NotificationsRoute)
+    }
+    override fun onProfileClicked() {
+        navigate(ProfileRoute)
+    }
 }

@@ -18,7 +18,7 @@ data class NotificationDto(
     val type: NotificationType,
     @SerialName("sentAt")
     val sentAt: String,
-    @SerialName("isRead")
+    @SerialName("read")
     val isRead: Boolean
 )
 

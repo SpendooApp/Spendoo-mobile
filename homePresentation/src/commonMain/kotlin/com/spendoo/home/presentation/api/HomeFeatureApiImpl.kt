@@ -14,26 +14,14 @@ import com.spendoo.home.api.HomeFeatureApi
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.home.api.NotificationsRoute
 import com.spendoo.home.presentation.screen.HomeScreen
+import com.spendoo.home.presentation.screen.notifications.NotificationsScreen
 
 class HomeFeatureApiImpl : HomeFeatureApi {
 
     override fun invoke(): (NavKey) -> NavEntry<NavKey> {
         return entryProvider {
             entry<HomeRoute> { HomeScreen() }
-            entry<NotificationsRoute> {
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column {
-                        Text(
-                            "Notifications",
-                            style = Theme.typography.label.medium.medium,
-                            color = Theme.colorScheme.text.title
-                        )
-                    }
-                }
-            }
+            entry<NotificationsRoute> { NotificationsScreen() }
         }
     }
 }

@@ -84,7 +84,6 @@ private fun HomeContent(
                         val formattedUrl = if (url.startsWith("http://") || url.startsWith("https://")) url else "https://$url" //TODO: format url function
                         uriHandler.openUri(formattedUrl)
                     }
-                    viewModel.onOfferClicked(link)
                 }
             )
         }
