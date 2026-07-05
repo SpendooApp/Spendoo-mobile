@@ -16,7 +16,7 @@ class FollowingViewModel(
 ) : BaseViewModel<FollowingUiState>(FollowingUiState()), FollowingInteractionListener {
 
     private val followingPaginator = createPaginator(
-        initialKey = 1,
+        initialKey = 0,
         pageSize = 20,
         loadPage = { page ->
             followRepository.getFollowing(PageQuery(page = page, size = 20)).data

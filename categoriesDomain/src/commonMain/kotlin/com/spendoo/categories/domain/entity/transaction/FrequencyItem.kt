@@ -8,4 +8,5 @@ data class FrequencyItem(
     val totalAmount: Double,
     val categoryId: String,
     val categoryIcon: CategoryIcon,
+    val averageAmount: Double,
 )

@@ -1,7 +1,6 @@
 package com.spendoo.identity.presentation.screen.profile.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.identity.domain.util.AppLanguage
 import org.jetbrains.compose.resources.stringResource
@@ -56,7 +56,7 @@ fun LanguageSelectionBottomSheet(
                         if (selectedLanguage == AppLanguage.ENGLISH) Theme.colorScheme.button.secondary
                         else Theme.colorScheme.background.secondary
                     )
-                    .clickable { onSelectLanguage(AppLanguage.ENGLISH) }
+                    .clickableNoRipple { onSelectLanguage(AppLanguage.ENGLISH) }
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -76,7 +76,7 @@ fun LanguageSelectionBottomSheet(
                         if (selectedLanguage == AppLanguage.ARABIC) Theme.colorScheme.button.secondary
                         else Theme.colorScheme.background.secondary
                     )
-                    .clickable { onSelectLanguage(AppLanguage.ARABIC) }
+                    .clickableNoRipple { onSelectLanguage(AppLanguage.ARABIC) }
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween

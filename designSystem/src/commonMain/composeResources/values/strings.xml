@@ -369,5 +369,9 @@
     <string name="sent">Sent</string>
     <string name="copied">Copied!</string>
     <string name="no_followers">No followers right now</string>
+    <string name="achievement_savings">Savings</string>
+    <string name="achievement_goals">Goals</string>
+    <string name="achievement_login_streak">Login Streak</string>
+    <string name="achievement_transaction_streak">Transaction Streak</string>
+    <string name="achievement_categories">Categories</string>
 </resources>
-

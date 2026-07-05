@@ -17,6 +17,8 @@ data class FrequencyItemDto(
     val categoryId: String,
     @SerialName("categoryIcon")
     val categoryIcon: CategoryIcon = CategoryIcon.DEFAULT,
+    @SerialName("averageAmount")
+    val averageAmount: Double? = null
 )
 
 fun FrequencyItemDto.toDomain(): FrequencyItem = FrequencyItem(
@@ -25,4 +27,5 @@ fun FrequencyItemDto.toDomain(): FrequencyItem = FrequencyItem(
     totalAmount = totalAmount,
     categoryId = categoryId,
     categoryIcon = categoryIcon,
+    averageAmount = averageAmount ?: (totalAmount / frequency)
 )

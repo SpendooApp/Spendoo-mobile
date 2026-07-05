@@ -10,6 +10,7 @@ import com.spendoo.offers.domain.repository.OffersRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
+import kotlin.math.absoluteValue
 
 class CategoryOffersViewModel(
     private val categoryId: String,
@@ -64,7 +65,8 @@ class CategoryOffersViewModel(
                         emptyList()
                     }
 
-                    val eachAmount = if (item.frequency > 0) item.totalAmount / item.frequency else 0.0
+                    val eachAmount = item.averageAmount.absoluteValue
+
                     val offerCards = offersResult.map { offer ->
                         val price = offer.price ?: 0.0
                         val saveAmount = (eachAmount - price).toInt()
@@ -81,8 +83,8 @@ class CategoryOffersViewModel(
                     CategoryOffersItemUiState(
                         categoryName = item.itemName,
                         usageCount = item.frequency.toInt(),
-                        totalAmount = formatAmount(item.totalAmount),
-                        perEachAmount = formatAmount(eachAmount),
+                        totalAmount = formatAmount(item.totalAmount.absoluteValue),
+                        perEachAmount = formatAmount(eachAmount.absoluteValue),
                         categoryIcon = item.categoryIcon.toDrawableResource(),
                         offers = offerCards
                     )

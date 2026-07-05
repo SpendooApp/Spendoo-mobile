@@ -1,27 +1,28 @@
-package com.spendoo.home.presentation.screen.notifications
+package com.spendoo.goals.presentation.screen.achievements
 
 import androidx.lifecycle.viewModelScope
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
-import com.spendoo.notifications.domain.repository.NotificationRepository
+import com.spendoo.goals.domain.entity.Achievement
+import com.spendoo.goals.domain.repository.AchievementRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import kotlinx.coroutines.launch
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.unknown_error
 
-class NotificationsViewModel(
-    private val notificationRepository: NotificationRepository
-) : BaseViewModel<NotificationsUiState>(NotificationsUiState()), NotificationsInteractionListener {
+class AchievementsViewModel(
+    private val achievementRepository: AchievementRepository
+) : BaseViewModel<AchievementsUiState>(AchievementsUiState()), AchievementsInteractionListener {
 
-    private val notificationsPaginator = createPaginator(
+    private val paginator = createPaginator(
         initialKey = 0,
         pageSize = 20,
         loadPage = { page ->
-            notificationRepository.getNotifications(PageQuery(page = page, size = 20)).data
+            achievementRepository.getAchievements(PageQuery(page = page, size = 20)).data
         },
         onSuccess = { items ->
-            updateState { copy(notifications = notifications + items) }
+            updateState { copy(achievements = achievements + items) }
         },
         onLoadUpdated = { isLoadingMore ->
             updateState { copy(isLoadingMore = isLoadingMore) }
@@ -30,22 +31,28 @@ class NotificationsViewModel(
     )
 
     init {
-        loadNotifications()
+        loadData()
     }
 
-    private fun loadNotifications() {
+    private fun loadData() {
         viewModelScope.launch {
             updateState { copy(isLoading = true, isRefreshing = true) }
-            notificationsPaginator.reset()
-            notificationsPaginator.loadNextItems()
+            paginator.reset()
+            paginator.loadNextItems()
             updateState { copy(isLoading = false, isRefreshing = false) }
         }
-        
-        tryToCall(
-            block = { notificationRepository.markAllAsRead() },
-            onSuccess = { },
-            onError = { }
-        )
+    }
+
+    override fun onReload() {
+        loadData()
+    }
+
+    override fun onLoadMore() {
+        viewModelScope.launch {
+            updateState { copy(isLoadingMore = true) }
+            paginator.loadNextItems()
+            updateState { copy(isLoadingMore = false) }
+        }
     }
 
     private fun handleError(throwable: Throwable?) {
@@ -57,19 +64,15 @@ class NotificationsViewModel(
         )
     }
 
-    override fun onClickBack() {
+    override fun onBackClicked() {
         popBackStack()
     }
 
-    override fun onLoadMoreNotifications() {
-        viewModelScope.launch {
-            updateState { copy(isLoadingMore = true) }
-            notificationsPaginator.loadNextItems()
-            updateState { copy(isLoadingMore = false) }
-        }
+    override fun onAchievementClicked(achievement: Achievement) {
+        updateState { copy(selectedAchievement = achievement) }
     }
 
-    override fun onReload() {
-        loadNotifications()
+    override fun onDismissAchievementSheet() {
+        updateState { copy(selectedAchievement = null) }
     }
 }

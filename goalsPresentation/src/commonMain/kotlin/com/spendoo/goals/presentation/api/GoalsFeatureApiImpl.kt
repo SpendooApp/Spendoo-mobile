@@ -14,26 +14,14 @@ import com.spendoo.goals.api.AchievementsRoute
 import com.spendoo.goals.api.GoalsFeatureApi
 import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.presentation.screen.goals.GoalsScreen
+import com.spendoo.goals.presentation.screen.achievements.AchievementsScreen
 
 class GoalsFeatureApiImpl : GoalsFeatureApi {
 
     override operator fun invoke(): (NavKey) -> NavEntry<NavKey> {
         return entryProvider {
             entry<GoalsRoute> { GoalsScreen() }
-            entry<AchievementsRoute> {
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column {
-                        Text(
-                            "Achievements",
-                            style = Theme.typography.label.medium.medium,
-                            color = Theme.colorScheme.text.title
-                        )
-                    }
-                }
-            }
+            entry<AchievementsRoute> { AchievementsScreen() }
         }
     }
 }

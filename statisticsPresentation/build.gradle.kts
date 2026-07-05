@@ -23,6 +23,7 @@ kotlin {
                 implementation(projects.statisticsDomain)
                 implementation(projects.categoriesDomain)
                 implementation(projects.identityDomain)
+                implementation(projects.identityApi)
                 implementation(projects.categoriesApi)
                 implementation(projects.charts)
                 implementation(projects.sharedDomain)

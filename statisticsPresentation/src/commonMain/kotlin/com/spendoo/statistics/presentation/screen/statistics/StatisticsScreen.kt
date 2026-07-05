@@ -171,7 +171,7 @@ private fun StatisticsContent(
                                     size = 48.dp,
                                     iconSize = 24.dp,
                                     showBorder = true,
-                                    onClick = {  }
+                                    onClick = listener::onFollowUserClicked
                                 )
                             }
                         } else null,
@@ -292,6 +292,8 @@ private fun StatisticsContentTransactionsPreview() {
                 override fun onReload() {}
                 override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
+                override fun onFollowUserClicked() {}
+
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}
@@ -434,6 +436,7 @@ private fun StatisticsContentChartsPreview() {
                 override fun onReload() {}
                 override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
+                override fun onFollowUserClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}

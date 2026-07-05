@@ -10,6 +10,7 @@ import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
+import com.spendoo.identity.api.FollowingRoute
 import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.getNow
@@ -35,14 +36,20 @@ import spendoo.designsystem.generated.resources.error_loading_statistics
 import kotlin.time.Duration.Companion.milliseconds
 
 class StatisticsViewModel(
-    private val targetUserId: String? = null,
-    private val targetUserName: String? = null,
-    private val targetUserImageUrl: String? = null,
+    private val targetUserId: String?,
+    private val targetUserName: String?,
+    private val targetUserImageUrl: String?,
     private val statisticsRepository: StatisticsRepository,
     private val scheduledPaymentsRepository: ScheduledPaymentsRepository,
     private val transactionsRepository: TransactionsRepository,
     private val profileRepository: ProfileRepository
-) : BaseViewModel<StatisticsUiState>(StatisticsUiState(targetUserId = targetUserId, userName = targetUserName ?: "", userImageUrl = targetUserImageUrl)), StatisticsInteractionListener {
+) : BaseViewModel<StatisticsUiState>(
+    StatisticsUiState(
+        targetUserId = targetUserId,
+        userName = targetUserName ?: "",
+        userImageUrl = targetUserImageUrl
+    )
+), StatisticsInteractionListener {
 
     val refreshSignal: Flow<Boolean?> = getResult("refreshTransactions", consume = true)
 
@@ -174,6 +181,10 @@ class StatisticsViewModel(
         navigate(ExportRoute(targetUserId))
     }
 
+    override fun onFollowUserClicked() {
+        navigate(FollowingRoute)
+    }
+
     private fun resetAndLoadTransactions() {
         if (targetUserId != null) return
         transactionsPaginator.reset()
@@ -218,11 +229,16 @@ class StatisticsViewModel(
 
         updateState { copy(isLoading = true) }
         tryToCall(
-            block = { 
+            block = {
                 if (targetUserId != null) {
-                    statisticsRepository.getUserStatistics(targetUserId, granularity, startDateTime, endDateTime)
+                    statisticsRepository.getUserStatistics(
+                        targetUserId,
+                        granularity,
+                        startDateTime,
+                        endDateTime
+                    )
                 } else {
-                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime) 
+                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
                 }
             },
             onSuccess = { stats ->
@@ -279,7 +295,14 @@ class StatisticsViewModel(
         if (targetUserId != null) return
         updateState { copy(isScheduledPaymentsError = false) }
         tryToCall(
-            block = { scheduledPaymentsRepository.getScheduledPayments(PageQuery(page = 0, size = 10)) },
+            block = {
+                scheduledPaymentsRepository.getScheduledPayments(
+                    PageQuery(
+                        page = 0,
+                        size = 10
+                    )
+                )
+            },
             onSuccess = { pagedPayments ->
                 val now = getNow()
                 val mapped = pagedPayments.data.map { it.toUiState(now) }

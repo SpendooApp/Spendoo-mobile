@@ -1,7 +1,6 @@
 package com.spendoo.identity.presentation.screen.subscription
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -164,7 +163,7 @@ private fun BillingCycleSwitcher(
                 .weight(1f)
                 .clip(RoundedCornerShape(8.dp))
                 .background(if (selectedCycle == BillingCycle.MONTHLY) Theme.colorScheme.button.secondary else Theme.colorScheme.background.secondary)
-                .clickable { onCycleSelected(BillingCycle.MONTHLY) }
+                .clickableNoRipple { onCycleSelected(BillingCycle.MONTHLY) }
                 .padding(vertical = 10.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -180,7 +179,7 @@ private fun BillingCycleSwitcher(
                 .weight(1f)
                 .clip(RoundedCornerShape(8.dp))
                 .background(if (selectedCycle == BillingCycle.YEARLY) Theme.colorScheme.button.secondary else Theme.colorScheme.background.secondary)
-                .clickable { onCycleSelected(BillingCycle.YEARLY) }
+                .clickableNoRipple { onCycleSelected(BillingCycle.YEARLY) }
                 .padding(vertical = 10.dp),
             contentAlignment = Alignment.Center
         ) {

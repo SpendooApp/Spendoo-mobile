@@ -7,6 +7,7 @@ data class Profile(
     val gender: String,
     val imageUrl: String?,
     val email: String,
+    val code: String,
     val currentPlan: String,
     val planCode: PlanCode = PlanCode.FREE,
 )

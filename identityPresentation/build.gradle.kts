@@ -24,6 +24,7 @@ kotlin {
                 implementation(projects.categoriesApi)
                 implementation(projects.sharedDomain)
                 implementation(projects.homeApi)
+                implementation(projects.goalsApi)
                 implementation(projects.statisticsApi)
                 implementation(libs.kmpnotifier)
                 implementation(libs.filekit.compose)

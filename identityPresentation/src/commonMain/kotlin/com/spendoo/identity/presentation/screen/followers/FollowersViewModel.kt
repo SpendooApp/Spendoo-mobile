@@ -15,7 +15,7 @@ class FollowersViewModel(
 ) : BaseViewModel<FollowersUiState>(FollowersUiState()), FollowersInteractionListener {
 
     private val pendingRequestsPaginator = createPaginator(
-        initialKey = 1,
+        initialKey = 0,
         pageSize = 20,
         loadPage = { page ->
             followRepository.getPendingRequests(PageQuery(page = page, size = 20)).data
@@ -30,7 +30,7 @@ class FollowersViewModel(
     )
 
     private val followersPaginator = createPaginator(
-        initialKey = 1,
+        initialKey = 0,
         pageSize = 20,
         loadPage = { page ->
             followRepository.getFollowers(PageQuery(page = page, size = 20)).data

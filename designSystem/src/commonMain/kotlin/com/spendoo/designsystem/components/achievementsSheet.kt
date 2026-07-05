@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.theme.color.scheme.toBrush
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
@@ -32,20 +34,34 @@ import spendoo.designsystem.generated.resources.img_coin
 import spendoo.designsystem.generated.resources.you_have_unlocked_a_new_badge
 
 @Composable
-fun AchievementsBottomSheet(
+fun AchievementBottomSheet(
     isVisible: Boolean = true,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
-    level: Int,
+    level: Long,
+    isUnlocked: Boolean,
     icon: DrawableResource,
     type: String,
     name: String,
     description: String
 ) {
+    val backgroundColor = if(isUnlocked) {
+        if (Theme.isDarkTheme)
+            Theme.colorScheme.background.tertiary
+        else
+            Theme.colorScheme.primary.variant200
+    } else {
+        if (Theme.isDarkTheme)
+            Theme.colorScheme.background.quinary
+        else
+            Theme.colorScheme.text.title
+    }
+
     BottomSheet(
         isVisible = isVisible,
         onDismiss = onDismiss,
         horizontalPadding = 0.dp,
+        containerColor = backgroundColor,
         content = {
             AchievementsBottomSheetContent(
                 modifier = modifier,
@@ -53,6 +69,8 @@ fun AchievementsBottomSheet(
                 icon = icon,
                 type = type,
                 name = name,
+                backgroundColor = backgroundColor,
+                isUnlocked = isUnlocked,
                 description = description,
                 onDismiss = onDismiss
             )
@@ -62,57 +80,78 @@ fun AchievementsBottomSheet(
 
 @Composable
 private fun AchievementsBottomSheetContent(
-    level: Int,
+    level: Long,
     icon: DrawableResource,
     type: String,
     name: String,
+    backgroundColor: Color,
     description: String,
+    isUnlocked: Boolean,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val typeBackgroundColor = if (isUnlocked) {
+        Theme.colorScheme.gradient.brandVertical
+    } else {
+        Theme.colorScheme.text.label.toBrush()
+    }
+
+    val titleColor = if (isUnlocked) {
+        Theme.colorScheme.text.headingBlue
+    } else {
+        Theme.colorScheme.button.onPrimary
+    }
+
+    val descriptionColor = if (isUnlocked) {
+        Theme.colorScheme.text.headingBlue
+    } else {
+        Theme.colorScheme.text.body
+    }
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.TopCenter,
     ) {
         Column(
-            modifier = Modifier.background(
-                if (Theme.isDarkTheme)
-                    Theme.colorScheme.background.tertiary
-                else
-                    Theme.colorScheme.primary.variant200,
-            ).padding(45.dp, 65.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(backgroundColor)
+                .padding(45.dp, 65.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = Res.string.congratulations.asString(),
-                    style = Theme.typography.heading.medium,
-                    color = Theme.colorScheme.text.headingBlue,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-                Text(
-                    text = Res.string.you_have_unlocked_a_new_badge.asString(),
-                    style = Theme.typography.body.extraSmall,
-                    color = Theme.colorScheme.text.headingBlue,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
+            if (isUnlocked) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = Res.string.congratulations.asString(),
+                        style = Theme.typography.heading.medium,
+                        color = Theme.colorScheme.text.headingBlue,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                    Text(
+                        text = Res.string.you_have_unlocked_a_new_badge.asString(),
+                        style = Theme.typography.body.extraSmall,
+                        color = Theme.colorScheme.text.headingBlue,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                }
             }
             AchievementShape(
                 level = level,
                 icon = icon,
-                isUnlocked = true
+                isUnlocked = isUnlocked
             )
             Box(
                 modifier = Modifier
                     .size(80.dp, 25.dp)
                     .background(
-                        brush = Theme.colorScheme.gradient.brandVertical,
+                        brush = typeBackgroundColor,
                         shape = RoundedCornerShape(360.dp)
                     ),
                 contentAlignment = Alignment.Center,
@@ -132,34 +171,38 @@ private fun AchievementsBottomSheetContent(
                 Text(
                     text = name,
                     style = Theme.typography.heading.medium,
-                    color = Theme.colorScheme.text.headingBlue,
+                    color = titleColor,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
                 Text(
                     text = description,
                     style = Theme.typography.body.extraSmall,
-                    color = Theme.colorScheme.text.headingBlue,
+                    color = descriptionColor,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
             }
 
-            AppButton(
-                type = AppButtonType.Primary,
-                onClick = onDismiss,
-                text = Res.string.claim_badge.asString(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp)
+            if (isUnlocked) {
+                AppButton(
+                    type = AppButtonType.Primary,
+                    onClick = onDismiss,
+                    text = Res.string.claim_badge.asString(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp)
+                )
+            }
+        }
+        if (isUnlocked) {
+            Icon(
+                painter = Res.drawable.ic_stars.painter(),
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.TopCenter).padding(top = 12.dp),
+                tint = Theme.colorScheme.additional.golden
             )
         }
-        Icon(
-            painter = Res.drawable.ic_stars.painter(),
-            contentDescription = null,
-            modifier = Modifier.align(Alignment.TopCenter).padding(top = 12.dp),
-            tint = Theme.colorScheme.additional.golden
-        )
     }
 }
 
@@ -167,11 +210,28 @@ private fun AchievementsBottomSheetContent(
 @Composable
 private fun AchievementsPreview() = SpendooTheme {
     AchievementsBottomSheetContent(
-        onDismiss = {},
         level = 1,
         icon = Res.drawable.img_coin,
         type = "Savings",
         name = "First Saver",
-        description = "Make your very first savings deposit"
+        isUnlocked = true,
+        description = "Make your very first savings deposit",
+        onDismiss = {},
+        backgroundColor = Theme.colorScheme.background.tertiary
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun AchievementsPreview2() = SpendooTheme {
+    AchievementsBottomSheetContent(
+        level = 1,
+        icon = Res.drawable.img_coin,
+        type = "Savings",
+        name = "First Saver",
+        isUnlocked = false,
+        description = "Make your very first savings deposit",
+        onDismiss = {},
+        backgroundColor = Theme.colorScheme.background.quinary
     )
 }

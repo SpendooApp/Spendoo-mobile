@@ -448,6 +448,7 @@ private fun StatisticsChartsContentPreview() {
                 override fun onReload() {}
                 override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
+                override fun onFollowUserClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}

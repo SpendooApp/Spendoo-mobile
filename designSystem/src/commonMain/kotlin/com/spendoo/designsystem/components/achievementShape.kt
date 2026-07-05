@@ -36,7 +36,7 @@ fun AchievementShape(
     modifier: Modifier = Modifier,
     shapeHexagon: Shape = HexagonShape(),
     shapeRibbon: Shape = RibbonShape(),
-    level: Int
+    level: Long
 ) {
     val backgroundColor = if (isUnlocked) {
         if (Theme.isDarkTheme) {

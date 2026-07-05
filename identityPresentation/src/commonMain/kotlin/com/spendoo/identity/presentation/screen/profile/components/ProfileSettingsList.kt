@@ -36,7 +36,7 @@ import spendoo.designsystem.generated.resources.ic_profile_details
 import spendoo.designsystem.generated.resources.ic_repeat
 import spendoo.designsystem.generated.resources.ic_stats
 import spendoo.designsystem.generated.resources.img_coin
-import spendoo.designsystem.generated.resources.notification_setting
+import spendoo.designsystem.generated.resources.notifications
 import spendoo.designsystem.generated.resources.profile_details
 import spendoo.designsystem.generated.resources.scheduled_payments
 
@@ -70,7 +70,7 @@ fun ProfileSettingsList(
         )
         ProfileSettingItem(
             icon = Res.drawable.ic_bell,
-            title = stringResource(Res.string.notification_setting),
+            title = stringResource(Res.string.notifications),
             onClickArrow = { listener.onClickNotificationSetting() }
         )
         ProfileSettingItem(

@@ -4,6 +4,8 @@ import com.spendoo.categories.api.CategoriesRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import com.spendoo.goals.api.AchievementsRoute
+import com.spendoo.home.api.NotificationsRoute
 import com.spendoo.identity.api.EditProfileRoute
 import com.spendoo.identity.api.FollowersRoute
 import com.spendoo.identity.api.FollowingRoute
@@ -41,6 +43,7 @@ class ProfileViewModel(
                         userId = profile.id,
                         fullName = profile.fullName,
                         imageUrl = profile.imageUrl,
+                        followCode = profile.code,
                         isRefreshing = false
                     )
                 }
@@ -52,15 +55,7 @@ class ProfileViewModel(
         )
 
         tryToCall(
-            block = { followCodeRepository.generateFollowCode() },
-            onSuccess = { codeModel ->
-                updateState { copy(followCode = codeModel.code) }
-            },
-            onError = { handleError(it) }
-        )
-
-        tryToCall(
-            block = { followRepository.getFollowing(PageQuery(page = 1, size = 10)) },
+            block = { followRepository.getFollowing(PageQuery(page = 0, size = 10)) },
             onSuccess = { pagedData ->
                 updateState { copy(followings = pagedData.data) }
             },
@@ -68,7 +63,7 @@ class ProfileViewModel(
         )
 
         tryToCall(
-            block = { followRepository.getFollowers(PageQuery(page = 1, size = 10)) },
+            block = { followRepository.getFollowers(PageQuery(page = 0, size = 10)) },
             onSuccess = { pagedData ->
                 updateState { copy(followers = pagedData.data) }
             },
@@ -122,9 +117,11 @@ class ProfileViewModel(
     }
 
     override fun onClickAchievements() {
+        navigate(AchievementsRoute)
     }
 
     override fun onClickNotificationSetting() {
+        navigate(NotificationsRoute)
     }
 
     override fun onClickViewAllFollowing() {
