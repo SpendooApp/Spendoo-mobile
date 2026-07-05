@@ -61,6 +61,8 @@
     <string name="weekly">أسبوعي</string>
     <string name="monthly">شهري</string>
     <string name="yearly">سنوي</string>
+    <string name="free">مجاني</string>
+    <string name="billed">مفوتر %1$s</string>
     <string name="edit_category">تعديل الفئة</string>
     <string name="add_new_category">إضافة فئة جديدة</string>
     <string name="enter_category_name">أدخل اسم الفئة</string>
@@ -144,7 +146,9 @@
     <string name="day">يوم</string>
     <string name="hour">ساعة</string>
     <string name="month">شهر</string>
+    <string name="per_month">/شهر</string>
     <string name="year">سنة</string>
+    <string name="_year">سنة</string>
     <string name="time_left">الوقت المتبقي</string>
     <string name="due_date">تاريخ الاستحقاق</string>
     <string name="money_amount">مبلغ المال</string>
@@ -307,4 +311,8 @@
     <string name="statistics_summary_report">تقرير ملخص الإحصائيات</string>
     <string name="cashflow_history">سجل التدفق النقدي</string>
     <string name="budget_status">حالة الميزانية</string>
+    <string name="vs">مقابل</string>
+    <string name="price_each">%1$s لكل واحد</string>
+    <string name="recommended_brands">حاجات على شانك</string>
+    <string name="times_per_month">%1$s مرات في الشهر</string>
 </resources>
