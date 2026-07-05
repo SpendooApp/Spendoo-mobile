@@ -165,15 +165,6 @@
     <string name="years_left">%1$s سنوات متبقي</string>
     <string name="hour_left">1 ساعة متبقي</string>
     <string name="hours_left">%1$s ساعات متبقي</string>
-    <string name="day_left">متبقي يوم واحد</string>
-    <string name="week_left">متبقي أسبوع واحد</string>
-    <string name="weeks_left">متبقي %1$s أسابيع</string>
-    <string name="month_left">متبقي شهر واحد</string>
-    <string name="months_left">متبقي %1$s أشهر</string>
-    <string name="year_left">متبقي سنة واحدة</string>
-    <string name="years_left">متبقي %1$s سنوات</string>
-    <string name="hour_left">متبقي ساعة واحدة</string>
-    <string name="hours_left">متبقي %1$s ساعات</string>
     <string name="start_date_is_required">تاريخ البدء مطلوب</string>
     <string name="no_scheduled_payments_yet">لا توجد مدفوعات مجدولة بعد. انقر فوق الزر + لإضافة دفعتك الأولى!</string>
     <string name="low_priority">أولوية منخفضة</string>
