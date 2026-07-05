@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.navigation3.runtime.NavKey
 import com.spendoo.appEntryPoint.MainEntryInteractionListener
 import com.spendoo.categories.api.CategoriesRoute
+import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.designsystem.components.bottomNavigation.BottomNavigationBar
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.asString
-import com.spendoo.chatbot.api.ChatbotRoute
 import com.spendoo.home.api.HomeRoute
 import com.spendoo.statistics.api.StatisticsRoute
 import org.jetbrains.compose.resources.painterResource
@@ -88,7 +88,7 @@ fun BoxScope.AppBottomNavigationBar(
                     notSelectedIcon = painterResource(Res.drawable.ic_stats2),
                     title = Res.string.stats.asString(),
                     entry = {
-                        interactionListener.resetToRoute(StatisticsRoute)
+                        interactionListener.resetToRoute(StatisticsRoute())
                     }
                 )
 
@@ -97,7 +97,7 @@ fun BoxScope.AppBottomNavigationBar(
                     notSelectedIcon = painterResource(Res.drawable.ic_robot),
                     title = Res.string.chatbot.asString(),
                     entry = {
-                        interactionListener.resetToRoute(ChatbotRoute)
+                        interactionListener.navigateToRoute(ChatbotRoute)
                     }
                 )
             }

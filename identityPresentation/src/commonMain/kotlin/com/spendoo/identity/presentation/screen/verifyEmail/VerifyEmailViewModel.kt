@@ -1,8 +1,6 @@
 package com.spendoo.identity.presentation.screen.verifyEmail
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
@@ -18,6 +16,7 @@ import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.invalid_otp_please_try_again
 import spendoo.designsystem.generated.resources.otp_must_be_5_digits
 import spendoo.designsystem.generated.resources.unknown_error
+import kotlin.time.Duration.Companion.milliseconds
 
 class VerifyEmailViewModel(
     private val email: String,
@@ -131,7 +130,7 @@ class VerifyEmailViewModel(
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (state.value.timeRemaining > 0) {
-                delay(1000)
+                delay(1000.milliseconds)
                 updateState {
                     it.copy(
                         timeRemaining = it.timeRemaining - 1,

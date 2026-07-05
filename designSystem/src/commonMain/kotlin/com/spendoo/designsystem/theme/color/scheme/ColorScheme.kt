@@ -38,7 +38,8 @@ data class ColorScheme(
         val purple: Color,
         val success: Color,
         val warning: Color,
-        val done: Color
+        val done: Color,
+        val golden: Color
     )
 
     data class Background(
@@ -103,7 +104,8 @@ data class ColorScheme(
         val variant950: Color
     )
     data class Gradient(
-        val brand : Brush
+        val brand : Brush,
+        val brandVertical : Brush
     )
 }
 

@@ -8,8 +8,11 @@ import com.spendoo.identity.data.repository.RegisterRepositoryImpl.Companion.REG
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl.Companion.RESET_PASSWORD
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl.Companion.RESET_PASSWORD_REQUEST_OTP
 import com.spendoo.identity.data.repository.ResetPasswordRepositoryImpl.Companion.RESET_PASSWORD_VERIFY_OTP
+import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.service.AuthorizationService
+import com.spendoo.shared.domain.navigation.GlobalNavigationHandler
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -21,18 +24,18 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 import kotlinx.coroutines.CancellationException
-
-import com.spendoo.identity.domain.repository.SettingsRepository
+import kotlinx.serialization.json.Json
 
 internal fun provideHttpClient(
     baseUrl: String,
     authorizationService: suspend () -> AuthorizationService,
     settingsRepository: () -> SettingsRepository,
+    globalNavigationHandler: GlobalNavigationHandler,
 ): HttpClient {
 
     val prettyJson = Json {
@@ -42,6 +45,14 @@ internal fun provideHttpClient(
 
     return createHttpClient {
         expectSuccess = true
+
+        HttpResponseValidator {
+            validateResponse { response ->
+                if (response.status == HttpStatusCode.PaymentRequired) {
+                    globalNavigationHandler.onPaymentRequiredError()
+                }
+            }
+        }
 
         defaultRequest {
             url(baseUrl)

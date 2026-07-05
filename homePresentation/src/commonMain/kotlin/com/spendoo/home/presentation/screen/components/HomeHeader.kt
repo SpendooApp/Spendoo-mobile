@@ -29,7 +29,7 @@ fun HomeHeader(
     modifier: Modifier = Modifier,
     userName: String,
     userImageUrl: String?,
-    notificationsCount: Int,
+    notificationsCount: Long,
     isUserLoading: Boolean,
     isNotificationsLoading: Boolean,
     onNotificationClicked: () -> Unit,

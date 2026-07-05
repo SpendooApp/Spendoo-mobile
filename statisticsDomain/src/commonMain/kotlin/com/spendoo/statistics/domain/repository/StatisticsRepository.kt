@@ -24,4 +24,20 @@ interface StatisticsRepository {
         reportDataType: ReportDataType,
         theme: AppTheme
     ): ByteArray
+
+    suspend fun getUserStatistics(
+        targetUserId: String,
+        granularity: Granularity,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime
+    ): CombinedStats
+
+    suspend fun getUserStatisticsPdf(
+        targetUserId: String,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime,
+        reportDataType: ReportDataType,
+        theme: AppTheme
+    ): ByteArray
 }
+

@@ -1,5 +1,7 @@
 package com.spendoo.home.presentation.screen
 
+import com.spendoo.categories.api.CategoryOffersRoute
+import com.spendoo.categories.api.TopSpendingCategoriesRoute
 import com.spendoo.categories.domain.repository.CategoriesRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
@@ -7,21 +9,25 @@ import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.goals.api.GoalsRoute
 import com.spendoo.goals.domain.repository.GoalsRepository
+import com.spendoo.home.api.NotificationsRoute
+import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.domain.repository.ProfileRepository
+import com.spendoo.notifications.domain.repository.NotificationRepository
 import com.spendoo.offers.domain.repository.OffersRepository
+import com.spendoo.shared.domain.utils.PageQuery
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.error_loading_balance_summary
 import spendoo.designsystem.generated.resources.error_loading_goals
 import spendoo.designsystem.generated.resources.error_loading_offers
 import spendoo.designsystem.generated.resources.error_loading_top_spending
 import spendoo.designsystem.generated.resources.error_loading_user_data
-import com.spendoo.shared.domain.utils.PageQuery
 
 class HomeViewModel(
     private val offersRepository: OffersRepository,
     private val transactionsRepository: TransactionsRepository,
     private val categoriesRepository: CategoriesRepository,
     private val profileRepository: ProfileRepository,
+    private val notificationRepository: NotificationRepository,
     private val goalsRepository: GoalsRepository
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeInteractionListener {
 
@@ -48,7 +54,6 @@ class HomeViewModel(
         loadBalanceSummary()
         loadUserProfile()
         loadNotificationsCount()
-        loadOffers()
         loadGoals()
         loadTopSpending()
     }
@@ -108,7 +113,7 @@ class HomeViewModel(
 
     private fun loadNotificationsCount() {
         tryToCall(
-            block = { profileRepository.getNotificationsCount() },
+            block = { notificationRepository.getUnreadNotificationsCount() },
             onStart = { updateState { copy(isNotificationsLoading = true) } },
             onSuccess = { count ->
                 updateState {
@@ -129,7 +134,18 @@ class HomeViewModel(
 
     private fun loadOffers() {
         tryToCall(
-            block = { offersRepository.getOffers(PageQuery(0, 20)) },
+            block = {
+                val frequentItems = transactionsRepository.getTopFrequencyItems(
+                    categoryId = null,
+                    pageQuery = PageQuery(page = 0, size = 5)
+                )
+                val frequentNames = frequentItems.data.map { it.itemName }
+                val frequentMaxPrice = frequentItems.data.maxOfOrNull { it.totalAmount }
+
+                val keywords = (frequentNames).filter { it.isNotBlank() }.distinct()
+
+                offersRepository.getOffers(PageQuery(0, 20), keywords, frequentMaxPrice)
+            },
             onStart = { updateState { copy(isOffersLoading = true) } },
             onSuccess = { offers ->
                 updateState { copy(offers = offers.data.map { it.toUiState() }) }
@@ -183,6 +199,7 @@ class HomeViewModel(
             onStart = { updateState { copy(isTopSpendingLoading = true) } },
             onSuccess = { spending ->
                 updateState { copy(topSpending = spending.data.map { it.toUiState() }) }
+                loadOffers()
             },
             onError = { error ->
                 error.message?.let {
@@ -192,6 +209,7 @@ class HomeViewModel(
                         isSuccess = false,
                     )
                 }
+                updateState { copy(isOffersLoading = false) }
             },
             onEnd = {
                 updateState { copy(isTopSpendingLoading = false) }
@@ -215,15 +233,22 @@ class HomeViewModel(
         getHomeData()
     }
 
-    override fun onOfferClicked(offerId: String) {}
     override fun onGoalClicked(goalId: String) {}
-    override fun onSpendingClicked(spendingId: String) {}
+    override fun onSpendingClicked(categoryId: String) {
+        navigate(CategoryOffersRoute(categoryId = categoryId))
+    }
     override fun onViewAllOffersClicked() {}
     override fun onViewAllGoalsClicked() {
         navigate(GoalsRoute)
     }
 
-    override fun onViewAllSpendingClicked() {}
-    override fun onNotificationClicked() {}
-    override fun onProfileClicked() {}
+    override fun onViewAllSpendingClicked() {
+        navigate(TopSpendingCategoriesRoute)
+    }
+    override fun onNotificationClicked() {
+        navigate(NotificationsRoute)
+    }
+    override fun onProfileClicked() {
+        navigate(ProfileRoute)
+    }
 }

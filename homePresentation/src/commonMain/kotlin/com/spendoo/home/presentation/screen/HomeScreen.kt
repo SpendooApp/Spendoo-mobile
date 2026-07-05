@@ -12,20 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.components.indicator.PullToRefresh
+import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.home.presentation.screen.components.GoalsSection
 import com.spendoo.home.presentation.screen.components.HomeHeader
 import com.spendoo.home.presentation.screen.components.OffersSection
 import com.spendoo.home.presentation.screen.components.TopSpendingSection
 import com.spendoo.home.presentation.screen.components.balanceSection
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -47,6 +45,8 @@ private fun HomeContent(
     state: HomeUiState,
     viewModel: HomeInteractionListener,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -79,7 +79,12 @@ private fun HomeContent(
                 offers = state.offers,
                 isLoading = state.isOffersLoading,
                 onViewAll = viewModel::onViewAllOffersClicked,
-                onOfferClicked = viewModel::onOfferClicked
+                onOfferClicked = { link ->
+                    link?.takeIf { it.isNotBlank() }?.let { url ->
+                        val formattedUrl = if (url.startsWith("http://") || url.startsWith("https://")) url else "https://$url" //TODO: format url function
+                        uriHandler.openUri(formattedUrl)
+                    }
+                }
             )
         }
 
@@ -97,7 +102,7 @@ private fun HomeContent(
                 spending = state.topSpending,
                 isLoading = state.isTopSpendingLoading,
                 onViewAll = viewModel::onViewAllSpendingClicked,
-                onSpendingClicked = viewModel::onSpendingClicked
+                onCategoryClicked = viewModel::onSpendingClicked
             )
         }
 

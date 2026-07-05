@@ -4,7 +4,9 @@ import com.spendoo.statistics.domain.entity.Granularity
 
 interface StatisticsInteractionListener {
     fun onReload()
+    fun onClickBack()
     fun onDownloadReportClicked()
+    fun onFollowUserClicked()
     fun onOpenScheduledPayments()
     fun onTabSelected(tab: StatisticsTab)
     fun onGranularitySelected(granularity: Granularity)

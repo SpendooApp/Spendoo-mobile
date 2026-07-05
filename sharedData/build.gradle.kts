@@ -11,6 +11,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(projects.sharedDomain)
+                implementation(libs.koin.core)
             }
         }
     }

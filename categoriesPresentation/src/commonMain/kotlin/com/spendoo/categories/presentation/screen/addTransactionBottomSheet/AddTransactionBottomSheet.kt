@@ -15,9 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.AddExpenseEntriesSection
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.AddTransactionActionButtons
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.IncomeEntriesSection
@@ -30,13 +30,13 @@ import com.spendoo.designsystem.components.textField.CustomTextField
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.SpendooPreview
+import com.spendoo.designsystem.utils.asString
 import com.spendoo.designsystem.utils.extentions.format
 import com.spendoo.designsystem.utils.extentions.painter
+import com.spendoo.shared.domain.entity.CategoryIcon
 import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.spendoo.designsystem.utils.asString
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.add
@@ -168,7 +168,7 @@ private fun AddTransactionBottomSheetContent(
             }
 
             item {
-                Spacer(modifier = Modifier.padding(bottom = 24.dp))
+                Spacer(modifier = Modifier.padding(bottom = 48.dp))
             }
         }
 

@@ -29,7 +29,11 @@ kotlin {
                 implementation(projects.identityDomain)
                 implementation(projects.goalsDomain)
                 implementation(projects.goalsApi)
+                implementation(projects.identityApi)
+                implementation(projects.categoriesApi)
                 implementation(projects.sharedDomain)
+                implementation(projects.notificationsDomain)
+                implementation(libs.kmpnotifier)
             }
         }
         androidMain {

@@ -1,20 +1,20 @@
 package com.spendoo.statistics.presentation.screen.statistics
 
-import com.spendoo.statistics.domain.entity.CombinedStats
-import com.spendoo.statistics.domain.entity.Granularity
+import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
+import com.spendoo.categories.domain.entity.transaction.Transaction
+import com.spendoo.categories.domain.entity.transaction.TransactionType
+import com.spendoo.designsystem.utils.UiText
+import com.spendoo.designsystem.utils.extentions.toTimeLeftText
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.statistics.domain.entity.BudgetStatus
 import com.spendoo.statistics.domain.entity.BudgetStatusBucket
+import com.spendoo.statistics.domain.entity.CombinedStats
+import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.entity.StatsBucket
 import com.spendoo.statistics.presentation.screen.statistics.components.StatisticsScheduledPaymentUiState
-import com.spendoo.categories.domain.entity.transaction.Transaction
-import com.spendoo.categories.domain.entity.transaction.TransactionType
-import com.spendoo.categories.domain.entity.scheduledPayment.ScheduledPayment
-import com.spendoo.designsystem.utils.UiText
-import com.spendoo.designsystem.utils.extentions.toTimeLeftText
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.number
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -25,6 +25,10 @@ import spendoo.designsystem.generated.resources.charts
 import spendoo.designsystem.generated.resources.daily
 import spendoo.designsystem.generated.resources.date_ascending
 import spendoo.designsystem.generated.resources.date_descending
+import spendoo.designsystem.generated.resources.expenses_last_day
+import spendoo.designsystem.generated.resources.expenses_last_month
+import spendoo.designsystem.generated.resources.expenses_last_week
+import spendoo.designsystem.generated.resources.expenses_last_year
 import spendoo.designsystem.generated.resources.ic_car
 import spendoo.designsystem.generated.resources.ic_categories
 import spendoo.designsystem.generated.resources.ic_cinema
@@ -44,6 +48,18 @@ import spendoo.designsystem.generated.resources.ic_travel
 import spendoo.designsystem.generated.resources.ic_wifi
 import spendoo.designsystem.generated.resources.month_apr
 import spendoo.designsystem.generated.resources.month_aug
+import spendoo.designsystem.generated.resources.month_day_apr
+import spendoo.designsystem.generated.resources.month_day_aug
+import spendoo.designsystem.generated.resources.month_day_dec
+import spendoo.designsystem.generated.resources.month_day_feb
+import spendoo.designsystem.generated.resources.month_day_jan
+import spendoo.designsystem.generated.resources.month_day_jul
+import spendoo.designsystem.generated.resources.month_day_jun
+import spendoo.designsystem.generated.resources.month_day_mar
+import spendoo.designsystem.generated.resources.month_day_may
+import spendoo.designsystem.generated.resources.month_day_nov
+import spendoo.designsystem.generated.resources.month_day_oct
+import spendoo.designsystem.generated.resources.month_day_sep
 import spendoo.designsystem.generated.resources.month_dec
 import spendoo.designsystem.generated.resources.month_feb
 import spendoo.designsystem.generated.resources.month_jan
@@ -56,22 +72,6 @@ import spendoo.designsystem.generated.resources.month_oct
 import spendoo.designsystem.generated.resources.month_sep
 import spendoo.designsystem.generated.resources.monthly
 import spendoo.designsystem.generated.resources.number_format
-import spendoo.designsystem.generated.resources.expenses_last_day
-import spendoo.designsystem.generated.resources.expenses_last_week
-import spendoo.designsystem.generated.resources.expenses_last_month
-import spendoo.designsystem.generated.resources.expenses_last_year
-import spendoo.designsystem.generated.resources.month_day_jan
-import spendoo.designsystem.generated.resources.month_day_feb
-import spendoo.designsystem.generated.resources.month_day_mar
-import spendoo.designsystem.generated.resources.month_day_apr
-import spendoo.designsystem.generated.resources.month_day_may
-import spendoo.designsystem.generated.resources.month_day_jun
-import spendoo.designsystem.generated.resources.month_day_jul
-import spendoo.designsystem.generated.resources.month_day_aug
-import spendoo.designsystem.generated.resources.month_day_sep
-import spendoo.designsystem.generated.resources.month_day_oct
-import spendoo.designsystem.generated.resources.month_day_nov
-import spendoo.designsystem.generated.resources.month_day_dec
 import spendoo.designsystem.generated.resources.transaction_date_am_format
 import spendoo.designsystem.generated.resources.transaction_date_pm_format
 import spendoo.designsystem.generated.resources.transactions
@@ -115,7 +115,8 @@ data class StatisticsUiState(
     val pieChartUiState: List<PieChartUiState> = emptyList(),
     val scheduledPayments: List<StatisticsScheduledPaymentUiState> = emptyList(),
     val isScheduledPaymentsError: Boolean = false,
-    val userName: String = "Me",
+    val targetUserId: String? = null,
+    val userName: String = "",
     val userImageUrl: String? = null,
     val searchQuery: String = "",
     val transactions: List<StatisticsTransactionUiState> = emptyList(),
@@ -127,18 +128,13 @@ data class StatisticsUiState(
     val selectedTransaction: StatisticsTransactionUiState? = null
 )
 
-fun formatTransactionDate(dateStr: String): UiText {
-    val localDateTime = try {
-        LocalDateTime.parse(dateStr)
-    } catch (_: Exception) {
-        return UiText.DynamicString(dateStr)
-    }
-    val year = localDateTime.year.toString()
-    val month = localDateTime.month.number.toString().padStart(2, '0')
-    val day = localDateTime.day.toString().padStart(2, '0')
+fun formatTransactionDate(date: LocalDateTime): UiText {
+    val year = date.year.toString()
+    val month = date.month.number.toString().padStart(2, '0')
+    val day = date.day.toString().padStart(2, '0')
     
-    val hour24 = localDateTime.hour
-    val minute = localDateTime.minute.toString().padStart(2, '0')
+    val hour24 = date.hour
+    val minute = date.minute.toString().padStart(2, '0')
     val isPm = hour24 >= 12
     val hour12 = when {
         hour24 == 0 -> 12

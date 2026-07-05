@@ -12,6 +12,8 @@ kotlin {
             dependencies {
                 implementation(projects.identityDomain)
                 implementation(projects.sharedData)
+                implementation(projects.sharedDomain)
+                implementation(libs.kmpnotifier)
             }
         }
     }

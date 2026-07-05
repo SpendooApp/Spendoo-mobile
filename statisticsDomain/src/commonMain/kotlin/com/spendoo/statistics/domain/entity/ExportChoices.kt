@@ -7,5 +7,6 @@ data class ExportChoices(
     val startDate: LocalDate?,
     val endDate: LocalDate?,
     val reportType: ReportType,
-    val dataToInclude: DataToInclude?
+    val dataToInclude: DataToInclude?,
+    val targetUserId: String? = null
 )

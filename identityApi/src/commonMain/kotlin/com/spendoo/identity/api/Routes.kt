@@ -26,3 +26,15 @@ data class CreateNewPasswordRoute(val email: String, val otp: String) : NavKey
 
 @Serializable
 data object ProfileRoute : NavKey
+
+@Serializable
+data object FollowingRoute : NavKey
+
+@Serializable
+data object FollowersRoute : NavKey
+
+@Serializable
+data object EditProfileRoute : NavKey
+
+@Serializable
+data object SubscriptionRoute : NavKey

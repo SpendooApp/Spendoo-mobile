@@ -66,4 +66,41 @@ class StatisticsRepositoryImpl(
         }
         return response
     }
-}
+
+    override suspend fun getUserStatistics(
+        targetUserId: String,
+        granularity: Granularity,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime
+    ): CombinedStats {
+        val response = tryToExecute<CombinedStatsResponse> {
+            get("/api/v1/statistics/user/$targetUserId") {
+                url {
+                    parameters.append("granularity", granularity.name)
+                    parameters.append("start_date", startDate.toString())
+                    parameters.append("end_date", endDate.toString())
+                }
+            }
+        }
+        return response.toDomain()
+    }
+
+    override suspend fun getUserStatisticsPdf(
+        targetUserId: String,
+        startDate: LocalDateTime,
+        endDate: LocalDateTime,
+        reportDataType: ReportDataType,
+        theme: AppTheme
+    ): ByteArray {
+        val response = tryToExecute<ByteArray> {
+            get("/api/v1/statistics/user/$targetUserId/pdf") {
+                url {
+                    parameters.append("start_date", startDate.toString())
+                    parameters.append("end_date", endDate.toString())
+                    parameters.append("reportDataType", reportDataType.name)
+                }
+            }
+        }
+        return response
+    }
+}

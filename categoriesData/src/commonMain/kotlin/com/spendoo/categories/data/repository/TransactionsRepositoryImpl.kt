@@ -3,6 +3,7 @@ package com.spendoo.categories.data.repository
 import com.spendoo.shared.data.dataSource.remote.dto.BasePagedData
 import com.spendoo.categories.data.dataSource.remote.dto.category.BalanceSummaryDto
 import com.spendoo.shared.data.dataSource.remote.dto.toPagedData
+import com.spendoo.categories.data.dataSource.remote.dto.transaction.FrequencyItemDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.TransactionDto
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDomain
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.toDto
@@ -11,6 +12,7 @@ import com.spendoo.shared.data.shared.BaseGateway
 import com.spendoo.categories.domain.entity.transaction.BalanceSummary
 import com.spendoo.categories.domain.entity.transaction.CreateExpense
 import com.spendoo.categories.domain.entity.transaction.CreateIncome
+import com.spendoo.categories.domain.entity.transaction.FrequencyItem
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import com.spendoo.categories.domain.entity.transaction.Transaction
 import com.spendoo.categories.domain.entity.transaction.UpdateTransaction
@@ -32,9 +34,14 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.appendPathSegments
 import com.spendoo.categories.data.dataSource.remote.dto.transaction.EnrichedAiExtractionResponseDto
+import com.spendoo.categories.data.local.dao.ExpenseTitleDao
+import com.spendoo.categories.data.local.entity.ExpenseTitleEntity
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class TransactionsRepositoryImpl(
     client: HttpClient,
+    private val expenseTitleDao: ExpenseTitleDao,
 ) : BaseGateway(client), TransactionsRepository {
 
     override suspend fun getTransactions(search: String?, pageQuery: PageQuery): PagedData<Transaction> {
@@ -125,6 +132,25 @@ class TransactionsRepositoryImpl(
         return response.toPagedData { it.toDomain() }.orEmpty()
     }
 
+    override suspend fun getTopFrequencyItems(
+        categoryId: String?,
+        pageQuery: PageQuery,
+    ): PagedData<FrequencyItem> {
+        val response = tryToExecute<BasePagedData<FrequencyItemDto>> {
+            get(TransactionsEndpoints.TOP_FREQUENCY_ITEMS) {
+                url {
+                    if (!categoryId.isNullOrBlank()) {
+                        parameters.append("categoryId", categoryId)
+                    }
+                    parameters.append("page", pageQuery.page.toString())
+                    parameters.append("size", pageQuery.size.toString())
+                    pageQuery.sort?.forEach { sort -> parameters.append("sort", sort) }
+                }
+            }
+        }
+        return response.toPagedData { it.toDomain() }.orEmpty()
+    }
+
 
     override suspend fun getReadyInputFromVoice(file: ByteArray): List<ReadyTransactionEntry> {
         val response = tryToExecute<EnrichedAiExtractionResponseDto> {
@@ -182,5 +208,21 @@ class TransactionsRepositoryImpl(
             }
         }
         return response.items.map { it.toDomain() }
+    }
+
+    @OptIn(ExperimentalTime::class)
+    override suspend fun saveExpenseTitles(titles: List<String>) {
+        val now = Clock.System.now().toEpochMilliseconds()
+        val entities = titles
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .map { ExpenseTitleEntity(title = it, createdAt = now) }
+        if (entities.isNotEmpty()) {
+            expenseTitleDao.insertTitles(entities)
+        }
+    }
+
+    override suspend fun getSavedExpenseTitles(): List<String> {
+        return expenseTitleDao.getAllTitles()
     }
 }

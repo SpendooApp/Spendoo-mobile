@@ -12,16 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
-import com.spendoo.designsystem.theme.color.scheme.ColorScheme
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
 import org.jetbrains.compose.resources.DrawableResource
-import androidx.compose.ui.tooling.preview.Preview
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_cinema
 import spendoo.designsystem.generated.resources.ic_food

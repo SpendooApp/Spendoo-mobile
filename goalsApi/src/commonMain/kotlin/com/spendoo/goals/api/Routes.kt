@@ -5,3 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object GoalsRoute : NavKey
+
+@Serializable
+data object AchievementsRoute : NavKey

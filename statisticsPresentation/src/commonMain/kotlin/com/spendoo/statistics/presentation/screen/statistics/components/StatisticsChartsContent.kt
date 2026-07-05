@@ -21,12 +21,12 @@ import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_TYPE_NORMAL
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.spendoo.designsystem.components.row.TabsRow
-import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.components.divider.HorizontalDivider
 import com.spendoo.designsystem.components.indicator.CircularProgressIndicator
 import com.spendoo.designsystem.components.placeholder.EmptyState
 import com.spendoo.designsystem.components.placeholder.ErrorState
+import com.spendoo.designsystem.components.row.TabsRow
+import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -41,26 +41,26 @@ import com.spendoo.statistics.domain.entity.FinancialStats
 import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.entity.StatsBucket
 import com.spendoo.statistics.domain.entity.TopCategories
+import com.spendoo.statistics.presentation.screen.statistics.BarChartBucketUiState
+import com.spendoo.statistics.presentation.screen.statistics.BarChartUiState
+import com.spendoo.statistics.presentation.screen.statistics.LineChartUiState
+import com.spendoo.statistics.presentation.screen.statistics.PieChartUiState
 import com.spendoo.statistics.presentation.screen.statistics.StatisticsInteractionListener
 import com.spendoo.statistics.presentation.screen.statistics.StatisticsTab
 import com.spendoo.statistics.presentation.screen.statistics.StatisticsTransactionUiState
 import com.spendoo.statistics.presentation.screen.statistics.StatisticsUiState
 import com.spendoo.statistics.presentation.screen.statistics.TransactionSortOption
-import com.spendoo.statistics.presentation.screen.statistics.LineChartUiState
-import com.spendoo.statistics.presentation.screen.statistics.BarChartUiState
-import com.spendoo.statistics.presentation.screen.statistics.BarChartBucketUiState
-import com.spendoo.statistics.presentation.screen.statistics.PieChartUiState
 import com.spendoo.statistics.presentation.screen.statistics.toName
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.add_scheduled_payment
+import spendoo.designsystem.generated.resources.error_loading_scheduled_payments
+import spendoo.designsystem.generated.resources.no_scheduled_payments_yet
+import spendoo.designsystem.generated.resources.retry
 import spendoo.designsystem.generated.resources.scheduled_payments
 import spendoo.designsystem.generated.resources.see_all
 import spendoo.designsystem.generated.resources.top_categories
-import spendoo.designsystem.generated.resources.no_scheduled_payments_yet
-import spendoo.designsystem.generated.resources.error_loading_scheduled_payments
-import spendoo.designsystem.generated.resources.add_scheduled_payment
-import spendoo.designsystem.generated.resources.retry
 
 @Composable
 fun StatisticsChartsContent(
@@ -446,7 +446,9 @@ private fun StatisticsChartsContentPreview() {
             ),
             listener = object : StatisticsInteractionListener {
                 override fun onReload() {}
+                override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
+                override fun onFollowUserClicked() {}
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}

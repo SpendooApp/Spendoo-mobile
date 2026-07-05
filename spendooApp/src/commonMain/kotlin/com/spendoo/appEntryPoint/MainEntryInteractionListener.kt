@@ -21,4 +21,5 @@ interface MainEntryInteractionListener {
     fun hideSnackBar()
 
     fun resetToRoute(route: NavKey, forceNavigate: Boolean = false)
+    fun navigateToRoute(route: NavKey, forceNavigate: Boolean = false)
 }

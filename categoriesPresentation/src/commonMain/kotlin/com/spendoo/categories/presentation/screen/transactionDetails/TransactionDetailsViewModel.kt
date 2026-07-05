@@ -1,8 +1,10 @@
 package com.spendoo.categories.presentation.screen.transactionDetails
 
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
+import kotlinx.coroutines.flow.Flow
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 
@@ -12,11 +14,17 @@ class TransactionDetailsViewModel(
 ) : BaseViewModel<TransactionDetailsUiState>(TransactionDetailsUiState()),
     TransactionDetailsInteractionListener {
 
+    val refreshSignal: Flow<Boolean?> = getResult("refreshTransactions", consume = false)
+
     init {
         loadTransactionDetails()
     }
 
-    private fun loadTransactionDetails() {
+    fun onTransactionEdited() {
+        loadTransactionDetails()
+    }
+
+    fun loadTransactionDetails() {
         tryToCall(
             block = {
                 transactionsRepository.getTransaction(transactionId)
@@ -41,11 +49,7 @@ class TransactionDetailsViewModel(
     }
 
     override fun onEditClicked() {
-        // Since custom transaction editing isn't fully routed yet, we show a info snackbar
-        showSnackBar(
-            title = UiText.DynamicString("Edit transaction functionality is not implemented yet."),
-            isSuccess = true
-        )
+        navigate(EditTransactionRoute(transactionId = transactionId))
     }
 
     override fun onDeleteClicked() {

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
     id("com.google.gms.google-services")
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val localProperties = Properties()
@@ -81,13 +82,20 @@ kotlin {
 
 dependencies {
     implementation(projects.spendooApp)
+    implementation(projects.identityDomain)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.kodio.core)
     debugImplementation(libs.compose.ui.tooling)
 
+    implementation(libs.filekit.compose)
+
     implementation(libs.koin.android)
     implementation(libs.koin.core)
+
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }
 
 fun Project.loadProperty(

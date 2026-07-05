@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.util.Properties
 
 plugins {
@@ -22,6 +24,7 @@ kotlin {
             implementation(projects.homeApi)
             implementation(projects.homePresentation)
             implementation(projects.offersData)
+            implementation(projects.scraperData)
             implementation(projects.goalsData)
             implementation(projects.categoriesDomain)
             implementation(projects.categoriesData)
@@ -35,6 +38,15 @@ kotlin {
             implementation(projects.goalsPresentation)
             implementation(projects.chatbotApi)
             implementation(projects.chatbotPresentation)
+            implementation(projects.chatbotDomain)
+            implementation(projects.chatbotData)
+            implementation(projects.notificationsDomain)
+            implementation(projects.notificationsData)
+            api(projects.logging)
+            implementation(projects.sharedDomain)
+            implementation(projects.sharedData)
+            api(libs.kmpnotifier)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -42,6 +54,13 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.poolingcontainer)
             implementation(libs.androidx.core.ktx)
+        }
+    }
+
+    targets.withType<KotlinNativeTarget>().configureEach {
+        binaries.withType<Framework>().configureEach {
+            export(projects.logging)
+            export(libs.kmpnotifier)
         }
     }
 }

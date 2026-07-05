@@ -18,10 +18,17 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import com.spendoo.identity.data.repository.FollowCodeRepositoryImpl
+import com.spendoo.identity.data.repository.FollowRepositoryImpl
+import com.spendoo.identity.data.repository.SubscriptionRepositoryImpl
+import com.spendoo.identity.domain.repository.FollowCodeRepository
+import com.spendoo.identity.domain.repository.FollowRepository
+import com.spendoo.identity.domain.repository.SubscriptionRepository
 
 private const val COIL_CLIENT = "CoilClient"
 private const val BASE_URL = "baseUrl"
 private const val IDENTITY_SCOPE = "IdentityScope"
+
 
 val identityDataModule = module {
     singleOf(::Settings)
@@ -30,16 +37,22 @@ val identityDataModule = module {
     singleOf(::RegisterRepositoryImpl) bind RegisterRepository::class
     singleOf(::ProfileRepositoryImpl) bind ProfileRepository::class
     singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
+    singleOf(::FollowRepositoryImpl) bind FollowRepository::class
+    singleOf(::FollowCodeRepositoryImpl) bind FollowCodeRepository::class
+    singleOf(::SubscriptionRepositoryImpl) bind SubscriptionRepository::class
     singleOf(::AuthorizationService)
+
     single {
         provideHttpClient(
             baseUrl = get<String>(named(BASE_URL)),
             authorizationService = { get<AuthorizationService>() },
             settingsRepository = { get<SettingsRepository>() },
+            globalNavigationHandler = get(),
         )
     }
     single(named(COIL_CLIENT)) {
         provideCoilClient()
     }
     single(named(IDENTITY_SCOPE)) { CoroutineScope(Dispatchers.Default) }
+    includes(platformIdentityDataModule)
 }

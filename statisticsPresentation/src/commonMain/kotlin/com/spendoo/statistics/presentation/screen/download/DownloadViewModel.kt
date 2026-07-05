@@ -1,9 +1,7 @@
 package com.spendoo.statistics.presentation.screen.download
 
-import com.spendoo.designsystem.utils.UiText
-import spendoo.designsystem.generated.resources.Res
-
 import com.spendoo.designsystem.navigation.BaseViewModel
+import com.spendoo.designsystem.utils.UiText
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppTheme
 import com.spendoo.statistics.domain.entity.DataToInclude
@@ -30,6 +28,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import kotlin.time.Clock
 
@@ -107,12 +106,23 @@ class DownloadViewModel(
 
         tryToCall(
             block = {
-                statisticsRepository.getStatisticsPdf(
-                    startDate = startDateTime,
-                    endDate = endDateTime,
-                    reportDataType = reportDataType,
-                    theme = theme
-                )
+                val targetUserId = choices.targetUserId
+                if (targetUserId != null) {
+                    statisticsRepository.getUserStatisticsPdf(
+                        targetUserId = targetUserId,
+                        startDate = startDateTime,
+                        endDate = endDateTime,
+                        reportDataType = reportDataType,
+                        theme = theme
+                    )
+                } else {
+                    statisticsRepository.getStatisticsPdf(
+                        startDate = startDateTime,
+                        endDate = endDateTime,
+                        reportDataType = reportDataType,
+                        theme = theme
+                    )
+                }
             },
             onSuccess = { pdfBytes ->
                 updateState {
@@ -164,7 +174,12 @@ class DownloadViewModel(
 
         tryToCall(
             block = {
-                statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                val targetUserId = choices.targetUserId
+                if (targetUserId != null) {
+                    statisticsRepository.getUserStatistics(targetUserId, granularity, startDateTime, endDateTime)
+                } else {
+                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                }
             },
             onSuccess = { stats ->
                 val lineChartUiState = LineChartUiState(

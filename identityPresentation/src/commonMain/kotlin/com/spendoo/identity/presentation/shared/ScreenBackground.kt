@@ -2,6 +2,7 @@ package com.spendoo.identity.presentation.shared
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -14,7 +15,7 @@ import spendoo.designsystem.generated.resources.img_screenTemplate_light
 @Composable
 fun ScreenBackground(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     Box {
         Image(

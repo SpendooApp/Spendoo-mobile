@@ -14,5 +14,6 @@ object TransactionsEndpoints {
     const val RANGE = "api/v1/transactions/range"
     const val VOICE_TO_TRANSACTION = "api/v1/transactions/voice/process"
     const val IMAGE_TO_TRANSACTION = "api/v1/transactions/ocr/scan"
+    const val TOP_FREQUENCY_ITEMS = "api/v1/transactions/top-frequency-items"
 }
 

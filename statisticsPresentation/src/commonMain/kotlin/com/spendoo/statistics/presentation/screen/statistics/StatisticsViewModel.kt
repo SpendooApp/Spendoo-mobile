@@ -1,42 +1,57 @@
 package com.spendoo.statistics.presentation.screen.statistics
 
+import androidx.lifecycle.viewModelScope
+import com.spendoo.categories.api.CategoriesRoute
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.categories.api.TransactionDetailsRoute
-import com.spendoo.statistics.api.ExportRoute
 import com.spendoo.categories.domain.repository.ScheduledPaymentsRepository
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
+import com.spendoo.identity.api.FollowingRoute
+import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.getNow
 import com.spendoo.shared.domain.utils.getToday
+import com.spendoo.statistics.api.ExportRoute
 import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.repository.StatisticsRepository
-import com.spendoo.identity.domain.repository.ProfileRepository
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.plus
-import kotlinx.datetime.minus
-import kotlinx.datetime.atTime
-import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.error_loading_statistics
-import spendoo.designsystem.generated.resources.an_error_occurred
-import spendoo.designsystem.generated.resources.done
-import androidx.lifecycle.viewModelScope
-import com.spendoo.categories.api.CategoriesRoute
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.an_error_occurred
+import spendoo.designsystem.generated.resources.done
+import spendoo.designsystem.generated.resources.error_loading_statistics
 import kotlin.time.Duration.Companion.milliseconds
 
 class StatisticsViewModel(
+    private val targetUserId: String?,
+    private val targetUserName: String?,
+    private val targetUserImageUrl: String?,
     private val statisticsRepository: StatisticsRepository,
     private val scheduledPaymentsRepository: ScheduledPaymentsRepository,
     private val transactionsRepository: TransactionsRepository,
     private val profileRepository: ProfileRepository
-) : BaseViewModel<StatisticsUiState>(StatisticsUiState()), StatisticsInteractionListener {
+) : BaseViewModel<StatisticsUiState>(
+    StatisticsUiState(
+        targetUserId = targetUserId,
+        userName = targetUserName ?: "",
+        userImageUrl = targetUserImageUrl
+    )
+), StatisticsInteractionListener {
+
+    val refreshSignal: Flow<Boolean?> = getResult("refreshTransactions", consume = true)
 
     private val searchQueryFlow = MutableStateFlow("")
 
@@ -125,6 +140,7 @@ class StatisticsViewModel(
         tryToCollect(
             block = {
                 searchQueryFlow
+                    .drop(1)
                     .debounce(SEARCH_DEBOUNCE_DELAY_MS.milliseconds)
                     .distinctUntilChanged()
             },
@@ -157,11 +173,20 @@ class StatisticsViewModel(
         loadData()
     }
 
+    override fun onClickBack() {
+        popBackStack()
+    }
+
     override fun onDownloadReportClicked() {
-        navigate(ExportRoute)
+        navigate(ExportRoute(targetUserId))
+    }
+
+    override fun onFollowUserClicked() {
+        navigate(FollowingRoute)
     }
 
     private fun resetAndLoadTransactions() {
+        if (targetUserId != null) return
         transactionsPaginator.reset()
         updateState { copy(transactions = emptyList()) }
         viewModelScope.launch {
@@ -170,6 +195,7 @@ class StatisticsViewModel(
     }
 
     private fun loadUserProfile() {
+        if (targetUserId != null) return
         tryToCall(
             block = { profileRepository.getProfile() },
             onSuccess = { profile ->
@@ -203,7 +229,18 @@ class StatisticsViewModel(
 
         updateState { copy(isLoading = true) }
         tryToCall(
-            block = { statisticsRepository.getStatistics(granularity, startDateTime, endDateTime) },
+            block = {
+                if (targetUserId != null) {
+                    statisticsRepository.getUserStatistics(
+                        targetUserId,
+                        granularity,
+                        startDateTime,
+                        endDateTime
+                    )
+                } else {
+                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                }
+            },
             onSuccess = { stats ->
                 val lineChartUiState = LineChartUiState(
                     budgetData = stats.financialStats.buckets.map { it.budget },
@@ -255,9 +292,17 @@ class StatisticsViewModel(
     }
 
     private fun loadScheduledPayments() {
+        if (targetUserId != null) return
         updateState { copy(isScheduledPaymentsError = false) }
         tryToCall(
-            block = { scheduledPaymentsRepository.getScheduledPayments(PageQuery(page = 0, size = 10)) },
+            block = {
+                scheduledPaymentsRepository.getScheduledPayments(
+                    PageQuery(
+                        page = 0,
+                        size = 10
+                    )
+                )
+            },
             onSuccess = { pagedPayments ->
                 val now = getNow()
                 val mapped = pagedPayments.data.map { it.toUiState(now) }
@@ -326,7 +371,7 @@ class StatisticsViewModel(
 
     override fun onEditTransaction(transactionId: String) {
         updateState { copy(isActionsSheetVisible = false) }
-        // TODO: Navigate to Edit Transaction screen when route is added
+        navigate(EditTransactionRoute(transactionId = transactionId))
     }
 
     override fun onDeleteTransaction(transactionId: String) {
@@ -356,6 +401,6 @@ class StatisticsViewModel(
     companion object {
         const val INITIAL_PAGE = 0
         const val PAGE_SIZE = 20
-        const val SEARCH_DEBOUNCE_DELAY_MS = 300L
+        const val SEARCH_DEBOUNCE_DELAY_MS = 400L
     }
 }

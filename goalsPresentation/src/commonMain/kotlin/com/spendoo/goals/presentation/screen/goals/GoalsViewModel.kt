@@ -209,13 +209,13 @@ class GoalsViewModel(
     }
 
     override fun onDismissAddAmount() {
-        updateState { it.copy(isAddAmountToGoalVisible = false, goalToEdit = null) }
+        updateState { it.copy(isAddAmountToGoalVisible = false, goalToEdit = null, addAmountUiState = AddAmountUiState()) }
     }
 
     override fun onAddAmount(amount: Double) {
         val goal = state.value.goalToEdit ?: return
         tryToCall(
-            onStart = { updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(isLoading = true)) } },
+            onStart = { updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(isLoading = true, error = null)) } },
             block = {
                 goalsRepository.assignAmount(goal.id, amount)
             },
@@ -224,16 +224,19 @@ class GoalsViewModel(
                 updateState {
                     it.copy(
                         isAddAmountToGoalVisible = false,
-                        goalToEdit = null
+                        goalToEdit = null,
+                        addAmountUiState = AddAmountUiState()
                     )
                 }
             },
             onError = { error ->
-                showSnackBar(
-                    title = UiText.StringRes(Res.string.error_adding_amount_to_goal),
-                    message = error.message?.let { UiText.DynamicString(it) },
-                    isSuccess = false
-                )
+                updateState {
+                    it.copy(
+                        addAmountUiState = it.addAmountUiState.copy(
+                            error = error.message?.let { error -> UiText.DynamicString(error) } ?: UiText.StringRes(Res.string.error_adding_amount_to_goal)
+                        )
+                    )
+                }
             },
             onEnd = { updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(isLoading = false)) } }
         )
@@ -249,12 +252,12 @@ class GoalsViewModel(
     }
 
     override fun onDismissAddAmountToSavings() {
-        updateState { it.copy(isAddAmountToSavingsVisible = false) }
+        updateState { it.copy(isAddAmountToSavingsVisible = false, addAmountUiState = AddAmountUiState()) }
     }
 
     override fun onAddAmountToSavings(amount: Double) {
         tryToCall(
-            onStart = { updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(isLoading = true)) } },
+            onStart = { updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(isLoading = true, error = null)) } },
             block = {
                 goalsRepository.addToSavings(amount)
             },
@@ -262,16 +265,19 @@ class GoalsViewModel(
                 getData()
                 updateState {
                     it.copy(
-                        isAddAmountToSavingsVisible = false
+                        isAddAmountToSavingsVisible = false,
+                        addAmountUiState = AddAmountUiState()
                     )
                 }
             },
             onError = { error ->
-                showSnackBar(
-                    title = UiText.StringRes(Res.string.error_adding_to_saving),
-                    message = error.message?.let { UiText.DynamicString(it) },
-                    isSuccess = false
-                )
+                updateState {
+                    it.copy(
+                        addAmountUiState = it.addAmountUiState.copy(
+                            error = error.message?.let { error -> UiText.DynamicString(error) } ?: UiText.StringRes(Res.string.error_adding_to_saving)
+                        )
+                    )
+                }
             },
             onEnd = { updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(isLoading = false)) } }
         )
@@ -280,6 +286,10 @@ class GoalsViewModel(
     override fun onAddEditGoal(addEditUiState: AddEditGoalUiState) {
         getData()
         updateState { it.copy(isAddGoalBottomSheetVisible = false, goalToEdit = null) }
+    }
+
+    override fun onAddAmountErrorDismissed() {
+        updateState { it.copy(addAmountUiState = it.addAmountUiState.copy(error = null)) }
     }
 
     companion object {

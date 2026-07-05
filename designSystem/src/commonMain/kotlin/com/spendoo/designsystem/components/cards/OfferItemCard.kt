@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
+import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
@@ -36,6 +37,7 @@ data class OfferItemCardUiState(
     val save: Int,
     val previous: Int,
     val after: Int,
+    val offerUrl: String? = null,
 )
 
 
@@ -43,15 +45,23 @@ data class OfferItemCardUiState(
 fun OfferItemCard(
     offer: OfferItemCardUiState,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     backgroundColor: Color = Theme.colorScheme.button.secondary,
     shape: Shape = RoundedCornerShape(12.dp)
 ) {
+    val clickableModifier = if (onClick != null) {
+        modifier.clickableNoRipple(onClick = onClick)
+    } else {
+        modifier
+    }
+
     Column(
-        modifier = modifier
+        modifier = clickableModifier
             .background(backgroundColor, shape)
             .border(1.dp, Theme.colorScheme.border.primary, shape)
             .padding( 12.dp),
     ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()

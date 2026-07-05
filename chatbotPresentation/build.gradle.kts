@@ -20,7 +20,9 @@ kotlin {
             dependencies {
                 implementation(projects.designSystem)
                 implementation(projects.chatbotApi)
+                implementation(projects.chatbotDomain)
             }
+
         }
         androidMain {
             dependencies {

@@ -43,27 +43,17 @@ fun Transaction.toDetailsUiState(): TransactionDetailsUiState {
     )
 }
 
-fun formatDetailsDate(dateStr: String): String {
-    val localDateTime = try {
-        LocalDateTime.parse(dateStr)
-    } catch (e: Exception) {
-        return dateStr
-    }
-    val monthName = localDateTime.month.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
-    val day = localDateTime.day
-    val year = localDateTime.year
+fun formatDetailsDate(date: LocalDateTime): String {
+    val monthName = date.month.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
+    val day = date.day
+    val year = date.year
     return "$monthName $day, $year"
 }
 
-fun formatDetailsTime(dateStr: String): String {
-    val localDateTime = try {
-        LocalDateTime.parse(dateStr)
-    } catch (e: Exception) {
-        return ""
-    }
-    val hour24 = localDateTime.hour
-    val minute = localDateTime.minute.toString().padStart(2, '0')
-    val amPm = if (hour24 >= 12) "PM" else "AM"
+fun formatDetailsTime(date: LocalDateTime): String {
+    val hour24 = date.hour
+    val minute = date.minute.toString().padStart(2, '0')
+    val amPm = if (hour24 >= 12) "PM" else "AM" //TODO: localize
     val hour12 = when {
         hour24 == 0 -> 12
         hour24 > 12 -> hour24 - 12

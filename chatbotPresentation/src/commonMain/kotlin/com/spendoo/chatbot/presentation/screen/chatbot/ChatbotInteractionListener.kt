@@ -1,5 +1,8 @@
 package com.spendoo.chatbot.presentation.screen.chatbot
 
 interface ChatbotInteractionListener {
-    // TODO
+    fun onInputTextChange(text: String)
+    fun onSendMessageClicked()
+    fun onClearChatClicked()
+    fun onBackClicked()
 }
