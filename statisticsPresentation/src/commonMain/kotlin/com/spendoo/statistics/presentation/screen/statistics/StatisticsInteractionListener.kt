@@ -22,4 +22,5 @@ interface StatisticsInteractionListener {
     fun onEditTransaction(transactionId: String)
     fun onDeleteTransaction(transactionId: String)
     fun onTransactionClicked(transactionId: String)
+    fun onClickUserProfile()
 }

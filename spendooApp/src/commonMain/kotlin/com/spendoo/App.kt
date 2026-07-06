@@ -18,6 +18,7 @@ import com.spendoo.designsystem.navigation.effector.Effector
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.SettingsRepository
+import com.spendoo.identity.domain.util.AppLanguage
 import com.spendoo.identity.domain.util.AppLocalizer
 import com.spendoo.identity.domain.util.AppTheme
 import com.spendoo.util.SetSystemBarsAppearance
@@ -81,8 +82,14 @@ fun App(
         })
     }
 
+    val languageCode = if (currentLanguage == AppLanguage.DEFAULT) {
+        appLocalizer.getDeviceLanguageIso()
+    } else {
+        currentLanguage.iso
+    }
+
     SpendooTheme(
-        language = currentLanguage.iso,
+        language = languageCode,
         darkTheme = isDarkTheme,
         content = {
             SetSystemBarsAppearance(currentTheme)

@@ -42,6 +42,7 @@ import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.appBar.TopBar
 import com.spendoo.designsystem.components.general.AppSegmentedControl
 import com.spendoo.designsystem.components.indicator.PullToRefresh
+import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.UiText
@@ -157,6 +158,7 @@ private fun StatisticsContent(
                             modifier = Modifier
                                 .padding(end = 12.dp)
                                 .size(50.dp)
+                                .clickableNoRipple(enabled = state.userImageUrl != null) { listener.onClickUserProfile() }
                                 .clip(CircleShape)
                                 .border(0.5.dp, Theme.colorScheme.button.secondary, CircleShape),
                             contentScale = ContentScale.Crop
@@ -293,7 +295,6 @@ private fun StatisticsContentTransactionsPreview() {
                 override fun onClickBack() {}
                 override fun onDownloadReportClicked() {}
                 override fun onFollowUserClicked() {}
-
                 override fun onOpenScheduledPayments() {}
                 override fun onTabSelected(tab: StatisticsTab) {}
                 override fun onGranularitySelected(granularity: Granularity) {}
@@ -309,6 +310,7 @@ private fun StatisticsContentTransactionsPreview() {
                 override fun onEditTransaction(transactionId: String) {}
                 override fun onDeleteTransaction(transactionId: String) {}
                 override fun onTransactionClicked(transactionId: String) {}
+                override fun onClickUserProfile() {}
             }
         )
     }
@@ -452,6 +454,7 @@ private fun StatisticsContentChartsPreview() {
                 override fun onEditTransaction(transactionId: String) {}
                 override fun onDeleteTransaction(transactionId: String) {}
                 override fun onTransactionClicked(transactionId: String) {}
+                override fun onClickUserProfile() {}
             }
         )
     }

@@ -472,6 +472,7 @@ private fun StatisticsChartsContentPreview() {
                 override fun onEditTransaction(transactionId: String) {}
                 override fun onDeleteTransaction(transactionId: String) {}
                 override fun onTransactionClicked(transactionId: String) {}
+                override fun onClickUserProfile() {}
             }
         )
     }

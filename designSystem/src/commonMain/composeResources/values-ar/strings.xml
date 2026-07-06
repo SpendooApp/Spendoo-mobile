@@ -375,5 +375,6 @@
     <string name="achievement_transaction_streak">سلسلة المعاملات</string>
     <string name="achievement_categories">الفئات</string>
     <string name="select_time">اختر الوقت</string>
+    <string name="logout">تسجيل الخروج</string>
 </resources>
 

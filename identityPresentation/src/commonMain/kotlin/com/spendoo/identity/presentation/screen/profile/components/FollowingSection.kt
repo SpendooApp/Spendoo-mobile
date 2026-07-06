@@ -94,7 +94,7 @@ fun FollowingSection(
         }
 
         items(state.followings) { user ->
-            UserAvatarChip(user = user)
+            UserAvatarChip(user = user, modifier = Modifier.clickableNoRipple { listener.onClickUser(user.userId, user.fullName, user.imageUrl) })
         }
     }
 }

@@ -31,11 +31,13 @@ import spendoo.designsystem.generated.resources.change_language
 import spendoo.designsystem.generated.resources.change_theme
 import spendoo.designsystem.generated.resources.ic_bell
 import spendoo.designsystem.generated.resources.ic_categories
+import spendoo.designsystem.generated.resources.ic_logout
 import spendoo.designsystem.generated.resources.ic_mobile
 import spendoo.designsystem.generated.resources.ic_profile_details
 import spendoo.designsystem.generated.resources.ic_repeat
 import spendoo.designsystem.generated.resources.ic_stats
-import spendoo.designsystem.generated.resources.img_coin
+import spendoo.designsystem.generated.resources.ic_win_cup
+import spendoo.designsystem.generated.resources.logout
 import spendoo.designsystem.generated.resources.notifications
 import spendoo.designsystem.generated.resources.profile_details
 import spendoo.designsystem.generated.resources.scheduled_payments
@@ -64,7 +66,7 @@ fun ProfileSettingsList(
             onClickArrow = { listener.onClickScheduledPayments() }
         )
         ProfileSettingItem(
-            icon = Res.drawable.img_coin,
+            icon = Res.drawable.ic_win_cup,
             title = stringResource(Res.string.achievements),
             onClickArrow = { listener.onClickAchievements() }
         )
@@ -117,5 +119,11 @@ fun ProfileSettingsList(
                 onCheckedChange = { listener.onToggleTheme(!isDark) }
             )
         }
+
+        ProfileSettingItem(
+            icon = Res.drawable.ic_logout,
+            title = stringResource(Res.string.logout),
+            onClickArrow = { listener.onClickLogout() }
+        )
     }
 }

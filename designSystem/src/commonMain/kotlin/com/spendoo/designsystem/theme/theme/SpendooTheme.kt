@@ -29,7 +29,7 @@ fun SpendooTheme(
     val typography = createThemeTypography()
 
     val layoutDirection = remember(language) {
-        if (language == AppLanguage.English.iso) LayoutDirection.Ltr else LayoutDirection.Rtl
+        if (language.lowercase().startsWith("en") || language == AppLanguage.English.iso) LayoutDirection.Ltr else LayoutDirection.Rtl
     }
 
     CompositionLocalProvider(

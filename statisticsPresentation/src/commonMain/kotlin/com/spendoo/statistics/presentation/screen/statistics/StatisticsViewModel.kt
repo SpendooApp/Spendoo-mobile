@@ -11,6 +11,7 @@ import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.identity.api.FollowingRoute
+import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.domain.repository.ProfileRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.getNow
@@ -396,6 +397,10 @@ class StatisticsViewModel(
 
     override fun onTransactionClicked(transactionId: String) {
         navigate(TransactionDetailsRoute(transactionId))
+    }
+
+    override fun onClickUserProfile() {
+        navigate(ProfileRoute)
     }
 
     companion object {

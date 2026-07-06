@@ -159,6 +159,8 @@ private fun ProfileScreenPreview() {
                 override fun onDismissLanguageBottomSheet() {}
                 override fun onToggleTheme(isDark: Boolean) {}
                 override fun onReload() {}
+                override fun onClickLogout() {}
+                override fun onClickUser(userId: String, userName: String, imageUrl: String?) {}
             }
         )
     }

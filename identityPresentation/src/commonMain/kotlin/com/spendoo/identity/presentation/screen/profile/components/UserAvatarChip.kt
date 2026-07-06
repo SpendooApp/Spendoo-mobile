@@ -26,10 +26,13 @@ import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_profile_details
 
 @Composable
-fun UserAvatarChip(user: UserSearch) {
+fun UserAvatarChip(
+    user: UserSearch,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(70.dp)
+        modifier = modifier.width(70.dp)
     ) {
         if (!user.imageUrl.isNullOrBlank()) {
             AsyncImage(
