@@ -5,6 +5,7 @@ import com.spendoo.shared.domain.exception.InternetException
 import com.spendoo.shared.domain.exception.InvalidCredentialsException
 import com.spendoo.shared.domain.exception.InvalidRequestException
 import com.spendoo.shared.domain.exception.NoNetworkException
+import com.spendoo.shared.domain.exception.PaymentRequiredException
 import com.spendoo.shared.domain.exception.TooManyRequestsException
 import com.spendoo.shared.domain.exception.UnAuthorizedException
 import com.spendoo.shared.domain.exception.UnknownErrorException
@@ -35,7 +36,7 @@ abstract class BaseGateway(val client: HttpClient): KoinComponent {
             when {
                 status == HttpStatusCode.PaymentRequired -> {
                     globalNavigationHandler.onPaymentRequiredError()
-                    throw CancellationException(message = "Payment required.", cause = e)
+                    throw CancellationException(message = "Payment required.", cause = PaymentRequiredException())
                 }
                 status == HttpStatusCode.Unauthorized -> throw UnAuthorizedException()
                 status == HttpStatusCode.NotFound -> throw InvalidCredentialsException()

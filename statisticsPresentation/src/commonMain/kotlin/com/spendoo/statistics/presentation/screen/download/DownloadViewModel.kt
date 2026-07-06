@@ -4,6 +4,7 @@ import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppTheme
+import com.spendoo.shared.domain.exception.PaymentRequiredException
 import com.spendoo.statistics.domain.entity.DataToInclude
 import com.spendoo.statistics.domain.entity.ExportChoices
 import com.spendoo.statistics.domain.entity.Granularity
@@ -18,6 +19,7 @@ import com.spendoo.statistics.presentation.screen.statistics.PieChartUiState
 import com.spendoo.statistics.presentation.screen.statistics.getBarXLabels
 import com.spendoo.statistics.presentation.screen.statistics.getDashedRanges
 import com.spendoo.statistics.presentation.screen.statistics.getXAxisLabels
+import kotlinx.coroutines.CancellationException
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -30,6 +32,7 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
+import spendoo.designsystem.generated.resources.payment_required
 import kotlin.time.Clock
 
 class DownloadViewModel(
@@ -38,8 +41,11 @@ class DownloadViewModel(
 ) : BaseViewModel<DownloadUiState>(DownloadUiState()), DownloadInteractionListener {
 
     private var isSystemDarkTheme: Boolean = false
+    private var isInitialized = false
 
     fun initialize(isSystemDarkTheme: Boolean) {
+        if (isInitialized) return
+        isInitialized = true
         this.isSystemDarkTheme = isSystemDarkTheme
         val choices = statisticsRepository.getExportChoices()
         updateState { copy(exportChoices = choices) }
@@ -106,22 +112,34 @@ class DownloadViewModel(
 
         tryToCall(
             block = {
-                val targetUserId = choices.targetUserId
-                if (targetUserId != null) {
-                    statisticsRepository.getUserStatisticsPdf(
-                        targetUserId = targetUserId,
-                        startDate = startDateTime,
-                        endDate = endDateTime,
-                        reportDataType = reportDataType,
-                        theme = theme
-                    )
-                } else {
-                    statisticsRepository.getStatisticsPdf(
-                        startDate = startDateTime,
-                        endDate = endDateTime,
-                        reportDataType = reportDataType,
-                        theme = theme
-                    )
+                try {
+                    val targetUserId = choices.targetUserId
+                    if (targetUserId != null) {
+                        statisticsRepository.getUserStatisticsPdf(
+                            targetUserId = targetUserId,
+                            startDate = startDateTime,
+                            endDate = endDateTime,
+                            reportDataType = reportDataType,
+                            theme = theme
+                        )
+                    } else {
+                        statisticsRepository.getStatisticsPdf(
+                            startDate = startDateTime,
+                            endDate = endDateTime,
+                            reportDataType = reportDataType,
+                            theme = theme
+                        )
+                    }
+                } catch (e: CancellationException) {
+                    if (e.cause is PaymentRequiredException) {
+                        updateState {
+                            copy(
+                                isLoading = false,
+                                errorMessage = UiText.StringRes(Res.string.payment_required)
+                            )
+                        }
+                    }
+                    throw e
                 }
             },
             onSuccess = { pdfBytes ->
@@ -174,11 +192,23 @@ class DownloadViewModel(
 
         tryToCall(
             block = {
-                val targetUserId = choices.targetUserId
-                if (targetUserId != null) {
-                    statisticsRepository.getUserStatistics(targetUserId, granularity, startDateTime, endDateTime)
-                } else {
-                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                try {
+                    val targetUserId = choices.targetUserId
+                    if (targetUserId != null) {
+                        statisticsRepository.getUserStatistics(targetUserId, granularity, startDateTime, endDateTime)
+                    } else {
+                        statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                    }
+                } catch (e: CancellationException) {
+                    if (e.cause is PaymentRequiredException) {
+                        updateState {
+                            copy(
+                                isLoading = false,
+                                errorMessage = UiText.StringRes(Res.string.payment_required)
+                            )
+                        }
+                    }
+                    throw e
                 }
             },
             onSuccess = { stats ->

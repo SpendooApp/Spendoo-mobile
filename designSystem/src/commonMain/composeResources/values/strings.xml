@@ -376,4 +376,5 @@
     <string name="achievement_categories">Categories</string>
     <string name="select_time">Select Time</string>
     <string name="logout">Logout</string>
+    <string name="payment_required">Payment Required</string>
 </resources>
