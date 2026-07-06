@@ -22,6 +22,10 @@ class AchievementRepositoryImpl(
             get("api/v1/goals/achievements") {
                 parameter("page", query.page)
                 parameter("size", query.size)
+                val sort = query.sort?.joinToString("&")
+                if (sort != null) {
+                    parameter("sort", sort)
+                }
             }
         }
         return response.toPagedData { it.toDomain() }

@@ -60,6 +60,7 @@ fun AchievementBottomSheet(
     BottomSheet(
         isVisible = isVisible,
         onDismiss = onDismiss,
+        skipPartiallyExpanded = true,
         horizontalPadding = 0.dp,
         containerColor = backgroundColor,
         content = {
@@ -117,7 +118,7 @@ private fun AchievementsBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(backgroundColor)
-                .padding(45.dp, 65.dp),
+                .padding(start = 45.dp, end = 45.dp, top = 65.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
