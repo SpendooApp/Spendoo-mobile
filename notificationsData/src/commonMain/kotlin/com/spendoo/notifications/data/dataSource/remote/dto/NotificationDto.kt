@@ -2,7 +2,7 @@ package com.spendoo.notifications.data.dataSource.remote.dto
 
 import com.spendoo.notifications.domain.entity.Notification
 import com.spendoo.notifications.domain.entity.NotificationType
-import kotlinx.datetime.LocalDateTime
+import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,6 +27,6 @@ fun NotificationDto.toDomain(): Notification = Notification(
     title = title,
     message = message,
     type = type,
-    sentAt = LocalDateTime.parse(sentAt),
+    sentAt = sentAt.toLocalDateTimeOrDefault(),
     isRead = isRead
 )

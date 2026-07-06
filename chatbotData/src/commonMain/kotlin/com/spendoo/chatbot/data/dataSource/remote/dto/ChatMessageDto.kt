@@ -2,7 +2,7 @@ package com.spendoo.chatbot.data.dataSource.remote.dto
 
 import com.spendoo.chatbot.domain.entity.ChatMessage
 import com.spendoo.chatbot.domain.entity.ChatSender
-import kotlinx.datetime.LocalDateTime
+import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,5 +22,5 @@ fun ChatMessageDto.toDomain(): ChatMessage = ChatMessage(
     id = id,
     sender = sender,
     content = content,
-    timestamp = LocalDateTime.parse(timestamp)
+    timestamp = timestamp.toLocalDateTimeOrDefault()
 )

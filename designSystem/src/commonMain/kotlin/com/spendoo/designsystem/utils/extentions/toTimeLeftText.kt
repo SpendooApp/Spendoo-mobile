@@ -12,7 +12,6 @@ import spendoo.designsystem.generated.resources.overdue
 import spendoo.designsystem.generated.resources.today
 import spendoo.designsystem.generated.resources.tomorrow
 import spendoo.designsystem.generated.resources.days_left
-import spendoo.designsystem.generated.resources.day_left
 import spendoo.designsystem.generated.resources.hour_left
 import spendoo.designsystem.generated.resources.hours_left
 import spendoo.designsystem.generated.resources.week_left

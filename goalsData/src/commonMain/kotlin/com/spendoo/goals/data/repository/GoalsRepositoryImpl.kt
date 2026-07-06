@@ -15,6 +15,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.http.appendPathSegments
 import kotlinx.datetime.LocalDateTime
+import com.spendoo.shared.domain.utils.toUtcInstant
 
 class GoalsRepositoryImpl(
     client: HttpClient,
@@ -42,7 +43,7 @@ class GoalsRepositoryImpl(
     override suspend fun createGoal(name: String, targetAmount: Double, deadline: LocalDateTime, icon: CategoryIcon, priority: Int) {
         tryToExecute<Unit> {
             post(GoalsEndpoints.GOALS) {
-                setBody(GoalCreateRequestDto(name, targetAmount, deadline.toString(), icon.name, priority))
+                setBody(GoalCreateRequestDto(name, targetAmount, deadline.toUtcInstant().toString(), icon.name, priority))
             }
         }
     }
@@ -51,7 +52,7 @@ class GoalsRepositoryImpl(
         tryToExecute<Unit> {
             patch(GoalsEndpoints.GOALS) {
                 url { appendPathSegments(goalId) }
-                setBody(GoalUpdateRequestDto(name, targetAmount, deadline.toString(), icon.name, priority))
+                setBody(GoalUpdateRequestDto(name, targetAmount, deadline.toUtcInstant().toString(), icon.name, priority))
             }
         }
     }
