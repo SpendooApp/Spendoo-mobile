@@ -8,6 +8,8 @@ import com.spendoo.categories.domain.entity.transaction.IncomeEntry
 import com.spendoo.categories.domain.entity.transaction.ReadyTransactionEntry
 import com.spendoo.categories.domain.repository.TransactionsRepository
 import com.spendoo.shared.domain.utils.toLocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.LocalDateTime
 import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
@@ -98,6 +100,18 @@ class AddTransactionViewModel(
 
     override fun onDatePickerDismissed() {
         updateState { it.copy(showDatePicker = false) }
+    }
+
+    override fun onTimeSelected(time: LocalTime) {
+        updateState { it.copy(time = time, showTimePicker = false) }
+    }
+
+    override fun onTimePickerRequested() {
+        updateState { it.copy(showTimePicker = true) }
+    }
+
+    override fun onTimePickerDismissed() {
+        updateState { it.copy(showTimePicker = false) }
     }
 
     override fun onSavingChecked(checked: Boolean) {
@@ -375,7 +389,7 @@ class AddTransactionViewModel(
                             IncomeEntry(
                                 title = state.value.incomeTitle,
                                 amount = amount,
-                                transactionDate = state.value.date.toLocalDateTime(),
+                                transactionDate = LocalDateTime(state.value.date, state.value.time),
                                 note = state.value.incomeNote.ifBlank { null }
                             )
                         )
@@ -418,7 +432,7 @@ class AddTransactionViewModel(
                         title = it.title,
                         amount = it.amount ?: 0.0,
                         categoryId = it.categoryId ?: "",
-                        transactionDate = state.value.date.toLocalDateTime(),
+                        transactionDate = LocalDateTime(state.value.date, state.value.time),
                         note = it.note.ifBlank { null }
                     )
                 }

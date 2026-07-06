@@ -2,6 +2,7 @@ package com.spendoo.categories.presentation.screen.editTransactionBottomSheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +21,7 @@ import com.spendoo.designsystem.components.button.AppButton
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.dialog.DatePicker
+import com.spendoo.designsystem.components.dialog.TimePicker
 import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.textField.CustomTextField
@@ -38,9 +40,11 @@ import spendoo.designsystem.generated.resources.amount
 import spendoo.designsystem.generated.resources.choose_category
 import spendoo.designsystem.generated.resources.enter_your_date
 import spendoo.designsystem.generated.resources.ic_arrow_down
+import spendoo.designsystem.generated.resources.ic_clock_red
 import spendoo.designsystem.generated.resources.ic_date
 import spendoo.designsystem.generated.resources.note_optional
 import spendoo.designsystem.generated.resources.save
+import spendoo.designsystem.generated.resources.time_label
 import spendoo.designsystem.generated.resources.title
 
 @Composable
@@ -112,24 +116,47 @@ fun EditTransactionBottomSheet(
                 )
             }
 
-            CustomTextField(
-                value = state.date.format(),
-                onValueChange = { },
-                hint = stringResource(Res.string.enter_your_date),
-                enabled = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickableNoRipple {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CustomTextField(
+                    value = state.date.format(),
+                    onValueChange = { },
+                    hint = stringResource(Res.string.enter_your_date),
+                    enabled = false,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickableNoRipple {
+                            focusManager.clearFocus()
+                            viewModel.onDatePickerRequested()
+                        },
+                    onTrailingIconClick = {
                         focusManager.clearFocus()
                         viewModel.onDatePickerRequested()
                     },
-                onTrailingIconClick = {
-                    focusManager.clearFocus()
-                    viewModel.onDatePickerRequested()
-                },
-                trailingIcon = Res.drawable.ic_date.painter(),
-                trailingIconColor = Theme.colorScheme.text.label
-            )
+                    trailingIcon = Res.drawable.ic_date.painter(),
+                    trailingIconColor = Theme.colorScheme.text.label
+                )
+                CustomTextField(
+                    value = state.time.format(),
+                    onValueChange = { },
+                    hint = stringResource(Res.string.time_label),
+                    enabled = false,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickableNoRipple {
+                            focusManager.clearFocus()
+                            viewModel.onTimePickerRequested()
+                        },
+                    onTrailingIconClick = {
+                        focusManager.clearFocus()
+                        viewModel.onTimePickerRequested()
+                    },
+                    trailingIcon = Res.drawable.ic_clock_red.painter(),
+                    trailingIconColor = Theme.colorScheme.text.label
+                )
+            }
             CustomTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.note,
@@ -159,5 +186,12 @@ fun EditTransactionBottomSheet(
         onDismiss = viewModel::onDatePickerDismissed,
         onDateSelected = viewModel::onDateSelected,
         selectedDate = state.date
+    )
+
+    TimePicker(
+        showDialog = state.showTimePicker,
+        onDismiss = viewModel::onTimePickerDismissed,
+        onTimeSelected = viewModel::onTimeSelected,
+        selectedTime = state.time
     )
 }

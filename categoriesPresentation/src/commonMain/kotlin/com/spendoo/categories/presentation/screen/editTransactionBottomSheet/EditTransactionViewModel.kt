@@ -10,6 +10,8 @@ import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import com.spendoo.shared.domain.utils.toLocalDateTime
 import com.spendoo.shared.domain.utils.toUtcInstant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.LocalDateTime
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.enter_a_title
@@ -43,6 +45,7 @@ class EditTransactionViewModel(
                         amount = transaction.amount.absoluteValue,
                         note = transaction.note ?: "",
                         date = transaction.date.date,
+                        time = transaction.date.time,
                         categoryId = transaction.category?.categoryId,
                         categoryName = transaction.category?.categoryName ?: "",
                         categoryIcon = transaction.category?.categoryIcon,
@@ -83,6 +86,18 @@ class EditTransactionViewModel(
 
     override fun onDatePickerDismissed() {
         updateState { it.copy(showDatePicker = false) }
+    }
+
+    override fun onTimeSelected(time: LocalTime) {
+        updateState { it.copy(time = time, showTimePicker = false) }
+    }
+
+    override fun onTimePickerRequested() {
+        updateState { it.copy(showTimePicker = true) }
+    }
+
+    override fun onTimePickerDismissed() {
+        updateState { it.copy(showTimePicker = false) }
     }
 
     override fun onCategoryFieldClicked() {
@@ -152,7 +167,7 @@ class EditTransactionViewModel(
         val amountValue = state.value.amount ?: 0.0
         val request = UpdateTransaction(
             title = state.value.title,
-            transactionDate = state.value.date.toLocalDateTime().toUtcInstant().toString(),
+            transactionDate = LocalDateTime(state.value.date, state.value.time).toUtcInstant().toString(),
             note = state.value.note.takeIf { it.isNotBlank() },
             amount = amountValue,
             categoryId = state.value.categoryId

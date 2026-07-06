@@ -10,6 +10,8 @@ import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.LocalDateTime
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.custom_frequency_must_be_greater_than_zero
@@ -58,11 +60,19 @@ class AddScheduledPaymentViewModel(
     }
 
     override fun onStartDateChanged(date: LocalDate) {
-        updateState { copy(startDate = date, showDatePicker = false) }
+        updateState { copy(startDate = LocalDateTime(date, startDate.time), showDatePicker = false) }
     }
 
     override fun onShowDatePicker(show: Boolean) {
         updateState { copy(showDatePicker = show) }
+    }
+
+    override fun onShowTimePicker(show: Boolean) {
+        updateState { copy(showTimePicker = show) }
+    }
+
+    override fun onStartTimeChanged(time: LocalTime) {
+        updateState { copy(startDate = LocalDateTime(startDate.date, time), showTimePicker = false) }
     }
 
     override fun onFrequencyChanged(frequency: PaymentFrequency) {

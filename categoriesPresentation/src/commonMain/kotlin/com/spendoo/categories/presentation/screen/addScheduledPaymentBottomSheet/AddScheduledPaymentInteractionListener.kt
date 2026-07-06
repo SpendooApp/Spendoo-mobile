@@ -12,6 +12,8 @@ interface AddScheduledPaymentInteractionListener {
     fun onCategorySelected(category: CategoryItemUiState)
     fun onStartDateChanged(date: LocalDate)
     fun onShowDatePicker(show: Boolean)
+    fun onShowTimePicker(show: Boolean)
+    fun onStartTimeChanged(time: kotlinx.datetime.LocalTime)
     fun onFrequencyChanged(frequency: PaymentFrequency)
     fun onCustomFrequencyDaysChanged(days: String)
     fun onReminderPeriodValueChanged(value: String)

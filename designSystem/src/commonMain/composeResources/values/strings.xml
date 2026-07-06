@@ -374,4 +374,5 @@
     <string name="achievement_login_streak">Login Streak</string>
     <string name="achievement_transaction_streak">Transaction Streak</string>
     <string name="achievement_categories">Categories</string>
+    <string name="select_time">Select Time</string>
 </resources>

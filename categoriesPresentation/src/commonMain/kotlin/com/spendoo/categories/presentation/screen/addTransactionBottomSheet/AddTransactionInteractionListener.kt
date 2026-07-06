@@ -14,6 +14,9 @@ interface AddTransactionInteractionListener {
     fun onDateSelected(date: LocalDate)
     fun onDatePickerRequested()
     fun onDatePickerDismissed()
+    fun onTimeSelected(time: kotlinx.datetime.LocalTime)
+    fun onTimePickerRequested()
+    fun onTimePickerDismissed()
     fun onSavingChecked(checked: Boolean)
 
     // Expense Entry Actions

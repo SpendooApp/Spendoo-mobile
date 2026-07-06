@@ -13,6 +13,8 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_TYPE_NORMAL
 import androidx.compose.ui.tooling.preview.Preview
 import com.spendoo.designsystem.theme.theme.SpendooTheme
 import com.spendoo.designsystem.theme.theme.Theme
@@ -34,7 +36,7 @@ fun DatePicker(
     dismissText: String = stringResource(Res.string.cancel),
     containerColor: Color = Theme.colorScheme.background.tertiary,
     contentColor: Color = Theme.colorScheme.text.body,
-    brandColor: Color = Theme.colorScheme.brand.primary,
+    brandColor: Color = Theme.colorScheme.icon.primary,
     errorColor: Color = Theme.colorScheme.additional.onError,
 ) {
     if (showDialog) {
@@ -129,8 +131,8 @@ fun DatePicker(
 }
 
 @Composable
-@Preview
-fun DatePickerDialogPreview() = SpendooTheme {
+@Preview(widthDp = 360, heightDp = 640, name = "Dark", uiMode = UI_MODE_NIGHT_YES or UI_MODE_TYPE_NORMAL)
+fun DatePickerDialogPreview() = SpendooTheme(darkTheme = true) {
     DatePicker(
         showDialog = true,
         selectedDate = LocalDate(2026, 1, 7),

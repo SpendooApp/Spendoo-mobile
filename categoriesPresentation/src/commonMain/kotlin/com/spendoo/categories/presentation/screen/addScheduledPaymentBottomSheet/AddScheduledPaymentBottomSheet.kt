@@ -29,6 +29,7 @@ import org.jetbrains.compose.resources.stringResource
 import spendoo.designsystem.generated.resources.enter_custom_days
 import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.dialog.DatePicker
+import com.spendoo.designsystem.components.dialog.TimePicker
 import com.spendoo.designsystem.components.dropdownMenu.DropdownMenu
 import com.spendoo.designsystem.components.dropdownMenu.DropdownMenuItem
 import com.spendoo.designsystem.components.icon.Icon
@@ -55,6 +56,8 @@ import spendoo.designsystem.generated.resources.enter_title
 import spendoo.designsystem.generated.resources.frequency
 import spendoo.designsystem.generated.resources.ic_arrow_down
 import spendoo.designsystem.generated.resources.ic_date
+import spendoo.designsystem.generated.resources.ic_clock_red
+import spendoo.designsystem.generated.resources.time_label
 import spendoo.designsystem.generated.resources.reminder_period
 import spendoo.designsystem.generated.resources.save_payment
 
@@ -170,31 +173,62 @@ private fun AddScheduledPaymentContent(
                     trailingIconColor = Theme.colorScheme.text.link
                 )
 
-                CustomTextField(
-                    value = state.startDate.format(),
-                    onValueChange = { },
-                    hint = Res.string.enter_start_date.asString(),
-                    enabled = false,
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickableNoRipple {
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    CustomTextField(
+                        value = state.startDate.date.format(),
+                        onValueChange = { },
+                        hint = Res.string.enter_start_date.asString(),
+                        enabled = false,
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickableNoRipple {
+                                focusManager.clearFocus()
+                                interactionListener.onShowDatePicker(true)
+                            },
+                        onTrailingIconClick = {
                             focusManager.clearFocus()
                             interactionListener.onShowDatePicker(true)
-                        }
-                        .padding(bottom = 16.dp),
-                    onTrailingIconClick = {
-                        focusManager.clearFocus()
-                        interactionListener.onShowDatePicker(true)
-                    },
-                    trailingIcon = Res.drawable.ic_date.painter(),
-                    trailingIconColor = Theme.colorScheme.text.label
-                )
+                        },
+                        trailingIcon = Res.drawable.ic_date.painter(),
+                        trailingIconColor = Theme.colorScheme.text.label
+                    )
+                    CustomTextField(
+                        value = state.startDate.time.format(),
+                        onValueChange = { },
+                        hint = stringResource(Res.string.time_label),
+                        enabled = false,
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickableNoRipple {
+                                focusManager.clearFocus()
+                                interactionListener.onShowTimePicker(true)
+                            },
+                        onTrailingIconClick = {
+                            focusManager.clearFocus()
+                            interactionListener.onShowTimePicker(true)
+                        },
+                        trailingIcon = Res.drawable.ic_clock_red.painter(),
+                        trailingIconColor = Theme.colorScheme.text.label
+                    )
+                }
 
                 DatePicker(
                     showDialog = state.showDatePicker,
-                    selectedDate = state.startDate,
+                    selectedDate = state.startDate.date,
                     onDateSelected = interactionListener::onStartDateChanged,
                     onDismiss = { interactionListener.onShowDatePicker(false) }
+                )
+
+                TimePicker(
+                    showDialog = state.showTimePicker,
+                    selectedTime = state.startDate.time,
+                    onTimeSelected = interactionListener::onStartTimeChanged,
+                    onDismiss = { interactionListener.onShowTimePicker(false) }
                 )
 
                 Text(

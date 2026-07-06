@@ -4,7 +4,9 @@ import com.spendoo.categories.domain.entity.transaction.TransactionType
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.shared.domain.utils.getToday
+import com.spendoo.shared.domain.utils.getNow
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 
 data class EditTransactionUiState(
     val transactionId: String = "",
@@ -13,12 +15,14 @@ data class EditTransactionUiState(
     val amount: Double? = null,
     val note: String = "",
     val date: LocalDate = getToday(),
+    val time: LocalTime = getNow().time,
     val categoryId: String? = null,
     val categoryName: String = "",
     val categoryIcon: CategoryIcon? = null,
     val isSaving: Boolean = false,
     val isLoading: Boolean = true,
     val showDatePicker: Boolean = false,
+    val showTimePicker: Boolean = false,
     val showCategorySheet: Boolean = false,
     val titleError: UiText? = null,
     val amountError: UiText? = null,
