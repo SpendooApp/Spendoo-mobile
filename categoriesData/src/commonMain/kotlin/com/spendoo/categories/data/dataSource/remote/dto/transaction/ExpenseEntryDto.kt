@@ -1,6 +1,7 @@
 package com.spendoo.categories.data.dataSource.remote.dto.transaction
 
 import com.spendoo.categories.domain.entity.transaction.ExpenseEntry
+import com.spendoo.shared.domain.utils.toUtcInstant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,4 +19,4 @@ data class ExpenseEntryDto(
     val note: String? = null,
 )
 
-fun ExpenseEntry.toDto(): ExpenseEntryDto = ExpenseEntryDto(title, amount, categoryId, transactionDate.toString(), note)
+fun ExpenseEntry.toDto(): ExpenseEntryDto = ExpenseEntryDto(title, amount, categoryId, transactionDate.toUtcInstant().toString(), note)

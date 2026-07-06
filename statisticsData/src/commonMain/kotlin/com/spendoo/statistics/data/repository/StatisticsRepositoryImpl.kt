@@ -2,6 +2,7 @@ package com.spendoo.statistics.data.repository
 
 import com.spendoo.identity.domain.util.AppTheme
 import com.spendoo.shared.data.shared.BaseGateway
+import com.spendoo.shared.domain.utils.toUtcInstant
 import com.spendoo.statistics.data.dataSource.remote.dto.CombinedStatsResponse
 import com.spendoo.statistics.data.dataSource.remote.dto.toDomain
 import com.spendoo.statistics.data.dataSource.remote.endpoint.StatisticsEndpoints
@@ -41,8 +42,8 @@ class StatisticsRepositoryImpl(
             get(StatisticsEndpoints.STATISTICS) {
                 url {
                     parameters.append("granularity", granularity.name)
-                    parameters.append("start_date", startDate.toString())
-                    parameters.append("end_date", endDate.toString())
+                    parameters.append("start_date", startDate.toUtcInstant().toString())
+                    parameters.append("end_date", endDate.toUtcInstant().toString())
                 }
             }
         }
@@ -58,8 +59,8 @@ class StatisticsRepositoryImpl(
         val response = tryToExecute<ByteArray> {
             get("/api/v1/statistics/pdf") {
                 url {
-                    parameters.append("start_date", startDate.toString())
-                    parameters.append("end_date", endDate.toString())
+                    parameters.append("start_date", startDate.toUtcInstant().toString())
+                    parameters.append("end_date", endDate.toUtcInstant().toString())
                     parameters.append("reportDataType", reportDataType.name)
                 }
             }
@@ -77,8 +78,8 @@ class StatisticsRepositoryImpl(
             get("/api/v1/statistics/user/$targetUserId") {
                 url {
                     parameters.append("granularity", granularity.name)
-                    parameters.append("start_date", startDate.toString())
-                    parameters.append("end_date", endDate.toString())
+                    parameters.append("start_date", startDate.toUtcInstant().toString())
+                    parameters.append("end_date", endDate.toUtcInstant().toString())
                 }
             }
         }
@@ -95,12 +96,12 @@ class StatisticsRepositoryImpl(
         val response = tryToExecute<ByteArray> {
             get("/api/v1/statistics/user/$targetUserId/pdf") {
                 url {
-                    parameters.append("start_date", startDate.toString())
-                    parameters.append("end_date", endDate.toString())
+                    parameters.append("start_date", startDate.toUtcInstant().toString())
+                    parameters.append("end_date", endDate.toUtcInstant().toString())
                     parameters.append("reportDataType", reportDataType.name)
                 }
             }
         }
         return response
     }
-}
+}

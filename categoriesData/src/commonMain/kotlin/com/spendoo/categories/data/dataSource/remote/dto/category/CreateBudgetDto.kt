@@ -1,6 +1,7 @@
 package com.spendoo.categories.data.dataSource.remote.dto.category
 
 import com.spendoo.categories.domain.entity.category.CreateBudget
+import com.spendoo.shared.domain.utils.toUtcInstant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.SerialName
@@ -17,4 +18,4 @@ data class CreateBudgetDto(
 )
 
 fun CreateBudget.toDto(): CreateBudgetDto =
-    CreateBudgetDto(amount, period, LocalDateTime(startDate, LocalTime(0, 0, 0)).toString())
+    CreateBudgetDto(amount, period, LocalDateTime(startDate, LocalTime(0, 0, 0)).toUtcInstant().toString())

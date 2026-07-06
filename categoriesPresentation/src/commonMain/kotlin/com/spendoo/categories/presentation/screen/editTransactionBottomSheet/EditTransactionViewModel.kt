@@ -8,6 +8,7 @@ import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.shared.domain.utils.toCleanDoubleOrNull
 import com.spendoo.shared.domain.utils.toLocalDateTime
+import com.spendoo.shared.domain.utils.toUtcInstant
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
@@ -151,7 +152,7 @@ class EditTransactionViewModel(
         val amountValue = state.value.amount ?: 0.0
         val request = UpdateTransaction(
             title = state.value.title,
-            transactionDate = state.value.date.toLocalDateTime().toString(),
+            transactionDate = state.value.date.toLocalDateTime().toUtcInstant().toString(),
             note = state.value.note.takeIf { it.isNotBlank() },
             amount = amountValue,
             categoryId = state.value.categoryId

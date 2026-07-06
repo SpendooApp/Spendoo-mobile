@@ -45,6 +45,7 @@ fun LineChartSection(
             data = lineChartUiState.budgetData,
             lineColor = Theme.colorScheme.additional.onWarning,
             lineType = LineType.CURVED_LINE,
+            dashedRanges = lineChartUiState.dashedRanges,
             lineShadow = false
         ),
         LineParameters(

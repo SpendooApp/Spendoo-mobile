@@ -8,10 +8,6 @@ import com.spendoo.shared.domain.utils.getNow
 import com.spendoo.shared.domain.utils.toLocalDateTimeOrDefault
 import kotlinx.serialization.Serializable
 
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
-
 @Serializable
 data class ScheduledPaymentDto(
     val id: String,
