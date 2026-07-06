@@ -15,8 +15,8 @@ data class StatsBucketDto(
     val budget: Double,
     @SerialName("startDate")
     val startDate: String,
-    @SerialName("isPredicted")
-    val isPredicted: Boolean = false
+    @SerialName("predicted")
+    val predicted: Boolean
 )
 
 fun StatsBucketDto.toDomain(): StatsBucket {
@@ -25,6 +25,6 @@ fun StatsBucketDto.toDomain(): StatsBucket {
         income = this.income,
         budget = this.budget,
         startDate = this.startDate.toLocalDateTimeOrDefault(),
-        isPredicted = this.isPredicted
+        isPredicted = this.predicted
     )
 }

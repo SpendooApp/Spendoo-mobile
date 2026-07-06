@@ -168,7 +168,7 @@ private fun AddTransactionBottomSheetContent(
             }
 
             item {
-                Spacer(modifier = Modifier.padding(bottom = 48.dp))
+                Spacer(modifier = Modifier.padding(bottom = 60.dp))
             }
         }
 

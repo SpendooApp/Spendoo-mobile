@@ -11,7 +11,9 @@ data class FinancialStatsResponse(
     @SerialName("highestSpendingBucketIndex")
     val highestSpendingBucketIndex: Int,
     @SerialName("highestValue")
-    val highestValue: Double
+    val highestValue: Double,
+    @SerialName("predicted")
+    val predicted: Boolean //TODO: show this in the UI
 )
 
 fun FinancialStatsResponse.toDomain(): FinancialStats {

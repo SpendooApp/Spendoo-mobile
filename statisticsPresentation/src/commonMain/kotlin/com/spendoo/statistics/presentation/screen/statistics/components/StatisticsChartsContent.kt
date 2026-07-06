@@ -142,7 +142,8 @@ fun StatisticsChartsContent(
                     Spacer(modifier = Modifier.height(8.dp))
                     SeeAllHeader(
                         title = stringResource(Res.string.top_categories),
-                        onSeeAll = listener::onSeeAllTopCategories,
+                        onSeeAll = listener::onSeeAllTopCategories
+                            .takeIf { state.targetUserId == null },
                     )
 
                     Row(
@@ -160,48 +161,55 @@ fun StatisticsChartsContent(
                     }
                 }
 
-                item {
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 16.dp)
-                    )
+                if (state.targetUserId == null) {
+                    item {
+                        HorizontalDivider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 16.dp)
+                        )
 
-                    SeeAllHeader(
-                        title = stringResource(Res.string.scheduled_payments),
-                        onSeeAll = listener::onSeeAllScheduledPayments,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
+                        SeeAllHeader(
+                            title = stringResource(Res.string.scheduled_payments),
+                            onSeeAll = listener::onSeeAllScheduledPayments,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
 
-                when {
-                    state.isScheduledPaymentsError -> {
-                        item {
-                            ErrorState(
-                                text = Res.string.error_loading_scheduled_payments,
-                                onActionText = Res.string.retry,
-                                onRetry = listener::onReload,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                            )
+                    when {
+                        state.isScheduledPaymentsError -> {
+                            item {
+                                ErrorState(
+                                    text = Res.string.error_loading_scheduled_payments,
+                                    onActionText = Res.string.retry,
+                                    onRetry = listener::onReload,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                )
+                            }
                         }
-                    }
-                    state.scheduledPayments.isEmpty() -> {
-                        item {
-                            EmptyState(
-                                text = Res.string.no_scheduled_payments_yet,
-                                onActionText = Res.string.add_scheduled_payment,
-                                onAddClick = listener::onSeeAllScheduledPayments,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                            )
+
+                        state.scheduledPayments.isEmpty() -> {
+                            item {
+                                EmptyState(
+                                    text = Res.string.no_scheduled_payments_yet,
+                                    onActionText = Res.string.add_scheduled_payment,
+                                    onAddClick = listener::onSeeAllScheduledPayments,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                )
+                            }
                         }
-                    }
-                    else -> {
-                        items(state.scheduledPayments) { payment ->
-                            ScheduledPaymentRowItem(
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                                payment = payment,
-                                onClick = listener::onOpenScheduledPayments
-                            )
+
+                        else -> {
+                            items(state.scheduledPayments) { payment ->
+                                ScheduledPaymentRowItem(
+                                    modifier = Modifier.padding(
+                                        horizontal = 16.dp,
+                                        vertical = 4.dp
+                                    ),
+                                    payment = payment,
+                                    onClick = listener::onOpenScheduledPayments
+                                )
+                            }
                         }
                     }
                 }
@@ -216,7 +224,7 @@ fun StatisticsChartsContent(
 @Composable
 private fun SeeAllHeader(
     title: String,
-    onSeeAll: () -> Unit,
+    onSeeAll: (() -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -231,7 +239,7 @@ private fun SeeAllHeader(
             style = Theme.typography.heading.tiny,
             color = Theme.colorScheme.text.titleSmall
         )
-        Text(
+        if (onSeeAll != null) Text(
             text = stringResource(Res.string.see_all),
             style = Theme.typography.label.medium.small,
             color = Theme.colorScheme.text.titleSmall,

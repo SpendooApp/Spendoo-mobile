@@ -1,6 +1,5 @@
 package com.spendoo.goals.presentation.screen.achievements.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,24 +26,17 @@ fun AchievementCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (Theme.isDarkTheme) {
-        Theme.colorScheme.background.tertiary
-    } else {
-        Theme.colorScheme.background.primary
-    }
-
     Box(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(backgroundColor)
             .clickableNoRipple { onClick() }
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             AchievementShape(
                 icon = icon,
@@ -54,7 +46,7 @@ fun AchievementCard(
             
             Text(
                 text = achievement.title,
-                style = Theme.typography.heading.medium,
+                style = Theme.typography.title.medium,
                 color = Theme.colorScheme.text.title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
