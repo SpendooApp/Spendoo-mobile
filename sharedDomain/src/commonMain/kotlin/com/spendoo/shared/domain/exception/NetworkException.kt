@@ -21,3 +21,5 @@ open class InternetException(errorMessage: String = "") : AuthenticationExceptio
 }
 
 class UnknownErrorException(message: String) : AuthenticationException(message)
+
+class PaymentRequiredException : AuthenticationException("Payment required")

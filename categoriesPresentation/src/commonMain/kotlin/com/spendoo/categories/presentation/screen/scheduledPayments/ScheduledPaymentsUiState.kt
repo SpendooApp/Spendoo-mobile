@@ -7,7 +7,9 @@ import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
 import com.spendoo.shared.domain.utils.getToday
+import com.spendoo.shared.domain.utils.getNow
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import com.spendoo.designsystem.utils.UiText
 
 data class ScheduledPaymentsUiState(
@@ -32,7 +34,7 @@ data class ScheduledPaymentUiState(
     val leftOverOption: LeftOverOption = LeftOverOption.MOVE_TO_SAVINGS,
     val timeLeft: UiText = UiText.DynamicString(""),
     val isDueSoon: Boolean = false,
-    val startDate: LocalDate = getToday(),
+    val startDate: LocalDateTime = getNow(),
     val categoryId: String = "",
     val frequency: PaymentFrequency = PaymentFrequency.DAILY,
     val customFrequencyDays: String = "",

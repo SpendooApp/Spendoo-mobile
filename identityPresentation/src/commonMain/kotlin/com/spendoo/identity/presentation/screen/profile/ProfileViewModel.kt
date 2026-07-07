@@ -9,6 +9,7 @@ import com.spendoo.home.api.NotificationsRoute
 import com.spendoo.identity.api.EditProfileRoute
 import com.spendoo.identity.api.FollowersRoute
 import com.spendoo.identity.api.FollowingRoute
+import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.FollowCodeRepository
 import com.spendoo.identity.domain.repository.FollowRepository
 import com.spendoo.identity.domain.repository.ProfileRepository
@@ -16,6 +17,7 @@ import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppLanguage
 import com.spendoo.identity.domain.util.AppTheme
 import com.spendoo.shared.domain.utils.PageQuery
+import com.spendoo.statistics.api.StatisticsRoute
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred
 import spendoo.designsystem.generated.resources.copied
@@ -26,6 +28,7 @@ class ProfileViewModel(
     private val followRepository: FollowRepository,
     private val followCodeRepository: FollowCodeRepository,
     private val settingsRepository: SettingsRepository,
+    private val authenticationRepository: AuthenticationRepository,
 ) : BaseViewModel<ProfileUiState>(ProfileUiState()), ProfileInteractionListener {
 
     init {
@@ -179,5 +182,17 @@ class ProfileViewModel(
             onSuccess = { },
             onError = { handleError(it) }
         )
+    }
+
+    override fun onClickLogout() {
+        tryToCall(
+            block = { authenticationRepository.logout() },
+            onSuccess = {},
+            onError = { handleError(it) }
+        )
+    }
+
+    override fun onClickUser(userId: String, userName: String, imageUrl: String?) {
+        navigate(StatisticsRoute(userId = userId, userName = userName, userImageUrl = imageUrl))
     }
 }

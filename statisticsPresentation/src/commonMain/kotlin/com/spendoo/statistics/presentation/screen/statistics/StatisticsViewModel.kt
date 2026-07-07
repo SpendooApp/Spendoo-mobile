@@ -11,13 +11,16 @@ import com.spendoo.designsystem.navigation.BaseViewModel
 import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.toUiText
 import com.spendoo.identity.api.FollowingRoute
+import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.domain.repository.ProfileRepository
+import com.spendoo.shared.domain.exception.PaymentRequiredException
 import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.getNow
 import com.spendoo.shared.domain.utils.getToday
 import com.spendoo.statistics.api.ExportRoute
 import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.repository.StatisticsRepository
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -230,15 +233,28 @@ class StatisticsViewModel(
         updateState { copy(isLoading = true) }
         tryToCall(
             block = {
-                if (targetUserId != null) {
-                    statisticsRepository.getUserStatistics(
-                        targetUserId,
-                        granularity,
-                        startDateTime,
-                        endDateTime
-                    )
-                } else {
-                    statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                try {
+                    if (targetUserId != null) {
+                        statisticsRepository.getUserStatistics(
+                            targetUserId,
+                            granularity,
+                            startDateTime,
+                            endDateTime
+                        )
+                    } else {
+                        statisticsRepository.getStatistics(granularity, startDateTime, endDateTime)
+                    }
+                } catch (e: CancellationException) {
+                    if (e.cause is PaymentRequiredException) {
+                        updateState {
+                            copy(
+                                selectedGranularity = Granularity.WEEK,
+                                isLoading = false
+                            )
+                        }
+                        loadStatistics(Granularity.WEEK)
+                    }
+                    throw e
                 }
             },
             onSuccess = { stats ->
@@ -396,6 +412,10 @@ class StatisticsViewModel(
 
     override fun onTransactionClicked(transactionId: String) {
         navigate(TransactionDetailsRoute(transactionId))
+    }
+
+    override fun onClickUserProfile() {
+        navigate(ProfileRoute)
     }
 
     companion object {

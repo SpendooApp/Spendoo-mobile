@@ -20,4 +20,6 @@ interface ProfileInteractionListener {
     fun onDismissLanguageBottomSheet()
     fun onToggleTheme(isDark: Boolean)
     fun onReload()
+    fun onClickLogout()
+    fun onClickUser(userId: String, userName: String, imageUrl: String?)
 }

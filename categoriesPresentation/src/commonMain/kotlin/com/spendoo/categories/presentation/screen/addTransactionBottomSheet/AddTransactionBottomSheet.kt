@@ -5,8 +5,10 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.comp
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.components.IncomeEntriesSection
 import com.spendoo.categories.presentation.screen.categorySelectionSheet.CategorySelectionSheet
 import com.spendoo.designsystem.components.dialog.DatePicker
+import com.spendoo.designsystem.components.dialog.TimePicker
 import com.spendoo.designsystem.components.general.AppSegmentedControl
 import com.spendoo.designsystem.components.sheet.BottomSheet
 import com.spendoo.designsystem.components.sheet.BottomSheetTemplate
@@ -36,6 +39,7 @@ import com.spendoo.designsystem.utils.extentions.painter
 import com.spendoo.shared.domain.entity.CategoryIcon
 import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import spendoo.designsystem.generated.resources.Res
@@ -43,7 +47,9 @@ import spendoo.designsystem.generated.resources.add
 import spendoo.designsystem.generated.resources.add_transaction
 import spendoo.designsystem.generated.resources.cancel
 import spendoo.designsystem.generated.resources.enter_your_date
+import spendoo.designsystem.generated.resources.ic_clock_red
 import spendoo.designsystem.generated.resources.ic_date
+import spendoo.designsystem.generated.resources.time_label
 import spendoo.designsystem.generated.resources.write_a_note_optional
 
 @Composable
@@ -76,6 +82,13 @@ fun AddTransactionBottomSheet(
         selectedDate = state.date,
         onDateSelected = viewModel::onDateSelected,
         onDismiss = viewModel::onDatePickerDismissed
+    )
+
+    TimePicker(
+        showDialog = state.showTimePicker,
+        selectedTime = state.time,
+        onTimeSelected = viewModel::onTimeSelected,
+        onDismiss = viewModel::onTimePickerDismissed
     )
 }
 
@@ -124,26 +137,50 @@ private fun AddTransactionBottomSheetContent(
                         enter = fadeIn() + expandVertically(),
                         exit = fadeOut() + shrinkVertically()
                     ) {
-                        CustomTextField(
-                            value = state.date.format(),
-                            onValueChange = { },
-                            hint = stringResource(Res.string.enter_your_date),
-                            enabled = false,
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickableNoRipple {
-                                    focusManager.clearFocus()
-                                    interactionListener.onDatePickerRequested()
-                                }
                                 .padding(bottom = 8.dp)
                                 .padding(horizontal = 16.dp),
-                            onTrailingIconClick = {
-                                focusManager.clearFocus()
-                                interactionListener.onDatePickerRequested()
-                            },
-                            trailingIcon = Res.drawable.ic_date.painter(),
-                            trailingIconColor = Theme.colorScheme.text.label
-                        )
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            CustomTextField(
+                                value = state.date.format(),
+                                onValueChange = { },
+                                hint = stringResource(Res.string.enter_your_date),
+                                enabled = false,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickableNoRipple {
+                                        focusManager.clearFocus()
+                                        interactionListener.onDatePickerRequested()
+                                    },
+                                onTrailingIconClick = {
+                                    focusManager.clearFocus()
+                                    interactionListener.onDatePickerRequested()
+                                },
+                                trailingIcon = Res.drawable.ic_date.painter(),
+                                trailingIconColor = Theme.colorScheme.text.label
+                            )
+                            CustomTextField(
+                                value = state.time.format(),
+                                onValueChange = { },
+                                hint = stringResource(Res.string.time_label),
+                                enabled = false,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickableNoRipple {
+                                        focusManager.clearFocus()
+                                        interactionListener.onTimePickerRequested()
+                                    },
+                                onTrailingIconClick = {
+                                    focusManager.clearFocus()
+                                    interactionListener.onTimePickerRequested()
+                                },
+                                trailingIcon = Res.drawable.ic_clock_red.painter(),
+                                trailingIconColor = Theme.colorScheme.text.label
+                            )
+                        }
                     }
 
                     AnimatedVisibility(
@@ -168,7 +205,7 @@ private fun AddTransactionBottomSheetContent(
             }
 
             item {
-                Spacer(modifier = Modifier.padding(bottom = 60.dp))
+                Spacer(modifier = Modifier.padding(bottom = 16.dp))
             }
         }
 
@@ -199,6 +236,9 @@ val previewInteractionListener = object : AddTransactionInteractionListener {
     override fun onSavingAmountChanged(amount: String) {}
     override fun onDatePickerRequested() {}
     override fun onDatePickerDismissed() {}
+    override fun onTimeSelected(time: LocalTime) {}
+    override fun onTimePickerRequested() {}
+    override fun onTimePickerDismissed() {}
     override fun onNoteChanged(note: String) {}
     override fun onDateSelected(date: LocalDate) {}
     override fun submit() {}

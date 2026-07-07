@@ -33,7 +33,7 @@ fun ScheduledPaymentDto.toDomain(): ScheduledPayment {
         amount = this.amount,
         categoryId = this.categoryId,
         categoryIcon = CategoryIcon.fromStringOrDefault(this.categoryIcon),
-        startDate = this.startDate?.toLocalDateTimeOrDefault()?.date ?: today,
+        startDate = this.startDate?.toLocalDateTimeOrDefault() ?: now,
         nextDueDate = this.nextDueDate?.toLocalDateTimeOrDefault() ?: now,
         nextReminderDate = this.nextReminderDate?.toLocalDateTimeOrDefault()?.date ?: today,
         frequency = domainFrequency,

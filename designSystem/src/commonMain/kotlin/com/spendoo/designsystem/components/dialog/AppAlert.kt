@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.spendoo.designsystem.components.appBar.SpendooIconButton
 import com.spendoo.designsystem.components.button.AppButton
+import com.spendoo.designsystem.components.button.AppButtonState
 import com.spendoo.designsystem.components.button.AppButtonType
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.Theme
@@ -82,6 +84,7 @@ fun AppAlertContent(
     actionText: String,
     onActionClick: () -> Unit,
     dismissText: String,
+    buttonState: AppButtonState = AppButtonState.Enabled,
     minWidth: Dp = 328.dp,
     shape: Shape = RoundedCornerShape(20.dp),
     onDismissRequest: () -> Unit,
@@ -91,6 +94,7 @@ fun AppAlertContent(
             .width(minWidth)
             .clip(shape)
             .background(Theme.colorScheme.background.tertiary)
+            .navigationBarsPadding()
             .padding(vertical = 16.dp)
     ) {
         LazyColumn(
@@ -124,6 +128,7 @@ fun AppAlertContent(
                 iconRes = iconRes,
                 description = description,
                 actionText = actionText,
+                buttonState = buttonState,
                 onActionClick = onActionClick,
                 dismissText = dismissText,
                 onDismissRequest = onDismissRequest
@@ -139,7 +144,8 @@ private fun LazyListScope.bodySection(
     actionText: String,
     onActionClick: () -> Unit,
     dismissText: String,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    buttonState: AppButtonState
 ) {
     item {
         Image(
@@ -168,6 +174,7 @@ private fun LazyListScope.bodySection(
             AppButton(
                 type = AppButtonType.Primary,
                 onClick = onActionClick,
+                state = buttonState,
                 text = actionText,
                 modifier = Modifier.fillMaxWidth()
             )

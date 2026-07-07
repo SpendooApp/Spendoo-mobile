@@ -3,7 +3,9 @@ package com.spendoo.categories.presentation.screen.addScheduledPaymentBottomShee
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.categories.domain.entity.scheduledPayment.PaymentFrequency
 import com.spendoo.categories.domain.entity.scheduledPayment.ReminderUnit
-import com.spendoo.shared.domain.utils.getToday
+import com.spendoo.shared.domain.utils.getNow
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.LocalDate
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.daily
@@ -31,8 +33,9 @@ data class AddScheduledPaymentUiState(
     val categoryIcon: CategoryIcon = CategoryIcon.DEFAULT,
     val categoryName: String = "",
     val isCategorySelectionSheetVisible: Boolean = false,
-    val startDate: LocalDate = getToday(),
+    val startDate: LocalDateTime = getNow(),
     val showDatePicker: Boolean = false,
+    val showTimePicker: Boolean = false,
     val frequency: PaymentFrequency = PaymentFrequency.MONTHLY,
     val customFrequencyDays: String = "",
     val customFrequencyDaysError: StringResource? = null,

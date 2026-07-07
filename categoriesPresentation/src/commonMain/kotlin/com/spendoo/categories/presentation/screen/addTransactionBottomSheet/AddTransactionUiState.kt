@@ -3,8 +3,10 @@ package com.spendoo.categories.presentation.screen.addTransactionBottomSheet
 import com.spendoo.categories.domain.entity.category.Category
 import com.spendoo.shared.domain.entity.CategoryIcon
 import com.spendoo.shared.domain.utils.getToday
+import com.spendoo.shared.domain.utils.getNow
 import com.spendoo.designsystem.utils.UiText
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.StringResource
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.expenses
@@ -51,9 +53,11 @@ data class AddTransactionUiState(
     val incomeAmount: Double? = null,
     val incomeNote: String = "",
     val date: LocalDate = getToday(),
+    val time: LocalTime = getNow().time,
     val isSavingChecked: Boolean = false,
     val savingAmount: Double? = null,
     val showDatePicker: Boolean = false,
+    val showTimePicker: Boolean = false,
     val isSubmitting: Boolean = false,
     val isProcessingMedia: Boolean = false,
     val showCategorySheet: Boolean = false,

@@ -12,6 +12,7 @@ import com.spendoo.statistics.domain.entity.Granularity
 import com.spendoo.statistics.domain.entity.ReportDataType
 import com.spendoo.statistics.domain.repository.StatisticsRepository
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.get
 import kotlinx.datetime.LocalDateTime
 
@@ -58,6 +59,10 @@ class StatisticsRepositoryImpl(
     ): ByteArray {
         val response = tryToExecute<ByteArray> {
             get("/api/v1/statistics/pdf") {
+                timeout { //TODO: Check the enough timeout for large PDFs
+                    requestTimeoutMillis = Long.MAX_VALUE
+                    socketTimeoutMillis = Long.MAX_VALUE
+                }
                 url {
                     parameters.append("start_date", startDate.toUtcInstant().toString())
                     parameters.append("end_date", endDate.toUtcInstant().toString())

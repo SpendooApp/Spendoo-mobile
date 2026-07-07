@@ -15,7 +15,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.cancel
-import spendoo.designsystem.generated.resources.ic_cancel
+import spendoo.designsystem.generated.resources.img_alert
 import spendoo.designsystem.generated.resources.ok
 
 @Composable
@@ -50,13 +50,14 @@ fun FinancialActionBottomSheetContent(
     AppAlertContent(
         modifier = Modifier
             .fillMaxWidth(),
-        iconRes = Res.drawable.ic_cancel,
+        iconRes = Res.drawable.img_alert,
         title = state.tile,
         minWidth = Dp.Unspecified,
         shape = RectangleShape,
+        buttonState = state.buttonState,
         description = state.body,
         actionText = Res.string.ok.asString(),
-        onActionClick = {},
+        onActionClick = interactionListener::onExecute,
         dismissText = Res.string.cancel.asString(),
         onDismissRequest = interactionListener::onDismiss
     )

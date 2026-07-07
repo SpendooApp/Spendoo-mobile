@@ -10,10 +10,8 @@ import com.spendoo.designsystem.utils.UiText
 import com.spendoo.designsystem.utils.extentions.toTimeLeftText
 import com.spendoo.shared.domain.utils.getNow
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.toInstant
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.an_error_occurred

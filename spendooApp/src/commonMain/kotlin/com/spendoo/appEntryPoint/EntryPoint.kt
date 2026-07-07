@@ -86,8 +86,8 @@ fun EntryPoint(
                 || currentRoute == LoginRoute 
                 || currentRoute == SignUpRoute 
                 || currentRoute == ForgetPasswordRoute 
-                || currentRoute == VerifyEmailRoute 
-                || currentRoute == CreateNewPasswordRoute
+                || currentRoute is VerifyEmailRoute 
+                || currentRoute is CreateNewPasswordRoute
 
         if (targetRoute == HomeRoute) {
             if (isUnauthRoute) {
