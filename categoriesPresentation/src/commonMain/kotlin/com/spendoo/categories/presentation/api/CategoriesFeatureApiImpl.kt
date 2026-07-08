@@ -7,22 +7,23 @@ import androidx.navigation3.scene.DialogSceneStrategy
 import com.spendoo.categories.api.AddTransactionRoute
 import com.spendoo.categories.api.CategoriesFeatureApi
 import com.spendoo.categories.api.CategoriesRoute
+import com.spendoo.categories.api.CategoryOffersRoute
+import com.spendoo.categories.api.EditTransactionRoute
 import com.spendoo.categories.api.FinancialActionRoute
 import com.spendoo.categories.api.ScheduledPaymentDetailsRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
+import com.spendoo.categories.api.TopSpendingCategoriesRoute
 import com.spendoo.categories.api.TransactionDetailsRoute
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionBottomSheet
 import com.spendoo.categories.presentation.screen.categories.CategoriesScreen
+import com.spendoo.categories.presentation.screen.categoryOffers.CategoryOffersScreen
+import com.spendoo.categories.presentation.screen.editTransactionBottomSheet.EditTransactionBottomSheet
 import com.spendoo.categories.presentation.screen.financialActionScreen.FinancialActionScreen
 import com.spendoo.categories.presentation.screen.scheduledPaymentDetails.ScheduledPaymentDetailsScreen
 import com.spendoo.categories.presentation.screen.scheduledPayments.ScheduledPaymentsScreen
-import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsScreen
 import com.spendoo.categories.presentation.screen.topSpendingCategories.TopSpendingCategoriesScreen
-import com.spendoo.categories.presentation.screen.categoryOffers.CategoryOffersScreen
-import com.spendoo.categories.presentation.screen.editTransactionBottomSheet.EditTransactionBottomSheet
-import com.spendoo.categories.api.TopSpendingCategoriesRoute
-import com.spendoo.categories.api.CategoryOffersRoute
-import com.spendoo.categories.api.EditTransactionRoute
+import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsScreen
+
 class CategoriesFeatureApiImpl : CategoriesFeatureApi {
 
     override fun invoke(): (NavKey) -> NavEntry<NavKey> {
@@ -44,7 +45,7 @@ class CategoriesFeatureApiImpl : CategoriesFeatureApi {
                 FinancialActionScreen(
                     tile = route.tile,
                     body = route.body,
-                    payload = route.payload
+                    actionId = route.actionId
                 )
             }
             entry<TopSpendingCategoriesRoute> { TopSpendingCategoriesScreen() }

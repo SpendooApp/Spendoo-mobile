@@ -6,5 +6,11 @@ enum class NotificationType {
     USER_FOLLOW,
     PAYMENT_REMINDER,
     ALERT,
-    SYSTEM
+    SYSTEM;
+
+    companion object {
+        fun fromStringOrDefault(value: String?): NotificationType {
+            return entries.find { it.name.equals(value, ignoreCase = true) } ?: SYSTEM
+        }
+    }
 }

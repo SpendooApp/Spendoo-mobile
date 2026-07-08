@@ -19,7 +19,7 @@ data class ScheduledPaymentDetailsRoute(val paymentId: String) : NavKey
 data class TransactionDetailsRoute(val transactionId: String) : NavKey
 
 @Serializable
-data class FinancialActionRoute(val tile: String, val body: String, val payload: Map<String, String>) : NavKey
+data class FinancialActionRoute(val tile: String, val body: String, val actionId: String) : NavKey
 
 @Serializable
 data object TopSpendingCategoriesRoute : NavKey

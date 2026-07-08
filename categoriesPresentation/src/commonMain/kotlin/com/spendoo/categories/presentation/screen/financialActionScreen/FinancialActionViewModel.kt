@@ -11,7 +11,7 @@ import spendoo.designsystem.generated.resources.unknown_error
 class FinancialActionViewModel(
     private val navTile: String,
     private val navBody: String,
-    private val navPayload: Map<String, String>,
+    private val navActionId: String,
     private val budgetActionRepository: BudgetActionRepository
 ) : BaseViewModel<FinancialActionUiState>(FinancialActionUiState()),
     FinancialActionInteractionListener {
@@ -21,7 +21,7 @@ class FinancialActionViewModel(
             copy(
                 tile = navTile,
                 body = navBody,
-                payload = navPayload
+                actionId = navActionId
             )
         }
     }
@@ -31,7 +31,7 @@ class FinancialActionViewModel(
     }
 
     override fun onExecute() {
-        val actionId = navPayload["actionId"] ?: return
+        val actionId = state.value.actionId
         tryToCall(
             onStart = {
                 updateState { copy(buttonState = AppButtonState.Loading) }
