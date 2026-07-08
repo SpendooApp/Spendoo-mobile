@@ -22,9 +22,9 @@ import spendoo.designsystem.generated.resources.ok
 fun FinancialActionScreen(
     tile: String,
     body: String,
-    payload: Map<String, String>,
+    actionId: String,
     viewModel: FinancialActionViewModel =
-        koinViewModel(parameters = { parametersOf(tile, body, payload) })
+        koinViewModel(parameters = { parametersOf(tile, body, actionId) })
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

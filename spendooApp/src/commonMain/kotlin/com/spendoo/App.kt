@@ -14,16 +14,24 @@ import com.mmk.kmpnotifier.push.PushListener
 import com.mmk.kmpnotifier.push.firebase.addPushListener
 import com.spendoo.appEntryPoint.EntryPoint
 import com.spendoo.categories.api.FinancialActionRoute
+import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.designsystem.navigation.effector.Effector
 import com.spendoo.designsystem.theme.theme.SpendooTheme
+import com.spendoo.goals.api.AchievementsRoute
+import com.spendoo.goals.api.GoalsRoute
+import com.spendoo.home.api.NotificationsRoute
+import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.domain.repository.AuthenticationRepository
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppLanguage
 import com.spendoo.identity.domain.util.AppLocalizer
 import com.spendoo.identity.domain.util.AppTheme
+import com.spendoo.notifications.domain.entity.NotificationType
+import com.spendoo.statistics.api.StatisticsRoute
 import com.spendoo.util.SetSystemBarsAppearance
 import com.spendoo.util.toStringMap
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -61,25 +69,39 @@ fun App(
                 body: String?,
                 data: PayloadData
             ) {
-                if (data.isEmpty()) {
-                    KMPNotifier.localNotifier.notify {
-                        this.title = title.orEmpty()
-                        this.body = body.orEmpty()
-                    }
-                } else {
+                val actionId = data["actionId"] as? String
+                if (actionId != null) {
                     coroutineScope.launch(exceptionHandler) {
                         effector.navigate(
                             FinancialActionRoute(
                                 tile = title.orEmpty(),
                                 body = body.orEmpty(),
-                                payload = data.toStringMap()
+                                actionId = actionId
                             ),
                             forceNavigate = true
                         )
                     }
+                } else {
+                    KMPNotifier.localNotifier.notify {
+                        this.title = title.orEmpty()
+                        this.body = body.orEmpty()
+                        this.payloadData = data.toStringMap()
+                    }
                 }
             }
         })
+
+
+        NotificationClickState.consumePendingPayload()?.let { data ->
+            handleNotificationClick(data, coroutineScope, exceptionHandler, effector)
+        }
+
+        coroutineScope.launch {
+            NotificationClickState.clickFlow.collect { data ->
+                NotificationClickState.consumePendingPayload()
+                handleNotificationClick(data, coroutineScope, exceptionHandler, effector)
+            }
+        }
     }
 
     val languageCode = if (currentLanguage == AppLanguage.DEFAULT) {
@@ -96,4 +118,38 @@ fun App(
             EntryPoint()
         }
     )
+}
+
+private fun handleNotificationClick(
+    data: PayloadData,
+    coroutineScope: CoroutineScope,
+    exceptionHandler: CoroutineExceptionHandler,
+    effector: Effector
+) {
+    val actionId = data["actionId"] as? String
+    coroutineScope.launch(exceptionHandler) {
+        if (actionId != null) {
+            effector.navigate(
+                FinancialActionRoute(
+                    tile = (data["title"] as? String) ?: "Notification",
+                    body = (data["body"] as? String).orEmpty(),
+                    actionId = actionId
+                ),
+                forceNavigate = true
+            )
+        } else {
+            val type = data["type"] as? String
+            val notificationType = NotificationType.fromStringOrDefault(type)
+            effector.navigate(
+                when (notificationType) {
+                    NotificationType.ACHIEVEMENT -> AchievementsRoute
+                    NotificationType.GOAL -> GoalsRoute
+                    NotificationType.USER_FOLLOW -> ProfileRoute
+                    NotificationType.PAYMENT_REMINDER -> ScheduledPaymentsRoute
+                    NotificationType.ALERT -> StatisticsRoute()
+                    NotificationType.SYSTEM -> NotificationsRoute
+                }, forceNavigate = true
+            )
+        }
+    }
 }
