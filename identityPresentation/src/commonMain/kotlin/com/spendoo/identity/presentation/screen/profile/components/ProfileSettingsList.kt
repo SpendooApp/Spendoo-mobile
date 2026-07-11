@@ -39,11 +39,13 @@ import spendoo.designsystem.generated.resources.ic_stats
 import spendoo.designsystem.generated.resources.ic_win_cup
 import spendoo.designsystem.generated.resources.logout
 import spendoo.designsystem.generated.resources.notifications
+import spendoo.designsystem.generated.resources.periodic_reminder
 import spendoo.designsystem.generated.resources.profile_details
 import spendoo.designsystem.generated.resources.scheduled_payments
 
 @Composable
 fun ProfileSettingsList(
+    isReminderEnabled: Boolean,
     listener: ProfileInteractionListener
 ) {
     Column(
@@ -117,6 +119,44 @@ fun ProfileSettingsList(
             Switch(
                 checked = isDark,
                 onCheckedChange = { listener.onToggleTheme(!isDark) }
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Theme.colorScheme.background.secondary, RoundedCornerShape(16.dp))
+                .border(1.dp, Theme.colorScheme.border.primary, RoundedCornerShape(16.dp))
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Theme.colorScheme.button.secondary),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = Res.drawable.ic_bell.painter(),
+                    tint = Theme.colorScheme.button.primary,
+                    contentDescription = null
+                )
+            }
+            Text(
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .weight(1f),
+                text = stringResource(Res.string.periodic_reminder),
+                style = Theme.typography.body.medium,
+                color = Theme.colorScheme.text.title,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
+            Switch(
+                checked = isReminderEnabled,
+                onCheckedChange = { listener.onToggleReminder(it) }
             )
         }
 

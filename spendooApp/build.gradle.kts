@@ -13,47 +13,53 @@ kotlin {
 
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.androidx.navigation3.ui)
-            implementation(libs.androidx.lifecycle.viewmodel.navigation3)
-            implementation(projects.designSystem)
-            implementation(projects.identityData)
-            implementation(projects.identityDomain)
-            implementation(projects.identityPresentation)
-            implementation(projects.identityApi)
-            implementation(projects.homeApi)
-            implementation(projects.homePresentation)
-            implementation(projects.offersData)
-            implementation(projects.scraperData)
-            implementation(projects.goalsData)
-            implementation(projects.categoriesDomain)
-            implementation(projects.categoriesData)
-            implementation(projects.categoriesApi)
-            implementation(projects.categoriesPresentation)
-            implementation(projects.statisticsApi)
-            implementation(projects.statisticsPresentation)
-            implementation(projects.statisticsDomain)
-            implementation(projects.statisticsData)
-            implementation(projects.goalsApi)
-            implementation(projects.goalsPresentation)
-            implementation(projects.chatbotApi)
-            implementation(projects.chatbotPresentation)
-            implementation(projects.chatbotDomain)
-            implementation(projects.chatbotData)
-            implementation(projects.notificationsDomain)
-            implementation(projects.notificationsData)
-            api(projects.logging)
-            implementation(projects.sharedDomain)
-            implementation(projects.sharedData)
-            api(libs.kmpnotifier)
-
+        commonMain {
+            dependencies {
+                implementation(libs.androidx.navigation3.ui)
+                implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+                implementation(projects.designSystem)
+                implementation(projects.identityData)
+                implementation(projects.identityDomain)
+                implementation(projects.identityPresentation)
+                implementation(projects.identityApi)
+                implementation(projects.homeApi)
+                implementation(projects.homePresentation)
+                implementation(projects.offersData)
+                implementation(projects.scraperData)
+                implementation(projects.goalsData)
+                implementation(projects.categoriesDomain)
+                implementation(projects.categoriesData)
+                implementation(projects.categoriesApi)
+                implementation(projects.categoriesPresentation)
+                implementation(projects.statisticsApi)
+                implementation(projects.statisticsPresentation)
+                implementation(projects.statisticsDomain)
+                implementation(projects.statisticsData)
+                implementation(projects.goalsApi)
+                implementation(projects.goalsPresentation)
+                implementation(projects.chatbotApi)
+                implementation(projects.chatbotPresentation)
+                implementation(projects.chatbotDomain)
+                implementation(projects.chatbotData)
+                implementation(projects.notificationsDomain)
+                implementation(projects.notificationsData)
+                api(projects.logging)
+                implementation(projects.sharedDomain)
+                implementation(projects.sharedData)
+                api(libs.kmpnotifier)
+                implementation(libs.kotlinx.datetime)
+            }
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
         }
-        androidMain.dependencies {
-            implementation(libs.androidx.poolingcontainer)
-            implementation(libs.androidx.core.ktx)
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.poolingcontainer)
+                implementation(libs.androidx.core.ktx)
+            }
         }
     }
 

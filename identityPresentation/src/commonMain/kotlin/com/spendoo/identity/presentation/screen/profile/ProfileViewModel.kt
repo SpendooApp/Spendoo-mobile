@@ -92,6 +92,14 @@ class ProfileViewModel(
             },
             onError = { handleError(it) }
         )
+
+        tryToCollect(
+            block = { settingsRepository.observeReminderEnabled() },
+            onEach = { isEnabled ->
+                updateState { copy(isReminderEnabled = isEnabled) }
+            },
+            onError = { handleError(it) }
+        )
     }
 
     private fun handleError(throwable: Throwable) {
@@ -179,6 +187,14 @@ class ProfileViewModel(
         val newTheme = if (isDark) AppTheme.DARK else AppTheme.LIGHT
         tryToCall(
             block = { settingsRepository.applyAppTheme(newTheme) },
+            onSuccess = { },
+            onError = { handleError(it) }
+        )
+    }
+
+    override fun onToggleReminder(isEnabled: Boolean) {
+        tryToCall(
+            block = { settingsRepository.setReminderEnabled(isEnabled) },
             onSuccess = { },
             onError = { handleError(it) }
         )

@@ -23,8 +23,13 @@ internal var Settings.onBoardingCompleted: Boolean
     get() = getBoolean(OnBOARDING_COMPLETED, false)
     set(value) = putBoolean(OnBOARDING_COMPLETED, value)
 
+internal var Settings.reminderEnabled: Boolean
+    get() = getBoolean(REMINDER_ENABLED, true)
+    set(value) = putBoolean(REMINDER_ENABLED, value)
+
 const val ACCESS_TOKEN = "access_token"
 const val REFRESH_TOKEN = "refresh_token"
 const val APP_LANGUAGE = "app_language"
 const val APP_THEME = "app_theme"
 const val OnBOARDING_COMPLETED = "onboarding_completed"
+const val REMINDER_ENABLED = "reminder_enabled"

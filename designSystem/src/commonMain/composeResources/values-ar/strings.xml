@@ -55,6 +55,9 @@
     <string name="otp_must_be_5_digits">يجب أن يتكون رمز التحقق من 5 أرقام</string>
     <string name="an_error_occurred">حدث خطأ</string>
     <string name="unknown_error">خطأ غير معروف</string>
+    <string name="tracking_reminder_title">تتبع إنفاقك</string>
+    <string name="tracking_reminder_body">لا تنسَ تسجيل نفقاتك اليوم للحفاظ على ميزانيتك في المسار الصحيح!</string>
+    <string name="periodic_reminder">التنبيهات الدورية</string>
     <string name="low">منخفض</string>
     <string name="medium">متوسط</string>
     <string name="high">مرتفع</string>

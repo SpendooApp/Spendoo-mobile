@@ -2,10 +2,14 @@ package com.spendoo
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mmk.kmpnotifier.KMPNotifier
 import com.mmk.kmpnotifier.local.localNotifier
@@ -13,6 +17,7 @@ import com.mmk.kmpnotifier.notification.PayloadData
 import com.mmk.kmpnotifier.push.PushListener
 import com.mmk.kmpnotifier.push.firebase.addPushListener
 import com.spendoo.appEntryPoint.EntryPoint
+import com.spendoo.categories.api.AddTransactionRoute
 import com.spendoo.categories.api.FinancialActionRoute
 import com.spendoo.categories.api.ScheduledPaymentsRoute
 import com.spendoo.designsystem.navigation.effector.Effector
@@ -27,13 +32,18 @@ import com.spendoo.identity.domain.util.AppLanguage
 import com.spendoo.identity.domain.util.AppLocalizer
 import com.spendoo.identity.domain.util.AppTheme
 import com.spendoo.notifications.domain.entity.NotificationType
+import com.spendoo.notifications.domain.scheduler.NotificationReminderManager
 import com.spendoo.statistics.api.StatisticsRoute
 import com.spendoo.util.SetSystemBarsAppearance
 import com.spendoo.util.toStringMap
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
+import spendoo.designsystem.generated.resources.Res
+import spendoo.designsystem.generated.resources.tracking_reminder_body
+import spendoo.designsystem.generated.resources.tracking_reminder_title
 
 @Preview
 @Composable
@@ -42,6 +52,7 @@ fun App(
     settingsRepository: SettingsRepository = koinInject(),
     appLocalizer: AppLocalizer = koinInject(),
     authenticationRepository: AuthenticationRepository = koinInject(),
+    reminderManager: NotificationReminderManager = koinInject(),
     effector: Effector = koinInject()
 ) {
     val currentTheme by settingsRepository.observeAppTheme().collectAsStateWithLifecycle()
@@ -55,6 +66,43 @@ fun App(
 
     val coroutineScope = rememberCoroutineScope()
     val exceptionHandler = CoroutineExceptionHandler { _, _ -> }
+
+    val isReminderEnabled by settingsRepository.observeReminderEnabled().collectAsStateWithLifecycle()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner, isReminderEnabled) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                coroutineScope.launch {
+                    val titleText = getString(Res.string.tracking_reminder_title)
+                    val bodyText = getString(Res.string.tracking_reminder_body)
+                    reminderManager.startReminderCycle(
+                        coroutineScope = coroutineScope,
+                        title = titleText,
+                        body = bodyText,
+                        isReminderEnabled = isReminderEnabled
+                    )
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(isReminderEnabled) {
+        val titleText = getString(Res.string.tracking_reminder_title)
+
+        val bodyText = getString(Res.string.tracking_reminder_body)
+
+        reminderManager.startReminderCycle(
+            coroutineScope = coroutineScope,
+            title = titleText,
+            body = bodyText,
+            isReminderEnabled = isReminderEnabled
+        )
+    }
 
     LaunchedEffect(Unit) {
         KMPNotifier.addPushListener(object : PushListener {
@@ -148,6 +196,7 @@ private fun handleNotificationClick(
                     NotificationType.PAYMENT_REMINDER -> ScheduledPaymentsRoute
                     NotificationType.ALERT -> StatisticsRoute()
                     NotificationType.SYSTEM -> NotificationsRoute
+                    NotificationType.TRACKING_REMINDER -> AddTransactionRoute
                 }, forceNavigate = true
             )
         }

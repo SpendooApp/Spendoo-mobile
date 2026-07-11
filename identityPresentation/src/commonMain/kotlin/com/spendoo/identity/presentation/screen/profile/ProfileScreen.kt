@@ -116,7 +116,7 @@ fun ProfileContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                ProfileSettingsList(listener = listener)
+                ProfileSettingsList(isReminderEnabled = state.isReminderEnabled, listener = listener)
 
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -158,6 +158,7 @@ private fun ProfileScreenPreview() {
                 override fun onSelectLanguage(language: AppLanguage) {}
                 override fun onDismissLanguageBottomSheet() {}
                 override fun onToggleTheme(isDark: Boolean) {}
+                override fun onToggleReminder(isEnabled: Boolean) {}
                 override fun onReload() {}
                 override fun onClickLogout() {}
                 override fun onClickUser(userId: String, userName: String, imageUrl: String?) {}

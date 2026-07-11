@@ -55,6 +55,9 @@
     <string name="otp_must_be_5_digits">OTP must be 5 digits</string>
     <string name="an_error_occurred">An error occurred</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="tracking_reminder_title">Track your spending</string>
+    <string name="tracking_reminder_body">Don&apos;t forget to record your expenses today to keep your budget on track!</string>
+    <string name="periodic_reminder">Periodic Reminder</string>
     <string name="low">Low</string>
     <string name="medium">Medium</string>
     <string name="high">High</string>

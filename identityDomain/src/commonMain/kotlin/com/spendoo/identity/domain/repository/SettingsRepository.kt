@@ -14,4 +14,7 @@ interface SettingsRepository {
     fun isOnboardingComplete(): Boolean
     fun observeOnBoardingCompleted(): StateFlow<Boolean>
     fun setOnboardingCompleted(value: Boolean)
+    fun isReminderEnabled(): Boolean
+    fun observeReminderEnabled(): StateFlow<Boolean>
+    suspend fun setReminderEnabled(value: Boolean)
 }

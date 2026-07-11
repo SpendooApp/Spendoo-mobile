@@ -15,4 +15,5 @@ data class ProfileUiState(
     val selectedLanguage: AppLanguage = AppLanguage.ENGLISH,
     val isLanguageBottomSheetVisible: Boolean = false,
     val isRefreshing: Boolean = false,
+    val isReminderEnabled: Boolean = true,
 )
