@@ -33,6 +33,7 @@ data class HomeUiState(
     val isGoalsLoading: Boolean = true,
     val isTopSpendingLoading: Boolean = true,
     val isNotificationsLoading: Boolean = true,
+    val isHomeOffersEnabled: Boolean = true,
     val balanceSummary: BalanceSummaryUiState = BalanceSummaryUiState(),
     val offers: List<OfferUiState> = emptyList(),
     val goals: List<GoalUiState> = emptyList(),
@@ -62,6 +63,10 @@ data class OfferUiState(
     val id: String,
     val discountPercent: Int?,
     val imageUrl: String?,
+    val title: String?,
+    val price: Double?,
+    val currency: String?,
+    val rating: Double?,
     val link: String? = null
 )
 
@@ -70,6 +75,10 @@ fun Offer.toUiState(): OfferUiState {
         id = id,
         discountPercent = discountPercent,
         imageUrl = imageUrl,
+        title = title,
+        price = price,
+        currency = currency,
+        rating = rating,
         link = link
     )
 }

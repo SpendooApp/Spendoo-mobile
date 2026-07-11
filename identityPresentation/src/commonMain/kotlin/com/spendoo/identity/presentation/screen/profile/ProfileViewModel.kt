@@ -100,6 +100,14 @@ class ProfileViewModel(
             },
             onError = { handleError(it) }
         )
+
+        tryToCollect(
+            block = { settingsRepository.observeHomeOffersEnabled() },
+            onEach = { isEnabled ->
+                updateState { copy(isHomeOffersEnabled = isEnabled) }
+            },
+            onError = { handleError(it) }
+        )
     }
 
     private fun handleError(throwable: Throwable) {
@@ -195,6 +203,14 @@ class ProfileViewModel(
     override fun onToggleReminder(isEnabled: Boolean) {
         tryToCall(
             block = { settingsRepository.setReminderEnabled(isEnabled) },
+            onSuccess = { },
+            onError = { handleError(it) }
+        )
+    }
+
+    override fun onToggleHomeOffers(isEnabled: Boolean) {
+        tryToCall(
+            block = { settingsRepository.setHomeOffersEnabled(isEnabled) },
             onSuccess = { },
             onError = { handleError(it) }
         )

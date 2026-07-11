@@ -16,4 +16,5 @@ data class ProfileUiState(
     val isLanguageBottomSheetVisible: Boolean = false,
     val isRefreshing: Boolean = false,
     val isReminderEnabled: Boolean = true,
+    val isHomeOffersEnabled: Boolean = true,
 )

@@ -380,4 +380,5 @@
     <string name="select_time">Select Time</string>
     <string name="logout">Logout</string>
     <string name="payment_required">Payment Required</string>
+    <string name="home_offers">Home Offers</string>
 </resources>

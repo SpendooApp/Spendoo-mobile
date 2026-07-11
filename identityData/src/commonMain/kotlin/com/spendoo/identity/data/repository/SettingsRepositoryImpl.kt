@@ -5,6 +5,7 @@ import com.spendoo.identity.data.dataSource.local.setting.appLanguage
 import com.spendoo.identity.data.dataSource.local.setting.appTheme
 import com.spendoo.identity.data.dataSource.local.setting.onBoardingCompleted
 import com.spendoo.identity.data.dataSource.local.setting.reminderEnabled
+import com.spendoo.identity.data.dataSource.local.setting.homeOffersEnabled
 import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.identity.domain.util.AppLanguage
 import com.spendoo.identity.domain.util.AppTheme
@@ -18,6 +19,7 @@ class SettingsRepositoryImpl(
     private val _appThemeFlow = MutableStateFlow(settings.appTheme.toAppTheme())
     private val _onBoardingFlow = MutableStateFlow(settings.onBoardingCompleted)
     private val _reminderEnabledFlow = MutableStateFlow(settings.reminderEnabled)
+    private val _homeOffersEnabledFlow = MutableStateFlow(settings.homeOffersEnabled)
 
 
     override suspend fun applyLanguage(appLanguage: AppLanguage) {
@@ -69,5 +71,14 @@ class SettingsRepositoryImpl(
     override suspend fun setReminderEnabled(value: Boolean) {
         settings.reminderEnabled = value
         _reminderEnabledFlow.value = value
+    }
+
+    override fun isHomeOffersEnabled(): Boolean = settings.homeOffersEnabled
+
+    override fun observeHomeOffersEnabled(): StateFlow<Boolean> = _homeOffersEnabledFlow
+
+    override suspend fun setHomeOffersEnabled(value: Boolean) {
+        settings.homeOffersEnabled = value
+        _homeOffersEnabledFlow.value = value
     }
 }

@@ -12,6 +12,7 @@ import com.spendoo.goals.domain.repository.GoalsRepository
 import com.spendoo.home.api.NotificationsRoute
 import com.spendoo.identity.api.ProfileRoute
 import com.spendoo.identity.domain.repository.ProfileRepository
+import com.spendoo.identity.domain.repository.SettingsRepository
 import com.spendoo.notifications.domain.repository.NotificationRepository
 import com.spendoo.offers.domain.repository.OffersRepository
 import com.spendoo.shared.domain.utils.PageQuery
@@ -28,11 +29,13 @@ class HomeViewModel(
     private val categoriesRepository: CategoriesRepository,
     private val profileRepository: ProfileRepository,
     private val notificationRepository: NotificationRepository,
-    private val goalsRepository: GoalsRepository
+    private val goalsRepository: GoalsRepository,
+    private val settingsRepository: SettingsRepository
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeInteractionListener {
 
     init {
         listenToResetSignal()
+        observeHomeOffersEnabledSetting()
         getHomeData()
     }
 
@@ -199,7 +202,11 @@ class HomeViewModel(
             onStart = { updateState { copy(isTopSpendingLoading = true) } },
             onSuccess = { spending ->
                 updateState { copy(topSpending = spending.data.map { it.toUiState() }) }
-                loadOffers()
+                if (settingsRepository.isHomeOffersEnabled()) {
+                    loadOffers()
+                } else {
+                    updateState { copy(isOffersLoading = false) }
+                }
             },
             onError = { error ->
                 error.message?.let {
@@ -237,7 +244,9 @@ class HomeViewModel(
     override fun onSpendingClicked(categoryId: String) {
         navigate(CategoryOffersRoute(categoryId = categoryId))
     }
-    override fun onViewAllOffersClicked() {}
+    override fun onViewAllOffersClicked() {
+        navigate(CategoryOffersRoute(categoryId = null))
+    }
     override fun onViewAllGoalsClicked() {
         navigate(GoalsRoute)
     }
@@ -250,5 +259,22 @@ class HomeViewModel(
     }
     override fun onProfileClicked() {
         navigate(ProfileRoute)
+    }
+
+    private fun observeHomeOffersEnabledSetting() {
+        tryToCollect(
+            block = { settingsRepository.observeHomeOffersEnabled() },
+            onEach = { isEnabled ->
+                updateState { copy(isHomeOffersEnabled = isEnabled) }
+                if (isEnabled) {
+                    if (state.value.offers.isEmpty() && !state.value.isOffersLoading) {
+                        loadOffers()
+                    }
+                } else {
+                    updateState { copy(offers = emptyList(), isOffersLoading = false) }
+                }
+            },
+            onError = {}
+        )
     }
 }

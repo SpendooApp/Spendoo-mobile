@@ -380,5 +380,6 @@
     <string name="select_time">اختر الوقت</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="payment_required">مطلوب الدفع</string>
+    <string name="home_offers">عروض الصفحة الرئيسية</string>
 </resources>
 

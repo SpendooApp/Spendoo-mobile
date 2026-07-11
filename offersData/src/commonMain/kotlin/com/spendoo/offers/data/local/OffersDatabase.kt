@@ -8,7 +8,7 @@ import com.spendoo.offers.data.local.dao.OffersDao
 import com.spendoo.offers.data.local.entity.KeywordCacheEntity
 import com.spendoo.offers.data.local.entity.OfferEntity
 
-@Database(entities = [OfferEntity::class, KeywordCacheEntity::class], version = 2)
+@Database(entities = [OfferEntity::class, KeywordCacheEntity::class], version = 3)
 @ConstructedBy(OffersDatabaseConstructor::class)
 abstract class OffersDatabase : RoomDatabase() {
     abstract fun offersDao(): OffersDao

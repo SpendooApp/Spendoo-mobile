@@ -25,7 +25,7 @@ data class FinancialActionRoute(val tile: String, val body: String, val actionId
 data object TopSpendingCategoriesRoute : NavKey
 
 @Serializable
-data class CategoryOffersRoute(val categoryId: String) : NavKey
+data class CategoryOffersRoute(val categoryId: String?) : NavKey
 
 @Serializable
 data class EditTransactionRoute(val transactionId: String) : NavKey

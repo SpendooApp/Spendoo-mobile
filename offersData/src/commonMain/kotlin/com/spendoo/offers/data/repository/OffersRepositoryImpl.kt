@@ -68,6 +68,7 @@ class OffersRepositoryImpl(
                                 title = product.title,
                                 price = product.price,
                                 currency = product.currency,
+                                rating = product.rating,
                                 link = product.link
                             )
                         }
@@ -98,6 +99,7 @@ class OffersRepositoryImpl(
                 title = entity.title,
                 price = entity.price,
                 currency = entity.currency,
+                rating = entity.rating,
                 link = entity.link
             )
         }

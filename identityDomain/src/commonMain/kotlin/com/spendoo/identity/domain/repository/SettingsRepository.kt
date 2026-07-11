@@ -17,4 +17,7 @@ interface SettingsRepository {
     fun isReminderEnabled(): Boolean
     fun observeReminderEnabled(): StateFlow<Boolean>
     suspend fun setReminderEnabled(value: Boolean)
+    fun isHomeOffersEnabled(): Boolean
+    fun observeHomeOffersEnabled(): StateFlow<Boolean>
+    suspend fun setHomeOffersEnabled(value: Boolean)
 }

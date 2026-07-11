@@ -4,15 +4,16 @@ import com.spendoo.categories.presentation.screen.addCategoryBottomSheet.AddCate
 import com.spendoo.categories.presentation.screen.addScheduledPaymentBottomSheet.AddScheduledPaymentViewModel
 import com.spendoo.categories.presentation.screen.addTransactionBottomSheet.AddTransactionViewModel
 import com.spendoo.categories.presentation.screen.categories.CategoriesViewModel
+import com.spendoo.categories.presentation.screen.categoryOffers.CategoryOffersViewModel
 import com.spendoo.categories.presentation.screen.categorySelectionSheet.CategorySelectionViewModel
+import com.spendoo.categories.presentation.screen.editTransactionBottomSheet.EditTransactionViewModel
 import com.spendoo.categories.presentation.screen.financialActionScreen.FinancialActionViewModel
 import com.spendoo.categories.presentation.screen.inputVoiceBottomSheet.InputVoiceViewModel
 import com.spendoo.categories.presentation.screen.scheduledPaymentDetails.ScheduledPaymentDetailsViewModel
 import com.spendoo.categories.presentation.screen.scheduledPayments.ScheduledPaymentsViewModel
-import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsViewModel
 import com.spendoo.categories.presentation.screen.topSpendingCategories.TopSpendingCategoriesViewModel
-import com.spendoo.categories.presentation.screen.categoryOffers.CategoryOffersViewModel
-import com.spendoo.categories.presentation.screen.editTransactionBottomSheet.EditTransactionViewModel
+import com.spendoo.categories.presentation.screen.transactionDetails.TransactionDetailsViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -28,6 +29,13 @@ val categoriesPresentationModule = module {
     viewModelOf(::TransactionDetailsViewModel)
     viewModelOf(::FinancialActionViewModel)
     viewModelOf(::TopSpendingCategoriesViewModel)
-    viewModelOf(::CategoryOffersViewModel)
     viewModelOf(::EditTransactionViewModel)
+    viewModel { params ->
+        val (categoryId: String?) = params
+        CategoryOffersViewModel(
+            categoryId = categoryId,
+            transactionsRepository = get(),
+            offersRepository = get()
+        )
+    }
 }
