@@ -59,18 +59,26 @@ class ProfileViewModel(
 
         tryToCall(
             block = { followRepository.getFollowing(PageQuery(page = 0, size = 10)) },
+            onStart = { updateState { copy(isFollowingsLoading = true) } },
             onSuccess = { pagedData ->
-                updateState { copy(followings = pagedData.data) }
+                updateState { copy(followings = pagedData.data, isFollowingsLoading = false) }
             },
-            onError = { handleError(it) }
+            onError = { 
+                updateState { copy(isFollowingsLoading = false) }
+                handleError(it) 
+            }
         )
 
         tryToCall(
             block = { followRepository.getFollowers(PageQuery(page = 0, size = 10)) },
+            onStart = { updateState { copy(isFollowersLoading = true) } },
             onSuccess = { pagedData ->
-                updateState { copy(followers = pagedData.data) }
+                updateState { copy(followers = pagedData.data, isFollowersLoading = false) }
             },
-            onError = { handleError(it) }
+            onError = { 
+                updateState { copy(isFollowersLoading = false) }
+                handleError(it) 
+            }
         )
     }
 

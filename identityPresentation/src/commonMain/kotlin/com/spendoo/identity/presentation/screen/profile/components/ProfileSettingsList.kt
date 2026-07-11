@@ -35,11 +35,12 @@ import spendoo.designsystem.generated.resources.scheduled_payments
 fun ProfileSettingsList(
     isReminderEnabled: Boolean,
     isHomeOffersEnabled: Boolean,
-    listener: ProfileInteractionListener
+    listener: ProfileInteractionListener,
+    modifier: Modifier = Modifier
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         ProfileSettingItem(
             icon = Res.drawable.ic_profile_details,

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.padding
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.Theme
@@ -29,7 +30,7 @@ fun FollowersSection(
     listener: ProfileInteractionListener
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -48,8 +49,9 @@ fun FollowersSection(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    if (state.followers.isEmpty()) {
+    if (state.followers.isEmpty() && !state.isFollowersLoading) {
         Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
             text = stringResource(Res.string.no_followers),
             style = Theme.typography.body.medium,
             color = Theme.colorScheme.text.title
@@ -59,10 +61,16 @@ fun FollowersSection(
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(vertical = 4.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        items(state.followers) { user ->
-            UserAvatarChip(user = user)
+        if (state.isFollowersLoading) {
+            items(5) {
+                UserAvatarShimmer()
+            }
+        } else {
+            items(state.followers) { user ->
+                UserAvatarChip(user = user)
+            }
         }
     }
 }

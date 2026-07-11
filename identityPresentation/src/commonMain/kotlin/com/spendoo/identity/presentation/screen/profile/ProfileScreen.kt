@@ -101,10 +101,15 @@ fun ProfileContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(vertical = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ProfileHeader(state = state, onCopyFollowCode = onCopyFollowCode, onRegenerateCode = listener::onClickRegenerateFollowCode)
+                ProfileHeader(
+                    state = state,
+                    onCopyFollowCode = onCopyFollowCode,
+                    onRegenerateCode = listener::onClickRegenerateFollowCode,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -119,7 +124,8 @@ fun ProfileContent(
                 ProfileSettingsList(
                     isReminderEnabled = state.isReminderEnabled,
                     isHomeOffersEnabled = state.isHomeOffersEnabled,
-                    listener = listener
+                    listener = listener,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))

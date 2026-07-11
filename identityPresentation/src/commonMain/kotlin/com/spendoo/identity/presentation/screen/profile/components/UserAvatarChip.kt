@@ -21,6 +21,8 @@ import com.spendoo.designsystem.components.icon.Icon
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.theme.theme.Theme
 import com.spendoo.designsystem.utils.extentions.painter
+import androidx.compose.foundation.shape.RoundedCornerShape
+import com.spendoo.designsystem.modifier.shimmerEffect
 import com.spendoo.identity.domain.model.UserSearch
 import spendoo.designsystem.generated.resources.Res
 import spendoo.designsystem.generated.resources.ic_profile_details
@@ -68,6 +70,31 @@ fun UserAvatarChip(
             color = Theme.colorScheme.text.titleSmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+fun UserAvatarShimmer(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.width(70.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .clip(CircleShape)
+                .shimmerEffect()
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Box(
+            modifier = Modifier
+                .height(12.dp)
+                .width(48.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .shimmerEffect()
         )
     }
 }
