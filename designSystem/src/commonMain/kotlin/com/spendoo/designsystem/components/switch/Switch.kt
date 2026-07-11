@@ -1,10 +1,11 @@
 package com.spendoo.designsystem.components.switch
 
-import androidx.compose.material3.Switch as Material3Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.spendoo.designsystem.theme.theme.Theme
+import androidx.compose.material3.Switch as Material3Switch
 
 @Composable
 fun Switch(
@@ -17,10 +18,10 @@ fun Switch(
         onCheckedChange = onCheckedChange,
         modifier = modifier,
         colors = SwitchDefaults.colors(
-            checkedThumbColor = Theme.colorScheme.brand.primary,
-            checkedTrackColor = Theme.colorScheme.button.secondary,
+            checkedThumbColor = Theme.colorScheme.brand.onPrimary,
+            checkedTrackColor = Theme.colorScheme.icon.primary,
             uncheckedThumbColor = Theme.colorScheme.text.body,
-            uncheckedTrackColor = Theme.colorScheme.background.secondary
+            uncheckedTrackColor = Color.Unspecified
         )
     )
 }

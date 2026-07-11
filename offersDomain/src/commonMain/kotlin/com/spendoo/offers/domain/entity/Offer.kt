@@ -7,5 +7,6 @@ data class Offer(
     val title: String? = null,
     val price: Double? = null,
     val currency: String? = null,
+    val rating: Double? = null,
     val link: String? = null
 )

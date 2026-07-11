@@ -8,5 +8,6 @@ data class AmazonProduct(
     val rating: Double?,
     val reviews: Int?,
     val link: String?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val discountPercent: Int?
 )

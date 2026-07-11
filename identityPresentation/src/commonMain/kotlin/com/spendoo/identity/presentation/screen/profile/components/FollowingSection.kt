@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -39,7 +40,7 @@ fun FollowingSection(
     listener: ProfileInteractionListener
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -61,7 +62,7 @@ fun FollowingSection(
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(vertical = 4.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
     ) {
         item {
             Column(
@@ -93,8 +94,14 @@ fun FollowingSection(
             }
         }
 
-        items(state.followings) { user ->
-            UserAvatarChip(user = user, modifier = Modifier.clickableNoRipple { listener.onClickUser(user.userId, user.fullName, user.imageUrl) })
+        if (state.isFollowingsLoading) {
+            items(5) {
+                UserAvatarShimmer()
+            }
+        } else {
+            items(state.followings) { user ->
+                UserAvatarChip(user = user, modifier = Modifier.clickableNoRipple { listener.onClickUser(user.userId, user.fullName, user.imageUrl) })
+            }
         }
     }
 }

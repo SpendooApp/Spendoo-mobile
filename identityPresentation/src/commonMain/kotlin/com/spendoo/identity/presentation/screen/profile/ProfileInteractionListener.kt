@@ -19,6 +19,8 @@ interface ProfileInteractionListener {
     fun onSelectLanguage(language: AppLanguage)
     fun onDismissLanguageBottomSheet()
     fun onToggleTheme(isDark: Boolean)
+    fun onToggleReminder(isEnabled: Boolean)
+    fun onToggleHomeOffers(isEnabled: Boolean)
     fun onReload()
     fun onClickLogout()
     fun onClickUser(userId: String, userName: String, imageUrl: String?)

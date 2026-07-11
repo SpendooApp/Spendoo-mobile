@@ -9,7 +9,20 @@ import com.spendoo.offers.data.local.entity.OfferEntity
 
 @Dao
 interface OffersDao {
-    @Query("SELECT * FROM offers WHERE keyword IN (:keywords) AND language = :language ORDER BY price ASC LIMIT :limit OFFSET :offset")
+    @Query(
+        """
+            SELECT *
+            FROM offers
+            WHERE keyword IN (:keywords)
+                AND language = :language
+            ORDER BY 
+                    CASE WHEN discountPercent IS NULL THEN 0 ELSE 1 END DESC,
+                    discountPercent DESC,
+                    price ASC
+            LIMIT :limit
+            OFFSET :offset
+        """
+    )
     suspend fun getOffersForKeywords(
         keywords: List<String>,
         language: String,
@@ -22,7 +35,10 @@ interface OffersDao {
 
 
     @Query("SELECT * FROM keyword_cache WHERE keyword IN (:keywords) AND language = :language")
-    suspend fun getCacheStatusForKeywords(keywords: List<String>, language: String): List<KeywordCacheEntity>
+    suspend fun getCacheStatusForKeywords(
+        keywords: List<String>,
+        language: String
+    ): List<KeywordCacheEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOffers(offers: List<OfferEntity>)

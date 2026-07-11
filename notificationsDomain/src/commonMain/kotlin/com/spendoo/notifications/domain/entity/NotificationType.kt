@@ -6,7 +6,8 @@ enum class NotificationType {
     USER_FOLLOW,
     PAYMENT_REMINDER,
     ALERT,
-    SYSTEM;
+    SYSTEM,
+    TRACKING_REMINDER;
 
     companion object {
         fun fromStringOrDefault(value: String?): NotificationType {

@@ -8,13 +8,12 @@ import com.spendoo.offers.domain.entity.Offer
 import com.spendoo.offers.domain.repository.OffersRepository
 import com.spendoo.shared.domain.utils.PageQuery
 import com.spendoo.shared.domain.utils.PagedData
-import org.spendoo.scraper.domain.repository.AmazonScraperRepository
-import kotlin.time.Clock
-import kotlin.time.Duration.Companion.days
-
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import org.spendoo.scraper.domain.repository.AmazonScraperRepository
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
 
 class OffersRepositoryImpl(
     private val offersDao: OffersDao,
@@ -63,11 +62,12 @@ class OffersRepositoryImpl(
                                 id = product.link ?: "${product.title.hashCode()}_$index",
                                 keyword = kw,
                                 language = language,
-                                discountPercent = null,
+                                discountPercent = product.discountPercent,
                                 imageUrl = product.imageUrl,
                                 title = product.title,
                                 price = product.price,
                                 currency = product.currency,
+                                rating = product.rating,
                                 link = product.link
                             )
                         }
@@ -75,7 +75,7 @@ class OffersRepositoryImpl(
                     }
                 }.awaitAll()
 
-                for ((kw, entities) in results) {
+                results.forEach { (kw, entities) ->
                     offersDao.insertOffers(entities)
                     offersDao.insertKeywordCacheStatus(listOf(KeywordCacheEntity(kw, language, currentTime)))
                 }
@@ -98,6 +98,7 @@ class OffersRepositoryImpl(
                 title = entity.title,
                 price = entity.price,
                 currency = entity.currency,
+                rating = entity.rating,
                 link = entity.link
             )
         }

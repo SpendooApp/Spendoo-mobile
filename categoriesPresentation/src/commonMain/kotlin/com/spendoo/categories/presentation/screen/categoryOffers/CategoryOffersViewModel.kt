@@ -13,7 +13,7 @@ import spendoo.designsystem.generated.resources.an_error_occurred
 import kotlin.math.absoluteValue
 
 class CategoryOffersViewModel(
-    private val categoryId: String,
+    private val categoryId: String?,
     private val transactionsRepository: TransactionsRepository,
     private val offersRepository: OffersRepository
 ) : BaseViewModel<CategoryOffersUiState>(CategoryOffersUiState(categoryId = categoryId)),
@@ -28,7 +28,7 @@ class CategoryOffersViewModel(
         tryToCall(
             block = {
                 transactionsRepository.getTopFrequencyItems(
-                    categoryId = categoryId.ifEmpty { null },
+                    categoryId = categoryId?.ifEmpty { null },
                     pageQuery = PageQuery(page = 0, size = 3)
                 )
             },

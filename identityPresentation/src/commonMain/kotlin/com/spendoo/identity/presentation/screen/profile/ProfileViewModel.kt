@@ -59,18 +59,26 @@ class ProfileViewModel(
 
         tryToCall(
             block = { followRepository.getFollowing(PageQuery(page = 0, size = 10)) },
+            onStart = { updateState { copy(isFollowingsLoading = true) } },
             onSuccess = { pagedData ->
-                updateState { copy(followings = pagedData.data) }
+                updateState { copy(followings = pagedData.data, isFollowingsLoading = false) }
             },
-            onError = { handleError(it) }
+            onError = { 
+                updateState { copy(isFollowingsLoading = false) }
+                handleError(it) 
+            }
         )
 
         tryToCall(
             block = { followRepository.getFollowers(PageQuery(page = 0, size = 10)) },
+            onStart = { updateState { copy(isFollowersLoading = true) } },
             onSuccess = { pagedData ->
-                updateState { copy(followers = pagedData.data) }
+                updateState { copy(followers = pagedData.data, isFollowersLoading = false) }
             },
-            onError = { handleError(it) }
+            onError = { 
+                updateState { copy(isFollowersLoading = false) }
+                handleError(it) 
+            }
         )
     }
 
@@ -89,6 +97,22 @@ class ProfileViewModel(
             block = { settingsRepository.observeAppLanguage() },
             onEach = { language ->
                 updateState { copy(selectedLanguage = language) }
+            },
+            onError = { handleError(it) }
+        )
+
+        tryToCollect(
+            block = { settingsRepository.observeReminderEnabled() },
+            onEach = { isEnabled ->
+                updateState { copy(isReminderEnabled = isEnabled) }
+            },
+            onError = { handleError(it) }
+        )
+
+        tryToCollect(
+            block = { settingsRepository.observeHomeOffersEnabled() },
+            onEach = { isEnabled ->
+                updateState { copy(isHomeOffersEnabled = isEnabled) }
             },
             onError = { handleError(it) }
         )
@@ -179,6 +203,22 @@ class ProfileViewModel(
         val newTheme = if (isDark) AppTheme.DARK else AppTheme.LIGHT
         tryToCall(
             block = { settingsRepository.applyAppTheme(newTheme) },
+            onSuccess = { },
+            onError = { handleError(it) }
+        )
+    }
+
+    override fun onToggleReminder(isEnabled: Boolean) {
+        tryToCall(
+            block = { settingsRepository.setReminderEnabled(isEnabled) },
+            onSuccess = { },
+            onError = { handleError(it) }
+        )
+    }
+
+    override fun onToggleHomeOffers(isEnabled: Boolean) {
+        tryToCall(
+            block = { settingsRepository.setHomeOffersEnabled(isEnabled) },
             onSuccess = { },
             onError = { handleError(it) }
         )

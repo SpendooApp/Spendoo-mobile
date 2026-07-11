@@ -101,10 +101,15 @@ fun ProfileContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(vertical = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ProfileHeader(state = state, onCopyFollowCode = onCopyFollowCode, onRegenerateCode = listener::onClickRegenerateFollowCode)
+                ProfileHeader(
+                    state = state,
+                    onCopyFollowCode = onCopyFollowCode,
+                    onRegenerateCode = listener::onClickRegenerateFollowCode,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -116,7 +121,12 @@ fun ProfileContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                ProfileSettingsList(listener = listener)
+                ProfileSettingsList(
+                    isReminderEnabled = state.isReminderEnabled,
+                    isHomeOffersEnabled = state.isHomeOffersEnabled,
+                    listener = listener,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
 
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -158,6 +168,8 @@ private fun ProfileScreenPreview() {
                 override fun onSelectLanguage(language: AppLanguage) {}
                 override fun onDismissLanguageBottomSheet() {}
                 override fun onToggleTheme(isDark: Boolean) {}
+                override fun onToggleReminder(isEnabled: Boolean) {}
+                override fun onToggleHomeOffers(isEnabled: Boolean) {}
                 override fun onReload() {}
                 override fun onClickLogout() {}
                 override fun onClickUser(userId: String, userName: String, imageUrl: String?) {}

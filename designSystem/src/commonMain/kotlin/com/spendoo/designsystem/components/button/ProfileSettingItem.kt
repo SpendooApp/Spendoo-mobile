@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.spendoo.designsystem.components.icon.CategoryIcon
 import com.spendoo.designsystem.components.icon.Icon
+import com.spendoo.designsystem.components.switch.Switch
 import com.spendoo.designsystem.components.text.Text
 import com.spendoo.designsystem.modifier.clickableNoRipple
 import com.spendoo.designsystem.theme.theme.SpendooTheme
@@ -59,6 +60,40 @@ fun ProfileSettingItem(
             painter = Res.drawable.ic_profile_item_arrow.painter(),
             tint = Theme.colorScheme.text.title,
             contentDescription = null
+        )
+    }
+}
+
+@Composable
+fun ProfileSettingItem(
+    icon: DrawableResource,
+    title: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Theme.colorScheme.background.secondary,
+    shape: Shape = RoundedCornerShape(16.dp)
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(backgroundColor, shape)
+            .border(1.dp, Theme.colorScheme.border.primary, shape)
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        CategoryIcon(icon)
+        Text(
+            modifier = Modifier.padding(start = 8.dp).weight(1f),
+            text = title,
+            style = Theme.typography.body.medium,
+            color = Theme.colorScheme.text.title,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange
         )
     }
 }

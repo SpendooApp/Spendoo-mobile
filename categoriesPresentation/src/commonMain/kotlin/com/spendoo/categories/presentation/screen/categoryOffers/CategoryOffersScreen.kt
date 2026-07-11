@@ -32,7 +32,7 @@ import spendoo.designsystem.generated.resources.no_offers_found
 
 @Composable
 fun CategoryOffersScreen(
-    categoryId: String,
+    categoryId: String?,
     viewModel: CategoryOffersViewModel = koinViewModel(parameters = { parametersOf(categoryId) })
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()

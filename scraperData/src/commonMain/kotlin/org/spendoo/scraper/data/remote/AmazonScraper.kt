@@ -21,7 +21,7 @@ class AmazonScraper(private val fetcher: KmpHtmlFetcher = KtorAmazonFetcher()) {
         }
 
         if (request.offersOnly) {
-            params["f"] = "p_n_deal_type%3A2356606011"
+            params["f"] = "p_n_deal_type:2356606011"
         }
 
         if (request.minPrice != null || request.maxPrice != null) {
@@ -106,6 +106,27 @@ class AmazonScraper(private val fetcher: KmpHtmlFetcher = KtorAmazonFetcher()) {
                     currency = AmazonConstants.DEFAULT_CURRENCIES[request.country]
                 }
 
+                // --- Discount Percent Extraction ---
+                val listPriceEl = card.selectFirst("span.a-price.a-text-price span.a-offscreen")
+                    ?: card.selectFirst("span.a-price[data-a-color='secondary'] span.a-offscreen")
+                var discountPercent: Int? = null
+                if (listPriceEl != null && price != null) {
+                    val parsedListPrice = KmpAmazonParserUtils.parsePrice(listPriceEl.text()).first
+                    if (parsedListPrice != null && parsedListPrice > price) {
+                        discountPercent = (((parsedListPrice - price) / parsedListPrice) * 100).toInt()
+                    }
+                }
+                if (discountPercent == null) {
+                    val percentageEl = card.selectFirst("span[class*='savings'], span[class*='percent'], span.a-badge-label-inner")
+                    if (percentageEl != null) {
+                        val text = percentageEl.text()
+                        val match = Regex("""(\d+)%""").find(text)
+                        if (match != null) {
+                            discountPercent = match.groupValues[1].toInt()
+                        }
+                    }
+                }
+
                 // --- Rating Extraction ---
                 val ratingEl = card.selectFirst("i.a-icon-star span.a-icon-alt") ?: card.selectFirst("span.a-icon-alt")
                 val rating = KmpAmazonParserUtils.parseRating(ratingEl?.text())
@@ -150,7 +171,8 @@ class AmazonScraper(private val fetcher: KmpHtmlFetcher = KtorAmazonFetcher()) {
                         rating = rating,
                         reviews = reviews,
                         link = link,
-                        imageUrl = imageUrl
+                        imageUrl = imageUrl,
+                        discountPercent = discountPercent
                     )
                 )
                 val maxItems = request.maxItems

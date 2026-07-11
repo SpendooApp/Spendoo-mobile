@@ -13,5 +13,6 @@ data class OfferEntity(
     val title: String?,
     val price: Double?,
     val currency: String?,
+    val rating: Double?,
     val link: String?
 )

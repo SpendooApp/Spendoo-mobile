@@ -73,19 +73,21 @@ private fun HomeContent(
             isLoading = state.isBalanceLoading
         )
 
-        item {
-            OffersSection(
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                offers = state.offers,
-                isLoading = state.isOffersLoading,
-                onViewAll = viewModel::onViewAllOffersClicked,
-                onOfferClicked = { link ->
-                    link?.takeIf { it.isNotBlank() }?.let { url ->
-                        val formattedUrl = if (url.startsWith("http://") || url.startsWith("https://")) url else "https://$url" //TODO: format url function
-                        uriHandler.openUri(formattedUrl)
+        if (state.isHomeOffersEnabled) {
+            item {
+                OffersSection(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    offers = state.offers,
+                    isLoading = state.isOffersLoading,
+                    onViewAll = viewModel::onViewAllOffersClicked,
+                    onOfferClicked = { link ->
+                        link?.takeIf { it.isNotBlank() }?.let { url ->
+                            val formattedUrl = if (url.startsWith("http://") || url.startsWith("https://")) url else "https://$url" //TODO: format url function
+                            uriHandler.openUri(formattedUrl)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
 
         item {

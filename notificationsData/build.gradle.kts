@@ -12,6 +12,7 @@ kotlin {
             dependencies {
                 implementation(projects.notificationsDomain)
                 implementation(projects.sharedData)
+                implementation(libs.kmpnotifier)
             }
         }
     }

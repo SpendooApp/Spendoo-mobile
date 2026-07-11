@@ -13,7 +13,7 @@ data class CategoryOffersItemUiState(
 )
 
 data class CategoryOffersUiState(
-    val categoryId: String = "",
+    val categoryId: String? = null,
     val categoryName: String = "",
     val isLoading: Boolean = false,
     val topItemsWithOffers: List<CategoryOffersItemUiState> = emptyList()
