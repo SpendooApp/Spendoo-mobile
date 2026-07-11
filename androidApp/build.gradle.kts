@@ -28,6 +28,8 @@ android {
         versionCode = 1
         versionName = appVersionName
 
+        resourceConfigurations.addAll(setOf("en", "ar"))
+
         val baseUrl = localProperties.getProperty("BASE_URL", "")
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
     }
@@ -64,6 +66,10 @@ android {
             isShrinkResources = true
             if (signingConfigs.findByName("release") != null) {
                 signingConfig = signingConfigs.getByName("release")
+            }
+
+            ndk {
+                abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a"))
             }
 
             proguardFiles(

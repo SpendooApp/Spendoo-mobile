@@ -67,7 +67,7 @@ import kotlinx.datetime.LocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import spendoo.designsystem.generated.resources.Res
-import spendoo.designsystem.generated.resources.avatar_me
+import spendoo.designsystem.generated.resources.img_avatar_me
 import spendoo.designsystem.generated.resources.ic_download
 import spendoo.designsystem.generated.resources.ic_user_follow
 
@@ -153,7 +153,7 @@ private fun StatisticsContent(
                     leading = {
                         AsyncImage(
                             model = state.userImageUrl,
-                            placeholder = Res.drawable.avatar_me.painter(),
+                            placeholder = Res.drawable.img_avatar_me.painter(),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(end = 12.dp)
